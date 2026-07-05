@@ -1,6 +1,7 @@
 name: NIAH (Needle-in-a-Haystack)
 slug: niah
 homepage: https://github.com/UKGovernmentBEIS/inspect_evals
+kind: benchmark
 domain: long-context retrieval
 what_it_is: >
   A well-established long-context-retrieval task family: bury a short "needle" fact
@@ -12,7 +13,7 @@ scoring_mechanism: "varies by implementation — inspect_evals' own port uses an
 contamination_handling: "n/a to the base concept — depends on implementation"
 data_source: "openly licensed via inspect_evals; harness-bench's port used only 40 of 225 grid cells, by its own docstring's admission not comparable to \"full NIAH\""
 license: MIT (inspect_evals)
-used_by_harnesses: [inspect-ai, harness-kit]
+evaluated_by: [inspect-ai, harness-kit]
 our_adapter:
   suite: niah_v1
   repo: https://github.com/workain/harness-eval

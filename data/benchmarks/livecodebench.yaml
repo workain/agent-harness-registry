@@ -1,6 +1,7 @@
 name: LiveCodeBench
 slug: livecodebench
 homepage: https://github.com/livecodebench/livecodebench
+kind: benchmark
 domain: code generation / execution / self-repair
 what_it_is: >
   A "holistic and contamination-free" code-evaluation benchmark that continuously
@@ -17,7 +18,7 @@ contamination_handling: >
   than most benchmarks surveyed in this registry).
 data_source: "live competitive-programming contest problems (LeetCode/AtCoder/CodeForces), continuously updated"
 license: MIT
-used_by_harnesses: []
+evaluated_by: []
 our_adapter: null
 reliability_note: "documentation acknowledges timing-related evaluation can cause <0.5-point variation; mitigated via --num_process_evaluate and --timeout parameters"
 known_gaming_incidents: null

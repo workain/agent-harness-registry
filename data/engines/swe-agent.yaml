@@ -1,0 +1,24 @@
+name: SWE-agent
+slug: swe-agent
+homepage: https://github.com/SWE-agent/SWE-agent
+interface: "CLI / library (agent scaffold you embed, not a standalone product)"
+what_it_is: >
+  An agent SCAFFOLD (the control loop that drives the model turn-by-turn) from
+  Princeton/Stanford — takes a GitHub issue and tries to fix it autonomously using an LM
+  of choice, via a custom agent-computer interface governed by a single YAML config. This
+  is an ENGINE in our taxonomy (it drives the model), not equipment we would compose onto
+  one. Distinct from but paired with SWE-bench (the evaluation benchmark, see
+  `data/benchmarks/swe-bench.yaml`) — same ecosystem also includes Mini-SWE-Agent,
+  SWE-ReX, SWE-smith, and sb-cli.
+license: MIT
+open_source: true
+sandboxing: "Docker/Podman container backends via SWE-ReX, a remote execution framework that maintains terminal sessions on local machines or containers — all commands execute inside a container, host filesystem never directly exposed"
+activity:
+  stars: "19.7k (per GitHub page fetch)"
+  last_verified_note: "fetched live 2026-07-05; latest release noted was v1.1.0 (2025-05-22) on the fetched page — may be stale, re-check before citing as \"latest\""
+provenance:
+  - url: https://github.com/SWE-agent/SWE-agent
+    note: "fetched live 2026-07-05 (org moved from princeton-nlp/SWE-agent to SWE-agent/SWE-agent)"
+unverified:
+  - "exact current release/last-commit date not confirmed beyond the v1.1.0 note found on the fetched page — the repo has likely moved further since; re-verify before citing a specific version"
+  - "contributor count not extracted from fetched content"

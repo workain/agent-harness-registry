@@ -1,5 +1,13 @@
 #!/usr/bin/env python3
-"""Generate GUIDE.md from data/harnesses/*.yaml and data/benchmarks/*.yaml.
+"""Generate GUIDE.md from data/{harnesses,engines,benchmarks}/*.yaml.
+
+Three categories (operator definition, 2026-07-05 — see GUIDE.md's own header for the
+full statement):
+  - data/harnesses/  -- the EQUIPMENT layer (PRIMARY): what you compose ONTO an existing
+    agent engine (instructions/identity, tools/skills, memory/KB, access placement).
+  - data/engines/     -- agent engines/runtimes (the substrate we run ON, not build).
+  - data/benchmarks/ -- benchmarks + eval-frameworks (AUXILIARY), distinguished by each
+    entry's own `kind: benchmark` / `kind: eval-framework` field.
 
 Run: python3 scripts/generate.py
 No dependencies beyond PyYAML (already required to author entries by hand).
@@ -63,18 +71,112 @@ def _provenance_block(entry: dict) -> str:
     return "\n".join(lines)
 
 
-def render_harnesses_table(entries: list[dict]) -> str:
+def _activity_lines(e: dict) -> list[str]:
+    activity = e.get("activity") or {}
+    out = []
+    stars = activity.get("stars")
+    note = activity.get("last_verified_note")
+    if stars:
+        out.append(f"- **Activity:** {stars}")
+    if note:
+        out.append(f"- **Activity notes:** {note}")
+    return out
+
+
+# ── Category 1: Harnesses (the equipment layer) — PRIMARY ────────────────────────────
+
+def render_equipment_table(entries: list[dict]) -> str:
     lines = [
-        "| Name | Type | Contamination gate | Reward-hacking detection | Reliability | Sandboxing |",
-        "|---|---|---|---|---|---|",
+        "| Name | Layer | License | What it is |",
+        "|---|---|---|---|",
+    ]
+    for e in entries:
+        lines.append(
+            "| [{name}](#{anchor}) | {layer} | {lic} | {what} |".format(
+                name=e["name"],
+                anchor=e["_slug"],
+                layer=_cell(e.get("layer")),
+                lic=_truncate(e.get("license"), 40),
+                what=_truncate(e.get("what_it_is"), 90),
+            )
+        )
+    return "\n".join(lines)
+
+
+def render_equipment_detail(e: dict) -> str:
+    parts = [
+        f"### {e['name']}",
+        "",
+        f"<a id=\"{e['_slug']}\"></a>",
+        "",
+        f"**Homepage:** {e.get('homepage') or '—'}  ",
+        f"**Layer:** {e.get('layer') or '—'}  ",
+        f"**License:** {e.get('license') or '—'}",
+        "",
+        (e.get("what_it_is") or "").strip(),
+    ]
+    if e.get("integration"):
+        parts.append("")
+        parts.append(f"**How it's adopted:** {e['integration'].strip()}")
+    parts += _activity_lines(e)
+    parts.append(_provenance_block(e))
+    parts.append(_unverified_block(e))
+    return "\n".join(p for p in parts if p is not None)
+
+
+# ── Category 2: Agent engines / runtimes ──────────────────────────────────────────────
+
+def render_engine_table(entries: list[dict]) -> str:
+    lines = [
+        "| Name | Interface | Open source? | License |",
+        "|---|---|---|---|",
+    ]
+    for e in entries:
+        lines.append(
+            "| [{name}](#{anchor}) | {iface} | {oss} | {lic} |".format(
+                name=e["name"],
+                anchor=e["_slug"],
+                iface=_truncate(e.get("interface"), 60),
+                oss="✅" if e.get("open_source") else "❌ proprietary",
+                lic=_truncate(e.get("license"), 50),
+            )
+        )
+    return "\n".join(lines)
+
+
+def render_engine_detail(e: dict) -> str:
+    parts = [
+        f"### {e['name']}",
+        "",
+        f"<a id=\"{e['_slug']}\"></a>",
+        "",
+        f"**Homepage:** {e.get('homepage') or '—'}  ",
+        f"**Interface:** {e.get('interface') or '—'}  ",
+        f"**License:** {e.get('license') or '—'}",
+        "",
+        (e.get("what_it_is") or "").strip(),
+        "",
+        f"- **Sandboxing:** {e.get('sandboxing') or '—'}",
+    ]
+    parts += _activity_lines(e)
+    parts.append(_provenance_block(e))
+    parts.append(_unverified_block(e))
+    return "\n".join(p for p in parts if p is not None)
+
+
+# ── Category 3: Benchmarks + eval-frameworks (auxiliary) ──────────────────────────────
+
+def render_evalframework_table(entries: list[dict]) -> str:
+    lines = [
+        "| Name | Contamination gate | Reward-hacking detection | Reliability | Sandboxing |",
+        "|---|---|---|---|---|",
     ]
     for e in entries:
         cap = e.get("capabilities") or {}
         lines.append(
-            "| [{name}](#{anchor}) | {type} | {cg} | {rh} | {rel} | {sb} |".format(
+            "| [{name}](#{anchor}) | {cg} | {rh} | {rel} | {sb} |".format(
                 name=e["name"],
                 anchor=e["_slug"],
-                type=_cell(e.get("type")),
                 cg=_truncate(cap.get("contamination_gate")),
                 rh=_truncate(cap.get("reward_hacking_detection")),
                 rel=_truncate(cap.get("reliability_methodology")),
@@ -84,7 +186,30 @@ def render_harnesses_table(entries: list[dict]) -> str:
     return "\n".join(lines)
 
 
-def render_benchmarks_table(entries: list[dict]) -> str:
+def render_evalframework_detail(e: dict) -> str:
+    cap = e.get("capabilities") or {}
+    parts = [
+        f"### {e['name']}",
+        "",
+        f"<a id=\"{e['_slug']}\"></a>",
+        "",
+        f"**Homepage:** {e.get('homepage') or '—'}  ",
+        f"**License:** {e.get('license') or '—'}",
+        "",
+        (e.get("what_it_is") or "").strip(),
+        "",
+        f"- **Contamination gate:** {cap.get('contamination_gate') or '—'}",
+        f"- **Reward-hacking detection:** {cap.get('reward_hacking_detection') or '—'}",
+        f"- **Reliability methodology:** {cap.get('reliability_methodology') or '—'}",
+        f"- **Sandboxing:** {cap.get('sandboxing') or '—'}",
+    ]
+    parts += _activity_lines(e)
+    parts.append(_provenance_block(e))
+    parts.append(_unverified_block(e))
+    return "\n".join(p for p in parts if p is not None)
+
+
+def render_benchmark_table(entries: list[dict]) -> str:
     lines = [
         "| Name | Domain | Contamination handling | Scoring mechanism | License |",
         "|---|---|---|---|---|",
@@ -103,39 +228,7 @@ def render_benchmarks_table(entries: list[dict]) -> str:
     return "\n".join(lines)
 
 
-def render_harness_detail(e: dict) -> str:
-    cap = e.get("capabilities") or {}
-    activity = e.get("activity") or {}
-    parts = [
-        f"### {e['name']}",
-        "",
-        f"<a id=\"{e['_slug']}\"></a>",
-        "",
-        f"**Homepage:** {e.get('homepage') or '—'}  ",
-        f"**Type:** {e.get('type') or '—'}  ",
-        f"**License:** {e.get('license') or '—'}",
-        "",
-        (e.get("what_it_is") or "").strip(),
-        "",
-        f"- **Contamination gate:** {cap.get('contamination_gate') or '—'}",
-        f"- **Reward-hacking detection:** {cap.get('reward_hacking_detection') or '—'}",
-        f"- **Reliability methodology:** {cap.get('reliability_methodology') or '—'}",
-        f"- **Sandboxing:** {cap.get('sandboxing') or '—'}",
-    ]
-    if activity:
-        stars = activity.get("stars")
-        note = activity.get("last_verified_note")
-        if stars:
-            parts.append(f"- **Activity:** {stars}")
-        if note:
-            parts.append(f"- **Activity notes:** {note}")
-    parts.append(_provenance_block(e))
-    parts.append(_unverified_block(e))
-    return "\n".join(p for p in parts if p is not None)
-
-
 def render_benchmark_detail(e: dict) -> str:
-    activity = e.get("activity") or {}
     parts = [
         f"### {e['name']}",
         "",
@@ -155,9 +248,9 @@ def render_benchmark_detail(e: dict) -> str:
         parts.append(f"- **Reliability notes:** {e['reliability_note']}")
     if e.get("known_gaming_incidents"):
         parts.append(f"- **Known gaming incidents:** {e['known_gaming_incidents']}")
-    used_by = e.get("used_by_harnesses") or []
-    if used_by:
-        parts.append(f"- **Used by harnesses:** {', '.join(used_by)}")
+    evaluated_by = e.get("evaluated_by") or []
+    if evaluated_by:
+        parts.append(f"- **Evaluated by:** {', '.join(evaluated_by)}")
     adapter = e.get("our_adapter")
     if adapter:
         parts.append("")
@@ -169,60 +262,118 @@ def render_benchmark_detail(e: dict) -> str:
             parts.append(f"**Status:** {adapter['status']}")
         if adapter.get("notes"):
             parts.append(adapter["notes"].strip())
-    if activity:
-        stars = activity.get("stars")
-        note = activity.get("last_verified_note")
-        if stars:
-            parts.append(f"- **Activity:** {stars}")
-        if note:
-            parts.append(f"- **Activity notes:** {note}")
+    parts += _activity_lines(e)
     parts.append(_provenance_block(e))
     parts.append(_unverified_block(e))
     return "\n".join(p for p in parts if p is not None)
 
 
 def main() -> None:
-    harnesses = _load_dir("harnesses")
-    benchmarks = _load_dir("benchmarks")
+    equipment = _load_dir("harnesses")
+    engines = _load_dir("engines")
+    aux = _load_dir("benchmarks")
+    eval_frameworks = [e for e in aux if e.get("kind") == "eval-framework"]
+    benchmarks = [e for e in aux if e.get("kind") == "benchmark"]
+    unclassified = [e for e in aux if e.get("kind") not in ("eval-framework", "benchmark")]
+    if unclassified:
+        raise SystemExit(
+            f"entries missing a kind: field: {[e['_slug'] for e in unclassified]}")
 
     out = []
-    out.append("# Agent Harness + Benchmark Registry")
+    out.append("# Agent Harness + Equipment Registry")
     out.append("")
     out.append(
-        "A reference guide to existing AI-agent **harnesses** (frameworks/runners that "
-        "execute evals) and **benchmarks** (task sets + scoring protocols) — what each is, "
-        "its integrity/anti-cheat capabilities, and how it relates to the others."
+        "**Our definition (binding for this guide):** a **harness** is the **equipment "
+        "layer** wrapped around an existing agent engine — its instructions/identity, "
+        "its tools & skills, the data/memory/knowledge-base it draws on and where that "
+        "data & access is placed, plus the gates that keep it honest. A harness is "
+        "**NOT** the execution engine — the control loop that drives the model "
+        "turn-by-turn is the *agent/engine*, a separate thing we catalog but do not "
+        "build."
+    )
+    out.append("")
+    out.append(
+        "**Terminology note:** the wider industry often uses \"harness\" more loosely, "
+        "to mean the whole runtime including the engine (e.g. \"Claude Code is a "
+        "harness\"). This guide's taxonomy deliberately narrows the term to the "
+        "equipment layer only, and splits what a looser usage would lump together into "
+        "three categories below — so readers comparing this guide to other sources "
+        "aren't confused by the terminology mismatch."
     )
     out.append("")
     out.append(
         "**Provenance rule (binding):** every load-bearing claim below is either "
         "reproduced/quoted from a source actually fetched (cited in each entry's "
         "Provenance block), or explicitly marked `[unverified — ...]`. A project's own "
-        "marketing framing is never passed through as fact. Generated from the structured "
-        "entries in `data/` — see `scripts/generate.py`; do not hand-edit this file."
+        "marketing framing is never passed through as fact. Generated from the "
+        "structured entries in `data/` — see `scripts/generate.py`; do not hand-edit "
+        "this file."
     )
     out.append("")
     out.append("---")
     out.append("")
-    out.append("## Harnesses")
+    out.append("## 1. Harnesses — the equipment layer (primary)")
     out.append("")
-    out.append(render_harnesses_table(harnesses))
+    out.append(
+        "What you compose **onto** an existing agent engine: instruction/rules "
+        "frameworks, tool & skill packs, memory/KB systems, access & data-placement "
+        "patterns. This is the under-filled, just-opening niche — the actual catalog "
+        "this registry exists to build out."
+    )
     out.append("")
-    for e in harnesses:
-        out.append(render_harness_detail(e))
+    out.append(render_equipment_table(equipment))
+    out.append("")
+    for e in equipment:
+        out.append(render_equipment_detail(e))
         out.append("")
+
     out.append("---")
     out.append("")
-    out.append("## Benchmarks")
+    out.append("## 2. Agent engines / runtimes (substrate — not our product)")
     out.append("")
-    out.append(render_benchmarks_table(benchmarks))
+    out.append(
+        "The control loop that actually drives a model turn-by-turn. We run ON these; "
+        "we do not build our own. Cataloged for context — an equipment entry above is "
+        "meaningless without knowing what it plugs into."
+    )
+    out.append("")
+    out.append(render_engine_table(engines))
+    out.append("")
+    for e in engines:
+        out.append(render_engine_detail(e))
+        out.append("")
+
+    out.append("---")
+    out.append("")
+    out.append("## 3. Benchmarks + eval-frameworks (auxiliary)")
+    out.append("")
+    out.append(
+        "Tooling and task sets for MEASURING agents, not for equipping them. Split into "
+        "eval-frameworks (runners that execute many benchmarks) and benchmarks "
+        "themselves (a fixed task set + scoring protocol)."
+    )
+    out.append("")
+    out.append("### 3a. Eval-frameworks")
+    out.append("")
+    out.append(render_evalframework_table(eval_frameworks))
+    out.append("")
+    for e in eval_frameworks:
+        out.append(render_evalframework_detail(e))
+        out.append("")
+
+    out.append("### 3b. Benchmarks")
+    out.append("")
+    out.append(render_benchmark_table(benchmarks))
     out.append("")
     for e in benchmarks:
         out.append(render_benchmark_detail(e))
         out.append("")
 
     OUT.write_text("\n".join(out).rstrip() + "\n", encoding="utf-8")
-    print(f"wrote {OUT} ({len(harnesses)} harnesses, {len(benchmarks)} benchmarks)")
+    print(
+        f"wrote {OUT} ({len(equipment)} equipment, {len(engines)} engines, "
+        f"{len(eval_frameworks)} eval-frameworks, {len(benchmarks)} benchmarks)"
+    )
 
 
 if __name__ == "__main__":

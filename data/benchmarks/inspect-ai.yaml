@@ -1,7 +1,7 @@
 name: UK AISI Inspect AI
 slug: inspect-ai
 homepage: https://github.com/UKGovernmentBEIS/inspect_ai
-type: harness
+kind: eval-framework
 what_it_is: >
   A general, actively-maintained eval framework from the UK AI Security Institute.
   Task = dataset + solver + scorer; six extension points (models / solvers / scorers /

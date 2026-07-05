@@ -1,7 +1,7 @@
 name: rmr-rnd/harness-bench
 slug: harness-bench
 homepage: https://github.com/rmr-rnd/harness-bench
-type: harness
+kind: eval-framework
 what_it_is: >
   A plugin-based multi-benchmark harness shipping three benchmark ports: bfcl_memory (real
   Berkeley BFCL v4 data, exact-match scoring), persistbench (30 JSON tasks, 3 task types,

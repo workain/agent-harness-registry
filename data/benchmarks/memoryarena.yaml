@@ -1,6 +1,7 @@
 name: MemoryArena
 slug: memoryarena
 homepage: https://memoryarena.github.io/
+kind: benchmark
 domain: agent memory (interdependent multi-session agentic tasks)
 what_it_is: >
   A benchmark where agents must acquire memory WHILE interacting with an environment,
@@ -14,7 +15,7 @@ scoring_mechanism: "[unverified — task-level scoring formula not enumerated in
 contamination_handling: "not discussed in fetched content"
 data_source: "human-crafted agentic tasks; dataset hosted on Hugging Face (ZexueHe/memoryarena) under CC-BY-4.0; project website under CC-BY-SA-4.0"
 license: "dataset: CC-BY-4.0 (Hugging Face); website: CC-BY-SA-4.0; code repo (github.com/ZexueHe/MemoryArena): NO LICENSE FILE found — treat code reuse as unresolved absent explicit permission, same caveat class as other unlicensed research repos in this registry"
-used_by_harnesses: []
+evaluated_by: []
 our_adapter: null
 reliability_note: null
 known_gaming_incidents: null

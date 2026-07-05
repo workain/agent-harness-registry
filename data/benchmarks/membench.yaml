@@ -1,6 +1,7 @@
 name: MemBench
 slug: membench
 homepage: https://github.com/import-myself/Membench
+kind: benchmark
 domain: agent memory (factual + reflective)
 what_it_is: >
   ACL 2025 Findings benchmark evaluating LLM-agent memory across "effectiveness,
@@ -13,7 +14,7 @@ scoring_mechanism: "[unverified — specific metric formulas (paper mentions acc
 contamination_handling: "none found in fetched content"
 data_source: "dataset released via Baidu Drive / Google Drive links referenced from the GitHub README, not stored directly in-repo"
 license: "MIT indicated by a badge on the repo page; no explicit LICENSE file text was found/confirmed during the fetch — treat license as [unverified — badge seen, LICENSE file text not directly confirmed]"
-used_by_harnesses: []
+evaluated_by: []
 our_adapter: null
 reliability_note: null
 known_gaming_incidents: null

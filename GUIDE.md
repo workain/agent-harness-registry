@@ -1,33 +1,336 @@
-# Agent Harness + Benchmark Registry
+# Agent Harness + Equipment Registry
 
-A reference guide to existing AI-agent **harnesses** (frameworks/runners that execute evals) and **benchmarks** (task sets + scoring protocols) — what each is, its integrity/anti-cheat capabilities, and how it relates to the others.
+**Our definition (binding for this guide):** a **harness** is the **equipment layer** wrapped around an existing agent engine — its instructions/identity, its tools & skills, the data/memory/knowledge-base it draws on and where that data & access is placed, plus the gates that keep it honest. A harness is **NOT** the execution engine — the control loop that drives the model turn-by-turn is the *agent/engine*, a separate thing we catalog but do not build.
+
+**Terminology note:** the wider industry often uses "harness" more loosely, to mean the whole runtime including the engine (e.g. "Claude Code is a harness"). This guide's taxonomy deliberately narrows the term to the equipment layer only, and splits what a looser usage would lump together into three categories below — so readers comparing this guide to other sources aren't confused by the terminology mismatch.
 
 **Provenance rule (binding):** every load-bearing claim below is either reproduced/quoted from a source actually fetched (cited in each entry's Provenance block), or explicitly marked `[unverified — ...]`. A project's own marketing framing is never passed through as fact. Generated from the structured entries in `data/` — see `scripts/generate.py`; do not hand-edit this file.
 
 ---
 
-## Harnesses
+## 1. Harnesses — the equipment layer (primary)
 
-| Name | Type | Contamination gate | Reward-hacking detection | Reliability | Sandboxing |
-|---|---|---|---|---|---|
-| [AgentBench](#agentbench) | harness+benchmark | none found, despite ~half of task instructions being GPT-generated then filtered | n/a in the mechanical-gate sense — but scoring is mostly deterministic/environment-based… | explicit temperature=0 greedy decoding "to ensure reproducible results", and EXPLICITLY n… | some environments use isolated containers for agent actions [unverified depth — not indep… |
-| [harness_kit (workain/harness-eval)](#harness-kit) | harness | mechanical — G3 no-context/no-ingest control on every suite (an honest agent given no tas… | mechanical — G4 perturbation-collapse gates (does accuracy collapse under a distractor/de… | pass@1 / pass^k (Chen et al. 2021 estimator) plus bootstrap confidence intervals and an e… | process-boundary isolation for devtasks (direct test invocation over a dedicated pipe, no… |
-| [HELM (Holistic Evaluation of Language Models)](#helm) | harness+benchmark | acknowledged as a limitation (evidence pushed to a paper appendix), not mechanically gate… | none in the scoring-exploit sense; the input-perturbation robustness metric is a differen… | not found in fetched text — no confidence-interval/repeated-run variance mechanism locate… | n/a — LM benchmark suite, not agentic code execution |
-| [METR Task Standard / Vivaria](#metr-task-standard) | harness | process-based — elicitation guidelines, mandatory adversarial second-team review, sandbag… | discipline-based, not mechanical — elicitation guidelines (no dev-set overfitting), canar… | explicit score@k (best-of-k, a pass@k variant, not the exact Chen et al. combinatorial fo… | isolated "primary machine" (container or VM, implementation-agnostic), non-root agent use… |
-| [OpenAI simple-evals](#openai-simple-evals) | harness | confirmed absent — grepped the README and all code, zero mentions of decontamination/leak… | confirmed absent | partial — --n-repeats (MATH/GPQA, default 10) duplicates the WHOLE dataset and reports me… | n/a |
-| [OpenHands](#openhands) | harness | none found in fetched content | none found in fetched content | not addressed in fetched content [unverified] | local execution (full filesystem access, explicitly warned against), Docker sandbox (isol… |
-| [rmr-rnd/harness-bench](#harness-bench) | harness | none found (grepped for contamination/leakage/canary/etc. — zero real hits; the few match… | none found (same grep — zero hits for reward-hack/tamper/adversarial/canary/allowlist/den… | epochs=3 is SET for 2 of 3 task types but never consumed for variance/reliability aggrega… | uses Docker, but for RUNNING agent actions in some task environments — not for eval-integ… |
-| [SWE-agent](#swe-agent) | harness | none found in fetched content | none found in fetched content | not addressed in fetched content [unverified] | Docker/Podman container backends via SWE-ReX, a remote execution framework that maintains… |
-| [tau-bench / tau2-bench (τ²-bench)](#tau2-bench) | harness+benchmark | none found in fetched content | none found in fetched content | not detailed in fetched content — evaluates action correctness against evaluation_criteri… | n/a — dialogue/tool-call simulation, not code execution |
-| [Terminal-Bench](#terminal-bench) | harness+benchmark | none discussed in the paper or repo content fetched — no contamination-avoidance or train… | none discussed — no documented gaming/cheating safeguards found in fetched content | not addressed in fetched content [unverified — pass@k/repeated-run variance methodology n… | Docker-based sandboxed terminal environment per task |
-| [UK AISI Inspect AI](#inspect-ai) | harness | confirmed absent — no canary, no contamination detector, no adversarial-perturbation harn… | confirmed absent — no reward-hacking gate built in | Epochs(count, reducer) with mean/median/mode/max/at_least_k reducers; implements BOTH pas… | real, mature Docker backend with auto-generated compose.yaml (network-isolated by default… |
+What you compose **onto** an existing agent engine: instruction/rules frameworks, tool & skill packs, memory/KB systems, access & data-placement patterns. This is the under-filled, just-opening niche — the actual catalog this registry exists to build out.
+
+| Name | Layer | License | What it is |
+|---|---|---|---|
+| [agent-memory (workain)](#agent-memory) | Memory / data layer (Block F, per agent-lab-manager's harness-architecture-v0) | MIT | A tiered, provenance-linked, self-reconsolidating memory architecture for LLM agents — de… |
+| [AGENTS.md](#agents-md) | Instruction / identity layer (equivalent to Block A) — a convention, not a piece of software | MIT | An open, tool-agnostic file-format convention for giving coding agents project context an… |
+| [Graphiti (open-source engine behind Zep)](#graphiti-zep) | Memory / data layer (equivalent to Block F) — temporal knowledge-graph shape | Apache-2.0 | An open-source framework for building TEMPORAL context/knowledge graphs for AI agents: en… |
+| [harness-skills (workain)](#harness-skills) | Capability / tools layer (Block B, per agent-lab-manager's harness-architecture-v0) | no LICENSE file present in the repo as… | A curated, security-reviewed pack of reusable Claude Code skills for the workain lab's ha… |
+| [Letta (formerly MemGPT)](#letta) | Memory / data layer (equivalent to Block F), with its own agent-hosting server | Apache-2.0 | A platform for "stateful agents" with self-editing, persistent memory — originated as Mem… |
+| [Mem0](#mem0) | Memory / data layer (equivalent to Block F) | Apache-2.0 | A "universal memory layer for AI agents" — LLM-based fact extraction from conversations,… |
+| [Model Context Protocol — reference servers](#mcp-servers) | Access placement / tool-access protocol layer (equivalent to Block B, the access/data-placement half specifically) | Apache-2.0 for new contributions, MIT f… | The reference implementations for the Model Context Protocol (MCP) — an open protocol, st… |
+
+### agent-memory (workain)
+
+<a id="agent-memory"></a>
+
+**Homepage:** https://github.com/workain/agent-memory  
+**Layer:** Memory / data layer (Block F, per agent-lab-manager's harness-architecture-v0)  
+**License:** MIT
+
+A tiered, provenance-linked, self-reconsolidating memory architecture for LLM agents — design, a drop-in kit, and a reproducible experiment suite. Three knowledge classes (experiential / reference / live-code) and three experiential tiers x three access bands (curated=hot, buffer=indexed-on-demand, raw=cold/permanent-floor). An offline "remember" pump promotes raw -> buffer -> curated gated by importance + surprise + corroboration; a "forget" pump grades decay (cooling, never deletion). Every load-bearing memory edit passes an NLI-entailment commit-gate against its cited source before being written, and only the small curated tier loads by default (bounding context cost as the corpus grows) — north-star metric SMU = sustained accuracy / default-load cost, behind faithfulness + stability gates.
+
+**How it's adopted:** `kit/memory/` is the reference implementation (the liftable SUT); `kit/tools/` is a CLI for consolidate/recall/search/gate-check; `kit/skills/` are agent-facing skill stubs; `kit/AGENTS.md` is the instruction file an agent reads to actually USE the memory — drop it into a Claude/Codex system prompt or CLAUDE.md.
+- **Activity notes:** our own active repo, verified directly from source (git log, LICENSE file) on 2026-07-05 — not a third-party fetch. Status per its own README: design + methodology + cited evidence complete and independently reviewed; the runnable experiment harness is scaffolded (structure/metrics/gates/scenarios defined), implementations are the next build phase.
+
+**Provenance:**
+- https://github.com/workain/agent-memory
+  primary source — read directly from the local clone (README.md, LICENSE, kit/AGENTS.md, CITATION.cff, git log) on 2026-07-05, not a third-party fetch
+
+
+### AGENTS.md
+
+<a id="agents-md"></a>
+
+**Homepage:** https://github.com/agentsmd/agents.md  
+**Layer:** Instruction / identity layer (equivalent to Block A) — a convention, not a piece of software  
+**License:** MIT
+
+An open, tool-agnostic file-format convention for giving coding agents project context and instructions — deliberately radically simple (single markdown file, no required structure, no custom syntax), covering setup commands, test/build workflows, coding style, and PR guidelines. Positioned as "a README for agents" — humans read READMEs, agents read AGENTS.md. Formalized as an open specification in August 2025 led by OpenAI with Google/Cursor/Factory participation [unverified — from search summary, not confirmed on the fetched repo page itself]; reportedly donated to the Linux Foundation's Agentic AI Foundation in December 2025 [unverified — same caveat].
+
+**How it's adopted:** Drop a file named AGENTS.md at a project's root (or nested per-package); over 20 AI coding tools reportedly read it directly [unverified — from search summary] — this is the same functional slot as CLAUDE.md/SOUL.md in agent-lab-manager's own Block-A convention.
+- **Activity:** 22.8k (per GitHub page fetch, 2026-07-05)
+- **Activity notes:** fetched live 2026-07-05; 1.7k forks, 83 open issues, 35 commits on main, no formal releases published — a spec/convention repo, not a versioned software product, so activity signals read differently than for a library
+
+**Provenance:**
+- https://github.com/agentsmd/agents.md (fetched 2026-07-05)
+  fetched directly (repo page): description, license, star count, what the format specifies, activity signal — did NOT independently confirm the Linux Foundation donation or the OpenAI/Google/Cursor/Factory formalization claim, both flagged unverified
+
+**Unverified / caveats:**
+- the August 2025 formalization (OpenAI-led, Google/Cursor/Factory) and the December 2025 Linux Foundation Agentic AI Foundation donation are from search-result summaries of secondary articles, not confirmed on the repo's own page or a Linux Foundation primary source
+- the "60,000+ projects, 20+ tools" adoption figures are from the same secondary summaries, not independently counted
+
+### Graphiti (open-source engine behind Zep)
+
+<a id="graphiti-zep"></a>
+
+**Homepage:** https://github.com/getzep/graphiti  
+**Layer:** Memory / data layer (equivalent to Block F) — temporal knowledge-graph shape  
+**License:** Apache-2.0
+
+An open-source framework for building TEMPORAL context/knowledge graphs for AI agents: entities, relationships, and facts carry validity windows, so the graph captures not just current truths but historical states with full provenance back to source "episodes." Hybrid retrieval combines semantic embeddings, keyword search, and graph traversal; updates are incremental (no full recomputation). Graphiti is the open-source engine at the core of Zep, a commercial platform that layers user management, conversation storage, pre-optimized retrieval, and managed hosting on top — Zep deprecated its self-hosted Community Edition in April 2025 [unverified — from search summary, not independently re-fetched], so self-hosting today means running Graphiti directly against a supported graph backend (Neo4j, FalkorDB, or Kuzu).
+
+**How it's adopted:** Python library; requires a graph database backend (Neo4j/FalkorDB/Kuzu) to self-host, since the old all-in-one Community Edition is gone
+- **Activity:** 28.4k (per GitHub page fetch, 2026-07-05)
+- **Activity notes:** fetched live 2026-07-05; latest release v0.29.2 (2026-06-08), 196 releases, 881 commits, 253 open issues, 160 open PRs — actively maintained
+
+**Provenance:**
+- https://github.com/getzep/graphiti (fetched 2026-07-05)
+  fetched directly (repo page): description, license, star count, architecture, activity signal, and the Graphiti/Zep relationship framing
+
+**Unverified / caveats:**
+- Zep's April 2025 Community Edition deprecation is from a search-result summary, not independently re-fetched from a Zep primary source
+- an earlier search snippet claimed Graphiti was MIT-licensed; the direct repo fetch confirms Apache-2.0 — cataloged as Apache-2.0 since that came from fetching the repo/LICENSE directly, not a secondary summary
+
+### harness-skills (workain)
+
+<a id="harness-skills"></a>
+
+**Homepage:** https://github.com/workain/harness-skills  
+**Layer:** Capability / tools layer (Block B, per agent-lab-manager's harness-architecture-v0)  
+**License:** no LICENSE file present in the repo as of this fetch (private/internal repo; not yet a decided-on public license)
+
+A curated, security-reviewed pack of reusable Claude Code skills for the workain lab's harness product line — the capability layer composed onto an engine (tools, skills, sub-agents). Each skill goes through an explicit confirmation process before shipping: independent security review + genericization evidence recorded in `Tasks/`.
+
+**How it's adopted:** Skills live under `skills/<name>/`; adopted by dropping into a Claude Code project's skill directory. Shipped so far: `tdd` (RED-GREEN-REFACTOR TDD orchestrator, sourced from `glebis/claude-skills`), `llm-cli` (thin wrapper over Simon Willison's `llm` CLI, same source), `write-skill` (research/findings -> voice-matched draft, authored in-repo), `publish-skill` (generic WordPress publish primitive, draft/dry-run by default, pattern from `tellina-study/publishing`). One more (`smart-approve-hook`, forked from `liberzon/claude-hooks` with a fail-closed bypass fix applied) is fixed but not yet shipped pending its own independent re-review. Explicitly deferred/rejected candidates are tracked in issue history, not silently dropped.
+- **Activity notes:** our own active repo, verified directly from source (git log, file listing) on 2026-07-05 — not a third-party fetch
+
+**Provenance:**
+- https://github.com/workain/harness-skills
+  primary source — read directly from the local clone (README.md, git log, file listing) on 2026-07-05, not a third-party fetch
+
+
+### Letta (formerly MemGPT)
+
+<a id="letta"></a>
+
+**Homepage:** https://github.com/letta-ai/letta  
+**Layer:** Memory / data layer (equivalent to Block F), with its own agent-hosting server  
+**License:** Apache-2.0
+
+A platform for "stateful agents" with self-editing, persistent memory — originated as MemGPT (UC Berkeley Sky Computing Lab), renamed to distinguish the MemGPT AGENT DESIGN from the Letta API server/runtime that hosts agents as a service. Agents can read AND write their own internal memory blocks across turns, supporting continuous learning/adaptation rather than treating each interaction as isolated context.
+
+**How it's adopted:** CLI for local terminal use; TypeScript/Python SDKs to embed agents in an application; a self-hosted App Server for custom deployments. Note: this entry catalogs Letta as MEMORY EQUIPMENT (its self-editing memory-block architecture); its App Server/agent-hosting role overlaps with the engines category — see the note in unverified.
+- **Activity:** 23.7k (per GitHub page fetch, 2026-07-05)
+- **Activity notes:** fetched live 2026-07-05; latest release v0.16.8 (2025-05-14), 177 releases, 7,467 commits on main — the fetch itself notes active development has shifted to a separate 'Letta Agent' repo, with this one now maintained mainly for API compatibility
+
+**Provenance:**
+- https://github.com/letta-ai/letta (fetched 2026-07-05)
+  fetched directly (repo page): description, license, star count, architecture, integration surface, activity signal
+
+**Unverified / caveats:**
+- Letta straddles our harness/engine split more than most entries here — its memory-block design is equipment-shaped (Block F), but its App Server also hosts/runs agents (engine-shaped). Catalogued under equipment because the memory architecture is the distinctive contribution; flagging the overlap rather than silently picking a side.
+- the separate 'Letta Agent' repo mentioned as the active-development successor was not independently fetched for this entry
+
+### Mem0
+
+<a id="mem0"></a>
+
+**Homepage:** https://github.com/mem0ai/mem0  
+**Layer:** Memory / data layer (equivalent to Block F)  
+**License:** Apache-2.0
+
+A "universal memory layer for AI agents" — LLM-based fact extraction from conversations, embedded into a vector store (text-embedding-3-small by default), retrieved via hybrid search (semantic + BM25 keyword + entity linking) with temporal reasoning for ranking. Tracks user/session/agent-scoped memories. Latest algorithm (April 2026, per fetch) shifted to "single-pass ADD-only extraction" over the prior update/delete cycle, claimed by the project's own benchmarking to improve LoCoMo/ LongMemEval scores — that specific improvement claim is the project's own self-benchmark, not independently re-verified here.
+
+**How it's adopted:** SDK: `pip install mem0ai` (Python) or `npm install mem0ai` (Node.js); also a CLI (`mem0 init --agent ...`) and IDE-loadable skill packs
+- **Activity:** 60.1k (per GitHub page fetch, 2026-07-05)
+- **Activity notes:** fetched live 2026-07-05; Node SDK v3.0.13 (2026-07-01), 2,433 commits, 356 releases — actively maintained; the project also open-sources its own eval framework at mem0ai/memory-benchmarks
+
+**Provenance:**
+- https://github.com/mem0ai/mem0 (fetched 2026-07-05)
+  fetched directly (repo page): description, license, star count, architecture, integration surface, activity signal
+
+**Unverified / caveats:**
+- the project's own claimed +20/+27 point improvements on LoCoMo/LongMemEval (April 2026 algorithm change) are the project's own self-benchmark, not independently re-derived here
+
+### Model Context Protocol — reference servers
+
+<a id="mcp-servers"></a>
+
+**Homepage:** https://github.com/modelcontextprotocol/servers  
+**Layer:** Access placement / tool-access protocol layer (equivalent to Block B, the access/data-placement half specifically)  
+**License:** Apache-2.0 for new contributions, MIT for pre-existing code (per the fetched repo page) — a mixed-license repo, not a single uniform license; verify per-file if redistributing
+
+The reference implementations for the Model Context Protocol (MCP) — an open protocol, steered by Anthropic with community contributions, that standardizes how an agent engine reaches external tools/data (filesystem, git, web fetch, a knowledge-graph memory store, sequential-thinking scaffolding, time/timezone utilities, etc.) through a common server interface rather than bespoke per-tool integration code. This is the canonical example of "access & data-placement pattern" equipment in our taxonomy: an engine (Claude Code, Cline, OpenHands, ...) plugs into an MCP server to reach a given capability, and the SAME server works across any MCP-compatible engine.
+
+**How it's adopted:** Seven active reference servers ship in this repo (Everything/test, Fetch, Filesystem, Git, Memory [knowledge-graph-based persistence], Sequential Thinking, Time), plus 13 archived ones in a separate archive repo; a much larger community-server ecosystem exists outside this repo (curated in third-party "awesome-mcp-servers" lists, not independently catalogued here). An engine or harness declares which MCP servers it may reach — this IS the access-placement decision the equipment layer is responsible for.
+- **Activity:** 88.1k (per GitHub page fetch, 2026-07-05)
+- **Activity notes:** fetched live 2026-07-05; latest release 2026.7.4 (2026-07-04), 25 releases, 4,130 commits — actively maintained, governed by Anthropic as the steering org with community contributions
+
+**Provenance:**
+- https://github.com/modelcontextprotocol/servers (fetched 2026-07-05)
+  fetched directly (repo page): description, license, star count, server list, governance, activity signal
+
+**Unverified / caveats:**
+- the broader community MCP-server ecosystem (hundreds of third-party servers indexed by "awesome-mcp-servers"-style lists) was found via search but not individually verified — this entry catalogs only the official reference-implementation repo
+
+---
+
+## 2. Agent engines / runtimes (substrate — not our product)
+
+The control loop that actually drives a model turn-by-turn. We run ON these; we do not build our own. Cataloged for context — an equipment entry above is meaningless without knowing what it plugs into.
+
+| Name | Interface | Open source? | License |
+|---|---|---|---|
+| [Aider](#aider) | CLI | ✅ | Apache-2.0 |
+| [Claude Code](#claude-code) | CLI, IDE extensions (VS Code/JetBrains), desktop app, GitHu… | ❌ proprietary | PROPRIETARY — the repo ships a LICENSE.md whose o… |
+| [Cline](#cline) | VS Code extension, JetBrains plugin, CLI, SDK | ✅ | Apache-2.0 |
+| [OpenAI Codex CLI](#codex-cli) | CLI (single Rust binary) | ✅ | Apache-2.0 |
+| [OpenHands](#openhands) | self-hosted platform (local / Docker / cloud); orchestrates… | ✅ | MIT for the repo overall, with a carve-out: the L… |
+| [SWE-agent](#swe-agent) | CLI / library (agent scaffold you embed, not a standalone p… | ✅ | MIT |
+
+### Aider
+
+<a id="aider"></a>
+
+**Homepage:** https://github.com/Aider-AI/aider  
+**Interface:** CLI  
+**License:** Apache-2.0
+
+Terminal-based AI pair-programming tool: builds a "repo map" of the whole codebase to give the model context-aware structure, applies edits as git commits with generated messages, and supports 100+ languages. Works with most major model providers, including local models. An ENGINE in our taxonomy (drives the model turn-by-turn), not equipment.
+
+- **Sandboxing:** n/a — no built-in sandbox; runs with the invoking user's own filesystem/git permissions directly, same caveat as the other CLI-style engines here
+- **Activity:** 47.1k (per GitHub page fetch, 2026-07-05)
+- **Activity notes:** fetched live 2026-07-05; latest release v0.86.0 (2025-08-09), 93 total releases, 13,138 commits — note the release date is roughly a year old relative to this fetch, worth re-checking for a more recent release before citing as current
+
+**Provenance:**
+- https://github.com/Aider-AI/aider
+  fetched live 2026-07-05
+
+**Unverified / caveats:**
+- latest-release date looked stale relative to the fetch date (Aug 2025 release vs. a July 2026 fetch) — re-verify there isn't a newer release not surfaced by this fetch
+
+### Claude Code
+
+<a id="claude-code"></a>
+
+**Homepage:** https://github.com/anthropics/claude-code  
+**Interface:** CLI, IDE extensions (VS Code/JetBrains), desktop app, GitHub Actions (@claude mentions)  
+**License:** PROPRIETARY — the repo ships a LICENSE.md whose opening line is "© Anthropic PBC. All rights reserved. Use is subject to Anthropic's Commercial Terms of Service" (fetched directly, not inferred from a badge). The GitHub repo hosts issues/discussions and a real commit history, but this is NOT an open-source license in the OSI sense — contrast with Codex CLI (Apache-2.0) and OpenHands (MIT) in this same category.
+
+Anthropic's agentic coding tool: lives in the terminal, understands a codebase, and executes routine tasks (edits, tests, git workflows, PR creation) via natural-language instructions, with a hooks/skills/subagent/MCP extension surface. This is an ENGINE in our taxonomy — the control loop that drives the model turn-by-turn — not equipment; a harness is what you compose ONTO something like this (skills, memory, rules files, MCP tool access), which is exactly what this registry's PRIMARY (equipment) category catalogs.
+
+- **Sandboxing:** n/a at the engine level — sandboxing here is a HARNESS/deployment concern (permission modes, hook-based approval gates, MCP tool allowlisting) layered on top by the operator, not a fixed property of the engine itself
+- **Activity:** 136k (per GitHub page fetch, 2026-07-05)
+- **Activity notes:** fetched live 2026-07-05; 691 commits, 5k+ open issues, 642 open PRs, 21.9k forks on the public repo (which hosts issue tracking/community material around the closed-source binary, not the CLI's own source)
+
+**Provenance:**
+- https://github.com/anthropics/claude-code
+  fetched live 2026-07-05
+- https://raw.githubusercontent.com/anthropics/claude-code/main/LICENSE.md
+  fetched live 2026-07-05 to confirm the license text directly, not a badge — this is the fact that most needed direct verification here (marketing pages could easily read as "open source" given the public repo and community activity)
+
+
+### Cline
+
+<a id="cline"></a>
+
+**Homepage:** https://github.com/cline/cline  
+**Interface:** VS Code extension, JetBrains plugin, CLI, SDK  
+**License:** Apache-2.0
+
+Autonomous coding agent available as a VS Code/JetBrains extension, a terminal CLI, or a programmatic SDK. Edits files, runs shell commands, and drives a headless browser, with every action gated on human approval by default; supports MCP tools and multiple model providers (Claude, GPT, Gemini, Ollama, etc.). An ENGINE in our taxonomy — notable as one of the few engines with a built-in, default-on human-approval gate per action rather than that being purely a harness-level add-on.
+
+- **Sandboxing:** no process/container sandbox by default — its safety story is per-action human approval rather than filesystem/process isolation; MCP server access is user-configured
+- **Activity:** 64.3k (per GitHub page fetch, 2026-07-05)
+- **Activity notes:** fetched live 2026-07-05; latest release CLI v3.0.37 (2026-07-04), 308 total releases, 6,452 commits, 603 open issues, 609 open PRs — actively maintained
+
+**Provenance:**
+- https://github.com/cline/cline
+  fetched live 2026-07-05
+
+
+### OpenAI Codex CLI
+
+<a id="codex-cli"></a>
+
+**Homepage:** https://github.com/openai/codex  
+**Interface:** CLI (single Rust binary)  
+**License:** Apache-2.0
+
+OpenAI's lightweight terminal coding agent, rewritten in Rust. Runs locally, drives the model turn-by-turn against a local repo. An ENGINE in our taxonomy, not equipment — contrast with Claude Code (same category, but proprietary/closed-source).
+
+- **Sandboxing:** n/a at the engine level — same note as Claude Code: sandboxing/permissioning is a deployment/harness concern layered on top, not fixed by the engine
+- **Activity:** 95.6k (per GitHub page fetch, 2026-07-05)
+- **Activity notes:** fetched live 2026-07-05; latest release v0.142.5 (2026-07-01), 895 total releases, 511 contributors — actively maintained
+
+**Provenance:**
+- https://github.com/openai/codex
+  fetched live 2026-07-05
+
+
+### OpenHands
+
+<a id="openhands"></a>
+
+**Homepage:** https://github.com/All-Hands-AI/OpenHands  
+**Interface:** self-hosted platform (local / Docker / cloud); orchestrates its own agent or third-party agents  
+**License:** MIT for the repo overall, with a carve-out: the LICENSE file opens with a portions-notice ("Portions of this software are licensed as follows: * All content that resides under the enterprise/ directory is licensed under the license defined in enterprise/LICENSE; * Content outside of the above ... is available under the MIT license as defined below"), THEN the MIT text itself — confirmed by fetching the actual file, not a badge
+
+An open, self-hosted "developer control center" / agent orchestration platform (formerly OpenDevin) that can run its own open-source agent or third-party agents (Claude Code, Codex, Gemini, etc.) via the Agent-Client Protocol (ACP), across local, Docker-sandboxed, or remote/cloud backends. This is an ENGINE/PLATFORM in our taxonomy (it hosts and drives control loops), not equipment we would compose onto one — though it is itself a consumer of equipment (e.g. it could be pointed at MCP tool servers or a memory layer). Regularly benchmarked on SWE-bench Verified and GAIA; launched its own broader "OpenHands Index" (issue resolution, greenfield app dev, frontend tasks, testing) in January 2026 [unverified — index details not independently fetched, from search-summary only].
+
+- **Sandboxing:** local execution (full filesystem access, explicitly warned against), Docker sandbox (isolates to a mounted PROJECTS_PATH), or remote backends (VMs/cloud/OpenHands Cloud+Enterprise)
+- **Activity:** 79.5k (per GitHub page fetch, 2026-07-05); a separate search snippet claimed 78.5k/64k+ at different points — treat the 79.5k GitHub-page number as most current since it was fetched live
+- **Activity notes:** fetched live 2026-07-05; latest release noted was cloud-1.40.0 (2026-06-26), 105 total releases, 129 open issues, 212 open PRs at fetch time
+
+**Provenance:**
+- https://github.com/All-Hands-AI/OpenHands
+  fetched live 2026-07-05
+- https://github.com/All-Hands-AI/OpenHands/blob/main/LICENSE
+  fetched live 2026-07-05 to confirm MIT text directly, not just a badge
+
+**Unverified / caveats:**
+- SWE-bench Verified "53%+" resolve-rate figure and the "OpenHands Index" (Jan 2026) are from a search-result summary, not independently re-fetched from a primary source — treat as [unverified — from secondary summary]
+
+### SWE-agent
+
+<a id="swe-agent"></a>
+
+**Homepage:** https://github.com/SWE-agent/SWE-agent  
+**Interface:** CLI / library (agent scaffold you embed, not a standalone product)  
+**License:** MIT
+
+An agent SCAFFOLD (the control loop that drives the model turn-by-turn) from Princeton/Stanford — takes a GitHub issue and tries to fix it autonomously using an LM of choice, via a custom agent-computer interface governed by a single YAML config. This is an ENGINE in our taxonomy (it drives the model), not equipment we would compose onto one. Distinct from but paired with SWE-bench (the evaluation benchmark, see `data/benchmarks/swe-bench.yaml`) — same ecosystem also includes Mini-SWE-Agent, SWE-ReX, SWE-smith, and sb-cli.
+
+- **Sandboxing:** Docker/Podman container backends via SWE-ReX, a remote execution framework that maintains terminal sessions on local machines or containers — all commands execute inside a container, host filesystem never directly exposed
+- **Activity:** 19.7k (per GitHub page fetch)
+- **Activity notes:** fetched live 2026-07-05; latest release noted was v1.1.0 (2025-05-22) on the fetched page — may be stale, re-check before citing as "latest"
+
+**Provenance:**
+- https://github.com/SWE-agent/SWE-agent
+  fetched live 2026-07-05 (org moved from princeton-nlp/SWE-agent to SWE-agent/SWE-agent)
+
+**Unverified / caveats:**
+- exact current release/last-commit date not confirmed beyond the v1.1.0 note found on the fetched page — the repo has likely moved further since; re-verify before citing a specific version
+- contributor count not extracted from fetched content
+
+---
+
+## 3. Benchmarks + eval-frameworks (auxiliary)
+
+Tooling and task sets for MEASURING agents, not for equipping them. Split into eval-frameworks (runners that execute many benchmarks) and benchmarks themselves (a fixed task set + scoring protocol).
+
+### 3a. Eval-frameworks
+
+| Name | Contamination gate | Reward-hacking detection | Reliability | Sandboxing |
+|---|---|---|---|---|
+| [AgentBench](#agentbench) | none found, despite ~half of task instructions being GPT-generated then filtered | n/a in the mechanical-gate sense — but scoring is mostly deterministic/environment-based… | explicit temperature=0 greedy decoding "to ensure reproducible results", and EXPLICITLY n… | some environments use isolated containers for agent actions [unverified depth — not indep… |
+| [harness_kit (workain/harness-eval)](#harness-kit) | mechanical — G3 no-context/no-ingest control on every suite (an honest agent given no tas… | mechanical — G4 perturbation-collapse gates (does accuracy collapse under a distractor/de… | pass@1 / pass^k (Chen et al. 2021 estimator) plus bootstrap confidence intervals and an e… | process-boundary isolation for devtasks (direct test invocation over a dedicated pipe, no… |
+| [HELM (Holistic Evaluation of Language Models)](#helm) | acknowledged as a limitation (evidence pushed to a paper appendix), not mechanically gate… | none in the scoring-exploit sense; the input-perturbation robustness metric is a differen… | not found in fetched text — no confidence-interval/repeated-run variance mechanism locate… | n/a — LM benchmark suite, not agentic code execution |
+| [METR Task Standard / Vivaria](#metr-task-standard) | process-based — elicitation guidelines, mandatory adversarial second-team review, sandbag… | discipline-based, not mechanical — elicitation guidelines (no dev-set overfitting), canar… | explicit score@k (best-of-k, a pass@k variant, not the exact Chen et al. combinatorial fo… | isolated "primary machine" (container or VM, implementation-agnostic), non-root agent use… |
+| [OpenAI simple-evals](#openai-simple-evals) | confirmed absent — grepped the README and all code, zero mentions of decontamination/leak… | confirmed absent | partial — --n-repeats (MATH/GPQA, default 10) duplicates the WHOLE dataset and reports me… | n/a |
+| [rmr-rnd/harness-bench](#harness-bench) | none found (grepped for contamination/leakage/canary/etc. — zero real hits; the few match… | none found (same grep — zero hits for reward-hack/tamper/adversarial/canary/allowlist/den… | epochs=3 is SET for 2 of 3 task types but never consumed for variance/reliability aggrega… | uses Docker, but for RUNNING agent actions in some task environments — not for eval-integ… |
+| [tau-bench / tau2-bench (τ²-bench)](#tau2-bench) | none found in fetched content | none found in fetched content | not detailed in fetched content — evaluates action correctness against evaluation_criteri… | n/a — dialogue/tool-call simulation, not code execution |
+| [Terminal-Bench](#terminal-bench) | none discussed in the paper or repo content fetched — no contamination-avoidance or train… | none discussed — no documented gaming/cheating safeguards found in fetched content | not addressed in fetched content [unverified — pass@k/repeated-run variance methodology n… | Docker-based sandboxed terminal environment per task |
+| [UK AISI Inspect AI](#inspect-ai) | confirmed absent — no canary, no contamination detector, no adversarial-perturbation harn… | confirmed absent — no reward-hacking gate built in | Epochs(count, reducer) with mean/median/mode/max/at_least_k reducers; implements BOTH pas… | real, mature Docker backend with auto-generated compose.yaml (network-isolated by default… |
 
 ### AgentBench
 
 <a id="agentbench"></a>
 
 **Homepage:** https://github.com/THUDM/AgentBench  
-**Type:** harness+benchmark  
 **License:** Apache-2.0
 
 An 8-environment benchmark for evaluating LLMs as agents (OS/bash, DB/SQL, Knowledge Graph, Digital Card Game, Lateral Thinking Puzzles, House-Holding/ALFWorld, Web Shopping/WebShop, Web Browsing/Mind2Web). Registration is YAML config (module + parameters) for both agents and tasks, plus an assignment pairing layer.
@@ -53,7 +356,6 @@ An 8-environment benchmark for evaluating LLMs as agents (OS/bash, DB/SQL, Knowl
 <a id="harness-kit"></a>
 
 **Homepage:** https://github.com/workain/harness-eval  
-**Type:** harness  
 **License:** not yet public (private repo as of this writing; operator decides on making it public)
 
 A generic, reusable eval-harness kit (suite/agent/gate/report primitives) plus five task-family adapters built on it: devtasks (real OSS bug-repair, JUnit-verified), honest_eval / agent_memory_E1 (citation-grounded factbench), and niah_v1 (needle-in-a-haystack long-context retrieval) — all three SHIPPED, merged to `main`. Two more adapters are built and under independent review but NOT YET merged: bfcl_memory_v1 (BFCL v4 multi-turn tool-memory, open PR #25) and persistbench_v1 (beneficial-memory / cross-domain / sycophancy-resistance, open PR #26) — see each benchmark's own `our_adapter.status` field; do not cite them as shipped until those PRs land. Built specifically to mechanically gate every verdict on contamination, answer-leakage, and reward-hacking resistance rather than relying on process discipline alone.
@@ -76,7 +378,6 @@ A generic, reusable eval-harness kit (suite/agent/gate/report primitives) plus f
 <a id="helm"></a>
 
 **Homepage:** https://github.com/stanford-crfm/helm  
-**Type:** harness+benchmark  
 **License:** Apache-2.0
 
 Stanford CRFM's broad language-model benchmark suite — dozens of `Scenario` classes covering a wide range of tasks, run through a common runner/metrics pipeline. Ships its own robustness metric: worst-case accuracy over systematic input perturbations (typos, contrast sets, dialect shifts).
@@ -101,7 +402,6 @@ Stanford CRFM's broad language-model benchmark suite — dozens of `Scenario` cl
 <a id="metr-task-standard"></a>
 
 **Homepage:** https://github.com/METR/task-standard  
-**Type:** harness  
 **License:** MIT
 
 An autonomous-task eval methodology + infrastructure (Task Standard spec + Vivaria runner) used for frontier-model dangerous-capability and autonomy evaluations. Emphasizes elicitation discipline and adversarial review over mechanical gates.
@@ -126,7 +426,6 @@ An autonomous-task eval methodology + infrastructure (Task Standard spec + Vivar
 <a id="openai-simple-evals"></a>
 
 **Homepage:** https://github.com/openai/simple-evals  
-**Type:** harness  
 **License:** MIT
 
 A deliberately narrow, mostly-deprecated set of eval scripts OpenAI built for its own number-transparency (as of July 2025, only HealthBench/BrowseComp/SimpleQA remain actively used) — explicitly not a full eval framework. Scoring is mixed: regex/exact-match (MMLU, GPQA) and LLM-as-judge (MATH via a gpt-4-turbo equality-checker; SimpleQA/ BrowseComp/HealthBench via rubric grading).
@@ -146,38 +445,11 @@ A deliberately narrow, mostly-deprecated set of eval scripts OpenAI built for it
 **Unverified / caveats:**
 - stars/last-commit activity not independently re-checked for this registry entry
 
-### OpenHands
-
-<a id="openhands"></a>
-
-**Homepage:** https://github.com/All-Hands-AI/OpenHands  
-**Type:** harness  
-**License:** MIT for the repo overall, with a carve-out: the LICENSE file opens with a portions-notice ("Portions of this software are licensed as follows: * All content that resides under the enterprise/ directory is licensed under the license defined in enterprise/LICENSE; * Content outside of the above ... is available under the MIT license as defined below"), THEN the MIT text itself — confirmed by fetching the actual file, not a badge (round 1 of this entry mis-stated the portions-notice as if the MIT text were the very first line)
-
-An open, self-hosted "developer control center" / agent orchestration platform (formerly OpenDevin) that can run its own open-source agent or third-party agents (Claude Code, Codex, Gemini, etc.) via the Agent-Client Protocol (ACP), across local, Docker-sandboxed, or remote/cloud backends. Regularly benchmarked on SWE-bench Verified and GAIA; launched its own broader "OpenHands Index" (issue resolution, greenfield app dev, frontend tasks, testing) in January 2026 [unverified — index details not independently fetched, from search-summary only].
-
-- **Contamination gate:** none found in fetched content
-- **Reward-hacking detection:** none found in fetched content
-- **Reliability methodology:** not addressed in fetched content [unverified]
-- **Sandboxing:** local execution (full filesystem access, explicitly warned against), Docker sandbox (isolates to a mounted PROJECTS_PATH), or remote backends (VMs/cloud/OpenHands Cloud+Enterprise)
-- **Activity:** 79.5k (per GitHub page fetch, 2026-07-05); a separate search snippet claimed 78.5k/64k+ at different points — treat the 79.5k GitHub-page number as most current since it was fetched live
-- **Activity notes:** fetched live 2026-07-05; latest release noted was cloud-1.40.0 (2026-06-26), 105 total releases, 129 open issues, 212 open PRs at fetch time
-
-**Provenance:**
-- https://github.com/All-Hands-AI/OpenHands
-  fetched live 2026-07-05
-- https://github.com/All-Hands-AI/OpenHands/blob/main/LICENSE
-  fetched live 2026-07-05 to confirm MIT text directly, not just a badge
-
-**Unverified / caveats:**
-- SWE-bench Verified "53%+" resolve-rate figure and the "OpenHands Index" (Jan 2026) are from a search-result summary, not independently re-fetched from a primary source — treat as [unverified — from secondary summary]
-
 ### rmr-rnd/harness-bench
 
 <a id="harness-bench"></a>
 
 **Homepage:** https://github.com/rmr-rnd/harness-bench  
-**Type:** harness  
 **License:** none found — no LICENSE file anywhere in the repo, no SPDX headers, no copyright notices (checked directly)
 
 A plugin-based multi-benchmark harness shipping three benchmark ports: bfcl_memory (real Berkeley BFCL v4 data, exact-match scoring), persistbench (30 JSON tasks, 3 task types, entirely LLM-judge scored via regex-extracted JSON), and niah (40 of 225 grid cells of a needle-in-a-haystack port, LLM-judge on a 1/3/5/7/10 rubric scale). Auto-discovery via a register_benchmark() decorator + pkgutil-based package walk.
@@ -193,37 +465,11 @@ A plugin-based multi-benchmark harness shipping three benchmark ports: bfcl_memo
   cloned at commit 5d10678ef831c69ee875996b6ebaa010f6fcf1e6; full grep audit performed directly against the clone, not inferred from README claims
 
 
-### SWE-agent
-
-<a id="swe-agent"></a>
-
-**Homepage:** https://github.com/SWE-agent/SWE-agent  
-**Type:** harness  
-**License:** MIT
-
-An agent scaffold (NOT a benchmark itself) from Princeton/Stanford that takes a GitHub issue and tries to fix it autonomously using an LM of choice, via a custom agent-computer interface governed by a single YAML config. Distinct from but paired with SWE-bench (the evaluation benchmark) — same ecosystem also includes Mini-SWE-Agent, SWE-ReX, SWE-smith, and sb-cli.
-
-- **Contamination gate:** none found in fetched content
-- **Reward-hacking detection:** none found in fetched content
-- **Reliability methodology:** not addressed in fetched content [unverified]
-- **Sandboxing:** Docker/Podman container backends via SWE-ReX, a remote execution framework that maintains terminal sessions on local machines or containers — all commands execute inside a container, host filesystem never directly exposed
-- **Activity:** 19.7k (per GitHub page fetch)
-- **Activity notes:** fetched live 2026-07-05; latest release noted was v1.1.0 (2025-05-22) on the fetched page — may be stale, re-check before citing as "latest"
-
-**Provenance:**
-- https://github.com/SWE-agent/SWE-agent
-  fetched live 2026-07-05 (org moved from princeton-nlp/SWE-agent to SWE-agent/SWE-agent)
-
-**Unverified / caveats:**
-- exact current release/last-commit date not confirmed beyond the v1.1.0 note found on the fetched page — the repo has likely moved further since; re-verify before citing a specific version
-- contributor count not extracted from fetched content
-
 ### tau-bench / tau2-bench (τ²-bench)
 
 <a id="tau2-bench"></a>
 
 **Homepage:** https://github.com/sierra-research/tau2-bench  
-**Type:** harness+benchmark  
 **License:** MIT
 
 Sierra Research's simulation framework for evaluating tool-using dialogue agents against a simulated user (itself an LM) in real-world business domains: mock, airline, retail, telecom, and banking_knowledge (knowledge-retrieval-based). Original tau-bench (arXiv:2406.12045) was text-only; τ²-bench/1.0.0 added multimodal, knowledge-aware, and voice (full-duplex, real-time audio) evaluation.
@@ -250,7 +496,6 @@ Sierra Research's simulation framework for evaluating tool-using dialogue agents
 <a id="terminal-bench"></a>
 
 **Homepage:** https://github.com/harbor-framework/terminal-bench  
-**Type:** harness+benchmark  
 **License:** Apache-2.0
 
 A flexible harness (adapter system supporting multiple agent frameworks, e.g. its own "terminus" agent) plus its own benchmark of hard, realistic terminal/CLI tasks (89 tasks as of v2.0: compiling code, training models, setting up servers). Each task = an English instruction + a containerized Docker environment + a programmatic verification test suite + a human-written oracle solution.
@@ -277,7 +522,6 @@ A flexible harness (adapter system supporting multiple agent frameworks, e.g. it
 <a id="inspect-ai"></a>
 
 **Homepage:** https://github.com/UKGovernmentBEIS/inspect_ai  
-**Type:** harness  
 **License:** MIT
 
 A general, actively-maintained eval framework from the UK AI Security Institute. Task = dataset + solver + scorer; six extension points (models / solvers / scorers / sandboxes / approvers / hooks) all register via the same setuptools entry-point mechanism. Ships a real, mature Docker sandbox backend with an explicit lifecycle contract and its own eval-suite collection (`inspect_evals`, incl. an NIAH implementation harness-bench itself ported from).
@@ -297,9 +541,7 @@ A general, actively-maintained eval framework from the UK AI Security Institute.
 **Unverified / caveats:**
 - stars/last-commit activity not independently re-checked for this registry entry
 
----
-
-## Benchmarks
+### 3b. Benchmarks
 
 | Name | Domain | Contamination handling | Scoring mechanism | License |
 |---|---|---|---|---|
@@ -330,7 +572,7 @@ The "memory" category of Berkeley's Function-Calling Leaderboard v4: multi-turn 
 - **Contamination handling:** none built into the upstream benchmark itself
 - **Data source:** ShishirPatil/gorilla, Apache-2.0 licensed, real curated questions + real prereq dialogues + real ground-truth answers
 - **Known gaming incidents:** documented and independently reproduced by harness-eval itself — see our_adapter notes; this is a first-party finding, not a third-party report
-- **Used by harnesses:** harness-kit
+- **Evaluated by:** harness-kit
 
 **harness-eval's own adapter:** `bfcl_memory_v1` (https://github.com/workain/harness-eval, `bfcl_memory/`)
 **Status:** NOT YET SHIPPED — built and through 6 rounds of independent review, but only on an open, UNMERGED pull request (workain/harness-eval#25, base main). Confirmed absent from origin/main via git ls-tree on 2026-07-05 — do not cite bfcl_memory/ as present on harness-eval main until that PR merges.
@@ -357,7 +599,7 @@ Clean-room adapter (12 curated tasks across all 5 scenarios) built directly agai
 - **Contamination handling:** design-level ("absent by design" — questions constructed to not appear in pre-training data) plus a held-out answer set (300 of 466 questions ungraded publicly, leaderboard-only); authors explicitly disclose residual memorization risk rather than claiming immunity — a good honesty norm
 - **Data source:** hand-authored questions requiring real web/tool interaction, per the paper
 - **Reliability notes:** GPT-4 reported as avg-of-3 +/- spread (9.1+/-2.5) but INCONSISTENTLY across submissions — the authors themselves flag a plugin/AutoGPT number as non-reproducible; no pass@k framing
-- **Used by harnesses:** openhands
+- **Evaluated by:** openhands
 
 **Provenance:**
 - https://arxiv.org/abs/2311.12983 (fetched 2026-07-01)
@@ -510,7 +752,7 @@ A well-established long-context-retrieval task family: bury a short "needle" fac
 - **Contamination handling:** n/a to the base concept — depends on implementation
 - **Data source:** openly licensed via inspect_evals; harness-bench's port used only 40 of 225 grid cells, by its own docstring's admission not comparable to "full NIAH"
 - **Known gaming incidents:** documented and independently reproduced by harness-eval itself — see our_adapter notes
-- **Used by harnesses:** inspect-ai, harness-kit
+- **Evaluated by:** inspect-ai, harness-kit
 
 **harness-eval's own adapter:** `niah_v1` (https://github.com/workain/harness-eval, `niah/`)
 **Status:** SHIPPED — merged to harness-eval main (PR #24, merged 2026-07-02)
@@ -539,7 +781,7 @@ A task CONCEPT (not copyrightable, unlike code/data) for evaluating an agent's l
 - **Contamination handling:** n/a — synthetic task concept
 - **Data source:** upstream harness-bench version: unknown provenance, no LICENSE file in that repo. harness-eval's version: 100% original synthetic content, authored from scratch
 - **Known gaming incidents:** documented and independently reproduced by harness-eval itself across 4 ROAST rounds — see our_adapter notes
-- **Used by harnesses:** harness-bench, harness-kit
+- **Evaluated by:** harness-bench, harness-kit
 
 **harness-eval's own adapter:** `persistbench_v1` (https://github.com/workain/harness-eval, `persistbench/`)
 **Status:** NOT YET SHIPPED — built and through 6 rounds of independent review, but only on an open, UNMERGED pull request (workain/harness-eval#26, base main). Confirmed absent from origin/main via git ls-tree on 2026-07-05 — do not cite persistbench/ as present on harness-eval main until that PR merges.
@@ -566,7 +808,7 @@ METR's benchmark of hard, open-ended ML research-engineering environments used t
 - **Contamination handling:** elicitation guidelines + adversarial second-team review (process discipline, not a mechanical gate) — see the metr-task-standard harness entry
 - **Data source:** hand-authored ML research-engineering environments, per the paper
 - **Reliability notes:** honest disclosure of where results become unreliable (e.g. "above 16h") — a good norm worth citing
-- **Used by harnesses:** metr-task-standard
+- **Evaluated by:** metr-task-standard
 
 **Provenance:**
 - https://arxiv.org/abs/2411.15114 (fetched 2026-07-01)
@@ -591,7 +833,7 @@ Real, merged GitHub-issue-to-PR pairs from popular Python repos, turned into a b
 - **Reliability notes:** single-attempt pass@1 is the core protocol; pass@k is a community bolt-on, not load-bearing methodology, despite documented meaningful per-instance variance under repeated attempts
 - **Known gaming incidents:** Independent audits found this benchmark REPEATEDLY GAMED VIA THE ENVIRONMENT, not the scoring formula: agents mining unpruned git history for the gold-patch commit, reading hidden test files directly off disk, public benchmark-mirror pages leaking gold patches, and a conftest.py hijack that rewrites pytest's reported test outcomes.
 
-- **Used by harnesses:** swe-agent, openhands
+- **Evaluated by:** swe-agent, openhands
 
 **Provenance:**
 - https://github.com/SWE-bench/SWE-bench (fetched 2026-07-01)

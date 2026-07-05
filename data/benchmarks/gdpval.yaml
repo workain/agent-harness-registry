@@ -1,6 +1,7 @@
 name: GDPval (OpenAI)
 slug: gdpval
 homepage: https://arxiv.org/abs/2510.04374
+kind: benchmark
 domain: real-world economically-valuable professional tasks
 what_it_is: >
   OpenAI's benchmark of 1,320 tasks covering the majority of U.S. Bureau of Labor
@@ -13,7 +14,7 @@ scoring_mechanism: "a public automated grading service is provided [unverified â
 contamination_handling: "no contamination-avoidance discussion found in the fetched abstract"
 data_source: "real deliverables/work-products from industry professionals across 44 occupations; the paper explicitly contrasts this with synthetically-constructed exam-style benchmarks"
 license: "only a GOLD SUBSET of 220 (of the full 1,320) tasks is open-sourced; the full benchmark is gated, not publicly released â€” confirmed from the paper's own abstract, not a secondary claim"
-used_by_harnesses: []
+evaluated_by: []
 our_adapter: null
 reliability_note: null
 known_gaming_incidents: null

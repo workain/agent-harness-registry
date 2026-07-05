@@ -1,0 +1,31 @@
+name: Model Context Protocol — reference servers
+slug: mcp-servers
+homepage: https://github.com/modelcontextprotocol/servers
+layer: "Access placement / tool-access protocol layer (equivalent to Block B, the access/data-placement half specifically)"
+what_it_is: >
+  The reference implementations for the Model Context Protocol (MCP) — an open protocol,
+  steered by Anthropic with community contributions, that standardizes how an agent
+  engine reaches external tools/data (filesystem, git, web fetch, a knowledge-graph
+  memory store, sequential-thinking scaffolding, time/timezone utilities, etc.) through a
+  common server interface rather than bespoke per-tool integration code. This is the
+  canonical example of "access & data-placement pattern" equipment in our taxonomy: an
+  engine (Claude Code, Cline, OpenHands, ...) plugs into an MCP server to reach a given
+  capability, and the SAME server works across any MCP-compatible engine.
+integration: >
+  Seven active reference servers ship in this repo (Everything/test, Fetch, Filesystem,
+  Git, Memory [knowledge-graph-based persistence], Sequential Thinking, Time), plus 13
+  archived ones in a separate archive repo; a much larger community-server ecosystem
+  exists outside this repo (curated in third-party "awesome-mcp-servers" lists, not
+  independently catalogued here). An engine or harness declares which MCP servers it may
+  reach — this IS the access-placement decision the equipment layer is responsible for.
+license: "Apache-2.0 for new contributions, MIT for pre-existing code (per the fetched repo page) — a mixed-license repo, not a single uniform license; verify per-file if redistributing"
+open_source: true
+activity:
+  stars: "88.1k (per GitHub page fetch, 2026-07-05)"
+  last_verified_note: "fetched live 2026-07-05; latest release 2026.7.4 (2026-07-04), 25 releases, 4,130 commits — actively maintained, governed by Anthropic as the steering org with community contributions"
+provenance:
+  - url: https://github.com/modelcontextprotocol/servers
+    fetched: "2026-07-05"
+    note: "fetched directly (repo page): description, license, star count, server list, governance, activity signal"
+unverified:
+  - "the broader community MCP-server ecosystem (hundreds of third-party servers indexed by \"awesome-mcp-servers\"-style lists) was found via search but not individually verified — this entry catalogs only the official reference-implementation repo"

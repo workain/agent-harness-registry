@@ -1,7 +1,7 @@
 name: AgentBench
 slug: agentbench
 homepage: https://github.com/THUDM/AgentBench
-type: harness+benchmark
+kind: eval-framework
 what_it_is: >
   An 8-environment benchmark for evaluating LLMs as agents (OS/bash, DB/SQL, Knowledge
   Graph, Digital Card Game, Lateral Thinking Puzzles, House-Holding/ALFWorld, Web

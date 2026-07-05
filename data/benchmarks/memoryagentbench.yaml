@@ -1,6 +1,7 @@
 name: MemoryAgentBench
 slug: memoryagentbench
 homepage: https://github.com/HUST-AI-HYZ/MemoryAgentBench
+kind: benchmark
 domain: agent memory (incremental multi-turn)
 what_it_is: >
   ICLR 2026 paper + open-source code evaluating memory in LLM agents via incremental
@@ -15,7 +16,7 @@ scoring_mechanism: "mixed by task type: substring exact match, exact match, reca
 contamination_handling: "none found in fetched content"
 data_source: "two newly constructed datasets (EventQA, FactConsolidation) plus reformulated data drawn from RULER, InfiniteBench, and HELMET"
 license: "MIT (LICENSE file present, confirmed directly)"
-used_by_harnesses: []
+evaluated_by: []
 our_adapter: null
 reliability_note: null
 known_gaming_incidents: null

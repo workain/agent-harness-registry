@@ -1,0 +1,26 @@
+name: AGENTS.md
+slug: agents-md
+homepage: https://github.com/agentsmd/agents.md
+layer: "Instruction / identity layer (equivalent to Block A) — a convention, not a piece of software"
+what_it_is: >
+  An open, tool-agnostic file-format convention for giving coding agents project context
+  and instructions — deliberately radically simple (single markdown file, no required
+  structure, no custom syntax), covering setup commands, test/build workflows, coding
+  style, and PR guidelines. Positioned as "a README for agents" — humans read READMEs,
+  agents read AGENTS.md. Formalized as an open specification in August 2025 led by
+  OpenAI with Google/Cursor/Factory participation [unverified — from search summary, not
+  confirmed on the fetched repo page itself]; reportedly donated to the Linux
+  Foundation's Agentic AI Foundation in December 2025 [unverified — same caveat].
+integration: "Drop a file named AGENTS.md at a project's root (or nested per-package); over 20 AI coding tools reportedly read it directly [unverified — from search summary] — this is the same functional slot as CLAUDE.md/SOUL.md in agent-lab-manager's own Block-A convention."
+license: MIT
+open_source: true
+activity:
+  stars: "22.8k (per GitHub page fetch, 2026-07-05)"
+  last_verified_note: "fetched live 2026-07-05; 1.7k forks, 83 open issues, 35 commits on main, no formal releases published — a spec/convention repo, not a versioned software product, so activity signals read differently than for a library"
+provenance:
+  - url: https://github.com/agentsmd/agents.md
+    fetched: "2026-07-05"
+    note: "fetched directly (repo page): description, license, star count, what the format specifies, activity signal — did NOT independently confirm the Linux Foundation donation or the OpenAI/Google/Cursor/Factory formalization claim, both flagged unverified"
+unverified:
+  - "the August 2025 formalization (OpenAI-led, Google/Cursor/Factory) and the December 2025 Linux Foundation Agentic AI Foundation donation are from search-result summaries of secondary articles, not confirmed on the repo's own page or a Linux Foundation primary source"
+  - "the \"60,000+ projects, 20+ tools\" adoption figures are from the same secondary summaries, not independently counted"

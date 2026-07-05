@@ -1,7 +1,7 @@
 name: Terminal-Bench
 slug: terminal-bench
 homepage: https://github.com/harbor-framework/terminal-bench
-type: harness+benchmark
+kind: eval-framework
 what_it_is: >
   A flexible harness (adapter system supporting multiple agent frameworks, e.g. its own
   "terminus" agent) plus its own benchmark of hard, realistic terminal/CLI tasks (89 tasks

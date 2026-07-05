@@ -1,7 +1,7 @@
 name: tau-bench / tau2-bench (τ²-bench)
 slug: tau2-bench
 homepage: https://github.com/sierra-research/tau2-bench
-type: harness+benchmark
+kind: eval-framework
 what_it_is: >
   Sierra Research's simulation framework for evaluating tool-using dialogue agents
   against a simulated user (itself an LM) in real-world business domains: mock, airline,

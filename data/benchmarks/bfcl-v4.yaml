@@ -1,6 +1,7 @@
 name: BFCL v4 (Berkeley Function-Calling Leaderboard, "memory" category)
 slug: bfcl-v4
 homepage: https://github.com/ShishirPatil/gorilla
+kind: benchmark
 domain: multi-turn tool-call / agent memory
 what_it_is: >
   The "memory" category of Berkeley's Function-Calling Leaderboard v4: multi-turn
@@ -17,7 +18,7 @@ scoring_mechanism: >
 contamination_handling: "none built into the upstream benchmark itself"
 data_source: "ShishirPatil/gorilla, Apache-2.0 licensed, real curated questions + real prereq dialogues + real ground-truth answers"
 license: Apache-2.0 (confirmed by fetching the actual LICENSE file text at the pinned commit, not just the GitHub API's license label)
-used_by_harnesses: [harness-kit]
+evaluated_by: [harness-kit]
 our_adapter:
   suite: bfcl_memory_v1
   repo: https://github.com/workain/harness-eval

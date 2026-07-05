@@ -1,6 +1,7 @@
 name: SWE-bench family (SWE-bench / SWE-bench Lite / SWE-bench Verified)
 slug: swe-bench
 homepage: https://github.com/SWE-bench/SWE-bench
+kind: benchmark
 domain: real-GitHub-issue code repair
 what_it_is: >
   Real, merged GitHub-issue-to-PR pairs from popular Python repos, turned into a
@@ -12,7 +13,7 @@ scoring_mechanism: "test-suite pass/fail against pre-recorded FAIL_TO_PASS/PASS_
 contamination_handling: "none proactive — issues are real merged public PRs, inherently exposed to training crawls; SWE-bench Verified (human-curated 500-subset) was OpenAI's attempt to remove ambiguous/unfair tests, then abandoned Feb 2026 [unverified — secondary source; primary OpenAI post returned HTTP 403 when fetched] reportedly because 59.4% of failed instances had flawed tests and frontier models could reproduce gold solutions verbatim — contamination was discovered POST-HOC by outside audit, not gated at eval time"
 data_source: "real, merged public GitHub PRs across popular Python repositories"
 license: MIT
-used_by_harnesses: [swe-agent, openhands]
+evaluated_by: [swe-agent, openhands]
 our_adapter: null
 reliability_note: "single-attempt pass@1 is the core protocol; pass@k is a community bolt-on, not load-bearing methodology, despite documented meaningful per-instance variance under repeated attempts"
 known_gaming_incidents: >

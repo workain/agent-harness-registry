@@ -1,7 +1,7 @@
 name: HELM (Holistic Evaluation of Language Models)
 slug: helm
 homepage: https://github.com/stanford-crfm/helm
-type: harness+benchmark
+kind: eval-framework
 what_it_is: >
   Stanford CRFM's broad language-model benchmark suite — dozens of `Scenario` classes
   covering a wide range of tasks, run through a common runner/metrics pipeline. Ships its

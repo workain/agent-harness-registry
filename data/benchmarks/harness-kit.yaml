@@ -1,7 +1,7 @@
 name: harness_kit (workain/harness-eval)
 slug: harness-kit
 homepage: https://github.com/workain/harness-eval
-type: harness
+kind: eval-framework
 what_it_is: >
   A generic, reusable eval-harness kit (suite/agent/gate/report primitives) plus five
   task-family adapters built on it: devtasks (real OSS bug-repair, JUnit-verified),

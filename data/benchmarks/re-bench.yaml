@@ -1,6 +1,7 @@
 name: RE-Bench (METR)
 slug: re-bench
 homepage: https://arxiv.org/abs/2411.15114
+kind: benchmark
 domain: ML-research-engineering autonomy
 what_it_is: >
   METR's benchmark of hard, open-ended ML research-engineering environments used to
@@ -10,7 +11,7 @@ scoring_mechanism: "score@k (best-of-k) plus bootstrap confidence intervals (per
 contamination_handling: "elicitation guidelines + adversarial second-team review (process discipline, not a mechanical gate) — see the metr-task-standard harness entry"
 data_source: "hand-authored ML research-engineering environments, per the paper"
 license: MIT
-used_by_harnesses: [metr-task-standard]
+evaluated_by: [metr-task-standard]
 our_adapter: null
 reliability_note: "honest disclosure of where results become unreliable (e.g. \"above 16h\") — a good norm worth citing"
 known_gaming_incidents: null

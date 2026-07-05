@@ -1,0 +1,28 @@
+name: Graphiti (open-source engine behind Zep)
+slug: graphiti-zep
+homepage: https://github.com/getzep/graphiti
+layer: "Memory / data layer (equivalent to Block F) — temporal knowledge-graph shape"
+what_it_is: >
+  An open-source framework for building TEMPORAL context/knowledge graphs for AI agents:
+  entities, relationships, and facts carry validity windows, so the graph captures not
+  just current truths but historical states with full provenance back to source
+  "episodes." Hybrid retrieval combines semantic embeddings, keyword search, and graph
+  traversal; updates are incremental (no full recomputation). Graphiti is the
+  open-source engine at the core of Zep, a commercial platform that layers user
+  management, conversation storage, pre-optimized retrieval, and managed hosting on top
+  — Zep deprecated its self-hosted Community Edition in April 2025 [unverified — from
+  search summary, not independently re-fetched], so self-hosting today means running
+  Graphiti directly against a supported graph backend (Neo4j, FalkorDB, or Kuzu).
+integration: "Python library; requires a graph database backend (Neo4j/FalkorDB/Kuzu) to self-host, since the old all-in-one Community Edition is gone"
+license: Apache-2.0
+open_source: true
+activity:
+  stars: "28.4k (per GitHub page fetch, 2026-07-05)"
+  last_verified_note: "fetched live 2026-07-05; latest release v0.29.2 (2026-06-08), 196 releases, 881 commits, 253 open issues, 160 open PRs — actively maintained"
+provenance:
+  - url: https://github.com/getzep/graphiti
+    fetched: "2026-07-05"
+    note: "fetched directly (repo page): description, license, star count, architecture, activity signal, and the Graphiti/Zep relationship framing"
+unverified:
+  - "Zep's April 2025 Community Edition deprecation is from a search-result summary, not independently re-fetched from a Zep primary source"
+  - "an earlier search snippet claimed Graphiti was MIT-licensed; the direct repo fetch confirms Apache-2.0 — cataloged as Apache-2.0 since that came from fetching the repo/LICENSE directly, not a secondary summary"

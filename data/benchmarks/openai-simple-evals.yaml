@@ -1,7 +1,7 @@
 name: OpenAI simple-evals
 slug: openai-simple-evals
 homepage: https://github.com/openai/simple-evals
-type: harness
+kind: eval-framework
 what_it_is: >
   A deliberately narrow, mostly-deprecated set of eval scripts OpenAI built for its own
   number-transparency (as of July 2025, only HealthBench/BrowseComp/SimpleQA remain

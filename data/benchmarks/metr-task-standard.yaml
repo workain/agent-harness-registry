@@ -1,7 +1,7 @@
 name: METR Task Standard / Vivaria
 slug: metr-task-standard
 homepage: https://github.com/METR/task-standard
-type: harness
+kind: eval-framework
 what_it_is: >
   An autonomous-task eval methodology + infrastructure (Task Standard spec + Vivaria
   runner) used for frontier-model dangerous-capability and autonomy evaluations.

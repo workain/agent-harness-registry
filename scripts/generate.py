@@ -95,6 +95,11 @@ def _deep_dive_link(e: dict, required: bool = True) -> str:
 
 # ── Components (atomic equipment) — index table only, full detail lives in deep-dives ──
 
+def _name_cell(e: dict) -> str:
+    homepage = e.get("homepage")
+    return f"[{e['name']}]({homepage})" if homepage else e["name"]
+
+
 def render_component_table(entries: list[dict]) -> str:
     lines = [
         "| Name | License | Stars | Use cases | Details |",
@@ -103,8 +108,8 @@ def render_component_table(entries: list[dict]) -> str:
     for e in entries:
         dd = _deep_dive_link(e)
         lines.append(
-            "| {name} | {lic} | {stars} | {use} | [full write-up]({dd}) |".format(
-                name=e["name"],
+            "| {name} | {lic} | {stars} | {use} | [write-up]({dd}) |".format(
+                name=_name_cell(e),
                 lic=_license_tag(e),
                 stars=_stars(e),
                 use=_truncate(_use_cases(e), 60),
@@ -130,8 +135,8 @@ def render_instructions_table(entries: list[dict]) -> str:
     for e in entries:
         dd = _deep_dive_link(e)
         lines.append(
-            "| {name} | {lic} | {stars} | [full write-up]({dd}) |".format(
-                name=e["name"],
+            "| {name} | {lic} | {stars} | [write-up]({dd}) |".format(
+                name=_name_cell(e),
                 lic=_license_tag(e),
                 stars=_stars(e),
                 dd=dd,
@@ -148,8 +153,8 @@ def render_bundle_table(entries: list[dict]) -> str:
     for e in entries:
         dd = _deep_dive_link(e)
         lines.append(
-            "| {name} | {lock} | {lic} | {stars} | [full write-up]({dd}) |".format(
-                name=e["name"],
+            "| {name} | {lock} | {lic} | {stars} | [write-up]({dd}) |".format(
+                name=_name_cell(e),
                 lock=_truncate(e.get("engine_lock"), 45),
                 lic=_license_tag(e),
                 stars=_stars(e),
@@ -168,10 +173,10 @@ def render_engine_table(entries: list[dict]) -> str:
     ]
     for e in entries:
         dd = _deep_dive_link(e, required=False)
-        detail = f"[full write-up]({dd})" if dd != "—" else "—"
+        detail = f"[write-up]({dd})" if dd != "—" else "—"
         lines.append(
             "| {name} | {iface} | {oss} | {stars} | {detail} |".format(
-                name=e["name"],
+                name=_name_cell(e),
                 iface=_truncate(e.get("interface"), 45),
                 oss="Yes" if e.get("open_source") else "No (proprietary)",
                 stars=_stars(e),
@@ -231,9 +236,8 @@ def render_evalframework_table(entries: list[dict]) -> str:
         cap = e.get("capabilities") or {}
         facts = e.get("key_facts") or []
         lines.append(
-            "| [{name}](#{anchor}) | {facts} | {cg} | {rel} |".format(
-                name=e["name"],
-                anchor=e["_slug"],
+            "| {name} | {facts} | {cg} | {rel} |".format(
+                name=_name_cell(e),
                 facts=_truncate("; ".join(facts), 70) if facts else "—",
                 cg=_truncate(cap.get("contamination_gate"), 50),
                 rel=_truncate(cap.get("reliability_methodology"), 50),
@@ -283,9 +287,8 @@ def render_benchmark_table(entries: list[dict]) -> str:
     for e in entries:
         facts = e.get("key_facts") or []
         lines.append(
-            "| [{name}](#{anchor}) | {domain} | {facts} | {sc} |".format(
-                name=e["name"],
-                anchor=e["_slug"],
+            "| {name} | {domain} | {facts} | {sc} |".format(
+                name=_name_cell(e),
                 domain=_cell(e.get("domain")),
                 facts=_truncate("; ".join(facts), 60) if facts else "—",
                 sc=_truncate(e.get("scoring_mechanism"), 50),
@@ -384,32 +387,16 @@ def main() -> None:
     out.append("# Agent Harness + Equipment Registry")
     out.append("")
     out.append(
-        "**Our definition (binding for this guide):** a **harness** is the **equipment "
-        "layer** wrapped around an existing agent engine — its instructions/identity, "
-        "its tools & skills, the data/memory/knowledge-base it draws on and where that "
-        "data & access is placed, plus the gates that keep it honest. A harness is "
-        "distinct from the execution engine itself — the control loop that drives the "
-        "model turn-by-turn is the *agent/engine*, catalogued separately below for "
-        "context."
+        "A **harness** here means the **equipment layer** around an agent engine — "
+        "instructions, tools & skills, memory/KB, access placement, gates. Not the engine "
+        "itself (the control loop, catalogued separately below); industry usage often "
+        "means both together, so keep that in mind when comparing to other sources."
     )
     out.append("")
     out.append(
-        "**Terminology note:** the wider industry often uses \"harness\" more loosely, "
-        "to mean the whole runtime including the engine (e.g. \"Claude Code is a "
-        "harness\"). This guide's taxonomy deliberately narrows the term to the "
-        "equipment layer only, and splits what a looser usage would lump together into "
-        "categories below — so readers comparing this guide to other sources aren't "
-        "confused by the terminology mismatch."
-    )
-    out.append("")
-    out.append(
-        "**How entries are written:** every load-bearing claim is either reproduced/"
-        "quoted from a source actually fetched (cited in each entry's own References "
-        "section), or explicitly marked `[unverified — ...]`. A project's own marketing "
-        "framing is never passed through as fact. Each component, bundle, and engine has "
-        "its own full write-up in a dedicated file (linked from the tables below) — this "
-        "page is an index, not the full text. Generated from the structured entries in "
-        "`data/` — see `scripts/generate.py`; do not hand-edit this file."
+        "Every claim is cited (see each entry's References) or marked `[unverified]`. "
+        "Each component/bundle/engine has its own write-up in a linked file — this page "
+        "is an index. Generated from `data/` by `scripts/generate.py`; don't hand-edit."
     )
     out.append("")
     out.append("---")
@@ -423,21 +410,13 @@ def main() -> None:
     )
     out.append("")
     out.append(
-        "**Atoms vs. bundles.** Equipment splits into two levels. **Components** are "
-        "single-purpose, atomic units — a memory layer, a skill, a subagent definition, "
-        "an MCP server — composed onto an engine one at a time. **Bundles** are "
-        "pre-assembled multi-component kits shipped together (instructions + skills + a "
-        "knowledge base + subagents, etc.). Market research (`workain/harness-eval`'s "
-        "`docs/DEMAND-vs-ANTI-SIGNALS-equipment-bundles.md`, building on "
-        "`workain/agent-lab-manager` PR#44's market survey) found the market is "
-        "overwhelmingly atomic today — the Agent Skills standard alone spans 47,150 "
-        "unique skills across 42 engines — while real demand signals for assembled "
-        "bundles also exist (a paid $149 commercial product sells exactly this shape; "
-        "one bundle's fork:star ratio is 4-8x its peers'). Every bundle catalogued below "
-        "is scored against three properties no single one yet combines — **sustained** "
-        "(actively maintained), **engine-agnostic** (portable), and "
-        "**progressively-disclosed** (loads its components lazily, the way a "
-        "well-designed skill does) — see each bundle's own write-up for which it has."
+        "**Components** are single-purpose atoms (a memory layer, a skill, an MCP "
+        "server) composed one at a time. **Bundles** are pre-assembled multi-component "
+        "kits. The market today is overwhelmingly atomic — Agent Skills alone spans "
+        "47,150 skills across 42 engines — though real demand for bundles exists too "
+        "(see `workain/harness-eval`'s `docs/DEMAND-vs-ANTI-SIGNALS-equipment-bundles.md`). "
+        "Each bundle's write-up scores it against three properties none yet fully "
+        "combine: **sustained**, **engine-agnostic**, **progressively-disclosed**."
     )
     out.append("")
     out.append("**Component categories:**")
@@ -450,10 +429,8 @@ def main() -> None:
     out.append("## 1. Components — atomic equipment")
     out.append("")
     out.append(
-        "Single-purpose atomic units composed onto an engine. Each row links to a full "
-        "write-up with practical guidance (when to use it, how to get started, known "
-        "gotchas, how it compares to similar entries) — this table is an index, not the "
-        "full description."
+        "Single-purpose units composed onto an engine. Name links to the tool itself; "
+        "write-up covers when/how to use it, gotchas, and comparisons."
     )
     out.append("")
     for cat in CATEGORY_ORDER:
@@ -470,19 +447,16 @@ def main() -> None:
     out.append("## 2. Bundles — assembled equipment")
     out.append("")
     out.append(
-        "Pre-assembled multi-component kits. Rare relative to components (see the "
-        "Overview's atoms-vs-bundles note) — each links to a full write-up including a "
-        "scoring table against the three properties no bundle here yet combines."
+        "Pre-assembled multi-component kits — rare relative to components. Each "
+        "write-up scores it against the three properties no bundle here yet combines."
     )
     out.append("")
     out.append(render_bundle_table(bundles))
     out.append("")
     if instructions:
         out.append(
-            "**Background: instruction-file conventions.** Every bundle above is built on "
-            "top of some instruction-file convention (AGENTS.md, CLAUDE.md, a `.cursor/"
-            "rules/` file, etc.) — the substrate, not the assembled product itself. "
-            "Catalogued here for reference, not as its own equipment category:"
+            "**Instruction-file conventions bundles are built on** (AGENTS.md, "
+            "CLAUDE.md, `.cursor/rules/`, etc.) — background, not their own category:"
         )
         out.append("")
         out.append(render_instructions_table(instructions))
@@ -493,9 +467,8 @@ def main() -> None:
     out.append("## 3. Agent engines / runtimes")
     out.append("")
     out.append(
-        "The control loop that drives a model turn-by-turn — the substrate a component "
-        "or bundle above plugs into. Cataloged for context: an equipment entry is only "
-        "meaningful alongside the engine(s) it targets."
+        "The control loop that drives a model turn-by-turn — what a component or "
+        "bundle above plugs into."
     )
     out.append("")
     out.append(render_engine_table(engines))
@@ -506,9 +479,8 @@ def main() -> None:
     out.append("## 4. Benchmarks + eval-frameworks")
     out.append("")
     out.append(
-        "Tooling and task sets for measuring agents, distinct from equipping them. Split "
-        "into eval-frameworks (runners that execute many benchmarks) and benchmarks "
-        "themselves (a fixed task set + scoring protocol)."
+        "Tooling for measuring agents, not equipping them: eval-frameworks (runners) "
+        "and benchmarks (a fixed task set + scoring protocol)."
     )
     out.append("")
     out.append("### 4a. Eval-frameworks")

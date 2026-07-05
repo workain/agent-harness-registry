@@ -38,8 +38,8 @@ layer or a structured knowledge base as its own recognized unit. In practice, pe
 PR#44's finding (independently corroborated by this registry's own component research, e.g.
 OpenHands's memory ships as one atomic skill among peers, not a structural layer): **memory is
 either absent from a plugin, or squeezed in as an ordinary skill** — never a first-class bundled
-component the way subagents or MCP servers are. Any product wanting to ship a genuinely
-memory-complete assembled harness on Claude Code today has to work around this gap, not with it.
+component the way subagents or MCP servers are. Any product wanting to ship a persistent-memory-carrying
+assembled harness on Claude Code today has to work around this gap, not with it.
 
 ## Engine lock-in
 

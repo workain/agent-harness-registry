@@ -1,0 +1,19 @@
+name: hesreallyhim/awesome-claude-code (skills view)
+slug: skill-awesome-claude-code
+category: skills-tools
+homepage: https://github.com/hesreallyhim/awesome-claude-code
+license: "NOASSERTION (verify)"
+license_tag: "Unclear (verify)"
+open_source: true
+use_cases: "broadest general Claude Code ecosystem resource hub"
+what_it_is: >
+  The highest-starred general "awesome" list for the whole Claude Code ecosystem (skills + agents + statuslines + tooling) — not skills-only. Same repo as this registry's `subagent-awesome-claude-code` entry, cataloged from the skills angle here since it spans both.
+activity:
+  stars: "48.1k"
+  last_verified_note: "4,225 forks"
+provenance:
+  - url: https://github.com/hesreallyhim/awesome-claude-code
+    fetched: "2026-07-05"
+    note: "verified directly via gh api (stars/forks/license) where a repo exists; some entries flagged unverified per search-only sourcing"
+unverified: []
+deep_dive: deep-dives/components/skill-awesome-claude-code.md

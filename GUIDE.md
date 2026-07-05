@@ -10,13 +10,13 @@
 
 ## Overview — map of this registry
 
-**81 atomic components** across 4 categories, **8 assembled bundles**, **6 agent engines/runtimes**, **9 eval-frameworks**, **11 benchmarks**.
+**103 atomic components** across 4 categories, **8 assembled bundles**, **6 agent engines/runtimes**, **9 eval-frameworks**, **11 benchmarks**.
 
 **Atoms vs. bundles.** Equipment splits into two levels. **Components** are single-purpose, atomic units — a memory layer, a skill, a subagent definition, an MCP server — composed onto an engine one at a time. **Bundles** are pre-assembled multi-component kits shipped together (instructions + skills + a knowledge base + subagents, etc.). Market research (`workain/harness-eval`'s `docs/DEMAND-vs-ANTI-SIGNALS-equipment-bundles.md`, building on `workain/agent-lab-manager` PR#44's market survey) found the market is overwhelmingly atomic today — the Agent Skills standard alone spans 47,150 unique skills across 42 engines — while real demand signals for assembled bundles also exist (a paid $149 commercial product sells exactly this shape; one bundle's fork:star ratio is 4-8x its peers'). Every bundle catalogued below is scored against three properties no single one yet combines — **sustained** (actively maintained), **engine-agnostic** (portable), and **progressively-disclosed** (loads its components lazily, the way a well-designed skill does) — see each bundle's own write-up for which it has.
 
 **Component categories:**
 - **Memory** (11) — see below
-- **Skills / tools** (4) — see below
+- **Skills / tools** (26) — see below
 - **Subagents** (32) — see below
 - **Access placement / MCP** (34) — see below
 
@@ -46,10 +46,32 @@ Single-purpose atomic units composed onto an engine. Each row links to a full wr
 
 | Name | License | Stars | Use cases | Details |
 |---|---|---|---|---|
+| alirezarezvani/claude-skills | MIT | 20.3k | 337 skills/agents/commands spanning engineering, marketing,… | [full write-up](deep-dives/components/skill-alirezarezvani-collection.md) |
 | Anthropic Agent Skills (agentskills.io) | Mixed (see write-up) | 158k | reusable task procedures, document creation, cross-engine c… | [full write-up](deep-dives/components/anthropic-skills.md) |
 | browser-use | MIT | 103k | browser automation, web form-filling, research/shopping age… | [full write-up](deep-dives/components/browser-use.md) |
 | Composio | MIT | 29.1k | connecting agents to 1000+ SaaS tools, auth management, san… | [full write-up](deep-dives/components/composio.md) |
+| coreyhaines31/marketingskills | MIT | 36.2k | CRO/copywriting/SEO/analytics/growth-engineering skills | [full write-up](deep-dives/components/skill-marketing-skills.md) |
+| derisk-ai/awesome-devops-skills | MIT | 10 | auto-discovery of new DevOps skills/MCP servers via hourly… | [full write-up](deep-dives/components/skill-devops-scanner.md) |
 | E2B | Apache-2.0 | 12.8k | sandboxed code execution, safe running of agent-generated c… | [full write-up](deep-dives/components/e2b.md) |
+| ericosiu/ai-marketing-skills | Unclear (unverified) | — | growth/sales-pipeline/content-ops/outbound/SEO/finance-ops… | [full write-up](deep-dives/components/skill-ai-marketing-skills.md) |
+| hesreallyhim/awesome-claude-code (skills view) | Unclear (verify) | 48.1k | broadest general Claude Code ecosystem resource hub | [full write-up](deep-dives/components/skill-awesome-claude-code.md) |
+| karanb192/awesome-claude-skills | MIT | 418 | curation-quality-focused skills index ('50+ verified') | [full write-up](deep-dives/components/skill-karanb192-curated.md) |
+| kostja94/marketing-skills | Unclear (unverified) | — | 160+ SEO/content skills across 40+ page types | [full write-up](deep-dives/components/skill-kostja94-marketing.md) |
+| multica-ai/andrej-karpathy-skills | Unclear (verify) | 187.8k | single CLAUDE.md encoding four viral behavioral rules for L… | [full write-up](deep-dives/components/skill-karpathy-claude-md.md) |
+| nizos/tdd-guard | MIT | 2.2k | mechanical enforcement of TDD discipline via a Claude Code… | [full write-up](deep-dives/components/skill-tdd-guard.md) |
+| numman-ali/openskills | Unclear (verify) | 10.5k | universal SKILL.md loader for any AGENTS.md-reading agent,… | [full write-up](deep-dives/components/skill-openskills.md) |
+| obra/superpowers | MIT | 246.6k | composable skills framework chaining brainstorming through… | [full write-up](deep-dives/components/skill-superpowers.md) |
+| rohitg00/awesome-claude-code-toolkit | Apache-2.0 (see caveat) | 2.3k | self-reported 135 agents/35 skills/176+ plugins/52 ecosyste… | [full write-up](deep-dives/components/skill-rohitg00-toolkit.md) |
+| sales-skills/sales | Unclear (verify) | 62 | GTM/CRM-focused skills, npx-installable | [full write-up](deep-dives/components/skill-sales-skills.md) |
+| snyk/agent-scan | Apache-2.0 | 2.7k | scanning skills/MCP servers/agent components for prompt inj… | [full write-up](deep-dives/components/skill-snyk-agent-scan.md) |
+| tfriedel/claude-office-skills | Unclear (verify) | 777 | PPTX/DOCX/XLSX/PDF workflows, independent alternative to fi… | [full write-up](deep-dives/components/skill-claude-office-skills.md) |
+| trailofbits/skills | CC-BY-SA-4.0 (share-alike) | 6.0k | security research, vulnerability detection, audit workflows… | [full write-up](deep-dives/components/skill-trailofbits.md) |
+| travisvn/awesome-claude-skills | Unclear (verify) | 13.9k | curated Claude-specific skills index | [full write-up](deep-dives/components/skill-travisvn-awesome.md) |
+| vercel-labs/agent-browser | Apache-2.0 | 37.9k | browser automation CLI for AI agents (Vercel's own) | [full write-up](deep-dives/components/skill-vercel-agent-browser.md) |
+| vercel-labs/agent-skills | Unclear (verify) | 28.7k | UI/web-interface-guideline compliance auditing skill | [full write-up](deep-dives/components/skill-vercel-agent-skills.md) |
+| vercel-labs/skills | Unclear (verify) | 25.1k | universal skill installer CLI (`npx skills`) | [full write-up](deep-dives/components/skill-vercel-skills-cli.md) |
+| VoltAgent/awesome-agent-skills | MIT | 27.4k | 1000+ agent skills from official dev teams and the communit… | [full write-up](deep-dives/components/skill-voltagent-awesome-skills.md) |
+| WorldFlowAI/everything-claude-code | Unclear (verify) | 362 | agents/commands/skills/rules/hooks toolkit including a nota… | [full write-up](deep-dives/components/skill-worldflowai-toolkit.md) |
 
 ### 1.3 Subagents
 

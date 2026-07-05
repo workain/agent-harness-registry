@@ -1,0 +1,19 @@
+name: nizos/tdd-guard
+slug: skill-tdd-guard
+category: skills-tools
+homepage: https://github.com/nizos/tdd-guard
+license: "MIT"
+license_tag: "MIT"
+open_source: true
+use_cases: "mechanical enforcement of TDD discipline via a Claude Code hook"
+what_it_is: >
+  A Claude Code HOOK (not a skill) that mechanically blocks implementation-before-test, over-implementation, and multi-test-at-once violations — enforcement, not just instruction.
+activity:
+  stars: "2.2k"
+  last_verified_note: "172 forks"
+provenance:
+  - url: https://github.com/nizos/tdd-guard
+    fetched: "2026-07-05"
+    note: "verified directly via gh api (stars/forks/license) where a repo exists; some entries flagged unverified per search-only sourcing"
+unverified: []
+deep_dive: deep-dives/components/skill-tdd-guard.md

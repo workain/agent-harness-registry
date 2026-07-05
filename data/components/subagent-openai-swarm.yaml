@@ -1,0 +1,19 @@
+name: openai/swarm (educational, archived)
+slug: subagent-openai-swarm
+category: subagents
+homepage: https://github.com/openai/swarm
+license: "MIT"
+license_tag: "MIT"
+open_source: true
+use_cases: "historical reference for the 'handoff' multi-agent primitive"
+what_it_is: >
+  Introduced the "handoff" primitive as a multi-agent mental model — explicitly educational-only per OpenAI's own README, superseded once the production SDK shipped.
+activity:
+  stars: "21.8k"
+  last_verified_note: "ARCHIVED/EDUCATIONAL, pushed 2026-04-15"
+provenance:
+  - url: https://github.com/openai/swarm
+    fetched: "2026-07-05"
+    note: "verified directly via gh api (stars/forks/license/push date)"
+unverified: []
+deep_dive: deep-dives/components/subagent-openai-swarm.md

@@ -1,0 +1,19 @@
+name: OpenBMB/AgentVerse (unmaintained)
+slug: subagent-agentverse
+category: subagents
+homepage: https://github.com/OpenBMB/AgentVerse
+license: "Apache-2.0"
+license_tag: "Apache-2.0"
+open_source: true
+use_cases: "historical reference for task-solving and simulation multi-agent frameworks"
+what_it_is: >
+  Two frameworks (task-solving, simulation) with an "Expert Recruitment -> Collaborative Decision-Making -> Action Execution" pipeline (arXiv:2308.10848).
+activity:
+  stars: "5.1k"
+  last_verified_note: "STALE, last push 2024-09-09"
+provenance:
+  - url: https://github.com/OpenBMB/AgentVerse
+    fetched: "2026-07-05"
+    note: "verified directly via gh api (stars/forks/license/push date)"
+unverified: []
+deep_dive: deep-dives/components/subagent-agentverse.md

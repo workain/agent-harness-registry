@@ -1,0 +1,19 @@
+name: openbmb/ChatDev
+slug: subagent-chatdev
+category: subagents
+homepage: https://github.com/openbmb/ChatDev
+license: "Apache-2.0"
+license_tag: "Apache-2.0"
+open_source: true
+use_cases: "CEO/CTO/programmer/reviewer/tester/designer role collaboration via 'seminars'"
+what_it_is: >
+  CEO/CTO/programmer/reviewer/tester/designer roles collaborating via "seminars"; rewritten as "ChatDev 2.0 (DevAll)" in Jan 2026, broadening scope beyond just software.
+activity:
+  stars: "33.7k"
+  last_verified_note: "pushed 2026-06-29"
+provenance:
+  - url: https://github.com/openbmb/ChatDev
+    fetched: "2026-07-05"
+    note: "verified directly via gh api (stars/forks/license/push date)"
+unverified: []
+deep_dive: deep-dives/components/subagent-chatdev.md

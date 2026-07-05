@@ -1,0 +1,19 @@
+name: Agent2Agent Protocol (A2A)
+slug: subagent-a2a-protocol
+category: subagents
+homepage: https://github.com/a2aproject/A2A
+license: "Apache-2.0"
+license_tag: "Apache-2.0"
+open_source: true
+use_cases: "cross-vendor agent-to-agent capability discovery, task delegation, lifecycle management"
+what_it_is: >
+  A Google-originated, now Linux-Foundation-governed (launched June 2025, 100+ company backing) cross-vendor protocol: HTTP/JSON/SSE-based schema for capability discovery, task delegation, and lifecycle management BETWEEN agents built on DIFFERENT frameworks/vendors.
+activity:
+  stars: "24.6k"
+  last_verified_note: "pushed 2026-07-02"
+provenance:
+  - url: https://github.com/a2aproject/A2A
+    fetched: "2026-07-05"
+    note: "verified directly via gh api (stars/forks/license/push date)"
+unverified: []
+deep_dive: deep-dives/components/subagent-a2a-protocol.md

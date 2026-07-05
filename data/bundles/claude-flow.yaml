@@ -1,0 +1,27 @@
+name: Claude Flow / ruflo (ruvnet)
+slug: claude-flow
+homepage: https://github.com/ruvnet/ruflo
+license_tag: MIT
+what_it_is: >
+  A self-described "agent meta-harness": 17+ specialized modes (Architect, Coder, TDD,
+  Security, DevOps, etc.), the SPARC methodology (Specification -> Pseudocode ->
+  Architecture -> Refinement -> Completion), a Boomerang iterative-refinement pattern, a
+  live dashboard, swarm/Queen/topology/consensus coordination primitives, 100+
+  specialized agents, and native Claude Code/Codex/Hermes integration — bundling
+  orchestration + agents + an MCP server + hooks + memory into one meta-harness. The
+  second-highest star count of any bundle-shaped entry in this registry. Originally
+  `ruvnet/claude-flow`; the repo has since been renamed to `ruvnet/ruflo` (same project).
+components_bundled: ["orchestration modes (17+)", "subagents (100+)", "MCP server", "hooks", "memory (adaptive)", "dashboard"]
+engine_lock: "Native Claude Code/Codex/Hermes integration; not confirmed portable beyond these"
+license: MIT
+open_source: true
+activity:
+  stars: "63.1k (per gh api, 2026-07-05)"
+  last_verified_note: "7,430 forks, pushed 2026-07-05 (day of fetch) — actively maintained; repo renamed from claude-flow to ruflo, both URLs resolve to the same project"
+provenance:
+  - url: https://github.com/ruvnet/ruflo
+    fetched: "2026-07-05"
+    note: "verified directly via gh api (stars/forks/license/push date/rename)"
+unverified:
+  - "specific claims about 'adaptive memory' and 'self-learning intelligence' are the project's own marketing framing from its description field, not independently verified against the actual memory implementation"
+deep_dive: deep-dives/bundles/claude-flow.md

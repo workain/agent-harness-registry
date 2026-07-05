@@ -1,0 +1,19 @@
+name: camel-ai/camel
+slug: subagent-camel
+category: subagents
+homepage: https://github.com/camel-ai/camel
+license: "Apache-2.0 (code) / CC-BY-NC-4.0 (datasets)"
+license_tag: "Apache-2.0 + CC-BY-NC-4.0"
+open_source: true
+use_cases: "two-agent role-playing primitive, research into agent scaling laws"
+what_it_is: >
+  A two-agent role-playing primitive (`role_playing.py`) that spawned a broader "Finding the Scaling Law of Agents" framework and the `camel-ai/owl` (Optimized Workforce Learning) follow-on project.
+activity:
+  stars: "17.3k"
+  last_verified_note: "pushed 2026-06-28"
+provenance:
+  - url: https://github.com/camel-ai/camel
+    fetched: "2026-07-05"
+    note: "verified directly via gh api (stars/forks/license/push date)"
+unverified: []
+deep_dive: deep-dives/components/subagent-camel.md

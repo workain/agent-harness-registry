@@ -1,0 +1,19 @@
+name: lst97/claude-code-sub-agents
+slug: subagent-lst97-collection
+category: subagents
+homepage: https://github.com/lst97/claude-code-sub-agents
+license: "MIT"
+license_tag: "MIT"
+open_source: true
+use_cases: "full-stack-focused subagent roster"
+what_it_is: >
+  A full-stack-focused subagent collection that started as personal use and gained broader traction.
+activity:
+  stars: "1.6k"
+  last_verified_note: "pushed 2025-08-15"
+provenance:
+  - url: https://github.com/lst97/claude-code-sub-agents
+    fetched: "2026-07-05"
+    note: "verified directly via gh api (stars/forks/license/push date)"
+unverified: []
+deep_dive: deep-dives/components/subagent-lst97-collection.md

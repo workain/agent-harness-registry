@@ -1,0 +1,19 @@
+name: FoundationAgents/MetaGPT
+slug: subagent-metagpt
+category: subagents
+homepage: https://github.com/FoundationAgents/MetaGPT
+license: "MIT"
+license_tag: "MIT"
+open_source: true
+use_cases: "SOP-bound multi-agent software-company simulation (PM/architect/PM/engineer/QA)"
+what_it_is: >
+  Five fixed, SOP-bound roles (product manager, architect, project manager, engineer, QA) simulating a software company, communicating via a shared global message pool — "Code = SOP(Team)" philosophy.
+activity:
+  stars: "69.2k"
+  last_verified_note: "pushed 2026-01-21"
+provenance:
+  - url: https://github.com/FoundationAgents/MetaGPT
+    fetched: "2026-07-05"
+    note: "verified directly via gh api (stars/forks/license/push date)"
+unverified: []
+deep_dive: deep-dives/components/subagent-metagpt.md

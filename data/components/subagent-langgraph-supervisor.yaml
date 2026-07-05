@@ -1,0 +1,19 @@
+name: langchain-ai/langgraph-supervisor-py
+slug: subagent-langgraph-supervisor
+category: subagents
+homepage: https://github.com/langchain-ai/langgraph-supervisor-py
+license: "MIT"
+license_tag: "MIT"
+open_source: true
+use_cases: "canonical hub-and-spoke supervisor routing pattern for LangGraph"
+what_it_is: >
+  The canonical hub-and-spoke "supervisor" role pattern for LangGraph — a supervisor LLM node reads full history and routes to specialist nodes.
+activity:
+  stars: "1.6k"
+  last_verified_note: "pushed 2026-06-23"
+provenance:
+  - url: https://github.com/langchain-ai/langgraph-supervisor-py
+    fetched: "2026-07-05"
+    note: "verified directly via gh api (stars/forks/license/push date)"
+unverified: []
+deep_dive: deep-dives/components/subagent-langgraph-supervisor.md

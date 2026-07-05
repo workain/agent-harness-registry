@@ -1,0 +1,19 @@
+name: openai/openai-agents-python
+slug: subagent-openai-agents-sdk
+category: subagents
+homepage: https://github.com/openai/openai-agents-python
+license: "MIT"
+license_tag: "MIT"
+open_source: true
+use_cases: "production multi-agent handoffs, guardrails, tracing"
+what_it_is: >
+  Swarm's production successor: handoffs, guardrails as first-class objects, OTLP-exportable tracing, provider-agnostic (100+ LLMs via Responses/Chat Completions compatibility).
+activity:
+  stars: "27.7k"
+  last_verified_note: "pushed 2026-07-04"
+provenance:
+  - url: https://github.com/openai/openai-agents-python
+    fetched: "2026-07-05"
+    note: "verified directly via gh api (stars/forks/license/push date)"
+unverified: []
+deep_dive: deep-dives/components/subagent-openai-agents-sdk.md

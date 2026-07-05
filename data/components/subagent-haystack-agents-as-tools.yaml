@@ -1,0 +1,19 @@
+name: deepset-ai/haystack (agents-as-tools)
+slug: subagent-haystack-agents-as-tools
+category: subagents
+homepage: https://github.com/deepset-ai/haystack
+license: "Apache-2.0"
+license_tag: "Apache-2.0"
+open_source: true
+use_cases: "wrapping a specialized agent as a callable tool for a coordinator agent"
+what_it_is: >
+  A distinct compositional pattern: wrap a specialized Agent using `ComponentTool` so it becomes a callable TOOL for a coordinator agent — tools-not-handoffs as the multi-agent primitive.
+activity:
+  stars: "25.8k"
+  last_verified_note: "pushed 2026-07-05"
+provenance:
+  - url: https://github.com/deepset-ai/haystack
+    fetched: "2026-07-05"
+    note: "verified directly via gh api (stars/forks/license/push date)"
+unverified: []
+deep_dive: deep-dives/components/subagent-haystack-agents-as-tools.md

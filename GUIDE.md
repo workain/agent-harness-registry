@@ -10,14 +10,14 @@
 
 ## Overview — map of this registry
 
-**52 atomic components** across 4 categories, **7 assembled bundles**, **6 agent engines/runtimes**, **9 eval-frameworks**, **11 benchmarks**.
+**81 atomic components** across 4 categories, **8 assembled bundles**, **6 agent engines/runtimes**, **9 eval-frameworks**, **11 benchmarks**.
 
 **Atoms vs. bundles.** Equipment splits into two levels. **Components** are single-purpose, atomic units — a memory layer, a skill, a subagent definition, an MCP server — composed onto an engine one at a time. **Bundles** are pre-assembled multi-component kits shipped together (instructions + skills + a knowledge base + subagents, etc.). Market research (`workain/harness-eval`'s `docs/DEMAND-vs-ANTI-SIGNALS-equipment-bundles.md`, building on `workain/agent-lab-manager` PR#44's market survey) found the market is overwhelmingly atomic today — the Agent Skills standard alone spans 47,150 unique skills across 42 engines — while real demand signals for assembled bundles also exist (a paid $149 commercial product sells exactly this shape; one bundle's fork:star ratio is 4-8x its peers'). Every bundle catalogued below is scored against three properties no single one yet combines — **sustained** (actively maintained), **engine-agnostic** (portable), and **progressively-disclosed** (loads its components lazily, the way a well-designed skill does) — see each bundle's own write-up for which it has.
 
 **Component categories:**
 - **Memory** (11) — see below
 - **Skills / tools** (4) — see below
-- **Subagents** (3) — see below
+- **Subagents** (32) — see below
 - **Access placement / MCP** (34) — see below
 
 ---
@@ -55,9 +55,38 @@ Single-purpose atomic units composed onto an engine. Each row links to a full wr
 
 | Name | License | Stars | Use cases | Details |
 |---|---|---|---|---|
+| 0xfurai/claude-code-subagents | MIT | 952 | 100+ 'production-ready' subagents | [full write-up](deep-dives/components/subagent-0xfurai-collection.md) |
+| Agent2Agent Protocol (A2A) | Apache-2.0 | 24.6k | cross-vendor agent-to-agent capability discovery, task dele… | [full write-up](deep-dives/components/subagent-a2a-protocol.md) |
 | AutoGen Agent Roles (Microsoft) | MIT + CC-BY-4.0 | 59.5k | peer-to-peer multi-agent role composition, conversational a… | [full write-up](deep-dives/components/autogen.md) |
+| camel-ai/camel | Apache-2.0 + CC-BY-NC-4.0 | 17.3k | two-agent role-playing primitive, research into agent scali… | [full write-up](deep-dives/components/subagent-camel.md) |
 | Claude Code Subagents | Proprietary feature (usable) | — | task delegation with isolated context, parallel specialist… | [full write-up](deep-dives/components/claude-code-subagents.md) |
+| contains-studio/agents | Unclear (verify) | 12.4k | non-engineering subagent roles (marketing, product, design)… | [full write-up](deep-dives/components/subagent-contains-studio.md) |
+| CrewAI Agents & Crews (role/task composition) | MIT | 54.9k | Agent/Crew/Task role-composition API, YAML or code-based | [full write-up](deep-dives/components/subagent-crewai-agents.md) |
+| davepoon/claude-code-subagents-collection | MIT | 3.1k | one hub spanning skills+agents+commands+hooks+plugins acros… | [full write-up](deep-dives/components/subagent-davepoon-collection.md) |
+| davila7/claude-code-templates | MIT | 28.5k | browsing/installing 100+ agents/commands/MCPs/hooks via a u… | [full write-up](deep-dives/components/subagent-claude-code-templates.md) |
+| deepset-ai/haystack (agents-as-tools) | Apache-2.0 | 25.8k | wrapping a specialized agent as a callable tool for a coord… | [full write-up](deep-dives/components/subagent-haystack-agents-as-tools.md) |
+| dl-ezo/claude-code-sub-agents | Unclear (verify) | 185 | 35 subagents for end-to-end SDLC automation | [full write-up](deep-dives/components/subagent-dl-ezo-sdlc.md) |
+| FoundationAgents/MetaGPT | MIT | 69.2k | SOP-bound multi-agent software-company simulation (PM/archi… | [full write-up](deep-dives/components/subagent-metagpt.md) |
+| hesreallyhim/a-list-of-claude-code-agents | Unclear (verify) | 1.3k | community-submission index/discovery feed for subagent defi… | [full write-up](deep-dives/components/subagent-hesreallyhim-list.md) |
+| hesreallyhim/awesome-claude-code | Unclear (verify) | 48.1k | broadest general Claude Code ecosystem resource hub (skills… | [full write-up](deep-dives/components/subagent-awesome-claude-code.md) |
+| iannuttall/claude-agents | MIT | 2.1k | early minimal subagent collection, copy-paste reference mat… | [full write-up](deep-dives/components/subagent-iannuttall-agents.md) |
+| langchain-ai/langgraph-supervisor-py | MIT | 1.6k | canonical hub-and-spoke supervisor routing pattern for Lang… | [full write-up](deep-dives/components/subagent-langgraph-supervisor.md) |
+| lst97/claude-code-sub-agents | MIT | 1.6k | full-stack-focused subagent roster | [full write-up](deep-dives/components/subagent-lst97-collection.md) |
+| microsoft/agent-framework | MIT | 11.9k | unified sequential/concurrent/handoff/group-chat orchestrat… | [full write-up](deep-dives/components/subagent-microsoft-agent-framework.md) |
+| microsoft/semantic-kernel | MIT | 28.3k | plugin/agent role composition for .NET and Python | [full write-up](deep-dives/components/subagent-semantic-kernel.md) |
+| mylee04/claude-code-subagents | MIT | 35 | dynamically-generated, tech-stack-personalized subagent tea… | [full write-up](deep-dives/components/subagent-mylee04-assembler.md) |
+| openai/openai-agents-python | MIT | 27.7k | production multi-agent handoffs, guardrails, tracing | [full write-up](deep-dives/components/subagent-openai-agents-sdk.md) |
+| openai/swarm (educational, archived) | MIT | 21.8k | historical reference for the 'handoff' multi-agent primitive | [full write-up](deep-dives/components/subagent-openai-swarm.md) |
+| OpenBMB/AgentVerse (unmaintained) | Apache-2.0 | 5.1k | historical reference for task-solving and simulation multi-… | [full write-up](deep-dives/components/subagent-agentverse.md) |
+| openbmb/ChatDev | Apache-2.0 | 33.7k | CEO/CTO/programmer/reviewer/tester/designer role collaborat… | [full write-up](deep-dives/components/subagent-chatdev.md) |
+| rahulvrane/awesome-claude-agents | Unclear (verify) | 359 | community-contributed subagents plus orchestration recipes | [full write-up](deep-dives/components/subagent-rahulvrane-collection.md) |
+| rshah515/claude-code-subagents | MIT | 79 | 133+ subagents, low-adoption example | [full write-up](deep-dives/components/subagent-rshah515-collection.md) |
+| run-llama/llama-agents | MIT | 418 | event-driven, async, step-based multi-agent workflow contro… | [full write-up](deep-dives/components/subagent-llama-agents.md) |
+| supatest-ai/awesome-claude-code-sub-agents | MIT | 165 | architectural/decision-framework 'expert consultant' subage… | [full write-up](deep-dives/components/subagent-supatest-experts.md) |
+| vijaythecoder/awesome-claude-agents | MIT | 4.3k | pre-wired orchestrated multi-agent dev-team topology, not j… | [full write-up](deep-dives/components/subagent-vijaythecoder-dev-team.md) |
+| VoltAgent/awesome-claude-code-subagents | MIT | 22.9k | ready-made subagent roster across 10 domain categories for… | [full write-up](deep-dives/components/subagent-voltagent-collection.md) |
 | wshobson/agents | MIT | 37.5k | large multi-engine subagent/skill/command marketplace | [full write-up](deep-dives/components/wshobson-agents.md) |
+| wshobson/commands | MIT | 2.5k | production-ready slash commands, often triggering subagent… | [full write-up](deep-dives/components/subagent-wshobson-commands.md) |
 
 ### 1.4 Access placement / MCP
 
@@ -110,6 +139,7 @@ Pre-assembled multi-component kits. Rare relative to components (see the Overvie
 | agent-teams plugin (wshobson/agents) | Claude Code + Codex (both plugin manifests p… | MIT | — | [full write-up](deep-dives/bundles/wshobson-agent-teams.md) |
 | ai-coding-project-boilerplate (shinpr) | Claude Code only | MIT | 221 | [full write-up](deep-dives/bundles/ai-coding-project-boilerplate.md) |
 | Claude Code Plugins (mechanism) | Claude-Code-native — the schema itself, not… | Proprietary feature (usable) | — | [full write-up](deep-dives/bundles/claude-code-plugins.md) |
+| Claude Flow / ruflo (ruvnet) | Native Claude Code/Codex/Hermes integration;… | MIT | 63.1k | [full write-up](deep-dives/bundles/claude-flow.md) |
 | GPT Store Custom GPTs | hard-locked to the OpenAI/ChatGPT platform —… | Proprietary (no export) | — | [full write-up](deep-dives/bundles/gpt-store-custom-gpts.md) |
 | gtm-starter-kit (KarlRaf) | Claude Code only | No license file | 163 | [full write-up](deep-dives/bundles/gtm-starter-kit.md) |
 | VibeReady (AI Framework layer) | engine-agnostic by construction (AGENTS.md-b… | Proprietary (paid product) | — | [full write-up](deep-dives/bundles/vibeready.md) |

@@ -1,0 +1,19 @@
+name: CrewAI Agents & Crews (role/task composition)
+slug: subagent-crewai-agents
+category: subagents
+homepage: https://github.com/crewAIInc/crewAI
+license: "MIT"
+license_tag: "MIT"
+open_source: true
+use_cases: "Agent/Crew/Task role-composition API, YAML or code-based"
+what_it_is: >
+  The role/task-composition layer of CrewAI (distinct from this registry's existing `crewai-memory` entry, which scopes to memory specifically) — the Agent/Crew/Task API for defining who does what.
+activity:
+  stars: "54.9k"
+  last_verified_note: "pushed 2026-06-27"
+provenance:
+  - url: https://github.com/crewAIInc/crewAI
+    fetched: "2026-07-05"
+    note: "verified directly via gh api (stars/forks/license/push date)"
+unverified: []
+deep_dive: deep-dives/components/subagent-crewai-agents.md

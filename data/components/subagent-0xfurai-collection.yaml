@@ -1,0 +1,19 @@
+name: 0xfurai/claude-code-subagents
+slug: subagent-0xfurai-collection
+category: subagents
+homepage: https://github.com/0xfurai/claude-code-subagents
+license: "MIT"
+license_tag: "MIT"
+open_source: true
+use_cases: "100+ 'production-ready' subagents"
+what_it_is: >
+  A collection of 100+ subagents billed as "production-ready."
+activity:
+  stars: "952"
+  last_verified_note: "pushed 2025-10-15 (stale ~9mo)"
+provenance:
+  - url: https://github.com/0xfurai/claude-code-subagents
+    fetched: "2026-07-05"
+    note: "verified directly via gh api (stars/forks/license/push date)"
+unverified: []
+deep_dive: deep-dives/components/subagent-0xfurai-collection.md

@@ -1,0 +1,19 @@
+name: microsoft/semantic-kernel
+slug: subagent-semantic-kernel
+category: subagents
+homepage: https://github.com/microsoft/semantic-kernel
+license: "MIT"
+license_tag: "MIT"
+open_source: true
+use_cases: "plugin/agent role composition for .NET and Python"
+what_it_is: >
+  Plugin/agent role composition across .NET and Python — still actively pushed despite being officially in the process of being superseded.
+activity:
+  stars: "28.3k"
+  last_verified_note: "pushed 2026-07-02"
+provenance:
+  - url: https://github.com/microsoft/semantic-kernel
+    fetched: "2026-07-05"
+    note: "verified directly via gh api (stars/forks/license/push date)"
+unverified: []
+deep_dive: deep-dives/components/subagent-semantic-kernel.md

@@ -1,0 +1,19 @@
+name: hesreallyhim/a-list-of-claude-code-agents
+slug: subagent-hesreallyhim-list
+category: subagents
+homepage: https://github.com/hesreallyhim/a-list-of-claude-code-agents
+license: "No license file found — verify before redistributing"
+license_tag: "Unclear (verify)"
+open_source: true
+use_cases: "community-submission index/discovery feed for subagent definitions"
+what_it_is: >
+  A curated LIST of community-submitted subagents (a discovery index, not authored agents itself).
+activity:
+  stars: "1.3k"
+  last_verified_note: "pushed 2025-11-10"
+provenance:
+  - url: https://github.com/hesreallyhim/a-list-of-claude-code-agents
+    fetched: "2026-07-05"
+    note: "verified directly via gh api (stars/forks/license/push date)"
+unverified: []
+deep_dive: deep-dives/components/subagent-hesreallyhim-list.md

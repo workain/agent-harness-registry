@@ -1,0 +1,19 @@
+name: microsoft/agent-framework
+slug: subagent-microsoft-agent-framework
+category: subagents
+homepage: https://github.com/microsoft/agent-framework
+license: "MIT"
+license_tag: "MIT"
+open_source: true
+use_cases: "unified sequential/concurrent/handoff/group-chat orchestration with checkpointing"
+what_it_is: >
+  The unified AutoGen + Semantic-Kernel successor (1.0 shipped 2026-04-07): sequential/concurrent/handoff/group-chat/Magentic-One orchestration patterns, all with checkpointing and human-in-the-loop pause/resume built in.
+activity:
+  stars: "11.9k"
+  last_verified_note: "pushed 2026-07-03"
+provenance:
+  - url: https://github.com/microsoft/agent-framework
+    fetched: "2026-07-05"
+    note: "verified directly via gh api (stars/forks/license/push date)"
+unverified: []
+deep_dive: deep-dives/components/subagent-microsoft-agent-framework.md

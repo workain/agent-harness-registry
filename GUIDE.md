@@ -10,16 +10,16 @@
 
 ## Overview — map of this registry
 
-**20 atomic components** across 5 categories, **7 assembled bundles**, **6 agent engines/runtimes**, **9 eval-frameworks**, **11 benchmarks** — 14 entries have a dedicated deep-dive file.
+**28 atomic components** across 5 categories, **7 assembled bundles**, **6 agent engines/runtimes**, **9 eval-frameworks**, **11 benchmarks** — 14 entries have a dedicated deep-dive file.
 
 **Atoms vs. bundles — why this split, and why atoms dominate.** Equipment splits cleanly into two levels. **Components** are single-purpose, atomic units — a memory layer, a skill, a rules file, an MCP server — that you compose yourself onto an engine. **Bundles** are pre-assembled multi-component kits someone else composed for you (instructions + skills + a knowledge base + subagents, etc., shipped together). Market research (this registry's own demand-vs-anti-signal study, `workain/harness-eval`'s `docs/DEMAND-vs-ANTI-SIGNALS-equipment-bundles.md`, merged after independent ROAST — building on `workain/agent-lab-manager` PR#44's market-atomic verdict) found the market is overwhelmingly atomic — the Agent Skills standard alone spans 47,150 unique skills across 42 engines (mechanically recounted; an earlier eyeballed pass said 45) — and that this is **not** simply an oversight the bundle side is destined to fill in. Real, structural anti-signals exist (naive bundling has a real efficiency/consistency cost — 40-57% more tokens, up to 50x more latency, per two independently-verified papers on unbundled context injection, though neither paper directly measures output-quality degradation; a real 6k-star open-source project is built explicitly on the anti-monolith thesis; engine lock-in is a cost bundling pays that atomic components mostly don't). But real demand signals ALSO exist (a paid $149 commercial product sells exactly this shape; one bundle's fork:star ratio is 4-8x its peers', a stronger revealed-preference signal than starring). **Verdict: mixed, favors "untapped opportunity with real headwinds" over "flatly unwanted."** Every bundle catalogued below is scored against the three properties no single one combines — **sustained** (actively maintained, not abandoned), **engine-agnostic** (portable, not locked to one vendor), and **progressively-disclosed** (composes/loads its components lazily at runtime, the way a well-designed skill does, rather than as a static preloaded monolith) — see each bundle's own deep-dive for exactly which it has.
 
 **Component categories:**
 - **Memory** (10) — see below
-- **Skills / tools** (3) — see below
-- **Instructions / rules** (3) — see below
-- **Subagents** (2) — see below
-- **Access placement / MCP** (2) — see below
+- **Skills / tools** (5) — see below
+- **Instructions / rules** (6) — see below
+- **Subagents** (3) — see below
+- **Access placement / MCP** (4) — see below
 
 ---
 
@@ -262,7 +262,9 @@ A stateful conversation-persistence system that pairs with OpenAI's Responses AP
 | Name | License | Deep-dive? | What it is |
 |---|---|---|---|
 | [Anthropic Agent Skills (agentskills.io)](#anthropic-skills) | mixed — the repo's own README states op… | ✅ | Reusable, filesystem-based capability packages: a directory containing a `SKILL… |
+| [browser-use](#browser-use) | MIT | — | A Python library giving an AI agent direct, reliable control of a web browser (… |
 | [Composio](#composio) | MIT | — | A tool-integration platform for AI agents: 1000+ pre-built "toolkits" (Slack, G… |
+| [E2B](#e2b) | Apache-2.0 | — | Open-source infrastructure for running AI-generated code inside isolated, cloud… |
 | [harness-skills (workain)](#harness-skills) | no LICENSE file present in the repo as… | — | A curated, security-reviewed pack of reusable Claude Code skills for the workai… |
 
 ### Anthropic Agent Skills (agentskills.io)
@@ -289,6 +291,25 @@ Reusable, filesystem-based capability packages: a directory containing a `SKILL.
 
 **Full deep-dive:** [deep-dives/components/anthropic-skills.md](deep-dives/components/anthropic-skills.md)
 
+### browser-use
+
+<a id="browser-use"></a>
+
+**Homepage:** https://github.com/browser-use/browser-use  
+**Layer:** Capability / tools layer (equivalent to Block B) — browser automation as a tool  
+**License:** MIT
+
+A Python library giving an AI agent direct, reliable control of a web browser (form-filling, navigation, research, shopping/checkout-style flows) — one of the highest-adoption single-tool components in this registry by star count (103k, more than Mem0's 60.1k, though fewer than Anthropic Agent Skills' 158k or the mcp-servers reference repo's 88.1k). Ships as a plain Python library AND, notably, as an Agent-Skills-compatible integration (Claude Code/Codex-installable), making it simultaneously a standalone tool and an example of the Agent Skills format being used to package a THIRD-PARTY tool, not just first-party vendor content — direct evidence for this registry's `anthropic-skills` deep-dive's claim that the format's reach extends well past Anthropic's own document-creation skills. Also offers a paid cloud API (stealth browsing, CAPTCHA solving) for teams that don't want to run browser infrastructure themselves.
+
+**How it's adopted:** `pip install browser-use`; async/await Python API; extensible via custom-tool decorators; also distributed as an installable Agent Skill for Claude Code/Codex
+- **Activity:** 103k (per GitHub page fetch, 2026-07-05)
+- **Activity notes:** fetched live 2026-07-05; 9,776 commits, latest release v0.13.3 (2026-07-01), 2,700+ dependent projects, 79 open issues, 204 open PRs — very actively maintained
+
+**Provenance:**
+- https://github.com/browser-use/browser-use (fetched 2026-07-05)
+  fetched directly (repo page): description, license, star count, integration surface (including the Agent Skills packaging), activity signal
+
+
 ### Composio
 
 <a id="composio"></a>
@@ -306,6 +327,25 @@ A tool-integration platform for AI agents: 1000+ pre-built "toolkits" (Slack, Gi
 **Provenance:**
 - https://github.com/ComposioHQ/composio (fetched 2026-07-05)
   fetched directly (repo page): description, license, star count, SDK/provider surface, activity signal
+
+
+### E2B
+
+<a id="e2b"></a>
+
+**Homepage:** https://github.com/e2b-dev/E2B  
+**Layer:** Capability / tools layer (equivalent to Block B) — sandboxed code-execution as a tool  
+**License:** Apache-2.0
+
+Open-source infrastructure for running AI-generated code inside isolated, cloud-based sandboxes (Firecracker microVMs) — the code-execution tool component this registry's benchmark/eval- framework entries (e.g. Inspect AI) assume exists but don't themselves ship. Distinct from this registry's other tools/access entries: MCP/Composio/Zapier MCP connect an agent to EXTERNAL services, while E2B gives an agent a safe place to RUN untrusted, agent-generated code directly. Ships a dedicated Code Interpreter SDK on top of the base sandbox, plus an E2B Desktop variant (a full graphical environment for computer-use-style agents).
+
+**How it's adopted:** Python/JS/TS SDKs (`pip install e2b` / `npm install e2b`); Code Interpreter SDK for the narrower code-execution-only use case
+- **Activity:** 12.8k (per GitHub page fetch, 2026-07-05)
+- **Activity notes:** fetched live 2026-07-05; 529 releases, 958 forks, 2.3k dependent projects, 26 open issues, 35 open PRs — actively maintained
+
+**Provenance:**
+- https://github.com/e2b-dev/E2B (fetched 2026-07-05)
+  fetched directly (repo page): description, license, star count, SDK surface, activity signal
 
 
 ### harness-skills (workain)
@@ -330,9 +370,31 @@ A curated, security-reviewed pack of reusable Claude Code skills for the workain
 
 | Name | License | Deep-dive? | What it is |
 |---|---|---|---|
+| [.goosehints (Goose)](#goosehints) | Apache-2.0 | — | Goose's project-instruction file: a `.goosehints` file lets a team document cod… |
 | [AGENTS.md](#agents-md) | MIT | ✅ | An open, tool-agnostic file-format convention for giving coding agents project… |
 | [Cursor Rules (.cursor/rules, formerly .cursorrules)](#cursor-rules) | Cursor itself (the IDE/engine this feat… | — | Cursor's persistent-instruction system: "system-level instructions to Agent" th… |
+| [Devin Knowledge & Playbooks](#devin-knowledge-playbooks) | Documents a feature of Devin (proprieta… | — | Cognition's Devin ships two related but distinct instruction mechanisms. **Know… |
+| [GEMINI.md (Gemini CLI)](#gemini-md) | Apache-2.0 | — | Google's Gemini CLI instruction-file convention: a `GEMINI.md` file provides pe… |
 | [Windsurf Rules & Memories (Cascade)](#windsurf-rules) | Documents a feature of Windsurf/Cascade… | — | Windsurf's (now under Cognition/Devin, per the docs' own redirect from docs.win… |
+
+### .goosehints (Goose)
+
+<a id="goosehints"></a>
+
+**Homepage:** https://github.com/block/goose  
+**Layer:** Instruction / identity layer (equivalent to Block A) — a file-based convention shipped by an open-source engine  
+**License:** Apache-2.0
+
+Goose's project-instruction file: a `.goosehints` file lets a team document coding conventions, architectural patterns, testing practices, and other project-specific nuances — positioned explicitly (per its own docs) as "a README for AI." Same functional slot as AGENTS.md/CLAUDE.md/GEMINI.md/Cursor Rules/Windsurf Rules in this registry's instructions-rules category — six vendors/projects having independently converged on "a committed instruction file the agent reads at session start" is itself a notable pattern this registry's breadth surfaces. Goose itself (the engine this file belongs to) recently moved from Block's own `block/goose` org to the Agentic AI Foundation (AAIF) under the Linux Foundation — a real, citable instance of an agent engine being donated to neutral foundation governance, not just an internal reorg.
+
+**How it's adopted:** Drop a `.goosehints` file at a project's root; Goose's built-in developer extension reads it automatically
+- **Activity:** 50.7k (per GitHub page fetch, 2026-07-05, for the Goose repo overall — `.goosehints` itself is a convention within it, not separately versioned)
+- **Activity notes:** fetched live 2026-07-05; 141 releases, latest v1.41.0 (2026-07-03), 4,966 commits, 5.5k forks — actively maintained; repo currently mid-transition from block/goose to aaif-goose/goose, per the fetched page's own note that 'some links and references are still being updated'
+
+**Provenance:**
+- https://github.com/block/goose (fetched 2026-07-05)
+  fetched directly (repo page): .goosehints purpose/positioning, license, star count, AAIF/Linux Foundation transition, activity signal
+
 
 ### AGENTS.md
 
@@ -378,6 +440,49 @@ Cursor's persistent-instruction system: "system-level instructions to Agent" tha
 **Unverified / caveats:**
 - Cursor the underlying engine/IDE is not itself catalogued in this registry's engines category (out of scope for this entry, which is about the rules CONVENTION specifically) — a future pass could add it alongside Claude Code/Codex CLI/etc.
 
+### Devin Knowledge & Playbooks
+
+<a id="devin-knowledge-playbooks"></a>
+
+**Homepage:** https://docs.devin.ai/product-guides/knowledge  
+**Layer:** Instruction / identity layer (equivalent to Block A) — the vendor-provided PATTERN, not a standalone product  
+**License:** Documents a feature of Devin (proprietary, Cognition AI — the same company that now maintains Windsurf, per this registry's windsurf-rules entry) — not open-source or redistributable
+
+Cognition's Devin ships two related but distinct instruction mechanisms. **Knowledge** is a bank of tips/advice/instructions Devin references across ALL sessions, each entry gated by a required "trigger description" — Devin recalls a Knowledge item only when current work matches its trigger, rather than preloading everything (a retrieval-gated design, closer to this registry's memory-category entries than a flat always-loaded rules file). Knowledge items organize into nested folders, toggleable as a whole. **Playbooks** are template prompts encoding a full task recipe (steps + a "definition of done") as one reusable, invocable unit — triggered instantly via a macro (e.g. typing `!triage-bug`) rather than being recalled automatically. Playbooks are also versioned: every edit creates a new version with rollback.
+
+**How it's adopted:** Authored via Devin's Settings & Library UI, not as files in a repo — a materially different authoring model than AGENTS.md/CLAUDE.md/GEMINI.md/Cursor Rules/Windsurf Rules, all of which are plain files a team commits to version control
+- **Activity notes:** fetched live 2026-07-05 from the official docs.devin.ai product guide
+
+**Provenance:**
+- https://docs.devin.ai/product-guides/knowledge (fetched 2026-07-05)
+  fetched directly: Knowledge's trigger-description recall mechanism, folder organization, product classification (confirmed proprietary)
+
+**Unverified / caveats:**
+- Playbooks' macro-invocation and versioning details are drawn from a WebSearch synthesis of secondary Medium posts, not independently fetched from a Devin primary-source page — treat the Knowledge description as more reliably sourced than the Playbooks description
+
+### GEMINI.md (Gemini CLI)
+
+<a id="gemini-md"></a>
+
+**Homepage:** https://github.com/google-gemini/gemini-cli/blob/main/docs/cli/gemini-md.md  
+**Layer:** Instruction / identity layer (equivalent to Block A) — a file-based convention shipped by an open-source engine  
+**License:** Apache-2.0
+
+Google's Gemini CLI instruction-file convention: a `GEMINI.md` file provides persistent project context (instructions, persona, coding-style guides) sent with every prompt. Distinctive relative to this registry's other instruction-file entries for its explicit HIERARCHICAL loading model: global context (`~/.gemini/GEMINI.md`, applies to all projects), project/ancestor context (searched from the current directory up to the project root), and sub-directory context (component-specific instructions) are all loaded and concatenated together, with more-specific files overriding general ones. Also supports composing multiple files via `@file.md` imports rather than requiring one monolithic file. The filename itself is configurable (`context.fileName` in `settings.json`) — so a team could point Gemini CLI at an existing AGENTS.md instead, though GEMINI.md is the default.
+
+**How it's adopted:** `/init` generates a starting GEMINI.md; place files at `~/.gemini/GEMINI.md` (global), project root and ancestors, or subdirectories (component-scoped) — all are loaded and merged automatically
+- **Activity:** 106k (per GitHub page fetch, 2026-07-05, for the Gemini CLI repo overall — GEMINI.md is a convention within it, not separately versioned)
+- **Activity notes:** fetched live 2026-07-05; 537 releases, latest v0.49.0 (2026-06-25), 6,285 commits, 206 open PRs, 1.1k open issues — actively maintained
+
+**Provenance:**
+- https://github.com/google-gemini/gemini-cli (fetched 2026-07-05)
+  fetched directly (repo page): license, star count, activity signal, GEMINI.md positioning
+- https://github.com/google-gemini/gemini-cli/blob/main/docs/cli/gemini-md.md
+  found via search summary of the official docs page: hierarchical loading order, @file.md import syntax, configurable filename — not independently re-fetched in full for this entry
+
+**Unverified / caveats:**
+- the hierarchical-loading and @file.md-import mechanism details are drawn from a WebSearch synthesis of the official docs page, not an independent full WebFetch of that specific page
+
 ### Windsurf Rules & Memories (Cascade)
 
 <a id="windsurf-rules"></a>
@@ -400,8 +505,28 @@ Windsurf's (now under Cognition/Devin, per the docs' own redirect from docs.wind
 
 | Name | License | Deep-dive? | What it is |
 |---|---|---|---|
+| [AutoGen (Microsoft)](#autogen) | Mixed: MIT for code, CC-BY-4.0 for docu… | — | A programming framework for multi-agent AI applications: agents that act autono… |
 | [Claude Code Subagents](#claude-code-subagents) | Documents a feature of Claude Code, whi… | — | A first-party Claude Code mechanism for delegating a task to a specialized assi… |
 | [wshobson/agents](#wshobson-agents) | MIT | — | A "multi-harness agentic plugin marketplace": 194 domain-organized subagents (a… |
+
+### AutoGen (Microsoft)
+
+<a id="autogen"></a>
+
+**Homepage:** https://github.com/microsoft/autogen  
+**Layer:** Capability / subagents layer (equivalent to Block B) — a multi-agent role-composition framework  
+**License:** Mixed: MIT for code, CC-BY-4.0 for documentation/content (per the fetched repo page) — a different split pattern than this registry's other mixed-license entries (which split old-vs-new code, not code-vs-docs)
+
+A programming framework for multi-agent AI applications: agents that act autonomously or work alongside humans, composed via a layered architecture (Core API, AgentChat API, Extensions API). The `ConversableAgent` class is the base abstraction other agent roles (e.g. `AssistantAgent`) build on — agents converse with each other by exchanging messages to jointly finish a task, a peer-to-peer role-composition model distinct from this registry's hub-and-spoke subagent entries (Claude Code Subagents' delegate-and-return model, wshobson/agents' fixed role catalog). Ships `AutoGen Studio`, a no-code workflow builder, as a developer tool alongside the programming framework itself.
+
+**How it's adopted:** Python framework (`pip install autogen-agentchat` etc., per the layered API split); compose agents programmatically, not via a plain-file convention like this registry's instructions-rules entries
+- **Activity:** 59.5k (per GitHub page fetch, 2026-07-05)
+- **Activity notes:** fetched live 2026-07-05; 98 releases, 9k forks, 4.2k dependent projects — BUT the project is explicitly in maintenance mode: 'will not receive new features or enhancements and is community managed going forward,' with Microsoft directing new users to the separate Microsoft Agent Framework (an AutoGen+Semantic-Kernel merger) instead. Cataloged here for its historical/current install base and its distinct peer-to-peer role model, not as an actively-evolving recommendation.
+
+**Provenance:**
+- https://github.com/microsoft/autogen (fetched 2026-07-05)
+  fetched directly (repo page): architecture, license split, maintenance-mode status and migration guidance, activity signal
+
 
 ### Claude Code Subagents
 
@@ -448,6 +573,8 @@ A "multi-harness agentic plugin marketplace": 194 domain-organized subagents (ar
 |---|---|---|---|
 | [Model Context Protocol — official SDKs (client + server)](#mcp-client-sdk) | Apache-2.0 for new contributions; pre-e… | ✅ | The official language SDKs for implementing BOTH sides of the Model Context Pro… |
 | [Model Context Protocol — reference servers](#mcp-servers) | Apache-2.0 for new contributions, MIT f… | ✅ | The reference implementations for the Model Context Protocol (MCP) — an open pr… |
+| [Smithery CLI](#smithery-cli) | AGPL-3.0 — a copyleft license, notably… | — | A command-line tool for discovering, installing, and managing MCP servers AND s… |
+| [Zapier MCP](#zapier-mcp) | MIT for this repo (the client plugin/di… | — | A hosted MCP server (NOT self-hosted software) connecting an agent to 9,000+ ap… |
 
 ### Model Context Protocol — official SDKs (client + server)
 
@@ -496,6 +623,44 @@ The reference implementations for the Model Context Protocol (MCP) — an open p
 - the broader community MCP-server ecosystem (hundreds of third-party servers indexed by "awesome-mcp-servers"-style lists) was found via search but not individually verified — this entry catalogs only the official reference-implementation repo
 
 **Full deep-dive:** [deep-dives/components/mcp.md](deep-dives/components/mcp.md)
+
+### Smithery CLI
+
+<a id="smithery-cli"></a>
+
+**Homepage:** https://github.com/smithery-ai/cli  
+**Layer:** Access placement / tool-access protocol layer (equivalent to Block B) — a REGISTRY/discovery layer on top of MCP, complementing this registry's mcp-servers and mcp-client-sdk entries  
+**License:** AGPL-3.0 — a copyleft license, notably different from the mostly-permissive (MIT/Apache-2.0) licensing elsewhere in this registry's access-mcp category; worth flagging before embedding this CLI in a proprietary distribution
+
+A command-line tool for discovering, installing, and managing MCP servers AND skills from a centralized registry — Smithery's own combined "MCP + Skills Registry." Where this registry's `mcp-servers` entry catalogs the official REFERENCE server implementations and `mcp-client-sdk` catalogs the official per-language CLIENT libraries, Smithery CLI sits one layer up: it's the discovery/installation tool an end user runs (`smithery mcp search [term]`, `smithery mcp add <url>`) to find and connect to servers from a broader third-party registry, and can also publish a custom MCP server or bundle back to that registry. Functions as a package-manager analogue for the MCP + Agent Skills ecosystem specifically.
+
+**How it's adopted:** CLI tool; `smithery mcp search`/`smithery mcp add` for MCP servers, plus skills installation/browsing from the same registry
+- **Activity:** 785 (per GitHub page fetch, 2026-07-05)
+- **Activity notes:** fetched live 2026-07-05; 6 releases, latest v1.2.0 (May 2026), 610 commits, 94 forks, 22 open issues — a much smaller install base than the official MCP repos (mcp-servers: 88.1k stars), consistent with being a third-party discovery layer rather than the protocol's own reference implementation
+
+**Provenance:**
+- https://github.com/smithery-ai/cli (fetched 2026-07-05)
+  fetched directly (repo page): description, license, star count, MCP-server + skills registry mechanism, activity signal
+
+
+### Zapier MCP
+
+<a id="zapier-mcp"></a>
+
+**Homepage:** https://github.com/zapier/zapier-mcp  
+**Layer:** Access placement / tool-access protocol layer (equivalent to Block B) — a hosted hub-of-integrations pattern, distinct from both the official reference servers and a registry/discovery tool  
+**License:** MIT for this repo (the client plugin/distribution code) — but the underlying MCP SERVER itself is a hosted proprietary Zapier service with no open-source equivalent in this repo; do not confuse the permissive client-plugin license with the service's own terms
+
+A hosted MCP server (NOT self-hosted software) connecting an agent to 9,000+ apps and 30,000+ actions via Zapier's existing automation-platform integrations — the largest single app-connectivity surface of any access-placement entry in this registry (contrast Composio's 1,000+ toolkits, this registry's largest SELF-HOSTABLE equivalent). The GitHub repo cataloged here is only the CLIENT-side plugin distribution (onboarding, demos, role-specific capability descriptions) that AI clients (Claude, Cursor, GitHub Copilot CLI, Kiro) install to connect — the actual MCP server itself is a centralized, proprietary, hosted Zapier service, not something this repo lets you run yourself. User controls which apps/actions are permitted; every action is logged. Billing: costs two Zapier "tasks" per tool call, on top of whatever Zapier plan a team already has.
+
+**How it's adopted:** Set up at mcp.zapier.com (creates a hosted MCP server instance); install the client plugin from this repo into an MCP-compatible AI client that supports Streamable HTTP
+- **Activity:** 341 (per GitHub page fetch, 2026-07-05, for the client-plugin repo specifically)
+- **Activity notes:** fetched live 2026-07-05; 86 commits — a thin client-plugin repo, not the underlying service, so commit/star activity here undercounts real usage (billing-gated, no public repo for the actual server)
+
+**Provenance:**
+- https://github.com/zapier/zapier-mcp (fetched 2026-07-05)
+  fetched directly (repo page): description, license, star count, client-vs-hosted-service distinction, activity signal, billing model
+
 
 ---
 

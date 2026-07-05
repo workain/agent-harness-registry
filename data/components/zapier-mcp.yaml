@@ -1,0 +1,27 @@
+name: Zapier MCP
+slug: zapier-mcp
+category: access-mcp
+homepage: https://github.com/zapier/zapier-mcp
+layer: "Access placement / tool-access protocol layer (equivalent to Block B) — a hosted hub-of-integrations pattern, distinct from both the official reference servers and a registry/discovery tool"
+what_it_is: >
+  A hosted MCP server (NOT self-hosted software) connecting an agent to 9,000+ apps and 30,000+
+  actions via Zapier's existing automation-platform integrations — the largest single
+  app-connectivity surface of any access-placement entry in this registry (contrast Composio's
+  1,000+ toolkits, this registry's largest SELF-HOSTABLE equivalent). The GitHub repo cataloged
+  here is only the CLIENT-side plugin distribution (onboarding, demos, role-specific capability
+  descriptions) that AI clients (Claude, Cursor, GitHub Copilot CLI, Kiro) install to connect —
+  the actual MCP server itself is a centralized, proprietary, hosted Zapier service, not something
+  this repo lets you run yourself. User controls which apps/actions are permitted; every action is
+  logged. Billing: costs two Zapier "tasks" per tool call, on top of whatever Zapier plan a team
+  already has.
+integration: "Set up at mcp.zapier.com (creates a hosted MCP server instance); install the client plugin from this repo into an MCP-compatible AI client that supports Streamable HTTP"
+license: "MIT for this repo (the client plugin/distribution code) — but the underlying MCP SERVER itself is a hosted proprietary Zapier service with no open-source equivalent in this repo; do not confuse the permissive client-plugin license with the service's own terms"
+open_source: true
+activity:
+  stars: "341 (per GitHub page fetch, 2026-07-05, for the client-plugin repo specifically)"
+  last_verified_note: "fetched live 2026-07-05; 86 commits — a thin client-plugin repo, not the underlying service, so commit/star activity here undercounts real usage (billing-gated, no public repo for the actual server)"
+provenance:
+  - url: https://github.com/zapier/zapier-mcp
+    fetched: "2026-07-05"
+    note: "fetched directly (repo page): description, license, star count, client-vs-hosted-service distinction, activity signal, billing model"
+unverified: []

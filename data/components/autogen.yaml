@@ -1,0 +1,25 @@
+name: AutoGen (Microsoft)
+slug: autogen
+category: subagents
+homepage: https://github.com/microsoft/autogen
+layer: "Capability / subagents layer (equivalent to Block B) — a multi-agent role-composition framework"
+what_it_is: >
+  A programming framework for multi-agent AI applications: agents that act autonomously or work
+  alongside humans, composed via a layered architecture (Core API, AgentChat API, Extensions
+  API). The `ConversableAgent` class is the base abstraction other agent roles (e.g.
+  `AssistantAgent`) build on — agents converse with each other by exchanging messages to jointly
+  finish a task, a peer-to-peer role-composition model distinct from this registry's
+  hub-and-spoke subagent entries (Claude Code Subagents' delegate-and-return model,
+  wshobson/agents' fixed role catalog). Ships `AutoGen Studio`, a no-code workflow builder, as a
+  developer tool alongside the programming framework itself.
+integration: "Python framework (`pip install autogen-agentchat` etc., per the layered API split); compose agents programmatically, not via a plain-file convention like this registry's instructions-rules entries"
+license: "Mixed: MIT for code, CC-BY-4.0 for documentation/content (per the fetched repo page) — a different split pattern than this registry's other mixed-license entries (which split old-vs-new code, not code-vs-docs)"
+open_source: true
+activity:
+  stars: "59.5k (per GitHub page fetch, 2026-07-05)"
+  last_verified_note: "fetched live 2026-07-05; 98 releases, 9k forks, 4.2k dependent projects — BUT the project is explicitly in maintenance mode: 'will not receive new features or enhancements and is community managed going forward,' with Microsoft directing new users to the separate Microsoft Agent Framework (an AutoGen+Semantic-Kernel merger) instead. Cataloged here for its historical/current install base and its distinct peer-to-peer role model, not as an actively-evolving recommendation."
+provenance:
+  - url: https://github.com/microsoft/autogen
+    fetched: "2026-07-05"
+    note: "fetched directly (repo page): architecture, license split, maintenance-mode status and migration guidance, activity signal"
+unverified: []

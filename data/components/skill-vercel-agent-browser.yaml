@@ -1,0 +1,20 @@
+name: vercel-labs/agent-browser
+slug: skill-vercel-agent-browser
+category: skills-tools
+homepage: https://github.com/vercel-labs/agent-browser
+license: "Apache-2.0"
+license_tag: "Apache-2.0"
+open_source: true
+use_cases: "browser automation CLI for AI agents (Vercel's own)"
+what_it_is: >
+  Vercel's own headless browser-automation CLI for AI agents — reportedly accepted into Anthropic's official marketplace per secondary sources [unverified — marketplace-acceptance claim not independently confirmed].
+activity:
+  stars: "37.9k"
+  last_verified_note: "2,433 forks"
+provenance:
+  - url: https://github.com/vercel-labs/agent-browser
+    fetched: "2026-07-05"
+    note: "verified directly via gh api (stars/forks/license) where a repo exists; some entries flagged unverified per search-only sourcing"
+unverified:
+  - "marketplace-acceptance claim (accepted into Anthropic's official marketplace) not independently confirmed"
+deep_dive: deep-dives/components/skill-vercel-agent-browser.md

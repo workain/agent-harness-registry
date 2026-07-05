@@ -1,0 +1,19 @@
+name: wshobson/commands
+slug: subagent-wshobson-commands
+category: subagents
+homepage: https://github.com/wshobson/commands
+license: "MIT"
+license_tag: "MIT"
+open_source: true
+use_cases: "production-ready slash commands, often triggering subagent delegation"
+what_it_is: >
+  A companion repo to `wshobson/agents` (this registry's existing entry): production-ready SLASH COMMANDS, not subagents themselves — a delegation-adjacent mechanism (a command often triggers a subagent) rather than a subagent definition.
+activity:
+  stars: "2.5k"
+  last_verified_note: "pushed 2025-10-12"
+provenance:
+  - url: https://github.com/wshobson/commands
+    fetched: "2026-07-05"
+    note: "verified directly via gh api (stars/forks/license/push date)"
+unverified: []
+deep_dive: deep-dives/components/subagent-wshobson-commands.md

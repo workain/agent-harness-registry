@@ -10,6 +10,11 @@ what_it_is: >
   professionals (avg. 14 years' experience) and are built from real deliverables/
   work-products that exist today, NOT synthetic academic-exam-style questions — a
   deliberate design contrast with MMLU-style benchmarks.
+key_facts:
+  - "1,320 tasks across 44 occupations, 9 GDP-contributing sectors"
+  - "Built from real deliverables, not synthetic exam-style questions"
+  - "Only a 220-task gold subset is open-sourced; the full set is gated"
+  - "OpenAI's own project page returned HTTP 403 on fetch — sourced from the arXiv abstract instead"
 scoring_mechanism: "a public automated grading service is provided [unverified — exact grading mechanism/rubric not detailed in the fetched abstract; the paper reportedly also uses expert/human grading for at least part of the evaluation, not confirmed here]"
 contamination_handling: "no contamination-avoidance discussion found in the fetched abstract"
 data_source: "real deliverables/work-products from industry professionals across 44 occupations; the paper explicitly contrasts this with synthetically-constructed exam-style benchmarks"

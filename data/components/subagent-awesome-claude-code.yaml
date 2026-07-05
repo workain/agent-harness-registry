@@ -1,0 +1,19 @@
+name: hesreallyhim/awesome-claude-code
+slug: subagent-awesome-claude-code
+category: subagents
+homepage: https://github.com/hesreallyhim/awesome-claude-code
+license: "NOASSERTION (verify)"
+license_tag: "Unclear (verify)"
+open_source: true
+use_cases: "broadest general Claude Code ecosystem resource hub (skills, agents, statuslines, tooling)"
+what_it_is: >
+  The highest-starred general "awesome" list for the whole Claude Code ecosystem — broader than subagents alone (also covers skills, statuslines, plugins, tooling). Cataloged here with an explicit broader-than-subagents flag, the same narrowing pattern this registry uses for other framework-scoped entries.
+activity:
+  stars: "48.1k"
+  last_verified_note: "pushed 2026-07-05 (day of fetch)"
+provenance:
+  - url: https://github.com/hesreallyhim/awesome-claude-code
+    fetched: "2026-07-05"
+    note: "verified directly via gh api (stars/forks/license/push date)"
+unverified: []
+deep_dive: deep-dives/components/subagent-awesome-claude-code.md

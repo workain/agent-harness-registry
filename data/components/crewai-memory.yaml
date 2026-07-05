@@ -11,7 +11,9 @@ what_it_is: >
   lacks sufficient context, rather than being a plain search-backed store.
 integration: "A `memory` capability enabled on a CrewAI Crew/Agent alongside tools, knowledge, and checkpointing — part of the same Python package as the orchestration framework, not a separately installable component"
 license: MIT
+license_tag: "MIT"
 open_source: true
+use_cases: "production multi-agent memory, contradiction resolution, context-aware recall"
 activity:
   stars: "54.9k (per GitHub page fetch, 2026-07-05, for the whole crewAI repo — memory is one module within it, not separately starred)"
   last_verified_note: "fetched live 2026-07-05; latest release 1.15.1 (2026-06-27), 212 releases, 320 contributors — actively maintained"
@@ -22,3 +24,4 @@ provenance:
 unverified:
   - "this entry scopes to CrewAI's memory capability specifically, per this catalog's equipment focus — the surrounding multi-agent orchestration framework is out of scope here (CrewAI-the-framework is not itself catalogued as an engine or equipment elsewhere in this registry)"
   - "specific memory architecture details (storage backend, contradiction-resolution mechanism) were not found in the fetched repo page content — only the project's own framing language"
+deep_dive: deep-dives/components/crewai-memory.md

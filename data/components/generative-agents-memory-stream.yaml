@@ -1,0 +1,37 @@
+name: Generative Agents Memory Stream (Stanford)
+slug: generative-agents-memory-stream
+category: memory
+homepage: https://github.com/StanfordHCI/genagents
+license: MIT
+license_tag: MIT
+open_source: true
+use_cases: "believable agent simulations, importance-weighted long-term recall, self-reflection/higher-level inference, social-behavior research"
+what_it_is: >
+  The memory architecture from the 2023 Stanford/Google "Generative Agents: Interactive Simulacra
+  of Human Behavior" paper (arXiv:2304.03442) — one of the most-cited agent-memory designs, and
+  the direct ancestor of the "importance + recency + relevance" scoring pattern several commercial
+  memory products in this registry (Mem0, Cognee) now use as a retrieval heuristic. Three parts:
+  (1) a **Memory Stream** — a timestamped, append-only log of every observation, each entry
+  carrying a natural-language description, a creation timestamp, a last-accessed timestamp, and an
+  LLM-assigned importance score; (2) **Retrieval** — a scoring function combining recency
+  (exponential decay), importance, and relevance (embedding cosine similarity) to surface the
+  handful of memories that matter for the current moment, rather than replaying the whole log; (3)
+  **Reflection** — a periodic synthesis step that generates higher-level inferences FROM raw
+  memories (e.g. noticing a pattern across several observations), which are themselves written
+  back into the stream and become retrievable — memory reasoning about memory, not just storing
+  it. `StanfordHCI/genagents` is the official reference implementation, including a bank of 3,000+
+  demographic agents built from real interview data (General Social Survey) for social-science
+  research use.
+integration: "Reference Python implementation in the linked repo — this is a research codebase (13 commits, last touched as an academic release, not a maintained product) rather than an installable SDK; most production memory products in this registry (Mem0 especially) implement variations of this same importance/recency/relevance retrieval formula rather than depending on this repo directly"
+activity:
+  stars: "566 (per GitHub page fetch, 2026-07-05)"
+  last_verified_note: "fetched live 2026-07-05; 153 forks, 6 open issues, 6 open PRs, 13 commits on main — an academic reference release, not an actively iterated product; treat as a stable historical artifact, not a live dependency"
+provenance:
+  - url: https://github.com/StanfordHCI/genagents
+    fetched: "2026-07-05"
+    note: "fetched directly (repo page): license, star count, capabilities, activity signal"
+  - url: https://ar5iv.labs.arxiv.org/html/2304.03442
+    note: "found via search summary of the original paper: Memory Stream/Retrieval/Reflection architecture description — not independently re-fetched in full for this entry"
+unverified:
+  - "the paper's own architecture description (memory stream/retrieval/reflection mechanics) is drawn from a WebSearch synthesis of the arXiv paper and secondary explainer articles, not an independent full read of the primary paper text"
+deep_dive: deep-dives/components/generative-agents-memory-stream.md

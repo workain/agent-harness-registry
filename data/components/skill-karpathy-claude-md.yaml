@@ -1,0 +1,19 @@
+name: multica-ai/andrej-karpathy-skills
+slug: skill-karpathy-claude-md
+category: skills-tools
+homepage: https://github.com/multica-ai/andrej-karpathy-skills
+license: "No license file found — verify before redistributing"
+license_tag: "Unclear (verify)"
+open_source: true
+use_cases: "single CLAUDE.md encoding four viral behavioral rules for LLM coding failure modes"
+what_it_is: >
+  A single CLAUDE.md (not a SKILL.md package) encoding four behavioral rules derived from Andrej Karpathy's viral January-2026 observations on LLM coding failure modes: no silent assumptions, no over-engineering, no orthogonal changes, explicit verification steps. The fastest-growing artifact in this whole research pass (0 to 180k+ stars in months).
+activity:
+  stars: "187.8k"
+  last_verified_note: "19,278 forks"
+provenance:
+  - url: https://github.com/multica-ai/andrej-karpathy-skills
+    fetched: "2026-07-05"
+    note: "verified directly via gh api (stars/forks/license) where a repo exists; some entries flagged unverified per search-only sourcing"
+unverified: []
+deep_dive: deep-dives/components/skill-karpathy-claude-md.md

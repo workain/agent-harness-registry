@@ -13,6 +13,7 @@ what_it_is: >
   equipment specifically, not just for adjacent app-scaffolding.
 components_bundled: ["instructions (AGENTS.md)", "rules (14, scoped/auto-loading)", "skills (22, quality-gate-enforcing)"]
 engine_lock: "engine-agnostic by construction (AGENTS.md-based) — the one bundle in this registry that is both assembled AND portable"
+license_tag: "Proprietary (paid product)"
 license: "Proprietary, paid commercial product — no GitHub repo found; appears closed-source, sold as a template drop, not an open-source project"
 open_source: false
 activity:

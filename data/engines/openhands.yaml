@@ -6,13 +6,11 @@ what_it_is: >
   An open, self-hosted "developer control center" / agent orchestration platform
   (formerly OpenDevin) that can run its own open-source agent or third-party agents
   (Claude Code, Codex, Gemini, etc.) via the Agent-Client Protocol (ACP), across local,
-  Docker-sandboxed, or remote/cloud backends. This is an ENGINE/PLATFORM in our taxonomy
-  (it hosts and drives control loops), not equipment we would compose onto one — though
-  it is itself a consumer of equipment (e.g. it could be pointed at MCP tool servers or
-  a memory layer). Regularly benchmarked on SWE-bench Verified and GAIA; launched its own
-  broader "OpenHands Index" (issue resolution, greenfield app dev, frontend tasks,
-  testing) in January 2026 [unverified — index details not independently fetched, from
-  search-summary only].
+  Docker-sandboxed, or remote/cloud backends — itself a consumer of equipment (e.g. it
+  can be pointed at MCP tool servers or a memory layer). Regularly benchmarked on
+  SWE-bench Verified and GAIA; launched its own broader "OpenHands Index" (issue
+  resolution, greenfield app dev, frontend tasks, testing) in January 2026 [unverified
+  — index details not independently fetched, from search-summary only].
 license: "MIT for the repo overall, with a carve-out: the LICENSE file opens with a portions-notice (\"Portions of this software are licensed as follows: * All content that resides under the enterprise/ directory is licensed under the license defined in enterprise/LICENSE; * Content outside of the above ... is available under the MIT license as defined below\"), THEN the MIT text itself — confirmed by fetching the actual file, not a badge"
 open_source: true
 sandboxing: "local execution (full filesystem access, explicitly warned against), Docker sandbox (isolates to a mounted PROJECTS_PATH), or remote backends (VMs/cloud/OpenHands Cloud+Enterprise)"
@@ -26,3 +24,4 @@ provenance:
     note: "fetched live 2026-07-05 to confirm MIT text directly, not just a badge"
 unverified:
   - "SWE-bench Verified \"53%+\" resolve-rate figure and the \"OpenHands Index\" (Jan 2026) are from a search-result summary, not independently re-fetched from a primary source — treat as [unverified — from secondary summary]"
+deep_dive: deep-dives/engines/openhands.md

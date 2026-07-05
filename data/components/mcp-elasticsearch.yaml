@@ -1,0 +1,19 @@
+name: Elasticsearch MCP Server
+slug: mcp-elasticsearch
+category: access-mcp
+homepage: https://github.com/elastic/mcp-server-elasticsearch
+license: "Apache-2.0"
+license_tag: "Apache-2.0"
+open_source: true
+use_cases: "querying/managing Elasticsearch data from an agent"
+what_it_is: >
+  Elastic's official server for querying and managing Elasticsearch data through natural language.
+activity:
+  stars: "682"
+  last_verified_note: "141 forks, pushed 2026-07-01"
+provenance:
+  - url: https://github.com/elastic/mcp-server-elasticsearch
+    fetched: "2026-07-05"
+    note: "verified directly via gh api (stars/forks/license/push date) or the vendor's own site for hosted-only entries"
+unverified: []
+deep_dive: deep-dives/components/mcp-elasticsearch.md

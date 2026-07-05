@@ -9,6 +9,11 @@ what_it_is: >
   mechanism. Ships a real, mature Docker sandbox backend with an explicit lifecycle
   contract and its own eval-suite collection (`inspect_evals`, incl. an NIAH
   implementation harness-bench itself ported from).
+key_facts:
+  - "6 extension points (models/solvers/scorers/sandboxes/approvers/hooks) via one entry-point mechanism"
+  - "Mature Docker sandbox backend with an explicit lifecycle contract"
+  - "Implements both pass_at(k) and pass_k(k) (tau-bench's all-k-must-succeed variant)"
+  - "No contamination gate or reward-hacking detection built in"
 capabilities:
   contamination_gate: "confirmed absent — no canary, no contamination detector, no adversarial-perturbation harness; only adjacent primitives (seeded shuffle, tool-call Approver chains, idempotent eval_set())"
   reward_hacking_detection: "confirmed absent — no reward-hacking gate built in"

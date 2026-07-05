@@ -10,6 +10,11 @@ what_it_is: >
   observation (third-person) interaction scenarios, plus noise-extended dialogues
   (FirstNoise/ThirdNoise, ~1k tokens per noise unit) to test retrieval at scale
   (pre-sampled 0-10k and 100k-token variants).
+key_facts:
+  - "ACL 2025 Findings — distinguishes factual vs. reflective memory"
+  - "First-person (participation) and third-person (observation) interaction scenarios"
+  - "Noise-extended dialogues test retrieval at 0-10k and 100k-token scale"
+  - "License shown as an MIT badge on the repo page but no LICENSE file text independently confirmed"
 scoring_mechanism: "[unverified — specific metric formulas (paper mentions accuracy/recall/capacity/temporal-efficiency in secondary summaries, but the primary paper/repo pages fetched did not enumerate exact formulas)]"
 contamination_handling: "none found in fetched content"
 data_source: "dataset released via Baidu Drive / Google Drive links referenced from the GitHub README, not stored directly in-repo"

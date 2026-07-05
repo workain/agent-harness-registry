@@ -1,0 +1,19 @@
+name: travisvn/awesome-claude-skills
+slug: skill-travisvn-awesome
+category: skills-tools
+homepage: https://github.com/travisvn/awesome-claude-skills
+license: "No license file found — verify before redistributing"
+license_tag: "Unclear (verify)"
+open_source: true
+use_cases: "curated Claude-specific skills index"
+what_it_is: >
+  A curated index of Claude-specific skills.
+activity:
+  stars: "13.9k"
+  last_verified_note: "1,635 forks"
+provenance:
+  - url: https://github.com/travisvn/awesome-claude-skills
+    fetched: "2026-07-05"
+    note: "verified directly via gh api (stars/forks/license) where a repo exists; some entries flagged unverified per search-only sourcing"
+unverified: []
+deep_dive: deep-dives/components/skill-travisvn-awesome.md

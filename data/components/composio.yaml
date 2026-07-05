@@ -13,7 +13,9 @@ what_it_is: >
   AutoGen, Google ADK, and others directly.
 integration: "`pip install composio` (Python) or `npm install @composio/core` (TypeScript); framework-specific provider packages for direct integration with the major agent frameworks"
 license: MIT
+license_tag: "MIT"
 open_source: true
+use_cases: "connecting agents to 1000+ SaaS tools, auth management, sandboxed tool execution"
 activity:
   stars: "29.1k (per GitHub page fetch, 2026-07-05)"
   last_verified_note: "fetched live 2026-07-05; latest release @composio/slim@0.13.1 (2026-06-27), 860 releases, 4,339 commits, 402 dependent repositories — actively maintained"
@@ -22,3 +24,4 @@ provenance:
     fetched: "2026-07-05"
     note: "fetched directly (repo page): description, license, star count, SDK/provider surface, activity signal"
 unverified: []
+deep_dive: deep-dives/components/composio.md

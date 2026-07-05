@@ -16,6 +16,7 @@ what_it_is: >
   keeps regardless of platform.
 components_bundled: ["instructions", "knowledge files", "tool/action wiring"]
 engine_lock: "hard-locked to the OpenAI/ChatGPT platform — no export path for the assembled configuration itself"
+license_tag: "Proprietary (no export)"
 license: "Proprietary OpenAI product feature — not open-source or redistributable"
 open_source: false
 activity:

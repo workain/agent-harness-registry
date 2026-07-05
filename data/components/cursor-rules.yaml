@@ -17,7 +17,9 @@ what_it_is: >
   paid-plan feature.
 integration: "Author `.mdc` files under a project's `.cursor/rules/` directory (or drop an AGENTS.md); User Rules are configured globally per developer; Team Rules via a paid-plan dashboard"
 license: "Cursor itself (the IDE/engine this feature ships inside) is proprietary; the RULES FILES a team authors are the team's own content, with no special license imposed by Cursor — this entry catalogs the CONVENTION/mechanism, not a redistributable piece of software"
+license_tag: "Proprietary feature (usable)"
 open_source: false
+use_cases: "project-specific AI coding conventions, glob-scoped instructions"
 activity:
   stars: null
   last_verified_note: "fetched live 2026-07-05 from Cursor's own official docs (cursor.com/docs) — this documents a real, current product feature, not a deprecated or speculative one; recent addition noted: nested AGENTS.md support in subdirectories"
@@ -27,3 +29,4 @@ provenance:
     note: "fetched directly: rule formats (.mdc vs legacy .cursorrules vs AGENTS.md), the four application modes, Team Rules paid-plan status"
 unverified:
   - "Cursor the underlying engine/IDE is not itself catalogued in this registry's engines category (out of scope for this entry, which is about the rules CONVENTION specifically) — a future pass could add it alongside Claude Code/Codex CLI/etc."
+deep_dive: deep-dives/components/cursor-rules.md

@@ -1,0 +1,21 @@
+name: PulseMCP
+slug: mcp-pulsemcp
+category: access-mcp
+homepage: https://pulsemcp.com
+license: "Proprietary web directory — no public repo found"
+license_tag: "Proprietary"
+open_source: false
+use_cases: "daily-updated aggregated directory of MCP servers"
+what_it_is: >
+  A proprietary web directory claiming 20,000+ servers updated daily, aggregating from the official registry plus scraping/manual curation.
+activity:
+  stars: null
+  last_verified_note: null
+provenance:
+  - url: https://pulsemcp.com
+    fetched: "2026-07-05"
+    note: "verified directly via gh api (stars/forks/license/push date) or the vendor's own site for hosted-only entries"
+unverified:
+  - "20,000+ server count and 'updated daily' claim are vendor-reported, not independently verified"
+  - "no public repo found to check against"
+deep_dive: deep-dives/components/mcp-pulsemcp.md

@@ -1,0 +1,19 @@
+name: rahulvrane/awesome-claude-agents
+slug: subagent-rahulvrane-collection
+category: subagents
+homepage: https://github.com/rahulvrane/awesome-claude-agents
+license: "NOASSERTION (verify)"
+license_tag: "Unclear (verify)"
+open_source: true
+use_cases: "community-contributed subagents plus orchestration recipes"
+what_it_is: >
+  A community-contributed subagent collection that also includes orchestration recipes, not just flat personas.
+activity:
+  stars: "359"
+  last_verified_note: "pushed 2026-03-06"
+provenance:
+  - url: https://github.com/rahulvrane/awesome-claude-agents
+    fetched: "2026-07-05"
+    note: "verified directly via gh api (stars/forks/license/push date)"
+unverified: []
+deep_dive: deep-dives/components/subagent-rahulvrane-collection.md

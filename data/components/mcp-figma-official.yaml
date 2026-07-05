@@ -1,0 +1,19 @@
+name: Figma MCP (official)
+slug: mcp-figma-official
+category: access-mcp
+homepage: https://mcp.figma.com
+license: "Closed-source hosted server; a local desktop-app variant also exists"
+license_tag: "Proprietary"
+open_source: false
+use_cases: "official Figma design-context access for coding agents"
+what_it_is: >
+  Figma's own official hosted MCP server (closed-source) plus a local desktop-app variant. Currently free during beta; will become usage-based paid.
+activity:
+  stars: null
+  last_verified_note: null
+provenance:
+  - url: https://mcp.figma.com
+    fetched: "2026-07-05"
+    note: "verified directly via gh api (stars/forks/license/push date) or the vendor's own site for hosted-only entries"
+unverified: []
+deep_dive: deep-dives/components/mcp-figma-official.md

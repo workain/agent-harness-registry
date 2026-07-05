@@ -12,7 +12,9 @@ what_it_is: >
   pump, but knowledge-graph-first rather than tiered-access-band-first.
 integration: "Python SDK, REST API (localhost:8000 default), CLI (cognee-cli), Docker images, a TypeScript client (@cognee/cognee-ts), a Rust library (cognee-rs), and a Claude Code plugin integration"
 license: Apache-2.0
+license_tag: "Apache-2.0"
 open_source: true
+use_cases: "knowledge-graph memory, ontology-linked retrieval, long-term agent memory"
 activity:
   stars: "27k (per GitHub page fetch, 2026-07-05)"
   last_verified_note: "fetched live 2026-07-05; latest release v1.2.2 (2026-06-26), 8,429 commits, 237 open issues, 345 open PRs — actively maintained; the project has 'graduated' GitHub's Secure Open Source program per its own README"
@@ -21,3 +23,4 @@ provenance:
     fetched: "2026-07-05"
     note: "fetched directly (repo page): description, license, star count, architecture, integration surface, activity signal"
 unverified: []
+deep_dive: deep-dives/components/cognee.md

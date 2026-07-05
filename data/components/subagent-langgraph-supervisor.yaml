@@ -1,0 +1,20 @@
+name: langchain-ai/langgraph-supervisor-py
+slug: subagent-langgraph-supervisor
+category: subagents
+homepage: https://github.com/langchain-ai/langgraph-supervisor-py
+license: "MIT"
+license_tag: "MIT"
+open_source: true
+use_cases: "canonical hub-and-spoke supervisor routing pattern for LangGraph"
+what_it_is: >
+  The canonical hub-and-spoke "supervisor" role pattern for LangGraph — a supervisor LLM node reads full history and routes to specialist nodes. This pattern runs inside LangGraph's own graph-execution runtime — LangGraph itself is a full framework broader than equipment, and that runtime is engine territory per this registry's harness=equipment-vs-engine split. LangGraph is NOT catalogued in this registry's `engines/` category; treat this entry as documenting a supervisor-routing pattern worth knowing about, not a recommendation to adopt the whole framework as equipment.
+activity:
+  stars: "1.6k"
+  last_verified_note: "pushed 2026-06-23"
+provenance:
+  - url: https://github.com/langchain-ai/langgraph-supervisor-py
+    fetched: "2026-07-05"
+    note: "verified directly via gh api (stars/forks/license/push date)"
+unverified:
+  - "this entry scopes to the supervisor-routing pattern specifically — the surrounding LangGraph graph-execution runtime it runs on is out of scope and is NOT catalogued as an engine elsewhere in this registry"
+deep_dive: deep-dives/components/subagent-langgraph-supervisor.md

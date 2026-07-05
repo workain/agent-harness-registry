@@ -11,7 +11,9 @@ what_it_is: >
   learning/adaptation rather than treating each interaction as isolated context.
 integration: "CLI for local terminal use; TypeScript/Python SDKs to embed agents in an application; a self-hosted App Server for custom deployments. Note: this entry catalogs Letta as MEMORY EQUIPMENT (its self-editing memory-block architecture); its App Server/agent-hosting role overlaps with the engines category — see the note in unverified."
 license: Apache-2.0
+license_tag: "Apache-2.0"
 open_source: true
+use_cases: "self-editing agent memory, stateful agent hosting"
 activity:
   stars: "23.7k (per GitHub page fetch, 2026-07-05)"
   last_verified_note: "fetched live 2026-07-05; latest release v0.16.8 (2025-05-14), 177 releases, 7,467 commits on main — the fetch itself notes active development has shifted to a separate 'Letta Agent' repo, with this one now maintained mainly for API compatibility"

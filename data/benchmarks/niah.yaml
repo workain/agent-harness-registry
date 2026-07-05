@@ -9,6 +9,11 @@ what_it_is: >
   position/depth, then ask the model to retrieve it. The public concept is openly
   implemented in UK AISI's `inspect_evals` collection (which harness-bench's own port
   was itself derived from).
+key_facts:
+  - "Classic needle-in-a-haystack long-context retrieval concept"
+  - "Public implementation lives in UK AISI's inspect_evals (MIT)"
+  - "harness-eval's own port is mechanically scored, not LLM-judge"
+  - "harness-eval's port closed an ordinal-position gaming vector found across 3 ROAST rounds"
 scoring_mechanism: "varies by implementation — inspect_evals' own port uses an LLM-judge rubric scale; harness-eval's clean-room port uses mechanical, adversarially-hardened checks (see our_adapter)"
 contamination_handling: "n/a to the base concept — depends on implementation"
 data_source: "openly licensed via inspect_evals; harness-bench's port used only 40 of 225 grid cells, by its own docstring's admission not comparable to \"full NIAH\""

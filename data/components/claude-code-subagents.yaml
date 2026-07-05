@@ -17,7 +17,9 @@ what_it_is: >
   and are checked into version control for team sharing.
 integration: "Author a Markdown file under `.claude/agents/` with YAML frontmatter (name, description, tools, model) + a system-prompt body; Claude Code auto-discovers and either auto-delegates or accepts explicit by-name invocation"
 license: "Documents a feature of Claude Code, which is itself proprietary (see this registry's `engines/claude-code` entry) — the subagent files a team authors are their own content, not licensed software from Anthropic"
+license_tag: "Proprietary feature (usable)"
 open_source: false
+use_cases: "task delegation with isolated context, parallel specialist review"
 activity:
   stars: null
   last_verified_note: "fetched live 2026-07-05 from the official code.claude.com docs — describes a current, actively documented feature"
@@ -26,3 +28,4 @@ provenance:
     note: "found via search summary of the official docs page (delegation mechanism, frontmatter format, project-level storage) — not independently fetched in full for this entry"
 unverified:
   - "this entry's content is drawn from a WebSearch synthesis of the official docs page, not an independent full WebFetch of that page — the mechanism description should be treated as reliable (multiple independent sources converge on the same details) but not as a direct primary-source quote"
+deep_dive: deep-dives/components/claude-code-subagents.md

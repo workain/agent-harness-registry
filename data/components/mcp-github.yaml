@@ -1,0 +1,21 @@
+name: GitHub MCP Server
+slug: mcp-github
+category: access-mcp
+homepage: https://github.com/github/github-mcp-server
+license: MIT
+license_tag: MIT
+open_source: true
+use_cases: "repo browsing/search, issue and PR automation, CI/CD workflow intelligence, Dependabot/security findings"
+what_it_is: >
+  GitHub's official first-party MCP server: repo browsing/search, issue and PR automation, CI/CD
+  workflow intelligence, and security/Dependabot findings, exposed as MCP tools.
+integration: "Remote (hosted by GitHub, OAuth, no token to manage — the easiest starting point) or local (Docker image) variants. Compatible with VS Code 1.101+, Claude Desktop, Cursor, Windsurf."
+activity:
+  stars: "31.2k (per gh api, 2026-07-05)"
+  last_verified_note: "4,512 forks, pushed 2026-07-03"
+provenance:
+  - url: https://github.com/github/github-mcp-server
+    fetched: "2026-07-05"
+    note: "verified directly via gh api (stars/forks/license/push date)"
+unverified: []
+deep_dive: deep-dives/components/mcp-github.md

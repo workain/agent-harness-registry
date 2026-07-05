@@ -8,6 +8,11 @@ what_it_is: >
   as of v2.0: compiling code, training models, setting up servers). Each task = an
   English instruction + a containerized Docker environment + a programmatic verification
   test suite + a human-written oracle solution.
+key_facts:
+  - "89 tasks as of v2.0: compiling code, training models, setting up servers"
+  - "Each task = instruction + Docker environment + verification suite + human oracle solution"
+  - "Frontier models/agents score under 65% on the v2.0 set per the paper's own abstract"
+  - "No contamination gate or reward-hacking safeguards discussed in fetched content"
 capabilities:
   contamination_gate: "none discussed in the paper or repo content fetched — no contamination-avoidance or training-data-overlap mitigation found"
   reward_hacking_detection: "none discussed — no documented gaming/cheating safeguards found in fetched content"

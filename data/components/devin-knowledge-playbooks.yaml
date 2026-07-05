@@ -1,0 +1,30 @@
+name: Devin Knowledge & Playbooks
+slug: devin-knowledge-playbooks
+category: instructions-rules
+homepage: https://docs.devin.ai/product-guides/knowledge
+layer: "Instruction / identity layer (equivalent to Block A) — the vendor-provided PATTERN, not a standalone product"
+what_it_is: >
+  Cognition's Devin ships two related but distinct instruction mechanisms. **Knowledge** is a
+  bank of tips/advice/instructions Devin references across ALL sessions, each entry gated by a
+  required "trigger description" — Devin recalls a Knowledge item only when current work matches
+  its trigger, rather than preloading everything (a retrieval-gated design, closer to this
+  registry's memory-category entries than a flat always-loaded rules file). Knowledge items
+  organize into nested folders, toggleable as a whole. **Playbooks** are template prompts
+  encoding a full task recipe (steps + a "definition of done") as one reusable, invocable unit —
+  triggered instantly via a macro (e.g. typing `!triage-bug`) rather than being recalled
+  automatically. Playbooks are also versioned: every edit creates a new version with rollback.
+integration: "Authored via Devin's Settings & Library UI, not as files in a repo — a materially different authoring model than AGENTS.md/CLAUDE.md/GEMINI.md/Cursor Rules/Windsurf Rules, all of which are plain files a team commits to version control"
+license: "Documents a feature of Devin (proprietary, Cognition AI — the same company that now maintains Windsurf, per this registry's windsurf-rules entry) — not open-source or redistributable"
+license_tag: "Proprietary feature (usable)"
+open_source: false
+use_cases: "trigger-gated team knowledge sharing, reusable task-recipe automation"
+activity:
+  stars: null
+  last_verified_note: "fetched live 2026-07-05 from the official docs.devin.ai product guide"
+provenance:
+  - url: https://docs.devin.ai/product-guides/knowledge
+    fetched: "2026-07-05"
+    note: "fetched directly: Knowledge's trigger-description recall mechanism, folder organization, product classification (confirmed proprietary)"
+unverified:
+  - "Playbooks' macro-invocation and versioning details are drawn from a WebSearch synthesis of secondary Medium posts, not independently fetched from a Devin primary-source page — treat the Knowledge description as more reliably sourced than the Playbooks description"
+deep_dive: deep-dives/components/devin-knowledge-playbooks.md

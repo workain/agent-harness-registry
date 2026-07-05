@@ -17,7 +17,9 @@ what_it_is: >
   functional slot (Block B), at cross-vendor scale.
 integration: "Drop a skill directory with a SKILL.md into a project/plugin marketplace; Claude Code supports installing skill packs via `/plugin install <pack>@anthropic-agent-skills`"
 license: "mixed — the repo's own README states open-source (Apache-2.0-style) for most skills, but document-creation skills are described as \"source-available\" rather than fully open [unverified — exact per-skill license terms not enumerated in the fetched content, verify before redistributing any specific skill]"
+license_tag: "Mixed (see write-up)"
 open_source: true
+use_cases: "reusable task procedures, document creation, cross-engine capability packaging"
 activity:
   stars: "158k (per GitHub page fetch, 2026-07-05)"
   last_verified_note: "fetched live 2026-07-05; 43 commits, 283 open issues, 725 open PRs, 18.7k forks — very high engagement relative to commit count, consistent with a young, fast-adopted standard rather than a mature slow-moving codebase"

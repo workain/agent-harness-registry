@@ -1,0 +1,19 @@
+name: Grafana MCP
+slug: mcp-grafana
+category: access-mcp
+homepage: https://github.com/grafana/mcp-grafana
+license: "Apache-2.0"
+license_tag: "Apache-2.0"
+open_source: true
+use_cases: "dashboards, alerts, incident response, cross-backend observability queries (Prometheus/Loki/Elasticsearch/CloudWatch)"
+what_it_is: >
+  Grafana's official server: 40+ tools across 19 categories spanning dashboards, alerts, Incident/Sift, and pass-through queries to Prometheus/Loki/Elasticsearch/CloudWatch and more.
+activity:
+  stars: "3.2k"
+  last_verified_note: "395 forks, pushed 2026-07-05"
+provenance:
+  - url: https://github.com/grafana/mcp-grafana
+    fetched: "2026-07-05"
+    note: "verified directly via gh api (stars/forks/license/push date) or the vendor's own site for hosted-only entries"
+unverified: []
+deep_dive: deep-dives/components/mcp-grafana.md

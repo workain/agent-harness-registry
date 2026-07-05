@@ -18,7 +18,9 @@ what_it_is: >
   this registry's other rules entries all independently converged on.
 integration: "Author Markdown files under `.devin/rules/` (or the legacy `.windsurfrules` at the workspace root); global rules go in `~/.codeium/windsurf/memories/global_rules.md`; enterprise rules are IT-deployed via OS-specific directories"
 license: "Documents a feature of Windsurf/Cascade (proprietary, under Cognition/Devin) — the rules FILES a team authors are their own content, not licensed software"
+license_tag: "Proprietary feature (usable)"
 open_source: false
+use_cases: "project + global instruction scoping for Windsurf/Cascade"
 activity:
   stars: null
   last_verified_note: "fetched live 2026-07-05 from docs.devin.ai (redirected from the legacy docs.windsurf.com URL, confirming the Cognition/Devin acquisition is reflected in current documentation infrastructure, not just announcements)"
@@ -27,3 +29,4 @@ provenance:
     fetched: "2026-07-05"
     note: "fetched directly (redirected live from docs.windsurf.com/windsurf/cascade/memories): Memories vs. Rules distinction, three scoping levels, legacy .windsurfrules status, character limits"
 unverified: []
+deep_dive: deep-dives/components/windsurf-rules.md

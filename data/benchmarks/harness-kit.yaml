@@ -14,6 +14,11 @@ what_it_is: >
   PRs land. Built specifically to mechanically gate every verdict on contamination,
   answer-leakage, and reward-hacking resistance rather than relying on process
   discipline alone.
+key_facts:
+  - "5 task-family adapters: devtasks, honest_eval/agent_memory_E1, niah_v1 (shipped) + bfcl_memory_v1, persistbench_v1 (built, unmerged as of this writing)"
+  - "Mechanical contamination gate (G3 no-context control) on every suite"
+  - "Mechanical reward-hacking gates (G4 perturbation-collapse) plus named adversarial agent panels"
+  - "pass@1/pass^k with bootstrap CIs and an explicit NaN/inconclusive sentinel"
 capabilities:
   contamination_gate: "mechanical — G3 no-context/no-ingest control on every suite (an honest agent given no task context must score at/near floor); a build-time grounding check additionally verifies every task's gold answer is actually present in the context shipped with it"
   reward_hacking_detection: "mechanical — G4 perturbation-collapse gates (does accuracy collapse under a distractor/decoy variant) plus NAMED adversarial agent panels per suite (e.g. NonemptyOnlyAgent, ContextAwareStuffingAgent, LateOccurrenceStuffingAgent) and, in two suites, brute-force selector-family gates (no_ordinal_shortcut_gate, no_surface_shortcut_gate) that mechanically enumerate whole families of cheap zero-verification shortcuts rather than relying on one named agent per finding"

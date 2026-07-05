@@ -12,6 +12,11 @@ what_it_is: >
   updating on a GENUINELY evidenced correction (sycophancy-resistance)? Originated in
   rmr-rnd/harness-bench's persistbench module (30 JSON tasks, 100% LLM-judge via
   regex-extracted JSON scoring).
+key_facts:
+  - "3 axes: beneficial-memory, cross-domain transfer, sycophancy-resistance"
+  - "A task CONCEPT, not copyrightable — upstream harness-bench's implementation has no LICENSE file"
+  - "Upstream scoring is 100% LLM-judge; harness-eval's reimplementation is fully mechanical"
+  - "harness-eval's own adapter went through 6 ROAST rounds closing a hedge-detection gaming class"
 scoring_mechanism: "upstream (harness-bench): 100% LLM-judge via regex-extracted JSON score, with a defined-but-unconsumed epochs=3 field (no real reliability aggregation). harness-eval's clean-room reimplementation: fully mechanical (is_hedged marker-based trust check), no judge model on the core scoring path"
 contamination_handling: "n/a — synthetic task concept"
 data_source: "upstream harness-bench version: unknown provenance, no LICENSE file in that repo. harness-eval's version: 100% original synthetic content, authored from scratch"

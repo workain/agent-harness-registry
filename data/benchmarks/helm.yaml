@@ -7,6 +7,11 @@ what_it_is: >
   covering a wide range of tasks, run through a common runner/metrics pipeline. Ships its
   own robustness metric: worst-case accuracy over systematic input perturbations
   (typos, contrast sets, dialect shifts).
+key_facts:
+  - "Dozens of Scenario classes across a broad task range"
+  - "Ships its own robustness metric: worst-case accuracy over input perturbations"
+  - "Contamination acknowledged as a limitation, not mechanically gated"
+  - "No repeated-run variance/confidence-interval mechanism found in fetched text"
 capabilities:
   contamination_gate: "acknowledged as a limitation (evidence pushed to a paper appendix), not mechanically gated at eval time"
   reward_hacking_detection: "none in the scoring-exploit sense; the input-perturbation robustness metric is a different axis (robustness to input variation, not resistance to a candidate gaming the SCORER)"

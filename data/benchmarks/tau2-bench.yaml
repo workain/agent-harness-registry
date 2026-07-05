@@ -8,6 +8,11 @@ what_it_is: >
   retail, telecom, and banking_knowledge (knowledge-retrieval-based). Original tau-bench
   (arXiv:2406.12045) was text-only; τ²-bench/1.0.0 added multimodal, knowledge-aware,
   and voice (full-duplex, real-time audio) evaluation.
+key_facts:
+  - "5 domains: mock, airline, retail, telecom, banking_knowledge"
+  - "τ²-bench/1.0.0 added multimodal, knowledge-aware, and full-duplex voice evaluation over the original text-only tau-bench"
+  - "No contamination gate or reward-hacking detection found in fetched content"
+  - "1.5k stars (fetched 2026-07-05)"
 capabilities:
   contamination_gate: "none found in fetched content"
   reward_hacking_detection: "none found in fetched content"

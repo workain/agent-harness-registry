@@ -202,15 +202,15 @@ Tooling and task sets for measuring agents, distinct from equipping them. Split 
 
 | Name | Key facts | Contamination gate | Reliability |
 |---|---|---|---|
-| [AgentBench](#agentbench) | — | none found, despite ~half of task instructions be… | explicit temperature=0 greedy decoding "to ensure… |
-| [harness_kit (workain/harness-eval)](#harness-kit) | — | mechanical — G3 no-context/no-ingest control on e… | pass@1 / pass^k (Chen et al. 2021 estimator) plus… |
-| [HELM (Holistic Evaluation of Language Models)](#helm) | — | acknowledged as a limitation (evidence pushed to… | not found in fetched text — no confidence-interva… |
-| [METR Task Standard / Vivaria](#metr-task-standard) | — | process-based — elicitation guidelines, mandatory… | explicit score@k (best-of-k, a pass@k variant, no… |
-| [OpenAI simple-evals](#openai-simple-evals) | — | confirmed absent — grepped the README and all cod… | partial — --n-repeats (MATH/GPQA, default 10) dup… |
-| [rmr-rnd/harness-bench](#harness-bench) | — | none found (grepped for contamination/leakage/can… | epochs=3 is SET for 2 of 3 task types but never c… |
-| [tau-bench / tau2-bench (τ²-bench)](#tau2-bench) | — | none found in fetched content | not detailed in fetched content — evaluates actio… |
-| [Terminal-Bench](#terminal-bench) | — | none discussed in the paper or repo content fetch… | not addressed in fetched content [unverified — pa… |
-| [UK AISI Inspect AI](#inspect-ai) | — | confirmed absent — no canary, no contamination de… | Epochs(count, reducer) with mean/median/mode/max/… |
+| [AgentBench](#agentbench) | 8 environments (OS/bash, DB/SQL, Knowledge Graph, card game, puzzles,… | none found, despite ~half of task instructions be… | explicit temperature=0 greedy decoding "to ensure… |
+| [harness_kit (workain/harness-eval)](#harness-kit) | 5 task-family adapters: devtasks, honest_eval/agent_memory_E1, niah_v… | mechanical — G3 no-context/no-ingest control on e… | pass@1 / pass^k (Chen et al. 2021 estimator) plus… |
+| [HELM (Holistic Evaluation of Language Models)](#helm) | Dozens of Scenario classes across a broad task range; Ships its own r… | acknowledged as a limitation (evidence pushed to… | not found in fetched text — no confidence-interva… |
+| [METR Task Standard / Vivaria](#metr-task-standard) | Task Standard spec + Vivaria runner, used for frontier-model dangerou… | process-based — elicitation guidelines, mandatory… | explicit score@k (best-of-k, a pass@k variant, no… |
+| [OpenAI simple-evals](#openai-simple-evals) | Deliberately narrow — as of July 2025 only HealthBench/BrowseComp/Sim… | confirmed absent — grepped the README and all cod… | partial — --n-repeats (MATH/GPQA, default 10) dup… |
+| [rmr-rnd/harness-bench](#harness-bench) | Ports 3 benchmarks: bfcl_memory, persistbench, niah; No LICENSE file… | none found (grepped for contamination/leakage/can… | epochs=3 is SET for 2 of 3 task types but never c… |
+| [tau-bench / tau2-bench (τ²-bench)](#tau2-bench) | 5 domains: mock, airline, retail, telecom, banking_knowledge; τ²-benc… | none found in fetched content | not detailed in fetched content — evaluates actio… |
+| [Terminal-Bench](#terminal-bench) | 89 tasks as of v2.0: compiling code, training models, setting up serv… | none discussed in the paper or repo content fetch… | not addressed in fetched content [unverified — pa… |
+| [UK AISI Inspect AI](#inspect-ai) | 6 extension points (models/solvers/scorers/sandboxes/approvers/hooks)… | confirmed absent — no canary, no contamination de… | Epochs(count, reducer) with mean/median/mode/max/… |
 
 ### AgentBench
 
@@ -220,6 +220,12 @@ Tooling and task sets for measuring agents, distinct from equipping them. Split 
 **License:** Apache-2.0
 
 An 8-environment benchmark for evaluating LLMs as agents (OS/bash, DB/SQL, Knowledge Graph, Digital Card Game, Lateral Thinking Puzzles, House-Holding/ALFWorld, Web Shopping/WebShop, Web Browsing/Mind2Web). Registration is YAML config (module + parameters) for both agents and tasks, plus an assignment pairing layer.
+
+**Key facts:**
+- 8 environments (OS/bash, DB/SQL, Knowledge Graph, card game, puzzles, ALFWorld, WebShop, Mind2Web)
+- Deterministic/environment-based scoring, not LLM-judge
+- temperature=0 greedy decoding, single-shot only — no variance reporting
+- No contamination gate despite ~half of task instructions being GPT-generated
 
 - **Contamination gate:** none found, despite ~half of task instructions being GPT-generated then filtered
 - **Reward-hacking detection:** n/a in the mechanical-gate sense — but scoring is mostly deterministic/environment-based (exit codes, exact/hash match, final-state check) rather than LLM-judge, which is itself a good anti-reward-hacking practice (judge models are themselves gameable/unreliable)
@@ -246,6 +252,12 @@ An 8-environment benchmark for evaluating LLMs as agents (OS/bash, DB/SQL, Knowl
 
 A generic, reusable eval-harness kit (suite/agent/gate/report primitives) plus five task-family adapters built on it: devtasks (real OSS bug-repair, JUnit-verified), honest_eval / agent_memory_E1 (citation-grounded factbench), and niah_v1 (needle-in-a-haystack long-context retrieval) — all three SHIPPED, merged to `main`. Two more adapters are built and under independent review but NOT YET merged: bfcl_memory_v1 (BFCL v4 multi-turn tool-memory, open PR #25) and persistbench_v1 (beneficial-memory / cross-domain / sycophancy-resistance, open PR #26) — see each benchmark's own `our_adapter.status` field; do not cite them as shipped until those PRs land. Built specifically to mechanically gate every verdict on contamination, answer-leakage, and reward-hacking resistance rather than relying on process discipline alone.
 
+**Key facts:**
+- 5 task-family adapters: devtasks, honest_eval/agent_memory_E1, niah_v1 (shipped) + bfcl_memory_v1, persistbench_v1 (built, unmerged as of this writing)
+- Mechanical contamination gate (G3 no-context control) on every suite
+- Mechanical reward-hacking gates (G4 perturbation-collapse) plus named adversarial agent panels
+- pass@1/pass^k with bootstrap CIs and an explicit NaN/inconclusive sentinel
+
 - **Contamination gate:** mechanical — G3 no-context/no-ingest control on every suite (an honest agent given no task context must score at/near floor); a build-time grounding check additionally verifies every task's gold answer is actually present in the context shipped with it
 - **Reward-hacking detection:** mechanical — G4 perturbation-collapse gates (does accuracy collapse under a distractor/decoy variant) plus NAMED adversarial agent panels per suite (e.g. NonemptyOnlyAgent, ContextAwareStuffingAgent, LateOccurrenceStuffingAgent) and, in two suites, brute-force selector-family gates (no_ordinal_shortcut_gate, no_surface_shortcut_gate) that mechanically enumerate whole families of cheap zero-verification shortcuts rather than relying on one named agent per finding
 - **Reliability methodology:** pass@1 / pass^k (Chen et al. 2021 estimator) plus bootstrap confidence intervals and an explicit NaN/inconclusive sentinel for sandbox-failure-vs-wrong-answer disambiguation, modeled on Inspect AI's Epochs/NaN convention
@@ -267,6 +279,12 @@ A generic, reusable eval-harness kit (suite/agent/gate/report primitives) plus f
 **License:** Apache-2.0
 
 Stanford CRFM's broad language-model benchmark suite — dozens of `Scenario` classes covering a wide range of tasks, run through a common runner/metrics pipeline. Ships its own robustness metric: worst-case accuracy over systematic input perturbations (typos, contrast sets, dialect shifts).
+
+**Key facts:**
+- Dozens of Scenario classes across a broad task range
+- Ships its own robustness metric: worst-case accuracy over input perturbations
+- Contamination acknowledged as a limitation, not mechanically gated
+- No repeated-run variance/confidence-interval mechanism found in fetched text
 
 - **Contamination gate:** acknowledged as a limitation (evidence pushed to a paper appendix), not mechanically gated at eval time
 - **Reward-hacking detection:** none in the scoring-exploit sense; the input-perturbation robustness metric is a different axis (robustness to input variation, not resistance to a candidate gaming the SCORER)
@@ -292,6 +310,12 @@ Stanford CRFM's broad language-model benchmark suite — dozens of `Scenario` cl
 
 An autonomous-task eval methodology + infrastructure (Task Standard spec + Vivaria runner) used for frontier-model dangerous-capability and autonomy evaluations. Emphasizes elicitation discipline and adversarial review over mechanical gates.
 
+**Key facts:**
+- Task Standard spec + Vivaria runner, used for frontier-model dangerous-capability evaluations
+- Isolated primary machine, non-root agent user, default-deny network by default
+- score@k (best-of-k) plus bootstrap confidence intervals, hierarchical family->task->attempt
+- Contamination/reward-hacking handling is process-based (elicitation + adversarial review), not mechanical
+
 - **Contamination gate:** process-based — elicitation guidelines, mandatory adversarial second-team review, sandbagging-detection cross-checks; not a mechanical gate
 - **Reward-hacking detection:** discipline-based, not mechanical — elicitation guidelines (no dev-set overfitting), canary strings in public write-ups, sandbagging detection via compute-scaling cross-checks (documented in their GPT-5 evaluation report)
 - **Reliability methodology:** explicit score@k (best-of-k, a pass@k variant, not the exact Chen et al. combinatorial formula) plus bootstrap confidence intervals (percentile and hierarchical family→task→attempt), with honest disclosure of where results become unreliable (e.g. "above 16h")
@@ -315,6 +339,12 @@ An autonomous-task eval methodology + infrastructure (Task Standard spec + Vivar
 **License:** MIT
 
 A deliberately narrow, mostly-deprecated set of eval scripts OpenAI built for its own number-transparency (as of July 2025, only HealthBench/BrowseComp/SimpleQA remain actively used) — explicitly not a full eval framework. Scoring is mixed: regex/exact-match (MMLU, GPQA) and LLM-as-judge (MATH via a gpt-4-turbo equality-checker; SimpleQA/ BrowseComp/HealthBench via rubric grading).
+
+**Key facts:**
+- Deliberately narrow — as of July 2025 only HealthBench/BrowseComp/SimpleQA remain in active use
+- Mixed scoring: regex/exact-match (MMLU, GPQA) and LLM-as-judge (MATH, SimpleQA, BrowseComp, HealthBench)
+- No contamination gate or reward-hacking detection (confirmed via direct grep)
+- Only MATH/GPQA get repeated-run variance (--n-repeats); most tasks are single-run only
 
 - **Contamination gate:** confirmed absent — grepped the README and all code, zero mentions of decontamination/leakage/held-out data
 - **Reward-hacking detection:** confirmed absent
@@ -340,6 +370,12 @@ A deliberately narrow, mostly-deprecated set of eval scripts OpenAI built for it
 
 A plugin-based multi-benchmark harness shipping three benchmark ports: bfcl_memory (real Berkeley BFCL v4 data, exact-match scoring), persistbench (30 JSON tasks, 3 task types, entirely LLM-judge scored via regex-extracted JSON), and niah (40 of 225 grid cells of a needle-in-a-haystack port, LLM-judge on a 1/3/5/7/10 rubric scale). Auto-discovery via a register_benchmark() decorator + pkgutil-based package walk.
 
+**Key facts:**
+- Ports 3 benchmarks: bfcl_memory, persistbench, niah
+- No LICENSE file anywhere in the repo — nothing legally vendorable from it
+- No contamination gate, no reward-hacking detection found (direct grep, zero hits)
+- epochs=3 is set for 2 of 3 task types but never actually consumed for reliability aggregation
+
 - **Contamination gate:** none found (grepped for contamination/leakage/canary/etc. — zero real hits; the few matches were incidental substrings in task content)
 - **Reward-hacking detection:** none found (same grep — zero hits for reward-hack/tamper/adversarial/canary/allowlist/denylist)
 - **Reliability methodology:** epochs=3 is SET for 2 of 3 task types but never consumed for variance/reliability aggregation anywhere in the codebase — a defined-but-unused field, confirmed by direct grep, not assumed
@@ -359,6 +395,12 @@ A plugin-based multi-benchmark harness shipping three benchmark ports: bfcl_memo
 **License:** MIT
 
 Sierra Research's simulation framework for evaluating tool-using dialogue agents against a simulated user (itself an LM) in real-world business domains: mock, airline, retail, telecom, and banking_knowledge (knowledge-retrieval-based). Original tau-bench (arXiv:2406.12045) was text-only; τ²-bench/1.0.0 added multimodal, knowledge-aware, and voice (full-duplex, real-time audio) evaluation.
+
+**Key facts:**
+- 5 domains: mock, airline, retail, telecom, banking_knowledge
+- τ²-bench/1.0.0 added multimodal, knowledge-aware, and full-duplex voice evaluation over the original text-only tau-bench
+- No contamination gate or reward-hacking detection found in fetched content
+- 1.5k stars (fetched 2026-07-05)
 
 - **Contamination gate:** none found in fetched content
 - **Reward-hacking detection:** none found in fetched content
@@ -386,6 +428,12 @@ Sierra Research's simulation framework for evaluating tool-using dialogue agents
 
 A flexible harness (adapter system supporting multiple agent frameworks, e.g. its own "terminus" agent) plus its own benchmark of hard, realistic terminal/CLI tasks (89 tasks as of v2.0: compiling code, training models, setting up servers). Each task = an English instruction + a containerized Docker environment + a programmatic verification test suite + a human-written oracle solution.
 
+**Key facts:**
+- 89 tasks as of v2.0: compiling code, training models, setting up servers
+- Each task = instruction + Docker environment + verification suite + human oracle solution
+- Frontier models/agents score under 65% on the v2.0 set per the paper's own abstract
+- No contamination gate or reward-hacking safeguards discussed in fetched content
+
 - **Contamination gate:** none discussed in the paper or repo content fetched — no contamination-avoidance or training-data-overlap mitigation found
 - **Reward-hacking detection:** none discussed — no documented gaming/cheating safeguards found in fetched content
 - **Reliability methodology:** not addressed in fetched content [unverified — pass@k/repeated-run variance methodology not located]
@@ -412,6 +460,12 @@ A flexible harness (adapter system supporting multiple agent frameworks, e.g. it
 
 A general, actively-maintained eval framework from the UK AI Security Institute. Task = dataset + solver + scorer; six extension points (models / solvers / scorers / sandboxes / approvers / hooks) all register via the same setuptools entry-point mechanism. Ships a real, mature Docker sandbox backend with an explicit lifecycle contract and its own eval-suite collection (`inspect_evals`, incl. an NIAH implementation harness-bench itself ported from).
 
+**Key facts:**
+- 6 extension points (models/solvers/scorers/sandboxes/approvers/hooks) via one entry-point mechanism
+- Mature Docker sandbox backend with an explicit lifecycle contract
+- Implements both pass_at(k) and pass_k(k) (tau-bench's all-k-must-succeed variant)
+- No contamination gate or reward-hacking detection built in
+
 - **Contamination gate:** confirmed absent — no canary, no contamination detector, no adversarial-perturbation harness; only adjacent primitives (seeded shuffle, tool-call Approver chains, idempotent eval_set())
 - **Reward-hacking detection:** confirmed absent — no reward-hacking gate built in
 - **Reliability methodology:** Epochs(count, reducer) with mean/median/mode/max/at_least_k reducers; implements BOTH pass_at(k) (Chen et al. 2021, arXiv:2107.03374) and pass_k(k) (tau-bench's all-k-must-succeed variant, arXiv:2406.12045, via math.comb)
@@ -431,17 +485,17 @@ A general, actively-maintained eval framework from the UK AI Security Institute.
 
 | Name | Domain | Key facts | Scoring mechanism |
 |---|---|---|---|
-| [BFCL v4 (Berkeley Function-Calling Leaderboard, "memory" category)](#bfcl-v4) | multi-turn tool-call / agent memory | — | Word-boundary, normalised (case/`,./-_*^()`-insen… |
-| [GAIA](#gaia) | web/tool/multi-modal question answering | — | quasi-exact-match: normalized string/number/list… |
-| [GDPval (OpenAI)](#gdpval) | real-world economically-valuable professional tasks | — | a public automated grading service is provided [u… |
-| [LiveCodeBench](#livecodebench) | code generation / execution / self-repair | — | pass@1 and pass@5, computed via a modified checke… |
-| [MemBench](#membench) | agent memory (factual + reflective) | — | [unverified — specific metric formulas (paper men… |
-| [MemoryAgentBench](#memoryagentbench) | agent memory (incremental multi-turn) | — | mixed by task type: substring exact match, exact… |
-| [MemoryArena](#memoryarena) | agent memory (interdependent multi-session agentic tasks) | — | [unverified — task-level scoring formula not enum… |
-| [NIAH (Needle-in-a-Haystack)](#niah) | long-context retrieval | — | varies by implementation — inspect_evals' own por… |
-| [persistbench (task concept)](#persistbench-concept) | long-term / cross-session agent memory | — | upstream (harness-bench): 100% LLM-judge via rege… |
-| [RE-Bench (METR)](#re-bench) | ML-research-engineering autonomy | — | score@k (best-of-k) plus bootstrap confidence int… |
-| [SWE-bench family (SWE-bench / SWE-bench Lite / SWE-bench Verified)](#swe-bench) | real-GitHub-issue code repair | — | test-suite pass/fail against pre-recorded FAIL_TO… |
+| [BFCL v4 (Berkeley Function-Calling Leaderboard, "memory" category)](#bfcl-v4) | multi-turn tool-call / agent memory | 5 scenario types: customer, finance, healthcare, notetaker,… | Word-boundary, normalised (case/`,./-_*^()`-insen… |
+| [GAIA](#gaia) | web/tool/multi-modal question answering | 466 questions across 3 difficulty levels by tool/step count… | quasi-exact-match: normalized string/number/list… |
+| [GDPval (OpenAI)](#gdpval) | real-world economically-valuable professional tasks | 1,320 tasks across 44 occupations, 9 GDP-contributing secto… | a public automated grading service is provided [u… |
+| [LiveCodeBench](#livecodebench) | code generation / execution / self-repair | Continuously collects NEW problems from live programming co… | pass@1 and pass@5, computed via a modified checke… |
+| [MemBench](#membench) | agent memory (factual + reflective) | ACL 2025 Findings — distinguishes factual vs. reflective me… | [unverified — specific metric formulas (paper men… |
+| [MemoryAgentBench](#memoryagentbench) | agent memory (incremental multi-turn) | ICLR 2026 — tests 4 competencies: accurate retrieval, test-… | mixed by task type: substring exact match, exact… |
+| [MemoryArena](#memoryarena) | agent memory (interdependent multi-session agentic tasks) | Agents must acquire memory WHILE interacting with an enviro… | [unverified — task-level scoring formula not enum… |
+| [NIAH (Needle-in-a-Haystack)](#niah) | long-context retrieval | Classic needle-in-a-haystack long-context retrieval concept… | varies by implementation — inspect_evals' own por… |
+| [persistbench (task concept)](#persistbench-concept) | long-term / cross-session agent memory | 3 axes: beneficial-memory, cross-domain transfer, sycophanc… | upstream (harness-bench): 100% LLM-judge via rege… |
+| [RE-Bench (METR)](#re-bench) | ML-research-engineering autonomy | Hard, open-ended ML research-engineering environments; scor… | score@k (best-of-k) plus bootstrap confidence int… |
+| [SWE-bench family (SWE-bench / SWE-bench Lite / SWE-bench Verified)](#swe-bench) | real-GitHub-issue code repair | Real, merged GitHub-issue-to-PR pairs from popular Python r… | test-suite pass/fail against pre-recorded FAIL_TO… |
 
 ### BFCL v4 (Berkeley Function-Calling Leaderboard, "memory" category)
 
@@ -452,6 +506,12 @@ A general, actively-maintained eval framework from the UK AI Security Institute.
 **License:** Apache-2.0 (confirmed by fetching the actual LICENSE file text at the pinned commit, not just the GitHub API's license label)
 
 The "memory" category of Berkeley's Function-Calling Leaderboard v4: multi-turn prereq dialogues (fact-planting conversations) followed by a final question that can only be answered correctly by retaining a fact established earlier. Real, curated questions across 5 scenario types (customer/finance/healthcare/notetaker/student).
+
+**Key facts:**
+- 5 scenario types: customer, finance, healthcare, notetaker, student
+- Substring match scoring (not the AST/function-call checker used elsewhere in BFCL)
+- No built-in contamination handling
+- harness-eval's own adapter found the scoring convention itself is gameable (shotgun-stuffing)
 
 - **Scoring mechanism:** Word-boundary, normalised (case/`,./-_*^()`-insensitive) SUBSTRING match of any ground-truth string inside the model's free-text final answer — via bfcl_eval/eval_checker/agentic_eval/agentic_checker.py, confirmed by reading the real upstream source (NOT the AST/function-call checker used for other BFCL categories, a common wrong assumption). This substring-match-with-no-length-penalty convention is itself a genuine reward-hacking surface (see the harness-eval adapter notes below).
 
@@ -481,6 +541,12 @@ Clean-room adapter (12 curated tasks across all 5 scenarios) built directly agai
 
 466 questions (Levels 1-3, by tool/step count) requiring web browsing, multi-modal file handling, and code execution to answer. Scoring is quasi-exact-match (normalized string/number/list vs one gold answer) — mechanical and cheap.
 
+**Key facts:**
+- 466 questions across 3 difficulty levels by tool/step count
+- Quasi-exact-match scoring — mechanical and cheap
+- 300 of 466 questions held out (leaderboard-only, publicly ungraded)
+- Authors explicitly disclose residual memorization risk rather than claiming immunity
+
 - **Scoring mechanism:** quasi-exact-match: normalized string/number/list comparison against a single gold answer
 - **Contamination handling:** design-level ("absent by design" — questions constructed to not appear in pre-training data) plus a held-out answer set (300 of 466 questions ungraded publicly, leaderboard-only); authors explicitly disclose residual memorization risk rather than claiming immunity — a good honesty norm
 - **Data source:** hand-authored questions requiring real web/tool interaction, per the paper
@@ -504,6 +570,12 @@ Clean-room adapter (12 curated tasks across all 5 scenarios) built directly agai
 
 OpenAI's benchmark of 1,320 tasks covering the majority of U.S. Bureau of Labor Statistics Work Activities for 44 occupations across the top 9 GDP-contributing sectors. Tasks are constructed from the actual representative work of industry professionals (avg. 14 years' experience) and are built from real deliverables/ work-products that exist today, NOT synthetic academic-exam-style questions — a deliberate design contrast with MMLU-style benchmarks.
 
+**Key facts:**
+- 1,320 tasks across 44 occupations, 9 GDP-contributing sectors
+- Built from real deliverables, not synthetic exam-style questions
+- Only a 220-task gold subset is open-sourced; the full set is gated
+- OpenAI's own project page returned HTTP 403 on fetch — sourced from the arXiv abstract instead
+
 - **Scoring mechanism:** a public automated grading service is provided [unverified — exact grading mechanism/rubric not detailed in the fetched abstract; the paper reportedly also uses expert/human grading for at least part of the evaluation, not confirmed here]
 - **Contamination handling:** no contamination-avoidance discussion found in the fetched abstract
 - **Data source:** real deliverables/work-products from industry professionals across 44 occupations; the paper explicitly contrasts this with synthetically-constructed exam-style benchmarks
@@ -526,6 +598,12 @@ OpenAI's benchmark of 1,320 tasks covering the majority of U.S. Bureau of Labor 
 **License:** MIT
 
 A "holistic and contamination-free" code-evaluation benchmark that continuously collects NEW problems over time from live programming contests (LeetCode, AtCoder, CodeForces), and evaluates broader coding capability than plain generation — self-repair, code execution, and test-output prediction.
+
+**Key facts:**
+- Continuously collects NEW problems from live programming contests
+- pass@1 and pass@5 via a modified APPS-style checker
+- Temporal contamination control: restrict eval window to problems released after a model's training cutoff
+- 901 stars, 143 commits (fetched 2026-07-05)
 
 - **Scoring mechanism:** pass@1 and pass@5, computed via a modified checker adapted from the APPS benchmark (with adjustments for edge cases found during data collection)
 - **Contamination handling:** Problems are annotated with real release dates; evaluation windows can be restricted via --start_date/--end_date flags, so a model can be scored only on problems released AFTER its training cutoff. The paper's own worked example: to counter contamination in DeepSeek models, they report results only on problems released after August 2023 — a genuinely mechanical, temporal contamination control (a rarer, stronger pattern than most benchmarks surveyed in this registry).
@@ -554,6 +632,12 @@ A "holistic and contamination-free" code-evaluation benchmark that continuously 
 
 ACL 2025 Findings benchmark evaluating LLM-agent memory across "effectiveness, efficiency, and capacity." Distinguishes factual memory (raw stored information) from reflective memory (higher-level adaptation), across participation (first-person) and observation (third-person) interaction scenarios, plus noise-extended dialogues (FirstNoise/ThirdNoise, ~1k tokens per noise unit) to test retrieval at scale (pre-sampled 0-10k and 100k-token variants).
 
+**Key facts:**
+- ACL 2025 Findings — distinguishes factual vs. reflective memory
+- First-person (participation) and third-person (observation) interaction scenarios
+- Noise-extended dialogues test retrieval at 0-10k and 100k-token scale
+- License shown as an MIT badge on the repo page but no LICENSE file text independently confirmed
+
 - **Scoring mechanism:** [unverified — specific metric formulas (paper mentions accuracy/recall/capacity/temporal-efficiency in secondary summaries, but the primary paper/repo pages fetched did not enumerate exact formulas)]
 - **Contamination handling:** none found in fetched content
 - **Data source:** dataset released via Baidu Drive / Google Drive links referenced from the GitHub README, not stored directly in-repo
@@ -581,6 +665,12 @@ ACL 2025 Findings benchmark evaluating LLM-agent memory across "effectiveness, e
 
 ICLR 2026 paper + open-source code evaluating memory in LLM agents via incremental multi-turn interactions — data is split into chunks to simulate real multi-turn conversation, using an "inject once, query multiple times" design (one long text maps to multiple questions, for evaluation efficiency). Tests four competencies: accurate retrieval, test-time learning, long-range understanding, and conflict resolution. Functions as BOTH a benchmark (two new datasets, EventQA and FactConsolidation, plus reformulated data from RULER/InfBench/HELMET) and a harness (configurable bash-script runner for long-context agents, RAG agents, and agentic-memory methods).
 
+**Key facts:**
+- ICLR 2026 — tests 4 competencies: accurate retrieval, test-time learning, long-range understanding, conflict resolution
+- Two new datasets (EventQA, FactConsolidation) plus reformulated RULER/InfiniteBench/HELMET data
+- 'Inject once, query multiple times' design for evaluation efficiency
+- 391 stars, 24 commits (fetched 2026-07-05)
+
 - **Scoring mechanism:** mixed by task type: substring exact match, exact match, recall@5, and LLM-as-judge; repo notes exact_match parsing is strict, flexible parsing recommended for adaptation
 - **Contamination handling:** none found in fetched content
 - **Data source:** two newly constructed datasets (EventQA, FactConsolidation) plus reformulated data drawn from RULER, InfiniteBench, and HELMET
@@ -604,6 +694,12 @@ ICLR 2026 paper + open-source code evaluating memory in LLM agents via increment
 **License:** dataset: CC-BY-4.0 (Hugging Face); website: CC-BY-SA-4.0; code repo (github.com/ZexueHe/MemoryArena): NO LICENSE FILE found — treat code reuse as unresolved absent explicit permission, same caveat class as other unlicensed research repos in this registry
 
 A benchmark where agents must acquire memory WHILE interacting with an environment, then rely on that memory to guide later actions across explicitly interdependent subtasks — four domains: web navigation, preference-constrained planning, progressive information search, and sequential formal reasoning. Headline finding: agents that near-saturate existing long-context memory benchmarks (e.g. LoCoMo) perform poorly here, exposing a real evaluation gap between "recall a fact from a long transcript" and "actually USE memory to guide multi-session action."
+
+**Key facts:**
+- Agents must acquire memory WHILE interacting with an environment, then use it later
+- 4 domains: web navigation, preference-constrained planning, progressive search, sequential formal reasoning
+- Headline finding: agents that near-saturate LoCoMo perform poorly here
+- Code repo has no LICENSE file; dataset is CC-BY-4.0, project site is CC-BY-SA-4.0
 
 - **Scoring mechanism:** [unverified — task-level scoring formula not enumerated in fetched pages]
 - **Contamination handling:** not discussed in fetched content
@@ -634,6 +730,12 @@ A benchmark where agents must acquire memory WHILE interacting with an environme
 
 A well-established long-context-retrieval task family: bury a short "needle" fact inside a long "haystack" document (classically Paul Graham essays) at a controlled position/depth, then ask the model to retrieve it. The public concept is openly implemented in UK AISI's `inspect_evals` collection (which harness-bench's own port was itself derived from).
 
+**Key facts:**
+- Classic needle-in-a-haystack long-context retrieval concept
+- Public implementation lives in UK AISI's inspect_evals (MIT)
+- harness-eval's own port is mechanically scored, not LLM-judge
+- harness-eval's port closed an ordinal-position gaming vector found across 3 ROAST rounds
+
 - **Scoring mechanism:** varies by implementation — inspect_evals' own port uses an LLM-judge rubric scale; harness-eval's clean-room port uses mechanical, adversarially-hardened checks (see our_adapter)
 - **Contamination handling:** n/a to the base concept — depends on implementation
 - **Data source:** openly licensed via inspect_evals; harness-bench's port used only 40 of 225 grid cells, by its own docstring's admission not comparable to "full NIAH"
@@ -663,6 +765,12 @@ Built from the public NIAH concept/inspect_evals data, not from harness-bench's 
 
 A task CONCEPT (not copyrightable, unlike code/data) for evaluating an agent's long-term memory across three axes: does a fact established once genuinely help later (beneficial-memory)? does memory transfer correctly across unrelated domains without bleeding (cross-domain)? does the agent resist being talked out of a correct, memory-grounded answer by a confident but unsupported user pushback, while still updating on a GENUINELY evidenced correction (sycophancy-resistance)? Originated in rmr-rnd/harness-bench's persistbench module (30 JSON tasks, 100% LLM-judge via regex-extracted JSON scoring).
 
+**Key facts:**
+- 3 axes: beneficial-memory, cross-domain transfer, sycophancy-resistance
+- A task CONCEPT, not copyrightable — upstream harness-bench's implementation has no LICENSE file
+- Upstream scoring is 100% LLM-judge; harness-eval's reimplementation is fully mechanical
+- harness-eval's own adapter went through 6 ROAST rounds closing a hedge-detection gaming class
+
 - **Scoring mechanism:** upstream (harness-bench): 100% LLM-judge via regex-extracted JSON score, with a defined-but-unconsumed epochs=3 field (no real reliability aggregation). harness-eval's clean-room reimplementation: fully mechanical (is_hedged marker-based trust check), no judge model on the core scoring path
 - **Contamination handling:** n/a — synthetic task concept
 - **Data source:** upstream harness-bench version: unknown provenance, no LICENSE file in that repo. harness-eval's version: 100% original synthetic content, authored from scratch
@@ -690,6 +798,12 @@ Clean-room redesign, not a port — 10 wholly original synthetic tasks. Includes
 
 METR's benchmark of hard, open-ended ML research-engineering environments used to study frontier-model autonomous-research capability, run through the METR Task Standard / Vivaria infrastructure.
 
+**Key facts:**
+- Hard, open-ended ML research-engineering environments
+- score@k (best-of-k) plus bootstrap confidence intervals
+- Contamination handled via elicitation guidelines + adversarial second-team review, not a mechanical gate
+- Honestly discloses where results become unreliable (e.g. 'above 16h')
+
 - **Scoring mechanism:** score@k (best-of-k) plus bootstrap confidence intervals (percentile and hierarchical family->task->attempt)
 - **Contamination handling:** elicitation guidelines + adversarial second-team review (process discipline, not a mechanical gate) — see the metr-task-standard harness entry
 - **Data source:** hand-authored ML research-engineering environments, per the paper
@@ -712,6 +826,12 @@ METR's benchmark of hard, open-ended ML research-engineering environments used t
 **License:** MIT
 
 Real, merged GitHub-issue-to-PR pairs from popular Python repos, turned into a benchmark: candidate patch is applied in a per-instance Docker container, the repo's real test suite is run, and the result is checked against pre-recorded FAIL_TO_PASS/ PASS_TO_PASS test NAME lists (both must hold — guards against "fix by breaking something else").
+
+**Key facts:**
+- Real, merged GitHub-issue-to-PR pairs from popular Python repos
+- FAIL_TO_PASS/PASS_TO_PASS test-name-list scoring — both must hold
+- SWE-bench Verified (OpenAI's curated 500-subset) was abandoned in Feb 2026 after contamination/flawed-test findings
+- Independently documented as REPEATEDLY GAMED via the environment: gold-patch mining, hidden test files, conftest.py hijacks
 
 - **Scoring mechanism:** test-suite pass/fail against pre-recorded FAIL_TO_PASS/PASS_TO_PASS test name lists, not a bare exit code or LLM judge
 - **Contamination handling:** none proactive — issues are real merged public PRs, inherently exposed to training crawls; SWE-bench Verified (human-curated 500-subset) was OpenAI's attempt to remove ambiguous/unfair tests, then abandoned Feb 2026 [unverified — secondary source; primary OpenAI post returned HTTP 403 when fetched] reportedly because 59.4% of failed instances had flawed tests and frontier models could reproduce gold solutions verbatim — contamination was discovered POST-HOC by outside audit, not gated at eval time

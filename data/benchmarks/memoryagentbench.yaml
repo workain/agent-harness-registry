@@ -12,6 +12,11 @@ what_it_is: >
   Functions as BOTH a benchmark (two new datasets, EventQA and FactConsolidation, plus
   reformulated data from RULER/InfBench/HELMET) and a harness (configurable bash-script
   runner for long-context agents, RAG agents, and agentic-memory methods).
+key_facts:
+  - "ICLR 2026 — tests 4 competencies: accurate retrieval, test-time learning, long-range understanding, conflict resolution"
+  - "Two new datasets (EventQA, FactConsolidation) plus reformulated RULER/InfiniteBench/HELMET data"
+  - "'Inject once, query multiple times' design for evaluation efficiency"
+  - "391 stars, 24 commits (fetched 2026-07-05)"
 scoring_mechanism: "mixed by task type: substring exact match, exact match, recall@5, and LLM-as-judge; repo notes exact_match parsing is strict, flexible parsing recommended for adaptation"
 contamination_handling: "none found in fetched content"
 data_source: "two newly constructed datasets (EventQA, FactConsolidation) plus reformulated data drawn from RULER, InfiniteBench, and HELMET"

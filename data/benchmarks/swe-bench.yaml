@@ -9,6 +9,11 @@ what_it_is: >
   real test suite is run, and the result is checked against pre-recorded FAIL_TO_PASS/
   PASS_TO_PASS test NAME lists (both must hold — guards against "fix by breaking
   something else").
+key_facts:
+  - "Real, merged GitHub-issue-to-PR pairs from popular Python repos"
+  - "FAIL_TO_PASS/PASS_TO_PASS test-name-list scoring — both must hold"
+  - "SWE-bench Verified (OpenAI's curated 500-subset) was abandoned in Feb 2026 after contamination/flawed-test findings"
+  - "Independently documented as REPEATEDLY GAMED via the environment: gold-patch mining, hidden test files, conftest.py hijacks"
 scoring_mechanism: "test-suite pass/fail against pre-recorded FAIL_TO_PASS/PASS_TO_PASS test name lists, not a bare exit code or LLM judge"
 contamination_handling: "none proactive — issues are real merged public PRs, inherently exposed to training crawls; SWE-bench Verified (human-curated 500-subset) was OpenAI's attempt to remove ambiguous/unfair tests, then abandoned Feb 2026 [unverified — secondary source; primary OpenAI post returned HTTP 403 when fetched] reportedly because 59.4% of failed instances had flawed tests and frontier models could reproduce gold solutions verbatim — contamination was discovered POST-HOC by outside audit, not gated at eval time"
 data_source: "real, merged public GitHub PRs across popular Python repositories"

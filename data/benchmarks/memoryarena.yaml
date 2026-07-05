@@ -11,6 +11,11 @@ what_it_is: >
   near-saturate existing long-context memory benchmarks (e.g. LoCoMo) perform poorly
   here, exposing a real evaluation gap between "recall a fact from a long transcript"
   and "actually USE memory to guide multi-session action."
+key_facts:
+  - "Agents must acquire memory WHILE interacting with an environment, then use it later"
+  - "4 domains: web navigation, preference-constrained planning, progressive search, sequential formal reasoning"
+  - "Headline finding: agents that near-saturate LoCoMo perform poorly here"
+  - "Code repo has no LICENSE file; dataset is CC-BY-4.0, project site is CC-BY-SA-4.0"
 scoring_mechanism: "[unverified — task-level scoring formula not enumerated in fetched pages]"
 contamination_handling: "not discussed in fetched content"
 data_source: "human-crafted agentic tasks; dataset hosted on Hugging Face (ZexueHe/memoryarena) under CC-BY-4.0; project website under CC-BY-SA-4.0"

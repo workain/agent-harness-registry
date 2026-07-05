@@ -8,6 +8,11 @@ what_it_is: >
   prereq dialogues (fact-planting conversations) followed by a final question that can
   only be answered correctly by retaining a fact established earlier. Real, curated
   questions across 5 scenario types (customer/finance/healthcare/notetaker/student).
+key_facts:
+  - "5 scenario types: customer, finance, healthcare, notetaker, student"
+  - "Substring match scoring (not the AST/function-call checker used elsewhere in BFCL)"
+  - "No built-in contamination handling"
+  - "harness-eval's own adapter found the scoring convention itself is gameable (shotgun-stuffing)"
 scoring_mechanism: >
   Word-boundary, normalised (case/`,./-_*^()`-insensitive) SUBSTRING match of any
   ground-truth string inside the model's free-text final answer — via

@@ -8,6 +8,11 @@ what_it_is: >
   collects NEW problems over time from live programming contests (LeetCode, AtCoder,
   CodeForces), and evaluates broader coding capability than plain generation —
   self-repair, code execution, and test-output prediction.
+key_facts:
+  - "Continuously collects NEW problems from live programming contests"
+  - "pass@1 and pass@5 via a modified APPS-style checker"
+  - "Temporal contamination control: restrict eval window to problems released after a model's training cutoff"
+  - "901 stars, 143 commits (fetched 2026-07-05)"
 scoring_mechanism: "pass@1 and pass@5, computed via a modified checker adapted from the APPS benchmark (with adjustments for edge cases found during data collection)"
 contamination_handling: >
   Problems are annotated with real release dates; evaluation windows can be restricted

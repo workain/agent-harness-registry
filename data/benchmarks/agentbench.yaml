@@ -7,6 +7,11 @@ what_it_is: >
   Graph, Digital Card Game, Lateral Thinking Puzzles, House-Holding/ALFWorld, Web
   Shopping/WebShop, Web Browsing/Mind2Web). Registration is YAML config (module +
   parameters) for both agents and tasks, plus an assignment pairing layer.
+key_facts:
+  - "8 environments (OS/bash, DB/SQL, Knowledge Graph, card game, puzzles, ALFWorld, WebShop, Mind2Web)"
+  - "Deterministic/environment-based scoring, not LLM-judge"
+  - "temperature=0 greedy decoding, single-shot only — no variance reporting"
+  - "No contamination gate despite ~half of task instructions being GPT-generated"
 capabilities:
   contamination_gate: "none found, despite ~half of task instructions being GPT-generated then filtered"
   reward_hacking_detection: "n/a in the mechanical-gate sense — but scoring is mostly deterministic/environment-based (exit codes, exact/hash match, final-state check) rather than LLM-judge, which is itself a good anti-reward-hacking practice (judge models are themselves gameable/unreliable)"

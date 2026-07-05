@@ -6,6 +6,11 @@ what_it_is: >
   An autonomous-task eval methodology + infrastructure (Task Standard spec + Vivaria
   runner) used for frontier-model dangerous-capability and autonomy evaluations.
   Emphasizes elicitation discipline and adversarial review over mechanical gates.
+key_facts:
+  - "Task Standard spec + Vivaria runner, used for frontier-model dangerous-capability evaluations"
+  - "Isolated primary machine, non-root agent user, default-deny network by default"
+  - "score@k (best-of-k) plus bootstrap confidence intervals, hierarchical family->task->attempt"
+  - "Contamination/reward-hacking handling is process-based (elicitation + adversarial review), not mechanical"
 capabilities:
   contamination_gate: "process-based — elicitation guidelines, mandatory adversarial second-team review, sandbagging-detection cross-checks; not a mechanical gate"
   reward_hacking_detection: "discipline-based, not mechanical — elicitation guidelines (no dev-set overfitting), canary strings in public write-ups, sandbagging detection via compute-scaling cross-checks (documented in their GPT-5 evaluation report)"

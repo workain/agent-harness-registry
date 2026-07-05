@@ -8,6 +8,11 @@ what_it_is: >
   actively used) — explicitly not a full eval framework. Scoring is mixed: regex/exact-match
   (MMLU, GPQA) and LLM-as-judge (MATH via a gpt-4-turbo equality-checker; SimpleQA/
   BrowseComp/HealthBench via rubric grading).
+key_facts:
+  - "Deliberately narrow — as of July 2025 only HealthBench/BrowseComp/SimpleQA remain in active use"
+  - "Mixed scoring: regex/exact-match (MMLU, GPQA) and LLM-as-judge (MATH, SimpleQA, BrowseComp, HealthBench)"
+  - "No contamination gate or reward-hacking detection (confirmed via direct grep)"
+  - "Only MATH/GPQA get repeated-run variance (--n-repeats); most tasks are single-run only"
 capabilities:
   contamination_gate: "confirmed absent — grepped the README and all code, zero mentions of decontamination/leakage/held-out data"
   reward_hacking_detection: "confirmed absent"

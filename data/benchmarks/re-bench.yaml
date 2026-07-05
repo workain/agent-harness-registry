@@ -7,6 +7,11 @@ what_it_is: >
   METR's benchmark of hard, open-ended ML research-engineering environments used to
   study frontier-model autonomous-research capability, run through the METR Task
   Standard / Vivaria infrastructure.
+key_facts:
+  - "Hard, open-ended ML research-engineering environments"
+  - "score@k (best-of-k) plus bootstrap confidence intervals"
+  - "Contamination handled via elicitation guidelines + adversarial second-team review, not a mechanical gate"
+  - "Honestly discloses where results become unreliable (e.g. 'above 16h')"
 scoring_mechanism: "score@k (best-of-k) plus bootstrap confidence intervals (percentile and hierarchical family->task->attempt)"
 contamination_handling: "elicitation guidelines + adversarial second-team review (process discipline, not a mechanical gate) — see the metr-task-standard harness entry"
 data_source: "hand-authored ML research-engineering environments, per the paper"

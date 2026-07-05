@@ -1,6 +1,7 @@
 name: LlamaIndex Memory
 slug: llamaindex-memory
 homepage: https://developers.llamaindex.ai/python/framework/module_guides/deploying/agents/memory/
+category: memory
 layer: "Memory / data layer (equivalent to Block F) — one module within a larger RAG/document-agent framework"
 what_it_is: >
   The memory module of LlamaIndex (a document-agent/RAG/OCR platform — the framework

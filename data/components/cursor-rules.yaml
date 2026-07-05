@@ -1,6 +1,7 @@
 name: Cursor Rules (.cursor/rules, formerly .cursorrules)
 slug: cursor-rules
 homepage: https://cursor.com/docs/context/rules
+category: instructions-rules
 layer: "Instruction / identity layer (equivalent to Block A) — a product FEATURE/convention, not standalone open-source software"
 what_it_is: >
   Cursor's persistent-instruction system: "system-level instructions to Agent" that

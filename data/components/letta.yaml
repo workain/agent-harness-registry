@@ -1,6 +1,7 @@
 name: Letta (formerly MemGPT)
 slug: letta
 homepage: https://github.com/letta-ai/letta
+category: memory
 layer: "Memory / data layer (equivalent to Block F), with its own agent-hosting server"
 what_it_is: >
   A platform for "stateful agents" with self-editing, persistent memory — originated as
@@ -21,3 +22,4 @@ provenance:
 unverified:
   - "Letta straddles our harness/engine split more than most entries here — its memory-block design is equipment-shaped (Block F), but its App Server also hosts/runs agents (engine-shaped). Catalogued under equipment because the memory architecture is the distinctive contribution; flagging the overlap rather than silently picking a side."
   - "the separate 'Letta Agent' repo mentioned as the active-development successor was not independently fetched for this entry"
+deep_dive: deep-dives/components/letta.md

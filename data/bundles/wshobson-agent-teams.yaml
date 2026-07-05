@@ -1,0 +1,28 @@
+name: agent-teams plugin (wshobson/agents)
+slug: wshobson-agent-teams
+homepage: https://github.com/wshobson/agents/tree/main/plugins/agent-teams
+what_it_is: >
+  A concrete, verified example of the Claude Code Plugin mechanism actually being used
+  to assemble a real multi-component bundle: 4 subagents (team-lead, team-implementer,
+  team-reviewer, team-debugger) + 6 skills (task-coordination-strategies,
+  parallel-feature-development, parallel-debugging, multi-reviewer-patterns,
+  team-communication-protocols, team-composition-patterns — a small reference-doc KB
+  in effect) + 7 commands, all under one manifest, generated for both Claude Code AND
+  Codex (`.claude-plugin/` and `.codex-plugin/` both present) — a genuine cross-engine
+  team-in-a-box for ONE task (parallel multi-agent orchestration). It is one plugin
+  among 87 mostly single-purpose ones in its parent marketplace (`wshobson/agents`,
+  see the separate `wshobson-agents` component entry) — the ecosystem's modal unit is
+  still narrow/atomic, not assembled; this plugin is the exception, not the norm.
+components_bundled: ["subagents (4)", "skills (6, functioning as a reference KB)", "commands (7)"]
+engine_lock: "Claude Code + Codex (both plugin manifests present); not verified for the other 4 engines wshobson/agents otherwise targets"
+license: MIT
+open_source: true
+activity:
+  stars: null
+  last_verified_note: "counted directly via `gh api repos/wshobson/agents/contents/plugins/agent-teams/{agents,skills,commands}`, 2026-07-06 — exact counts (4 agents, 6 skills, 7 commands) independently reconfirmed, not just cited from the parent repo's aggregate numbers"
+provenance:
+  - url: https://api.github.com/repos/wshobson/agents/contents/plugins/agent-teams
+    fetched: "2026-07-06"
+    note: "fetched directly via GitHub REST API tree listing (not WebFetch/marketing content) — the most mechanically verified entry in this registry's bundle set, since it's a direct file-count recount rather than a README claim"
+unverified: []
+deep_dive: deep-dives/bundles/wshobson-agent-teams.md

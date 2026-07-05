@@ -1,6 +1,7 @@
 name: Model Context Protocol — official SDKs (client + server)
 slug: mcp-client-sdk
 homepage: https://github.com/modelcontextprotocol/typescript-sdk
+category: access-mcp
 layer: "Access placement / tool-access protocol layer (equivalent to Block B) — the CLIENT-SIDE half, complementing this registry's mcp-servers entry (the reference server implementations)"
 what_it_is: >
   The official language SDKs for implementing BOTH sides of the Model Context Protocol
@@ -26,3 +27,4 @@ provenance:
     note: "found via search: confirms the parallel official SDKs for Python, Go, Java, C#, Kotlin, Ruby, PHP under the same org — not independently fetched one-by-one for this entry"
 unverified:
   - "the other 6 language SDKs (Python, Go, Java, C#, Kotlin, Ruby, PHP) were confirmed to exist via search, not individually fetched for license/activity detail — this entry's activity numbers are TypeScript-SDK-specific"
+deep_dive: deep-dives/components/mcp.md

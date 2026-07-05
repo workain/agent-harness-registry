@@ -1,0 +1,24 @@
+name: gtm-starter-kit (KarlRaf)
+slug: gtm-starter-kit
+homepage: https://github.com/KarlRaf/gtm-starter-kit
+what_it_is: >
+  A single-vertical (go-to-market) assembled bundle for Claude Code: CLAUDE.md
+  (company overview/ICP/signals/personas) + 5 skills (account research, ICP scoring,
+  signal-to-sequence campaign building, weekly context updates, repo setup) + a
+  context/ knowledge base (company profile, ICP definitions, signal library,
+  competitive battlecards, persona templates) + a weekly memory-refresh loop + a fully
+  populated worked example. Built by The Revenue Architects, a GTM engineering firm, as
+  a lead-gen/portfolio artifact.
+components_bundled: ["instructions (CLAUDE.md)", "skills (5)", "knowledge base", "memory-refresh loop", "worked example"]
+engine_lock: "Claude Code only"
+license: MIT
+open_source: true
+activity:
+  stars: "163 (per GitHub page fetch, 2026-07-06)"
+  last_verified_note: "fetched live 2026-07-06; 65 forks (unusually high fork:star ratio, ~0.40 — see demand-research doc), 12 commits, created and last pushed the same day (2026-04-03) — a single-push snapshot, never updated since"
+provenance:
+  - url: https://github.com/KarlRaf/gtm-starter-kit
+    fetched: "2026-07-06"
+    note: "fetched directly (repo page + README): bundled components, license, activity, fork/star counts re-verified via gh api"
+unverified: []
+deep_dive: deep-dives/bundles/gtm-starter-kit.md

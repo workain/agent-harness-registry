@@ -1,6 +1,7 @@
 name: Composio
 slug: composio
 homepage: https://github.com/ComposioHQ/composio
+category: skills-tools
 layer: "Capability / tools layer + access placement (equivalent to Block B) — a tool-integration platform, not a single tool"
 what_it_is: >
   A tool-integration platform for AI agents: 1000+ pre-built "toolkits" (Slack, GitHub,

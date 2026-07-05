@@ -1,6 +1,7 @@
 name: CrewAI Memory
 slug: crewai-memory
 homepage: https://github.com/crewAIInc/crewAI
+category: memory
 layer: "Memory / data layer (equivalent to Block F) — one subsystem of a larger multi-agent framework"
 what_it_is: >
   The memory subsystem of CrewAI (a multi-agent orchestration framework — the framework

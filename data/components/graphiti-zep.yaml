@@ -1,6 +1,7 @@
 name: Graphiti (open-source engine behind Zep)
 slug: graphiti-zep
 homepage: https://github.com/getzep/graphiti
+category: memory
 layer: "Memory / data layer (equivalent to Block F) — temporal knowledge-graph shape"
 what_it_is: >
   An open-source framework for building TEMPORAL context/knowledge graphs for AI agents:
@@ -26,3 +27,4 @@ provenance:
 unverified:
   - "Zep's April 2025 Community Edition deprecation is from a search-result summary, not independently re-fetched from a Zep primary source"
   - "an earlier search snippet claimed Graphiti was MIT-licensed; the direct repo fetch confirms Apache-2.0 — cataloged as Apache-2.0 since that came from fetching the repo/LICENSE directly, not a secondary summary"
+deep_dive: deep-dives/components/graphiti-zep.md

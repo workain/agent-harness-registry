@@ -1,6 +1,7 @@
 name: Model Context Protocol — reference servers
 slug: mcp-servers
 homepage: https://github.com/modelcontextprotocol/servers
+category: access-mcp
 layer: "Access placement / tool-access protocol layer (equivalent to Block B, the access/data-placement half specifically)"
 what_it_is: >
   The reference implementations for the Model Context Protocol (MCP) — an open protocol,
@@ -29,3 +30,4 @@ provenance:
     note: "fetched directly (repo page): description, license, star count, server list, governance, activity signal"
 unverified:
   - "the broader community MCP-server ecosystem (hundreds of third-party servers indexed by \"awesome-mcp-servers\"-style lists) was found via search but not individually verified — this entry catalogs only the official reference-implementation repo"
+deep_dive: deep-dives/components/mcp.md

@@ -1,6 +1,7 @@
 name: AGENTS.md
 slug: agents-md
 homepage: https://github.com/agentsmd/agents.md
+category: instructions-rules
 layer: "Instruction / identity layer (equivalent to Block A) — a convention, not a piece of software"
 what_it_is: >
   An open, tool-agnostic file-format convention for giving coding agents project context
@@ -24,3 +25,4 @@ provenance:
 unverified:
   - "the August 2025 formalization (OpenAI-led, Google/Cursor/Factory) and the December 2025 Linux Foundation Agentic AI Foundation donation are from search-result summaries of secondary articles, not confirmed on the repo's own page or a Linux Foundation primary source"
   - "the \"60,000+ projects, 20+ tools\" adoption figures are from the same secondary summaries, not independently counted"
+deep_dive: deep-dives/components/agents-md.md

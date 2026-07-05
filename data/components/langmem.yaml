@@ -1,6 +1,7 @@
 name: LangMem (LangChain / LangGraph memory)
 slug: langmem
 homepage: https://github.com/langchain-ai/langmem
+category: memory
 layer: "Memory / data layer (equivalent to Block F)"
 what_it_is: >
   LangChain's memory package: extracts important information from conversations,

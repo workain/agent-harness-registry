@@ -1,6 +1,7 @@
 name: Cognee
 slug: cognee
 homepage: https://github.com/topoteretes/cognee
+category: memory
 layer: "Memory / data layer (equivalent to Block F) — knowledge-graph + vector, dual-layer shape"
 what_it_is: >
   An open-source AI memory platform: ingests data in any format and continuously builds

@@ -1,6 +1,7 @@
 name: OpenAI Conversations API
 slug: openai-conversations-api
 homepage: https://developers.openai.com/api/docs/guides/conversation-state
+category: memory
 layer: "Memory / data layer (equivalent to Block F) — the vendor-provided PATTERN, not a standalone product"
 what_it_is: >
   A stateful conversation-persistence system that pairs with OpenAI's Responses API:

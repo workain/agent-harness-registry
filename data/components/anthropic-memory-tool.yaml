@@ -1,6 +1,7 @@
 name: Anthropic Memory Tool (Claude API)
 slug: anthropic-memory-tool
 homepage: https://platform.claude.com/docs/en/agents-and-tools/tool-use/memory-tool
+category: memory
 layer: "Memory / data layer (equivalent to Block F) — the vendor-provided PATTERN, not a standalone product"
 what_it_is: >
   A first-party Anthropic-provided tool (`{"type": "memory_20250818", "name": "memory"}`)

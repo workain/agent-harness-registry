@@ -11,7 +11,7 @@ what_it_is: >
 scoring_mechanism: "test-suite pass/fail against pre-recorded FAIL_TO_PASS/PASS_TO_PASS test name lists, not a bare exit code or LLM judge"
 contamination_handling: "none proactive — issues are real merged public PRs, inherently exposed to training crawls; SWE-bench Verified (human-curated 500-subset) was OpenAI's attempt to remove ambiguous/unfair tests, then abandoned Feb 2026 [unverified — secondary source; primary OpenAI post returned HTTP 403 when fetched] reportedly because 59.4% of failed instances had flawed tests and frontier models could reproduce gold solutions verbatim — contamination was discovered POST-HOC by outside audit, not gated at eval time"
 data_source: "real, merged public GitHub PRs across popular Python repositories"
-license: "[unverified — not independently re-checked for this registry entry]"
+license: MIT
 used_by_harnesses: [swe-agent, openhands]
 our_adapter: null
 reliability_note: "single-attempt pass@1 is the core protocol; pass@k is a community bolt-on, not load-bearing methodology, despite documented meaningful per-instance variance under repeated attempts"
@@ -24,6 +24,8 @@ provenance:
   - url: https://github.com/SWE-bench/SWE-bench
     fetched: "2026-07-01"
     note: "via workain/harness-eval's own landscape review; also the ICLR paper, OpenAI's SWE-bench Verified posts, Davis Brown's \"Finding Widespread Cheating on Popular Agent Benchmarks\", a BigGo news summary, scaleapi/SWE-bench_Pro-os issue #93 (\"Git Reward Hacking in SWEBench Pro OSS\"), the BenchJack paper, and NIST CAISI's cheating-eval background page"
+  - url: https://raw.githubusercontent.com/SWE-bench/SWE-bench/main/LICENSE
+    fetched: "2026-07-06"
+    note: "fetched directly to confirm license text (MIT License), not just an API label"
 unverified:
-  - "license not independently re-checked"
   - "the 59.4%-flawed-tests figure for SWE-bench Verified's abandonment is from a secondary source; the primary OpenAI post returned HTTP 403 when fetched"

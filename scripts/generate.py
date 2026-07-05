@@ -165,6 +165,8 @@ def render_benchmark_detail(e: dict) -> str:
             f"**harness-eval's own adapter:** `{adapter.get('suite')}` "
             f"({adapter.get('repo')}, `{adapter.get('path')}`)"
         )
+        if adapter.get("status"):
+            parts.append(f"**Status:** {adapter['status']}")
         if adapter.get("notes"):
             parts.append(adapter["notes"].strip())
     if activity:

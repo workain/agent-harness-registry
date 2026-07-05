@@ -12,14 +12,16 @@ capabilities:
   reward_hacking_detection: "none in the scoring-exploit sense; the input-perturbation robustness metric is a different axis (robustness to input variation, not resistance to a candidate gaming the SCORER)"
   reliability_methodology: "not found in fetched text — no confidence-interval/repeated-run variance mechanism located [unverified — could exist deeper in unfetched appendices]"
   sandboxing: "n/a — LM benchmark suite, not agentic code execution"
-license: "unverified — not independently re-checked for this guide (see harness-eval's original 2026-07-01 fetch for what was actually pulled)"
+license: Apache-2.0
 activity:
   stars: null
-  last_verified_note: "[unverified — not re-fetched for this entry; carried over from a 2026-07-01 landscape review]"
+  last_verified_note: "[unverified — stars/last-commit activity not re-fetched for this entry; carried over from a 2026-07-01 landscape review]"
 provenance:
   - url: https://github.com/stanford-crfm/helm
     fetched: "2026-07-01"
     note: "via workain/harness-eval's own landscape review (docs/LANDSCAPE.md); also fetched arXiv:2211.09110 via ar5iv and the scenario.py source"
+  - url: https://raw.githubusercontent.com/stanford-crfm/helm/main/LICENSE
+    fetched: "2026-07-06"
+    note: "fetched directly to confirm license text (Apache License, Version 2.0), not just an API label"
 unverified:
   - "stars/last-commit activity not independently re-checked for this registry entry"
-  - "license not independently re-checked for this registry entry"

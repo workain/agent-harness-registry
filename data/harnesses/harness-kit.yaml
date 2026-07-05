@@ -5,11 +5,15 @@ type: harness
 what_it_is: >
   A generic, reusable eval-harness kit (suite/agent/gate/report primitives) plus five
   task-family adapters built on it: devtasks (real OSS bug-repair, JUnit-verified),
-  honest_eval / agent_memory_E1 (citation-grounded factbench), niah_v1 (needle-in-a-haystack
-  long-context retrieval), bfcl_memory_v1 (BFCL v4 multi-turn tool-memory), and persistbench_v1
-  (beneficial-memory / cross-domain / sycophancy-resistance). Built specifically to mechanically
-  gate every verdict on contamination, answer-leakage, and reward-hacking resistance rather than
-  relying on process discipline alone.
+  honest_eval / agent_memory_E1 (citation-grounded factbench), and niah_v1
+  (needle-in-a-haystack long-context retrieval) — all three SHIPPED, merged to `main`.
+  Two more adapters are built and under independent review but NOT YET merged:
+  bfcl_memory_v1 (BFCL v4 multi-turn tool-memory, open PR #25) and persistbench_v1
+  (beneficial-memory / cross-domain / sycophancy-resistance, open PR #26) — see each
+  benchmark's own `our_adapter.status` field; do not cite them as shipped until those
+  PRs land. Built specifically to mechanically gate every verdict on contamination,
+  answer-leakage, and reward-hacking resistance rather than relying on process
+  discipline alone.
 capabilities:
   contamination_gate: "mechanical — G3 no-context/no-ingest control on every suite (an honest agent given no task context must score at/near floor); a build-time grounding check additionally verifies every task's gold answer is actually present in the context shipped with it"
   reward_hacking_detection: "mechanical — G4 perturbation-collapse gates (does accuracy collapse under a distractor/decoy variant) plus NAMED adversarial agent panels per suite (e.g. NonemptyOnlyAgent, ContextAwareStuffingAgent, LateOccurrenceStuffingAgent) and, in two suites, brute-force selector-family gates (no_ordinal_shortcut_gate, no_surface_shortcut_gate) that mechanically enumerate whole families of cheap zero-verification shortcuts rather than relying on one named agent per finding"
@@ -21,5 +25,6 @@ activity:
   last_verified_note: "this is the guide author's own working repo — verified directly from source, not fetched externally"
 provenance:
   - url: https://github.com/workain/harness-eval
-    note: "primary source — this guide's author IS this project; entries reflect the shipped code/docs as of 2026-07-05, not a third-party fetch"
-unverified: []
+    note: "primary source — this guide's author IS this project; verified directly against origin/main (git ls-tree) on 2026-07-06, not assumed from source-code presence in a local working copy: devtasks/, honest_eval/, niah/ ARE on main; bfcl_memory/ and persistbench/ are NOT on main, confirmed only on open, unmerged PRs #25 and #26 (gh pr view --json state,baseRefName -> both \"OPEN\", base main)"
+unverified:
+  - "this suite/adapter list will go stale the moment PR #25/#26 merge or new adapters ship — re-check against origin/main before citing which suites are shipped, don't trust a prior snapshot"

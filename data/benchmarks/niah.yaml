@@ -11,12 +11,13 @@ what_it_is: >
 scoring_mechanism: "varies by implementation — inspect_evals' own port uses an LLM-judge rubric scale; harness-eval's clean-room port uses mechanical, adversarially-hardened checks (see our_adapter)"
 contamination_handling: "n/a to the base concept — depends on implementation"
 data_source: "openly licensed via inspect_evals; harness-bench's port used only 40 of 225 grid cells, by its own docstring's admission not comparable to \"full NIAH\""
-license: "inspect_evals is openly licensed [unverified — exact license not independently re-checked for this registry entry]"
+license: MIT (inspect_evals)
 used_by_harnesses: [inspect-ai, harness-kit]
 our_adapter:
   suite: niah_v1
   repo: https://github.com/workain/harness-eval
   path: niah/
+  status: "SHIPPED — merged to harness-eval main (PR #24, merged 2026-07-02)"
   notes: >
     Built from the public NIAH concept/inspect_evals data, not from harness-bench's
     unlicensed port. Went through 3 independent ROAST rounds: round 1 found the fixed
@@ -32,5 +33,10 @@ provenance:
   - url: https://github.com/UKGovernmentBEIS/inspect_ai
     fetched: "2026-07-01"
     note: "via workain/harness-eval's own landscape review, in the course of confirming inspect_evals' NIAH implementation is the openly-licensed original harness-bench ported from"
-unverified:
-  - "exact license of inspect_evals not independently re-checked for this registry entry"
+  - url: https://raw.githubusercontent.com/UKGovernmentBEIS/inspect_evals/main/LICENSE
+    fetched: "2026-07-06"
+    note: "fetched inspect_evals' own LICENSE directly (MIT), not just inspect_ai's — they are separate repos"
+  - url: https://github.com/workain/harness-eval/tree/main/niah
+    fetched: "2026-07-06"
+    note: "confirmed niah/ exists on harness-eval's main branch (git ls-tree origin/main), i.e. genuinely shipped, not just claimed"
+unverified: []

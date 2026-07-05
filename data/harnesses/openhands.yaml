@@ -15,7 +15,7 @@ capabilities:
   reward_hacking_detection: "none found in fetched content"
   reliability_methodology: "not addressed in fetched content [unverified]"
   sandboxing: "local execution (full filesystem access, explicitly warned against), Docker sandbox (isolates to a mounted PROJECTS_PATH), or remote backends (VMs/cloud/OpenHands Cloud+Enterprise)"
-license: "MIT for the main repo; the enterprise/ subdirectory has separate licensing (confirmed: first line of LICENSE file reads \"The MIT License (MIT)\")"
+license: "MIT for the repo overall, with a carve-out: the LICENSE file opens with a portions-notice (\"Portions of this software are licensed as follows: * All content that resides under the enterprise/ directory is licensed under the license defined in enterprise/LICENSE; * Content outside of the above ... is available under the MIT license as defined below\"), THEN the MIT text itself — confirmed by fetching the actual file, not a badge (round 1 of this entry mis-stated the portions-notice as if the MIT text were the very first line)"
 activity:
   stars: "79.5k (per GitHub page fetch, 2026-07-05); a separate search snippet claimed 78.5k/64k+ at different points — treat the 79.5k GitHub-page number as most current since it was fetched live"
   last_verified_note: "fetched live 2026-07-05; latest release noted was cloud-1.40.0 (2026-06-26), 105 total releases, 129 open issues, 212 open PRs at fetch time"

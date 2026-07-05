@@ -11,18 +11,49 @@ what_it_is: >
   memory-management tools an agent can call directly, plus a background memory manager
   that automatically extracts/consolidates/updates knowledge without the agent's
   explicit involvement.
-integration: "Python package (`langgraph-ai/langmem`); `create_manage_memory_tool`/`create_search_memory_tool` for agent-callable memory ops; native LangGraph Store integration for long-term persistence"
+integration: >
+  Python package (`langgraph-ai/langmem`); `create_manage_memory_tool`/`create_search_memory_tool`
+  for agent-callable memory ops; native LangGraph Store integration for long-term persistence.
+  CORRECTION (harness-eval issue #38 pre-screen, 2026-07-05): "usable with any storage backend"
+  is true only for the Store choice — `pip install langmem` hard-pins `langgraph>=0.6.0,<2` PLUS
+  both `langchain-openai` and `langchain-anthropic` unconditionally regardless of which LLM
+  provider you actually use (open issue #142, unaddressed 4.5+ months). You cannot install or run
+  LangMem without LangGraph in the environment.
 license: MIT
 license_tag: "MIT"
 open_source: true
 use_cases: "LangGraph long-term memory, background memory consolidation, prompt optimization"
 activity:
   stars: "1.5k (per GitHub page fetch, 2026-07-05)"
-  last_verified_note: "fetched live 2026-07-05; 135 commits, 47 open issues, 10 open PRs, 173 forks"
+  last_verified_note: >
+    fetched live 2026-07-05; 135 commits, 47 open issues, 10 open PRs, 173 forks. "Active repo" and
+    "actively-releasing package" are different claims here: latest PyPI release is 0.0.30, dated
+    2025-10-27 — 8+ months stale as of this fetch. Of the 42 commits to main since that release, 36
+    are Dependabot bumps; the human remainder is docs/CI, not memory-logic work. One maintainer
+    accounts for ~47% of human commits (~74% with the #2 contributor) — bus-factor-1.
+known_caveats: >
+  See harness-eval issue #38 (docs/raw/langmem-pre-screen-2026-07-05/, reports/langmem_prescreen.md,
+  reports/langmem_live.md — pre-screen + a real key-free live run). Open, unfixed, near-zero-response
+  upstream bugs in LangMem's two headline functions: #140 (create_search_memory_tool doesn't
+  retrieve memories written by create_memory_store_manager) and #154 (records not persisting to
+  Postgres) — the #140-shaped gap was independently reproduced live in harness-eval's own run. The
+  merge/consolidation logic is delegated to `trustcall`, a dependency ~12 months stale with 36 open
+  issues. No CVEs in LangMem itself (confirmed via GitHub Advisory API), but it inherits
+  langchain-core/langgraph's 2026 CVE wave (LangGrinch CVSS 9.3 among them) via version floors that
+  don't exclude the vulnerable range. Two open, unanswered memory-poisoning issues (#163/#164).
+  A real live run (key-free, via harness-assembler + harness-eval's benches) found LangMem ties the
+  naive baseline on a long-term-memory suite once a scoring artifact is corrected for, and scores
+  0.0 on a multi-turn-memory suite because its default consolidation schema returns one broad
+  narrative blob with no answer-precision layer — not a benchmark claim LangMem itself makes, but
+  a real finding about its default integration pattern.
 provenance:
   - url: https://github.com/langchain-ai/langmem
     fetched: "2026-07-05"
     note: "fetched directly (repo page): description, license, star count, feature set, activity signal"
+  - url: harness-eval issue #38 (workain/harness-eval)
+    fetched: "2026-07-05"
+    note: "3-lens source pre-screen (claims-match/completeness/red-flags) + a real key-free live run against 2 memory benches vs honest baselines"
 unverified:
   - "this entry scopes specifically to LangMem, the dedicated memory package — the broader LangChain/LangGraph ecosystem (agent orchestration, other memory-adjacent template repos like langgraph-memory/memory-template) was not separately catalogued"
+  - "the langchain-core/langgraph CVE chain cited in known_caveats is from secondary security press (Check Point Research, The Hacker News, CSA), not yet reproduced against primary NVD/GHSA records"
 deep_dive: deep-dives/components/langmem.md

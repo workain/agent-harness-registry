@@ -20,7 +20,7 @@ our_adapter:
   suite: persistbench_v1
   repo: https://github.com/workain/harness-eval
   path: persistbench/
-  status: "NOT YET SHIPPED — built and through 6 rounds of independent review, but only on an open, UNMERGED pull request (workain/harness-eval#26, base main). Confirmed absent from origin/main via git ls-tree on 2026-07-06 — do not cite persistbench/ as present on harness-eval main until that PR merges."
+  status: "NOT YET SHIPPED — built and through 6 rounds of independent review, but only on an open, UNMERGED pull request (workain/harness-eval#26, base main). Confirmed absent from origin/main via git ls-tree on 2026-07-05 — do not cite persistbench/ as present on harness-eval main until that PR merges."
   notes: >
     Clean-room redesign, not a port — 10 wholly original synthetic tasks. Includes a
     sycophancy adversarial panel specifically closing the "resist everything" degenerate
@@ -46,6 +46,6 @@ provenance:
     fetched: "2026-07-01"
     note: "cloned at commit 5d10678ef831c69ee875996b6ebaa010f6fcf1e6 during harness-eval's landscape review; confirmed no LICENSE file present"
   - url: https://github.com/workain/harness-eval/pull/26
-    fetched: "2026-07-06"
+    fetched: "2026-07-05"
     note: "gh pr view 26 --json state,baseRefName -> {state: OPEN, baseRefName: main}; git ls-tree origin/main confirms no persistbench/ path on main as of this fetch"
 unverified: []

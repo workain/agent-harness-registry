@@ -25,6 +25,6 @@ activity:
   last_verified_note: "this is the guide author's own working repo — verified directly from source, not fetched externally"
 provenance:
   - url: https://github.com/workain/harness-eval
-    note: "primary source — this guide's author IS this project; verified directly against origin/main (git ls-tree) on 2026-07-06, not assumed from source-code presence in a local working copy: devtasks/, honest_eval/, niah/ ARE on main; bfcl_memory/ and persistbench/ are NOT on main, confirmed only on open, unmerged PRs #25 and #26 (gh pr view --json state,baseRefName -> both \"OPEN\", base main)"
+    note: "primary source — this guide's author IS this project; verified directly against origin/main (git ls-tree) on 2026-07-05, not assumed from source-code presence in a local working copy: devtasks/, honest_eval/, niah/ ARE on main; bfcl_memory/ and persistbench/ are NOT on main, confirmed only on open, unmerged PRs #25 and #26 (gh pr view --json state,baseRefName -> both \"OPEN\", base main)"
 unverified:
   - "this suite/adapter list will go stale the moment PR #25/#26 merge or new adapters ship — re-check against origin/main before citing which suites are shipped, don't trust a prior snapshot"

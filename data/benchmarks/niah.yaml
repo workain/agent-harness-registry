@@ -34,9 +34,9 @@ provenance:
     fetched: "2026-07-01"
     note: "via workain/harness-eval's own landscape review, in the course of confirming inspect_evals' NIAH implementation is the openly-licensed original harness-bench ported from"
   - url: https://raw.githubusercontent.com/UKGovernmentBEIS/inspect_evals/main/LICENSE
-    fetched: "2026-07-06"
+    fetched: "2026-07-05"
     note: "fetched inspect_evals' own LICENSE directly (MIT), not just inspect_ai's — they are separate repos"
   - url: https://github.com/workain/harness-eval/tree/main/niah
-    fetched: "2026-07-06"
+    fetched: "2026-07-05"
     note: "confirmed niah/ exists on harness-eval's main branch (git ls-tree origin/main), i.e. genuinely shipped, not just claimed"
 unverified: []

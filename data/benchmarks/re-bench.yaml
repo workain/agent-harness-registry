@@ -9,7 +9,7 @@ what_it_is: >
 scoring_mechanism: "score@k (best-of-k) plus bootstrap confidence intervals (percentile and hierarchical family->task->attempt)"
 contamination_handling: "elicitation guidelines + adversarial second-team review (process discipline, not a mechanical gate) — see the metr-task-standard harness entry"
 data_source: "hand-authored ML research-engineering environments, per the paper"
-license: "[unverified — not independently re-checked for this registry entry]"
+license: MIT
 used_by_harnesses: [metr-task-standard]
 our_adapter: null
 reliability_note: "honest disclosure of where results become unreliable (e.g. \"above 16h\") — a good norm worth citing"
@@ -18,5 +18,7 @@ provenance:
   - url: https://arxiv.org/abs/2411.15114
     fetched: "2026-07-01"
     note: "via workain/harness-eval's own landscape review"
-unverified:
-  - "license not independently re-checked"
+  - url: https://raw.githubusercontent.com/METR/RE-Bench/main/LICENSE
+    fetched: "2026-07-05"
+    note: "fetched directly to confirm license text (MIT License), not just an API label"
+unverified: []

@@ -41,7 +41,7 @@ An 8-environment benchmark for evaluating LLMs as agents (OS/bash, DB/SQL, Knowl
 **Provenance:**
 - https://github.com/THUDM/AgentBench (fetched 2026-07-01)
   via workain/harness-eval's own landscape review; also fetched arXiv:2308.03688 via ar5iv and Config_en.md
-- https://raw.githubusercontent.com/THUDM/AgentBench/main/LICENSE (fetched 2026-07-06)
+- https://raw.githubusercontent.com/THUDM/AgentBench/main/LICENSE (fetched 2026-07-05)
   fetched directly to confirm license text (Apache License, Version 2.0), not just an API label
 
 **Unverified / caveats:**
@@ -66,7 +66,7 @@ A generic, reusable eval-harness kit (suite/agent/gate/report primitives) plus f
 
 **Provenance:**
 - https://github.com/workain/harness-eval
-  primary source — this guide's author IS this project; verified directly against origin/main (git ls-tree) on 2026-07-06, not assumed from source-code presence in a local working copy: devtasks/, honest_eval/, niah/ ARE on main; bfcl_memory/ and persistbench/ are NOT on main, confirmed only on open, unmerged PRs #25 and #26 (gh pr view --json state,baseRefName -> both "OPEN", base main)
+  primary source — this guide's author IS this project; verified directly against origin/main (git ls-tree) on 2026-07-05, not assumed from source-code presence in a local working copy: devtasks/, honest_eval/, niah/ ARE on main; bfcl_memory/ and persistbench/ are NOT on main, confirmed only on open, unmerged PRs #25 and #26 (gh pr view --json state,baseRefName -> both "OPEN", base main)
 
 **Unverified / caveats:**
 - this suite/adapter list will go stale the moment PR #25/#26 merge or new adapters ship — re-check against origin/main before citing which suites are shipped, don't trust a prior snapshot
@@ -90,7 +90,7 @@ Stanford CRFM's broad language-model benchmark suite — dozens of `Scenario` cl
 **Provenance:**
 - https://github.com/stanford-crfm/helm (fetched 2026-07-01)
   via workain/harness-eval's own landscape review (docs/LANDSCAPE.md); also fetched arXiv:2211.09110 via ar5iv and the scenario.py source
-- https://raw.githubusercontent.com/stanford-crfm/helm/main/LICENSE (fetched 2026-07-06)
+- https://raw.githubusercontent.com/stanford-crfm/helm/main/LICENSE (fetched 2026-07-05)
   fetched directly to confirm license text (Apache License, Version 2.0), not just an API label
 
 **Unverified / caveats:**
@@ -115,7 +115,7 @@ An autonomous-task eval methodology + infrastructure (Task Standard spec + Vivar
 **Provenance:**
 - https://github.com/METR/task-standard (fetched 2026-07-01)
   via workain/harness-eval's own landscape review; also fetched STANDARD.md, RE-Bench paper (arXiv:2411.15114), and METR blog posts
-- https://raw.githubusercontent.com/METR/task-standard/main/LICENSE (fetched 2026-07-06)
+- https://raw.githubusercontent.com/METR/task-standard/main/LICENSE (fetched 2026-07-05)
   fetched directly to confirm license text (MIT License), not just an API label
 
 **Unverified / caveats:**
@@ -140,7 +140,7 @@ A deliberately narrow, mostly-deprecated set of eval scripts OpenAI built for it
 **Provenance:**
 - https://github.com/openai/simple-evals (fetched 2026-07-01)
   via workain/harness-eval's own landscape review — code and README grepped directly
-- https://raw.githubusercontent.com/openai/simple-evals/main/LICENSE (fetched 2026-07-06)
+- https://raw.githubusercontent.com/openai/simple-evals/main/LICENSE (fetched 2026-07-05)
   fetched directly to confirm license text (MIT License), not just an API label
 
 **Unverified / caveats:**
@@ -291,7 +291,7 @@ A general, actively-maintained eval framework from the UK AI Security Institute.
 **Provenance:**
 - https://github.com/UKGovernmentBEIS/inspect_ai (fetched 2026-07-01)
   via workain/harness-eval's own landscape review; also fetched inspect.aisi.org.uk docs and two aisi.gov.uk blog posts
-- https://raw.githubusercontent.com/UKGovernmentBEIS/inspect_ai/main/LICENSE (fetched 2026-07-06)
+- https://raw.githubusercontent.com/UKGovernmentBEIS/inspect_ai/main/LICENSE (fetched 2026-07-05)
   fetched directly to confirm license text (MIT License), not just an API label
 
 **Unverified / caveats:**
@@ -312,7 +312,7 @@ A general, actively-maintained eval framework from the UK AI Security Institute.
 | [MemoryArena](#memoryarena) | agent memory (interdependent multi-session agentic tasks) | not discussed in fetched content | [unverified — task-level scoring formula not enumerated in fetched pages] | dataset: CC-BY-4.0 (Hugging Face); website: CC-BY-SA-4.0; code repo (github.com/ZexueHe/M… |
 | [NIAH (Needle-in-a-Haystack)](#niah) | long-context retrieval | n/a to the base concept — depends on implementation | varies by implementation — inspect_evals' own port uses an LLM-judge rubric scale; harnes… | MIT (inspect_evals) |
 | [persistbench (task concept)](#persistbench-concept) | long-term / cross-session agent memory | n/a — synthetic task concept | upstream (harness-bench): 100% LLM-judge via regex-extracted JSON score, with a defined-b… | upstream harness-bench repo has NO LICENSE FILE anywhere — nothing from its code/data can… |
-| [RE-Bench (METR)](#re-bench) | ML-research-engineering autonomy | elicitation guidelines + adversarial second-team review (process discipline, not a mechan… | score@k (best-of-k) plus bootstrap confidence intervals (percentile and hierarchical fami… | [unverified — not independently re-checked for this registry entry] |
+| [RE-Bench (METR)](#re-bench) | ML-research-engineering autonomy | elicitation guidelines + adversarial second-team review (process discipline, not a mechan… | score@k (best-of-k) plus bootstrap confidence intervals (percentile and hierarchical fami… | MIT |
 | [SWE-bench family (SWE-bench / SWE-bench Lite / SWE-bench Verified)](#swe-bench) | real-GitHub-issue code repair | none proactive — issues are real merged public PRs, inherently exposed to training crawls… | test-suite pass/fail against pre-recorded FAIL_TO_PASS/PASS_TO_PASS test name lists, not… | MIT |
 
 ### BFCL v4 (Berkeley Function-Calling Leaderboard, "memory" category)
@@ -333,13 +333,13 @@ The "memory" category of Berkeley's Function-Calling Leaderboard v4: multi-turn 
 - **Used by harnesses:** harness-kit
 
 **harness-eval's own adapter:** `bfcl_memory_v1` (https://github.com/workain/harness-eval, `bfcl_memory/`)
-**Status:** NOT YET SHIPPED — built and through 6 rounds of independent review, but only on an open, UNMERGED pull request (workain/harness-eval#25, base main). Confirmed absent from origin/main via git ls-tree on 2026-07-06 — do not cite bfcl_memory/ as present on harness-eval main until that PR merges.
+**Status:** NOT YET SHIPPED — built and through 6 rounds of independent review, but only on an open, UNMERGED pull request (workain/harness-eval#25, base main). Confirmed absent from origin/main via git ls-tree on 2026-07-05 — do not cite bfcl_memory/ as present on harness-eval main until that PR merges.
 Clean-room adapter (12 curated tasks across all 5 scenarios) built directly against the pinned public upstream data + our own scoring/gates — NOT a port of rmr-rnd/harness-bench's version (that repo has no LICENSE file, so nothing from it could be legally vendored). Adds a G4 reward-hacking gate (mentions_off_target_distractor) specifically because the upstream substring-match convention has no length/precision penalty and is gameable by shotgun-stuffing a long answer with plausible candidate values — went through 6 independent ROAST rounds: 4 finding progressively narrower stuffing-agent bypasses (fixed-count -> category-order -> capped-window -> an open-ended candidate-SHAPE gap disclosed as a genuine, not-yet-closable limit), then 2 more rounds correcting the disclosure TEXT itself to match real code behavior (a stale claim, then an unreproducible delimiter-mechanism claim) — the code/gate machinery has been independently reconfirmed correct every round; only the disclosure wording needed fixing.
 
 **Provenance:**
 - https://github.com/ShishirPatil/gorilla (fetched 2026-07-01 (pinned commit 6ea57973c7a6097fd7c5915698c54c17c5b1b6c8))
   license text, eval-checker source, and data all fetched and byte-verified directly by harness-eval during its bfcl_memory_v1 adapter build
-- https://github.com/workain/harness-eval/pull/25 (fetched 2026-07-06)
+- https://github.com/workain/harness-eval/pull/25 (fetched 2026-07-05)
   gh pr view 25 --json state,baseRefName -> {state: OPEN, baseRefName: main}; git ls-tree origin/main confirms no bfcl_memory/ path on main as of this fetch
 
 
@@ -519,9 +519,9 @@ Built from the public NIAH concept/inspect_evals data, not from harness-bench's 
 **Provenance:**
 - https://github.com/UKGovernmentBEIS/inspect_ai (fetched 2026-07-01)
   via workain/harness-eval's own landscape review, in the course of confirming inspect_evals' NIAH implementation is the openly-licensed original harness-bench ported from
-- https://raw.githubusercontent.com/UKGovernmentBEIS/inspect_evals/main/LICENSE (fetched 2026-07-06)
+- https://raw.githubusercontent.com/UKGovernmentBEIS/inspect_evals/main/LICENSE (fetched 2026-07-05)
   fetched inspect_evals' own LICENSE directly (MIT), not just inspect_ai's — they are separate repos
-- https://github.com/workain/harness-eval/tree/main/niah (fetched 2026-07-06)
+- https://github.com/workain/harness-eval/tree/main/niah (fetched 2026-07-05)
   confirmed niah/ exists on harness-eval's main branch (git ls-tree origin/main), i.e. genuinely shipped, not just claimed
 
 
@@ -542,13 +542,13 @@ A task CONCEPT (not copyrightable, unlike code/data) for evaluating an agent's l
 - **Used by harnesses:** harness-bench, harness-kit
 
 **harness-eval's own adapter:** `persistbench_v1` (https://github.com/workain/harness-eval, `persistbench/`)
-**Status:** NOT YET SHIPPED — built and through 6 rounds of independent review, but only on an open, UNMERGED pull request (workain/harness-eval#26, base main). Confirmed absent from origin/main via git ls-tree on 2026-07-06 — do not cite persistbench/ as present on harness-eval main until that PR merges.
+**Status:** NOT YET SHIPPED — built and through 6 rounds of independent review, but only on an open, UNMERGED pull request (workain/harness-eval#26, base main). Confirmed absent from origin/main via git ls-tree on 2026-07-05 — do not cite persistbench/ as present on harness-eval main until that PR merges.
 Clean-room redesign, not a port — 10 wholly original synthetic tasks. Includes a sycophancy adversarial panel specifically closing the "resist everything" degenerate strategy (a stubborn agent that never updates looks resistant on every invalid pushback but must still fail the one genuinely-valid pushback task). Went through 6 independent ROAST rounds on the same underlying "surface-feature-gaming of the hedge-detection check" threat class: round 1 (empty-string-only fixture bypass, fixed), round 2 (single-feature fixture confound, fixed via decorrelated fixture pairs + a brute-force selector-family gate), round 3 (an OR-of-two-features bypass of that gate — first mis-classified as a fundamental limit, corrected after an independent review showed the fix was actually cheap), round 4 (an XOR/XNOR-combination gap in the "fixed" gate's own claimed coverage — again cheaply closed), rounds 5-6 (the gate/fixture logic was independently reconfirmed CORRECT both times; the block was purely the disclosure TEXT overclaiming its own coverage — "all 16" when the real figure was 10 pairwise / 14 total). Net lesson: distinguishing a genuinely fixable enumeration gap from a truly unbounded one is itself an easy place to overclaim in either direction, and so is describing your own fix's coverage without re-deriving it.
 
 **Provenance:**
 - https://github.com/rmr-rnd/harness-bench (fetched 2026-07-01)
   cloned at commit 5d10678ef831c69ee875996b6ebaa010f6fcf1e6 during harness-eval's landscape review; confirmed no LICENSE file present
-- https://github.com/workain/harness-eval/pull/26 (fetched 2026-07-06)
+- https://github.com/workain/harness-eval/pull/26 (fetched 2026-07-05)
   gh pr view 26 --json state,baseRefName -> {state: OPEN, baseRefName: main}; git ls-tree origin/main confirms no persistbench/ path on main as of this fetch
 
 
@@ -558,7 +558,7 @@ Clean-room redesign, not a port — 10 wholly original synthetic tasks. Includes
 
 **Homepage:** https://arxiv.org/abs/2411.15114  
 **Domain:** ML-research-engineering autonomy  
-**License:** [unverified — not independently re-checked for this registry entry]
+**License:** MIT
 
 METR's benchmark of hard, open-ended ML research-engineering environments used to study frontier-model autonomous-research capability, run through the METR Task Standard / Vivaria infrastructure.
 
@@ -571,9 +571,9 @@ METR's benchmark of hard, open-ended ML research-engineering environments used t
 **Provenance:**
 - https://arxiv.org/abs/2411.15114 (fetched 2026-07-01)
   via workain/harness-eval's own landscape review
+- https://raw.githubusercontent.com/METR/RE-Bench/main/LICENSE (fetched 2026-07-05)
+  fetched directly to confirm license text (MIT License), not just an API label
 
-**Unverified / caveats:**
-- license not independently re-checked
 
 ### SWE-bench family (SWE-bench / SWE-bench Lite / SWE-bench Verified)
 
@@ -596,7 +596,7 @@ Real, merged GitHub-issue-to-PR pairs from popular Python repos, turned into a b
 **Provenance:**
 - https://github.com/SWE-bench/SWE-bench (fetched 2026-07-01)
   via workain/harness-eval's own landscape review; also the ICLR paper, OpenAI's SWE-bench Verified posts, Davis Brown's "Finding Widespread Cheating on Popular Agent Benchmarks", a BigGo news summary, scaleapi/SWE-bench_Pro-os issue #93 ("Git Reward Hacking in SWEBench Pro OSS"), the BenchJack paper, and NIST CAISI's cheating-eval background page
-- https://raw.githubusercontent.com/SWE-bench/SWE-bench/main/LICENSE (fetched 2026-07-06)
+- https://raw.githubusercontent.com/SWE-bench/SWE-bench/main/LICENSE (fetched 2026-07-05)
   fetched directly to confirm license text (MIT License), not just an API label
 
 **Unverified / caveats:**

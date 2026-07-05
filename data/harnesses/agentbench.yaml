@@ -21,7 +21,7 @@ provenance:
     fetched: "2026-07-01"
     note: "via workain/harness-eval's own landscape review; also fetched arXiv:2308.03688 via ar5iv and Config_en.md"
   - url: https://raw.githubusercontent.com/THUDM/AgentBench/main/LICENSE
-    fetched: "2026-07-06"
+    fetched: "2026-07-05"
     note: "fetched directly to confirm license text (Apache License, Version 2.0), not just an API label"
 unverified:
   - "no software-engineering/multi-file-code-repair task family — confirmed absent as of the 2026-07-01 fetch, a real coverage gap vs. devtasks-style suites"

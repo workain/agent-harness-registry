@@ -22,7 +22,7 @@ our_adapter:
   suite: bfcl_memory_v1
   repo: https://github.com/workain/harness-eval
   path: bfcl_memory/
-  status: "NOT YET SHIPPED — built and through 6 rounds of independent review, but only on an open, UNMERGED pull request (workain/harness-eval#25, base main). Confirmed absent from origin/main via git ls-tree on 2026-07-06 — do not cite bfcl_memory/ as present on harness-eval main until that PR merges."
+  status: "NOT YET SHIPPED — built and through 6 rounds of independent review, but only on an open, UNMERGED pull request (workain/harness-eval#25, base main). Confirmed absent from origin/main via git ls-tree on 2026-07-05 — do not cite bfcl_memory/ as present on harness-eval main until that PR merges."
   notes: >
     Clean-room adapter (12 curated tasks across all 5 scenarios) built directly against
     the pinned public upstream data + our own scoring/gates — NOT a port of
@@ -44,6 +44,6 @@ provenance:
     fetched: "2026-07-01 (pinned commit 6ea57973c7a6097fd7c5915698c54c17c5b1b6c8)"
     note: "license text, eval-checker source, and data all fetched and byte-verified directly by harness-eval during its bfcl_memory_v1 adapter build"
   - url: https://github.com/workain/harness-eval/pull/25
-    fetched: "2026-07-06"
+    fetched: "2026-07-05"
     note: "gh pr view 25 --json state,baseRefName -> {state: OPEN, baseRefName: main}; git ls-tree origin/main confirms no bfcl_memory/ path on main as of this fetch"
 unverified: []

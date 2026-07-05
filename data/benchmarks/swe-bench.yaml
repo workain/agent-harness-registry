@@ -25,7 +25,7 @@ provenance:
     fetched: "2026-07-01"
     note: "via workain/harness-eval's own landscape review; also the ICLR paper, OpenAI's SWE-bench Verified posts, Davis Brown's \"Finding Widespread Cheating on Popular Agent Benchmarks\", a BigGo news summary, scaleapi/SWE-bench_Pro-os issue #93 (\"Git Reward Hacking in SWEBench Pro OSS\"), the BenchJack paper, and NIST CAISI's cheating-eval background page"
   - url: https://raw.githubusercontent.com/SWE-bench/SWE-bench/main/LICENSE
-    fetched: "2026-07-06"
+    fetched: "2026-07-05"
     note: "fetched directly to confirm license text (MIT License), not just an API label"
 unverified:
   - "the 59.4%-flawed-tests figure for SWE-bench Verified's abandonment is from a secondary source; the primary OpenAI post returned HTTP 403 when fetched"

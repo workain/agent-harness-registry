@@ -1,0 +1,19 @@
+name: Hugging Face MCP Server
+slug: mcp-huggingface
+category: access-mcp
+homepage: https://github.com/huggingface/hf-mcp-server
+license: "MIT"
+license_tag: "MIT"
+open_source: true
+use_cases: "searching Hub models/datasets/Spaces/papers, running Gradio-app tools"
+what_it_is: >
+  Hugging Face's official server: search Hub resources (models/datasets/Spaces/papers), search HF docs, and run Gradio-app tools via Spaces.
+activity:
+  stars: "257"
+  last_verified_note: "76 forks, pushed 2026-07-03"
+provenance:
+  - url: https://github.com/huggingface/hf-mcp-server
+    fetched: "2026-07-05"
+    note: "verified directly via gh api (stars/forks/license/push date) or the vendor's own site for hosted-only entries"
+unverified: []
+deep_dive: deep-dives/components/mcp-huggingface.md

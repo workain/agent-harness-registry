@@ -1,0 +1,21 @@
+name: Glama (MCP directory + hosting)
+slug: mcp-glama
+category: access-mcp
+homepage: https://glama.ai
+license: "Proprietary web platform — no public repo found"
+license_tag: "Proprietary"
+open_source: false
+use_cases: "indexing 51,000+ MCP servers, one-click isolated-VM hosting per server"
+what_it_is: >
+  A registry+hosting combo: indexes 51,230+ servers per its own claim, and offers one-click hosting (isolated VM per server) — distinct from Smithery (registry+CLI, no hosting) in this registry.
+activity:
+  stars: null
+  last_verified_note: null
+provenance:
+  - url: https://glama.ai
+    fetched: "2026-07-05"
+    note: "verified directly via gh api (stars/forks/license/push date) or the vendor's own site for hosted-only entries"
+unverified:
+  - "51,230+ server count is the vendor's own claim, not independently verified"
+  - "no public repo found to check license/activity against"
+deep_dive: deep-dives/components/mcp-glama.md

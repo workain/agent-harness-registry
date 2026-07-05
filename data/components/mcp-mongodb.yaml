@@ -1,0 +1,19 @@
+name: MongoDB MCP Server
+slug: mcp-mongodb
+category: access-mcp
+homepage: https://github.com/mongodb-js/mongodb-mcp-server
+license: "Apache-2.0"
+license_tag: "Apache-2.0"
+open_source: true
+use_cases: "querying/managing MongoDB data from an agent"
+what_it_is: >
+  Official (`mongodb-js` org) server for interacting with MongoDB databases from an agent.
+activity:
+  stars: "1.1k"
+  last_verified_note: "268 forks, pushed 2026-07-03"
+provenance:
+  - url: https://github.com/mongodb-js/mongodb-mcp-server
+    fetched: "2026-07-05"
+    note: "verified directly via gh api (stars/forks/license/push date) or the vendor's own site for hosted-only entries"
+unverified: []
+deep_dive: deep-dives/components/mcp-mongodb.md

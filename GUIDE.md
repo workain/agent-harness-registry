@@ -10,7 +10,7 @@
 
 ## Overview — map of this registry
 
-**22 atomic components** across 4 categories, **7 assembled bundles**, **6 agent engines/runtimes**, **9 eval-frameworks**, **11 benchmarks**.
+**52 atomic components** across 4 categories, **7 assembled bundles**, **6 agent engines/runtimes**, **9 eval-frameworks**, **11 benchmarks**.
 
 **Atoms vs. bundles.** Equipment splits into two levels. **Components** are single-purpose, atomic units — a memory layer, a skill, a subagent definition, an MCP server — composed onto an engine one at a time. **Bundles** are pre-assembled multi-component kits shipped together (instructions + skills + a knowledge base + subagents, etc.). Market research (`workain/harness-eval`'s `docs/DEMAND-vs-ANTI-SIGNALS-equipment-bundles.md`, building on `workain/agent-lab-manager` PR#44's market survey) found the market is overwhelmingly atomic today — the Agent Skills standard alone spans 47,150 unique skills across 42 engines — while real demand signals for assembled bundles also exist (a paid $149 commercial product sells exactly this shape; one bundle's fork:star ratio is 4-8x its peers'). Every bundle catalogued below is scored against three properties no single one yet combines — **sustained** (actively maintained), **engine-agnostic** (portable), and **progressively-disclosed** (loads its components lazily, the way a well-designed skill does) — see each bundle's own write-up for which it has.
 
@@ -18,7 +18,7 @@
 - **Memory** (11) — see below
 - **Skills / tools** (4) — see below
 - **Subagents** (3) — see below
-- **Access placement / MCP** (4) — see below
+- **Access placement / MCP** (34) — see below
 
 ---
 
@@ -63,9 +63,39 @@ Single-purpose atomic units composed onto an engine. Each row links to a full wr
 
 | Name | License | Stars | Use cases | Details |
 |---|---|---|---|---|
+| awesome-mcp-servers (curated list) | MIT | 90.3k | discovering MCP servers across the whole ecosystem via a cu… | [full write-up](deep-dives/components/mcp-awesome-list.md) |
+| AWS MCP Servers | Apache-2.0 | 9.4k | AWS API access, documentation lookup, knowledge/data-proces… | [full write-up](deep-dives/components/mcp-aws.md) |
+| Brave Search MCP Server | MIT | 1.3k | web/news/image search independent of Google/Bing, privacy-f… | [full write-up](deep-dives/components/mcp-brave-search.md) |
+| Cloudflare MCP Server | Apache-2.0 | 3.9k | managing Cloudflare Workers/DNS/security/performance via na… | [full write-up](deep-dives/components/mcp-cloudflare.md) |
+| Context7 (Upstash) | MIT | 58.6k | injecting up-to-date, version-specific library documentatio… | [full write-up](deep-dives/components/mcp-context7.md) |
+| Docker MCP Gateway | MIT | 1.5k | centrally managing/launching many MCP servers at once, secr… | [full write-up](deep-dives/components/mcp-docker-gateway.md) |
+| Elasticsearch MCP Server | Apache-2.0 | 682 | querying/managing Elasticsearch data from an agent | [full write-up](deep-dives/components/mcp-elasticsearch.md) |
+| Figma MCP (official) | Proprietary | — | official Figma design-context access for coding agents | [full write-up](deep-dives/components/mcp-figma-official.md) |
+| Figma-Context-MCP (community) | MIT | 15.3k | pulling Figma design context into a coding agent for implem… | [full write-up](deep-dives/components/mcp-figma-community.md) |
+| Firecrawl MCP Server | MIT | 6.8k | web scraping/crawling, structured extraction, autonomous mu… | [full write-up](deep-dives/components/mcp-firecrawl.md) |
+| GitHub MCP Server | MIT | 31.2k | repo browsing/search, issue and PR automation, CI/CD workfl… | [full write-up](deep-dives/components/mcp-github.md) |
+| Glama (MCP directory + hosting) | Proprietary | — | indexing 51,000+ MCP servers, one-click isolated-VM hosting… | [full write-up](deep-dives/components/mcp-glama.md) |
+| Grafana MCP | Apache-2.0 | 3.2k | dashboards, alerts, incident response, cross-backend observ… | [full write-up](deep-dives/components/mcp-grafana.md) |
+| Hugging Face MCP Server | MIT | 257 | searching Hub models/datasets/Spaces/papers, running Gradio… | [full write-up](deep-dives/components/mcp-huggingface.md) |
+| Linear MCP | Proprietary (likely) | — | managing Linear issues/projects/teams/comments/workflow sta… | [full write-up](deep-dives/components/mcp-linear.md) |
+| MindsDB | MIT | 39.4k | unifying queries across many databases/platforms behind one… | [full write-up](deep-dives/components/mcp-mindsdb.md) |
 | Model Context Protocol — official SDKs (client + server) | Apache-2.0 / MIT | 12.8k | building MCP clients and servers across 8 languages | [full write-up](deep-dives/components/mcp.md) |
 | Model Context Protocol — reference servers | Apache-2.0 / MIT | 88.1k | reference implementations for filesystem/git/fetch/memory/t… | [full write-up](deep-dives/components/mcp.md) |
+| MongoDB MCP Server | Apache-2.0 | 1.1k | querying/managing MongoDB data from an agent | [full write-up](deep-dives/components/mcp-mongodb.md) |
+| Netlify MCP | Unclear (verify) | 47 | managing Netlify sites/deploys from an agent | [full write-up](deep-dives/components/mcp-netlify.md) |
+| Notion MCP Server | MIT | 4.5k | search/read/create/update Notion pages and databases from a… | [full write-up](deep-dives/components/mcp-notion.md) |
+| Official MCP Registry | Unclear (verify) | 7.0k | canonical, community-driven registry service for discoverin… | [full write-up](deep-dives/components/mcp-official-registry.md) |
+| Pipedream | Unclear (verify) | 11.5k | connecting agents to 2,500+ APIs / 8,000+ prebuilt tools, s… | [full write-up](deep-dives/components/mcp-pipedream.md) |
+| Playwright MCP | Apache-2.0 | 34.7k | browser automation via accessibility tree, cross-browser E2… | [full write-up](deep-dives/components/mcp-playwright.md) |
+| Postgres MCP Pro | MIT | 3.0k | configurable read/write Postgres access plus performance an… | [full write-up](deep-dives/components/mcp-postgres-pro.md) |
+| PulseMCP | Proprietary | — | daily-updated aggregated directory of MCP servers | [full write-up](deep-dives/components/mcp-pulsemcp.md) |
+| Redis MCP Server | MIT | 539 | natural-language interface for Redis data management and se… | [full write-up](deep-dives/components/mcp-redis.md) |
+| Sentry MCP | Unclear (verify) | 753 | pulling error/issue context into a coding-assistant workflo… | [full write-up](deep-dives/components/mcp-sentry.md) |
+| slack-mcp-server (community) | MIT | 1.7k | Slack messaging/search/DM automation without admin permissi… | [full write-up](deep-dives/components/mcp-slack-community.md) |
 | Smithery CLI | AGPL-3.0 | 785 | discovering/installing MCP servers and skills from a centra… | [full write-up](deep-dives/components/smithery-cli.md) |
+| Stripe Agent Toolkit | MIT | 1.6k | payments, subscriptions, refunds, invoices, billing automat… | [full write-up](deep-dives/components/mcp-stripe.md) |
+| Supabase MCP | Apache-2.0 | 2.8k | managing Supabase projects/database/auth/storage from an ag… | [full write-up](deep-dives/components/mcp-supabase.md) |
+| Vercel MCP Adapter | Unclear (verify) | 620 | spinning up an MCP server directly on a Next.js/Nuxt/Svelte… | [full write-up](deep-dives/components/mcp-vercel-adapter.md) |
 | Zapier MCP | MIT client (hosted service) | 341 | connecting agents to 9,000+ SaaS apps without custom integr… | [full write-up](deep-dives/components/zapier-mcp.md) |
 
 ---

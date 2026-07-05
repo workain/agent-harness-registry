@@ -1,0 +1,19 @@
+name: MindsDB
+slug: mcp-mindsdb
+category: access-mcp
+homepage: https://github.com/mindsdb/mindsdb
+license: "MIT"
+license_tag: "MIT"
+open_source: true
+use_cases: "unifying queries across many databases/platforms behind one MCP server"
+what_it_is: >
+  Unifies data access across many platforms/databases behind one MCP server — a very broad-scope community project, not single-purpose.
+activity:
+  stars: "39.4k"
+  last_verified_note: "6,216 forks, pushed 2026-07-01"
+provenance:
+  - url: https://github.com/mindsdb/mindsdb
+    fetched: "2026-07-05"
+    note: "verified directly via gh api (stars/forks/license/push date) or the vendor's own site for hosted-only entries"
+unverified: []
+deep_dive: deep-dives/components/mcp-mindsdb.md

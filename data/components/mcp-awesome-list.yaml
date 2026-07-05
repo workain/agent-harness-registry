@@ -1,0 +1,19 @@
+name: awesome-mcp-servers (curated list)
+slug: mcp-awesome-list
+category: access-mcp
+homepage: https://github.com/punkpeye/awesome-mcp-servers
+license: "MIT"
+license_tag: "MIT"
+open_source: true
+use_cases: "discovering MCP servers across the whole ecosystem via a curated, categorized list"
+what_it_is: >
+  A curated LIST of MCP servers (not a server itself) — the single highest-star entry in this whole batch, reflecting how much practitioners rely on curated discovery over browsing the sprawl of individual servers directly.
+activity:
+  stars: "90.3k"
+  last_verified_note: "12,504 forks, pushed 2026-07-04"
+provenance:
+  - url: https://github.com/punkpeye/awesome-mcp-servers
+    fetched: "2026-07-05"
+    note: "verified directly via gh api (stars/forks/license/push date) or the vendor's own site for hosted-only entries"
+unverified: []
+deep_dive: deep-dives/components/mcp-awesome-list.md

@@ -505,28 +505,30 @@ Windsurf's (now under Cognition/Devin, per the docs' own redirect from docs.wind
 
 | Name | License | Deep-dive? | What it is |
 |---|---|---|---|
-| [AutoGen (Microsoft)](#autogen) | Mixed: MIT for code, CC-BY-4.0 for docu… | — | A programming framework for multi-agent AI applications: agents that act autono… |
+| [AutoGen Agent Roles (Microsoft)](#autogen) | Mixed: MIT for code, CC-BY-4.0 for docu… | — | The agent-role/composition layer of AutoGen (a full multi-agent AI framework —… |
 | [Claude Code Subagents](#claude-code-subagents) | Documents a feature of Claude Code, whi… | — | A first-party Claude Code mechanism for delegating a task to a specialized assi… |
 | [wshobson/agents](#wshobson-agents) | MIT | — | A "multi-harness agentic plugin marketplace": 194 domain-organized subagents (a… |
 
-### AutoGen (Microsoft)
+### AutoGen Agent Roles (Microsoft)
 
 <a id="autogen"></a>
 
 **Homepage:** https://github.com/microsoft/autogen  
-**Layer:** Capability / subagents layer (equivalent to Block B) — a multi-agent role-composition framework  
+**Layer:** Capability / subagents layer (equivalent to Block B) — one piece of a larger multi-agent orchestration framework  
 **License:** Mixed: MIT for code, CC-BY-4.0 for documentation/content (per the fetched repo page) — a different split pattern than this registry's other mixed-license entries (which split old-vs-new code, not code-vs-docs)
 
-A programming framework for multi-agent AI applications: agents that act autonomously or work alongside humans, composed via a layered architecture (Core API, AgentChat API, Extensions API). The `ConversableAgent` class is the base abstraction other agent roles (e.g. `AssistantAgent`) build on — agents converse with each other by exchanging messages to jointly finish a task, a peer-to-peer role-composition model distinct from this registry's hub-and-spoke subagent entries (Claude Code Subagents' delegate-and-return model, wshobson/agents' fixed role catalog). Ships `AutoGen Studio`, a no-code workflow builder, as a developer tool alongside the programming framework itself.
+The agent-role/composition layer of AutoGen (a full multi-agent AI framework — the framework itself is broader than equipment, spanning its own control loop/orchestration runtime, which is engine territory per this registry's harness=equipment-vs-engine split; this entry scopes to its role-definition piece specifically, the same narrowing this registry applies to `crewai-memory` and `llamaindex-memory` for their own parent frameworks). The `ConversableAgent` class is the base abstraction other agent roles (e.g. `AssistantAgent`) build on — agents converse with each other by exchanging messages to jointly finish a task, a peer-to-peer role-composition model distinct from this registry's hub-and-spoke subagent entries (Claude Code Subagents' delegate-and-return model, wshobson/agents' fixed role catalog). AutoGen-the-framework also ships its own orchestration runtime and `AutoGen Studio` (a no-code workflow builder) — neither is catalogued here or elsewhere in this registry as an engine; AutoGen itself is NOT in this registry's `engines/` category, so treat this entry as documenting a role-composition PATTERN worth knowing about, not a recommendation to adopt the whole framework as equipment.
 
-**How it's adopted:** Python framework (`pip install autogen-agentchat` etc., per the layered API split); compose agents programmatically, not via a plain-file convention like this registry's instructions-rules entries
-- **Activity:** 59.5k (per GitHub page fetch, 2026-07-05)
+**How it's adopted:** Python framework (`pip install autogen-agentchat` etc., per the layered API split); compose agent roles programmatically, not via a plain-file convention like this registry's instructions-rules entries
+- **Activity:** 59.5k (per GitHub page fetch, 2026-07-05, for the whole AutoGen repo — the role-composition classes are one part of it, not separately versioned)
 - **Activity notes:** fetched live 2026-07-05; 98 releases, 9k forks, 4.2k dependent projects — BUT the project is explicitly in maintenance mode: 'will not receive new features or enhancements and is community managed going forward,' with Microsoft directing new users to the separate Microsoft Agent Framework (an AutoGen+Semantic-Kernel merger) instead. Cataloged here for its historical/current install base and its distinct peer-to-peer role model, not as an actively-evolving recommendation.
 
 **Provenance:**
 - https://github.com/microsoft/autogen (fetched 2026-07-05)
   fetched directly (repo page): architecture, license split, maintenance-mode status and migration guidance, activity signal
 
+**Unverified / caveats:**
+- this entry scopes to AutoGen's agent-role/composition classes specifically, per this catalog's equipment focus — the surrounding orchestration runtime and control loop are out of scope here and are NOT catalogued as an engine elsewhere in this registry (unlike Claude Code/Codex CLI/etc., which do have engines/ entries); a future pass could add AutoGen's runtime to engines/ if judged worth it, but that decision hasn't been made
 
 ### Claude Code Subagents
 
@@ -651,7 +653,7 @@ A command-line tool for discovering, installing, and managing MCP servers AND sk
 **Layer:** Access placement / tool-access protocol layer (equivalent to Block B) — a hosted hub-of-integrations pattern, distinct from both the official reference servers and a registry/discovery tool  
 **License:** MIT for this repo (the client plugin/distribution code) — but the underlying MCP SERVER itself is a hosted proprietary Zapier service with no open-source equivalent in this repo; do not confuse the permissive client-plugin license with the service's own terms
 
-A hosted MCP server (NOT self-hosted software) connecting an agent to 9,000+ apps and 30,000+ actions via Zapier's existing automation-platform integrations — the largest single app-connectivity surface of any access-placement entry in this registry (contrast Composio's 1,000+ toolkits, this registry's largest SELF-HOSTABLE equivalent). The GitHub repo cataloged here is only the CLIENT-side plugin distribution (onboarding, demos, role-specific capability descriptions) that AI clients (Claude, Cursor, GitHub Copilot CLI, Kiro) install to connect — the actual MCP server itself is a centralized, proprietary, hosted Zapier service, not something this repo lets you run yourself. User controls which apps/actions are permitted; every action is logged. Billing: costs two Zapier "tasks" per tool call, on top of whatever Zapier plan a team already has.
+A hosted MCP server (NOT self-hosted software) connecting an agent to 9,000+ apps and 40,000+ actions via Zapier's existing automation-platform integrations — the largest single app-connectivity surface of any access-placement entry in this registry (contrast Composio's 1,000+ toolkits, this registry's largest SELF-HOSTABLE equivalent). The GitHub repo cataloged here is only the CLIENT-side plugin distribution (onboarding, demos, role-specific capability descriptions) that AI clients (Claude, Cursor, GitHub Copilot CLI, Kiro) install to connect — the actual MCP server itself is a centralized, proprietary, hosted Zapier service, not something this repo lets you run yourself. User controls which apps/actions are permitted; every action is logged. Billing: costs two Zapier "tasks" per tool call, on top of whatever Zapier plan a team already has.
 
 **How it's adopted:** Set up at mcp.zapier.com (creates a hosted MCP server instance); install the client plugin from this repo into an MCP-compatible AI client that supports Streamable HTTP
 - **Activity:** 341 (per GitHub page fetch, 2026-07-05, for the client-plugin repo specifically)
@@ -660,6 +662,8 @@ A hosted MCP server (NOT self-hosted software) connecting an agent to 9,000+ app
 **Provenance:**
 - https://github.com/zapier/zapier-mcp (fetched 2026-07-05)
   fetched directly (repo page): description, license, star count, client-vs-hosted-service distinction, activity signal, billing model
+- https://raw.githubusercontent.com/zapier/zapier-mcp/main/AGENTS.md (fetched 2026-07-05)
+  fetched directly (post-ROAST correction): repo's own AGENTS.md and llms.txt both state '9,000+ apps and 40,000+ actions' — corrects an initial WebFetch summary that had reported 30,000+ actions (a stale/inconsistent figure found on one live docs page; the repo's own primary-source files and the current docs.zapier.com/mcp/home page agree on 40,000+)
 
 
 ---

@@ -1,0 +1,21 @@
+name: Goose
+slug: goose
+homepage: https://github.com/block/goose
+interface: "Native desktop app (macOS/Linux/Windows), CLI, API"
+what_it_is: >
+  An open-source, general-purpose AI agent (Block/Square) — install, execute, edit,
+  and test with any LLM. Supports 15+ LLM providers, integrates with 70+ extensions via
+  MCP. Recently transitioned from `block/goose` to the Agentic AI Foundation (AAIF)
+  under the Linux Foundation.
+license: Apache-2.0
+open_source: true
+sandboxing: "n/a documented at the engine level — extension-mediated tool access via MCP is the primary access-control surface"
+activity:
+  stars: "50.7k (per GitHub page fetch, 2026-07-05)"
+  last_verified_note: "141 releases, latest v1.41.0 (2026-07-03), 4,966 commits, 5.5k forks — actively maintained; repo mid-transition from block/goose to aaif-goose/goose"
+provenance:
+  - url: https://github.com/block/goose
+    fetched: "2026-07-05"
+    note: "fetched directly — same source as this registry's goosehints component entry"
+unverified: []
+deep_dive: deep-dives/engines/goose.md

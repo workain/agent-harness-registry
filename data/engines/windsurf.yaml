@@ -1,0 +1,23 @@
+name: Windsurf (Cascade)
+slug: windsurf
+homepage: https://windsurf.com
+interface: "Desktop IDE (VS Code fork), Cascade agent panel"
+what_it_is: >
+  An AI-native IDE (formerly Codeium) built around the Cascade agent — multi-file
+  understanding via a proprietary "Fast Context" indexing system, terminal command
+  execution, and cross-session project memory. Acquired by Cognition (maker of Devin)
+  in December 2025 for ~$250M; Windsurf 2.0 (April 2026) embedded Devin's autonomous
+  agent directly into the IDE, letting a user plan locally with Cascade then hand off
+  to a cloud VM. No public source repository — proprietary, closed-source product.
+license: "Proprietary — no public source repository found; closed-source commercial product"
+open_source: false
+sandboxing: "Cloud VM hand-off for Devin-driven autonomous work (post Windsurf 2.0); local Cascade work runs with the invoking user's own filesystem/process permissions"
+activity:
+  stars: null
+  last_verified_note: "Windsurf 2.0 shipped April 2026 embedding Devin directly; pricing free tier / Pro $20/mo / Teams $40/user/mo per official site as of this research"
+provenance:
+  - url: https://windsurf.com/cascade
+    note: "found via search summary of official product pages and independent reviews — not independently re-fetched in full for this entry"
+unverified:
+  - "product details (Fast Context mechanics, exact Devin hand-off flow) are drawn from a WebSearch synthesis, not an independent full fetch of windsurf.com or its docs"
+deep_dive: deep-dives/engines/windsurf.md

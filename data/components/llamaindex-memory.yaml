@@ -15,7 +15,9 @@ what_it_is: >
   retrieval time.
 integration: "Part of the `llama_index` Python package (`llama-index-core`); use an existing `BaseMemory` subclass or author a custom one"
 license: MIT
+license_tag: "MIT"
 open_source: true
+use_cases: "chat memory buffers, fact-extraction memory blocks, RAG-agent memory"
 activity:
   stars: "50.7k (per GitHub page fetch, 2026-07-05, for the whole llama_index repo — memory is one module within it)"
   last_verified_note: "fetched live 2026-07-05; latest release v0.14.23 (2026-06-24), 495 releases, 7,855 commits, 24.4k dependent projects — actively maintained"
@@ -28,3 +30,4 @@ provenance:
 unverified:
   - "this entry scopes to LlamaIndex's memory module specifically, per this catalog's equipment focus — the surrounding RAG/document-agent framework is out of scope here"
   - "the memory-class API details (ChatMemoryBuffer, Memory Block types) came from a search-result summary of the docs site, not an independent full fetch"
+deep_dive: deep-dives/components/llamaindex-memory.md

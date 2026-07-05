@@ -19,7 +19,9 @@ what_it_is: >
   worth knowing about, not a recommendation to adopt the whole framework as equipment.
 integration: "Python framework (`pip install autogen-agentchat` etc., per the layered API split); compose agent roles programmatically, not via a plain-file convention like this registry's instructions-rules entries"
 license: "Mixed: MIT for code, CC-BY-4.0 for documentation/content (per the fetched repo page) — a different split pattern than this registry's other mixed-license entries (which split old-vs-new code, not code-vs-docs)"
+license_tag: "MIT + CC-BY-4.0"
 open_source: true
+use_cases: "peer-to-peer multi-agent role composition, conversational agent orchestration"
 activity:
   stars: "59.5k (per GitHub page fetch, 2026-07-05, for the whole AutoGen repo — the role-composition classes are one part of it, not separately versioned)"
   last_verified_note: "fetched live 2026-07-05; 98 releases, 9k forks, 4.2k dependent projects — BUT the project is explicitly in maintenance mode: 'will not receive new features or enhancements and is community managed going forward,' with Microsoft directing new users to the separate Microsoft Agent Framework (an AutoGen+Semantic-Kernel merger) instead. Cataloged here for its historical/current install base and its distinct peer-to-peer role model, not as an actively-evolving recommendation."
@@ -29,3 +31,4 @@ provenance:
     note: "fetched directly (repo page): architecture, license split, maintenance-mode status and migration guidance, activity signal"
 unverified:
   - "this entry scopes to AutoGen's agent-role/composition classes specifically, per this catalog's equipment focus — the surrounding orchestration runtime and control loop are out of scope here and are NOT catalogued as an engine elsewhere in this registry (unlike Claude Code/Codex CLI/etc., which do have engines/ entries); a future pass could add AutoGen's runtime to engines/ if judged worth it, but that decision hasn't been made"
+deep_dive: deep-dives/components/autogen.md

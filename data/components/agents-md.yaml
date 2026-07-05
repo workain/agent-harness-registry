@@ -14,7 +14,9 @@ what_it_is: >
   Foundation's Agentic AI Foundation in December 2025 [unverified — same caveat].
 integration: "Drop a file named AGENTS.md at a project's root (or nested per-package); over 20 AI coding tools reportedly read it directly [unverified — from search summary] — this is the same functional slot as CLAUDE.md/SOUL.md in agent-lab-manager's own Block-A convention."
 license: MIT
+license_tag: "MIT"
 open_source: true
+use_cases: "cross-engine project instructions, onboarding new contributors/agents"
 activity:
   stars: "22.8k (per GitHub page fetch, 2026-07-05)"
   last_verified_note: "fetched live 2026-07-05; 1.7k forks, 83 open issues, 35 commits on main, no formal releases published — a spec/convention repo, not a versioned software product, so activity signals read differently than for a library"

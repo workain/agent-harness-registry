@@ -16,7 +16,9 @@ what_it_is: >
   already has.
 integration: "Set up at mcp.zapier.com (creates a hosted MCP server instance); install the client plugin from this repo into an MCP-compatible AI client that supports Streamable HTTP"
 license: "MIT for this repo (the client plugin/distribution code) — but the underlying MCP SERVER itself is a hosted proprietary Zapier service with no open-source equivalent in this repo; do not confuse the permissive client-plugin license with the service's own terms"
+license_tag: "MIT client (hosted service)"
 open_source: true
+use_cases: "connecting agents to 9,000+ SaaS apps without custom integrations"
 activity:
   stars: "341 (per GitHub page fetch, 2026-07-05, for the client-plugin repo specifically)"
   last_verified_note: "fetched live 2026-07-05; 86 commits — a thin client-plugin repo, not the underlying service, so commit/star activity here undercounts real usage (billing-gated, no public repo for the actual server)"
@@ -28,3 +30,4 @@ provenance:
     fetched: "2026-07-05"
     note: "fetched directly (post-ROAST correction): repo's own AGENTS.md and llms.txt both state '9,000+ apps and 40,000+ actions' — corrects an initial WebFetch summary that had reported 30,000+ actions (a stale/inconsistent figure found on one live docs page; the repo's own primary-source files and the current docs.zapier.com/mcp/home page agree on 40,000+)"
 unverified: []
+deep_dive: deep-dives/components/zapier-mcp.md

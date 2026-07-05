@@ -14,7 +14,9 @@ what_it_is: >
   self-benchmark, not independently re-verified here.
 integration: "SDK: `pip install mem0ai` (Python) or `npm install mem0ai` (Node.js); also a CLI (`mem0 init --agent ...`) and IDE-loadable skill packs"
 license: Apache-2.0
+license_tag: "Apache-2.0"
 open_source: true
+use_cases: "cross-session user memory, personalization, fact extraction from conversations"
 activity:
   stars: "60.1k (per GitHub page fetch, 2026-07-05)"
   last_verified_note: "fetched live 2026-07-05; Node SDK v3.0.13 (2026-07-01), 2,433 commits, 356 releases — actively maintained; the project also open-sources its own eval framework at mem0ai/memory-benchmarks"

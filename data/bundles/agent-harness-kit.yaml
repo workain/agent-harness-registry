@@ -14,6 +14,7 @@ what_it_is: >
   subagent scaffolding specifically, not the full component set.
 components_bundled: ["subagents (5 roles, per-engine generated)", "task-management DB", "audit trail", "health gate", "MCP server", "dashboard"]
 engine_lock: "engine-agnostic by construction (Claude Code, OpenCode, Codex CLI natively; no skills/KB layer)"
+license_tag: "Apache-2.0"
 license: Apache-2.0
 open_source: true
 activity:

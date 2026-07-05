@@ -6,7 +6,7 @@ what_it_is: >
   Terminal-based AI pair-programming tool: builds a "repo map" of the whole codebase to
   give the model context-aware structure, applies edits as git commits with generated
   messages, and supports 100+ languages. Works with most major model providers, including
-  local models. An ENGINE in our taxonomy (drives the model turn-by-turn), not equipment.
+  local models.
 license: Apache-2.0
 open_source: true
 sandboxing: "n/a — no built-in sandbox; runs with the invoking user's own filesystem/git permissions directly, same caveat as the other CLI-style engines here"
@@ -18,3 +18,4 @@ provenance:
     note: "fetched live 2026-07-05"
 unverified:
   - "latest-release date looked stale relative to the fetch date (Aug 2025 release vs. a July 2026 fetch) — re-verify there isn't a newer release not surfaced by this fetch"
+deep_dive: deep-dives/engines/aider.md

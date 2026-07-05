@@ -11,8 +11,9 @@ what_it_is: >
   a lead-gen/portfolio artifact.
 components_bundled: ["instructions (CLAUDE.md)", "skills (5)", "knowledge base", "memory-refresh loop", "worked example"]
 engine_lock: "Claude Code only"
-license: MIT
-open_source: true
+license_tag: "No license file"
+license: "No LICENSE file found in the repo — `gh api repos/KarlRaf/gtm-starter-kit` returns `license: null`; an earlier draft of this entry incorrectly stated MIT, corrected here against the actual API response"
+open_source: false
 activity:
   stars: "163 (per GitHub page fetch, 2026-07-05)"
   last_verified_note: "fetched live 2026-07-05; 65 forks (unusually high fork:star ratio, ~0.40 — see demand-research doc), 12 commits, created and last pushed the same day (2026-04-03) — a single-push snapshot, never updated since"

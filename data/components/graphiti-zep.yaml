@@ -16,7 +16,9 @@ what_it_is: >
   Graphiti directly against a supported graph backend (Neo4j, FalkorDB, or Kuzu).
 integration: "Python library; requires a graph database backend (Neo4j/FalkorDB/Kuzu) to self-host, since the old all-in-one Community Edition is gone"
 license: Apache-2.0
+license_tag: "Apache-2.0"
 open_source: true
+use_cases: "temporal knowledge graphs, fact-validity tracking, provenance-linked memory"
 activity:
   stars: "28.4k (per GitHub page fetch, 2026-07-05)"
   last_verified_note: "fetched live 2026-07-05; latest release v0.29.2 (2026-06-08), 196 releases, 881 commits, 253 open issues, 160 open PRs — actively maintained"

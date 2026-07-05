@@ -16,7 +16,9 @@ what_it_is: >
   the separate `wshobson-agent-teams` bundle deep-dive.
 integration: "Install the whole marketplace or individual plugins via Claude Code's plugin mechanism (`.claude-plugin/marketplace.json`); per-engine native artifacts are also generated for the other five supported platforms"
 license: MIT
+license_tag: "MIT"
 open_source: true
+use_cases: "large multi-engine subagent/skill/command marketplace"
 activity:
   stars: "37.5k (per GitHub page fetch, 2026-07-05)"
   last_verified_note: "fetched live 2026-07-05; 508 commits, 4k forks, 311 watchers, 7 open PRs, 1 open issue — high star count relative to commit count is consistent with rapid recent adoption"
@@ -25,3 +27,4 @@ provenance:
     fetched: "2026-07-05"
     note: "fetched directly (repo page): inventory counts (194 agents/158 skills/106 commands/88 plugins), six-engine generation model, license, activity signal"
 unverified: []
+deep_dive: deep-dives/components/wshobson-agents.md

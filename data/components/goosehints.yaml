@@ -16,7 +16,9 @@ what_it_is: >
   governance, not just an internal reorg.
 integration: "Drop a `.goosehints` file at a project's root; Goose's built-in developer extension reads it automatically"
 license: Apache-2.0
+license_tag: "Apache-2.0"
 open_source: true
+use_cases: "project conventions for Goose, README-for-AI pattern"
 activity:
   stars: "50.7k (per GitHub page fetch, 2026-07-05, for the Goose repo overall — `.goosehints` itself is a convention within it, not separately versioned)"
   last_verified_note: "fetched live 2026-07-05; 141 releases, latest v1.41.0 (2026-07-03), 4,966 commits, 5.5k forks — actively maintained; repo currently mid-transition from block/goose to aaif-goose/goose, per the fetched page's own note that 'some links and references are still being updated'"
@@ -25,3 +27,4 @@ provenance:
     fetched: "2026-07-05"
     note: "fetched directly (repo page): .goosehints purpose/positioning, license, star count, AAIF/Linux Foundation transition, activity signal"
 unverified: []
+deep_dive: deep-dives/components/goosehints.md

@@ -15,6 +15,7 @@ what_it_is: >
   still narrow/atomic, not assembled; this plugin is the exception, not the norm.
 components_bundled: ["subagents (4)", "skills (6, functioning as a reference KB)", "commands (7)"]
 engine_lock: "Claude Code + Codex (both plugin manifests present); not verified for the other 4 engines wshobson/agents otherwise targets"
+license_tag: "MIT"
 license: MIT
 open_source: true
 activity:

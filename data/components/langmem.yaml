@@ -13,7 +13,9 @@ what_it_is: >
   explicit involvement.
 integration: "Python package (`langgraph-ai/langmem`); `create_manage_memory_tool`/`create_search_memory_tool` for agent-callable memory ops; native LangGraph Store integration for long-term persistence"
 license: MIT
+license_tag: "MIT"
 open_source: true
+use_cases: "LangGraph long-term memory, background memory consolidation, prompt optimization"
 activity:
   stars: "1.5k (per GitHub page fetch, 2026-07-05)"
   last_verified_note: "fetched live 2026-07-05; 135 commits, 47 open issues, 10 open PRs, 173 forks"
@@ -23,3 +25,4 @@ provenance:
     note: "fetched directly (repo page): description, license, star count, feature set, activity signal"
 unverified:
   - "this entry scopes specifically to LangMem, the dedicated memory package — the broader LangChain/LangGraph ecosystem (agent orchestration, other memory-adjacent template repos like langgraph-memory/memory-template) was not separately catalogued"
+deep_dive: deep-dives/components/langmem.md

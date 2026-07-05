@@ -20,7 +20,9 @@ integration: >
   independently catalogued here). An engine or harness declares which MCP servers it may
   reach — this IS the access-placement decision the equipment layer is responsible for.
 license: "Apache-2.0 for new contributions, MIT for pre-existing code (per the fetched repo page) — a mixed-license repo, not a single uniform license; verify per-file if redistributing"
+license_tag: "Apache-2.0 / MIT"
 open_source: true
+use_cases: "reference implementations for filesystem/git/fetch/memory/time tool access"
 activity:
   stars: "88.1k (per GitHub page fetch, 2026-07-05)"
   last_verified_note: "fetched live 2026-07-05; latest release 2026.7.4 (2026-07-04), 25 releases, 4,130 commits — actively maintained, governed by Anthropic as the steering org with community contributions"

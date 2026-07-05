@@ -15,7 +15,9 @@ what_it_is: >
   automatically. Playbooks are also versioned: every edit creates a new version with rollback.
 integration: "Authored via Devin's Settings & Library UI, not as files in a repo — a materially different authoring model than AGENTS.md/CLAUDE.md/GEMINI.md/Cursor Rules/Windsurf Rules, all of which are plain files a team commits to version control"
 license: "Documents a feature of Devin (proprietary, Cognition AI — the same company that now maintains Windsurf, per this registry's windsurf-rules entry) — not open-source or redistributable"
+license_tag: "Proprietary feature (usable)"
 open_source: false
+use_cases: "trigger-gated team knowledge sharing, reusable task-recipe automation"
 activity:
   stars: null
   last_verified_note: "fetched live 2026-07-05 from the official docs.devin.ai product guide"
@@ -25,3 +27,4 @@ provenance:
     note: "fetched directly: Knowledge's trigger-description recall mechanism, folder organization, product classification (confirmed proprietary)"
 unverified:
   - "Playbooks' macro-invocation and versioning details are drawn from a WebSearch synthesis of secondary Medium posts, not independently fetched from a Devin primary-source page — treat the Knowledge description as more reliably sourced than the Playbooks description"
+deep_dive: deep-dives/components/devin-knowledge-playbooks.md

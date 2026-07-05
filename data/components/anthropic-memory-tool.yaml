@@ -21,7 +21,9 @@ integration: >
   responsibility, not built in). Python/TypeScript SDKs ship a ready-made
   `BetaLocalFilesystemMemoryTool`; other languages implement the tool-use loop directly.
 license: "Proprietary Anthropic API feature — not open-source software; this entry catalogs a PATTERN (client-executed, app-controlled file-based memory) available through Anthropic's commercial API, not a redistributable artifact"
+license_tag: "Proprietary API (usable)"
 open_source: false
+use_cases: "cross-session memory for Claude API agents, progress tracking for long-running tasks"
 activity:
   stars: null
   last_verified_note: "fetched live 2026-07-05 from the official platform.claude.com docs — generally available (not beta) as of this fetch; eligible for Zero Data Retention"
@@ -31,3 +33,4 @@ provenance:
     note: "fetched directly: mechanism, integration steps, GA status, ZDR eligibility, pairing with context editing/compaction"
 unverified:
   - "the 84% token-reduction figure is Anthropic's own reported number, not independently reproduced"
+deep_dive: deep-dives/components/anthropic-memory-tool.md

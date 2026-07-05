@@ -4,8 +4,8 @@ homepage: https://github.com/openai/codex
 interface: "CLI (single Rust binary)"
 what_it_is: >
   OpenAI's lightweight terminal coding agent, rewritten in Rust. Runs locally, drives
-  the model turn-by-turn against a local repo. An ENGINE in our taxonomy, not equipment —
-  contrast with Claude Code (same category, but proprietary/closed-source).
+  the model turn-by-turn against a local repo — contrast with Claude Code (same
+  category, but proprietary/closed-source).
 license: Apache-2.0
 open_source: true
 sandboxing: "n/a at the engine level — same note as Claude Code: sandboxing/permissioning is a deployment/harness concern layered on top, not fixed by the engine"
@@ -16,3 +16,4 @@ provenance:
   - url: https://github.com/openai/codex
     note: "fetched live 2026-07-05"
 unverified: []
+deep_dive: deep-dives/engines/codex-cli.md

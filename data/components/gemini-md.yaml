@@ -16,7 +16,9 @@ what_it_is: >
   AGENTS.md instead, though GEMINI.md is the default.
 integration: "`/init` generates a starting GEMINI.md; place files at `~/.gemini/GEMINI.md` (global), project root and ancestors, or subdirectories (component-scoped) — all are loaded and merged automatically"
 license: Apache-2.0
+license_tag: "Apache-2.0"
 open_source: true
+use_cases: "hierarchical project instructions, persona/style guides for Gemini CLI"
 activity:
   stars: "106k (per GitHub page fetch, 2026-07-05, for the Gemini CLI repo overall — GEMINI.md is a convention within it, not separately versioned)"
   last_verified_note: "fetched live 2026-07-05; 537 releases, latest v0.49.0 (2026-06-25), 6,285 commits, 206 open PRs, 1.1k open issues — actively maintained"
@@ -28,3 +30,4 @@ provenance:
     note: "found via search summary of the official docs page: hierarchical loading order, @file.md import syntax, configurable filename — not independently re-fetched in full for this entry"
 unverified:
   - "the hierarchical-loading and @file.md-import mechanism details are drawn from a WebSearch synthesis of the official docs page, not an independent full WebFetch of that specific page"
+deep_dive: deep-dives/components/gemini-md.md

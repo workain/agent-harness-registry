@@ -16,6 +16,7 @@ what_it_is: >
   as an ordinary skill if at all, not a structural layer.
 components_bundled: ["skills", "subagents (agents)", "hooks", "MCP servers", "LSP servers", "monitors"]
 engine_lock: "Claude-Code-native — the schema itself, not just individual plugins built on it, does not port to other engines"
+license_tag: "Proprietary feature (usable)"
 license: "Documents a Claude Code feature (proprietary product, see engines/claude-code) — plugin authors' own content is unlicensed by Anthropic"
 open_source: false
 activity:

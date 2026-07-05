@@ -16,7 +16,9 @@ what_it_is: >
   CAPTCHA solving) for teams that don't want to run browser infrastructure themselves.
 integration: "`pip install browser-use`; async/await Python API; extensible via custom-tool decorators; also distributed as an installable Agent Skill for Claude Code/Codex"
 license: MIT
+license_tag: "MIT"
 open_source: true
+use_cases: "browser automation, web form-filling, research/shopping agents"
 activity:
   stars: "103k (per GitHub page fetch, 2026-07-05)"
   last_verified_note: "fetched live 2026-07-05; 9,776 commits, latest release v0.13.3 (2026-07-01), 2,700+ dependent projects, 79 open issues, 204 open PRs — very actively maintained"
@@ -25,3 +27,4 @@ provenance:
     fetched: "2026-07-05"
     note: "fetched directly (repo page): description, license, star count, integration surface (including the Agent Skills packaging), activity signal"
 unverified: []
+deep_dive: deep-dives/components/browser-use.md

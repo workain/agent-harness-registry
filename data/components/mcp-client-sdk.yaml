@@ -15,7 +15,9 @@ what_it_is: >
   middleware for Express/Hono/Node HTTP.
 integration: "Per-language package install (e.g. `@modelcontextprotocol/sdk` for TS/JS, `mcp` for Python); an agent engine embeds the CLIENT half to discover and call MCP servers, and separately may embed the SERVER half to expose its own tools to other MCP-aware engines"
 license: "Apache-2.0 for new contributions; pre-existing code remains MIT-licensed (per the fetched TypeScript SDK repo) — verify per-file for redistribution, same mixed-license caveat as the mcp-servers entry"
+license_tag: "Apache-2.0 / MIT"
 open_source: true
+use_cases: "building MCP clients and servers across 8 languages"
 activity:
   stars: "12.8k (TypeScript SDK specifically, per GitHub page fetch, 2026-07-05)"
   last_verified_note: "fetched live 2026-07-05; 123 releases, 2k forks, 243 open issues, 205 open PRs — currently in a v2 beta implementing the 2026-07-28 MCP spec revision, with v1.x in maintenance"

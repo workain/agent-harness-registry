@@ -1,0 +1,28 @@
+name: ai-coding-project-boilerplate (shinpr)
+slug: ai-coding-project-boilerplate
+homepage: https://github.com/shinpr/ai-coding-project-boilerplate
+what_it_is: >
+  The richest single-vertical assembled bundle found in this sweep: a TypeScript
+  boilerplate for Claude Code with 20+ specialized subagents covering the full dev
+  lifecycle (requirement analysis, UI spec, design, planning, implementation, QA, code
+  review, debugging, reverse engineering), 10 core skills (coding standards, testing/
+  documentation criteria, technical specs, frontend patterns, integration/E2E testing,
+  project-context customization), a structured knowledge base (quick-start guides, use
+  cases, skills-editing guide, design philosophy), and scale-aware orchestration
+  (direct implementation for small tasks; design-then-build for medium; PRD -> design
+  -> implementation for large projects). Actively maintained (unlike the other two
+  real bundles found), not a one-shot artifact.
+components_bundled: ["subagents (20+)", "skills (10)", "knowledge base", "orchestration/workflow logic"]
+engine_lock: "Claude Code only"
+license: MIT
+open_source: true
+activity:
+  stars: "221 (per GitHub page fetch, 2026-07-05)"
+  last_verified_note: "fetched live 2026-07-05; 23 forks, 117 releases, latest v1.25.1 (2026-06-29) — actively maintained, distinguishing it from the other two real bundles found (both single-push snapshots)"
+provenance:
+  - url: https://github.com/shinpr/ai-coding-project-boilerplate
+    fetched: "2026-07-05"
+    note: "fetched directly (repo page + README): subagent/skill counts, orchestration model, license, release cadence"
+unverified:
+  - "an earlier cross-referenced source (agent-lab-manager PR#44) counted 26 subagents; this entry's own direct fetch found '20+' stated in the README — the discrepancy is noted rather than silently reconciled, exact current count not independently recounted file-by-file"
+deep_dive: deep-dives/bundles/ai-coding-project-boilerplate.md

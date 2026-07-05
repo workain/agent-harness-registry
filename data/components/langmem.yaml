@@ -1,0 +1,25 @@
+name: LangMem (LangChain / LangGraph memory)
+slug: langmem
+homepage: https://github.com/langchain-ai/langmem
+category: memory
+layer: "Memory / data layer (equivalent to Block F)"
+what_it_is: >
+  LangChain's memory package: extracts important information from conversations,
+  optimizes agent behavior through prompt refinement, and maintains long-term memory.
+  Ships both functional primitives usable with any storage backend AND native
+  integration with LangGraph's own long-term memory Store. Includes in-conversation
+  memory-management tools an agent can call directly, plus a background memory manager
+  that automatically extracts/consolidates/updates knowledge without the agent's
+  explicit involvement.
+integration: "Python package (`langgraph-ai/langmem`); `create_manage_memory_tool`/`create_search_memory_tool` for agent-callable memory ops; native LangGraph Store integration for long-term persistence"
+license: MIT
+open_source: true
+activity:
+  stars: "1.5k (per GitHub page fetch, 2026-07-05)"
+  last_verified_note: "fetched live 2026-07-05; 135 commits, 47 open issues, 10 open PRs, 173 forks"
+provenance:
+  - url: https://github.com/langchain-ai/langmem
+    fetched: "2026-07-05"
+    note: "fetched directly (repo page): description, license, star count, feature set, activity signal"
+unverified:
+  - "this entry scopes specifically to LangMem, the dedicated memory package — the broader LangChain/LangGraph ecosystem (agent orchestration, other memory-adjacent template repos like langgraph-memory/memory-template) was not separately catalogued"

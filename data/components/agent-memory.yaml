@@ -1,6 +1,7 @@
 name: agent-memory (workain)
 slug: agent-memory
 homepage: https://github.com/workain/agent-memory
+category: memory
 layer: "Memory / data layer (Block F, per agent-lab-manager's harness-architecture-v0)"
 what_it_is: >
   A tiered, provenance-linked, self-reconsolidating memory architecture for LLM agents —

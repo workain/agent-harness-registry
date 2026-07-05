@@ -1,0 +1,27 @@
+name: wshobson/agents
+slug: wshobson-agents
+homepage: https://github.com/wshobson/agents
+category: subagents
+layer: "Capability / subagents layer (equivalent to Block B) — a large multi-engine subagent + skill + command collection"
+what_it_is: >
+  A "multi-harness agentic plugin marketplace": 194 domain-organized subagents
+  (architecture, languages, infrastructure, security, data, ML, docs, business, SEO),
+  158 skills (progressive-disclosure model), 106 commands, and 88 plugins bundling
+  these into installable units — generated from a single Markdown source per engine
+  (Claude Code as source-of-truth, then native artifacts for Codex CLI, Cursor,
+  OpenCode, Gemini CLI, GitHub Copilot) rather than a lowest-common-denominator
+  translation. Relevant to BOTH this registry's components and bundles sides: the
+  194 subagents/158 skills are atomic components in their own right; specific plugins
+  within this marketplace (e.g. `agent-teams`) are themselves assembled bundles — see
+  the separate `wshobson-agent-teams` bundle deep-dive.
+integration: "Install the whole marketplace or individual plugins via Claude Code's plugin mechanism (`.claude-plugin/marketplace.json`); per-engine native artifacts are also generated for the other five supported platforms"
+license: MIT
+open_source: true
+activity:
+  stars: "37.5k (per GitHub page fetch, 2026-07-05)"
+  last_verified_note: "fetched live 2026-07-05; 508 commits, 4k forks, 311 watchers, 7 open PRs, 1 open issue — high star count relative to commit count is consistent with rapid recent adoption"
+provenance:
+  - url: https://github.com/wshobson/agents
+    fetched: "2026-07-05"
+    note: "fetched directly (repo page): inventory counts (194 agents/158 skills/106 commands/88 plugins), six-engine generation model, license, activity signal"
+unverified: []

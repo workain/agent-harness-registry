@@ -1,6 +1,7 @@
 name: Mem0
 slug: mem0
 homepage: https://github.com/mem0ai/mem0
+category: memory
 layer: "Memory / data layer (equivalent to Block F)"
 what_it_is: >
   A "universal memory layer for AI agents" — LLM-based fact extraction from
@@ -23,3 +24,4 @@ provenance:
     note: "fetched directly (repo page): description, license, star count, architecture, integration surface, activity signal"
 unverified:
   - "the project's own claimed +20/+27 point improvements on LoCoMo/LongMemEval (April 2026 algorithm change) are the project's own self-benchmark, not independently re-derived here"
+deep_dive: deep-dives/components/mem0.md

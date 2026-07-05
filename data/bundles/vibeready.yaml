@@ -1,0 +1,27 @@
+name: VibeReady (AI Framework layer)
+slug: vibeready
+homepage: https://vibeready.sh/ai-saas-boilerplate/
+what_it_is: >
+  A PAID commercial product whose core "AI Framework" layer is exactly this
+  registry's equipment shape: AGENTS.md + 14 scoped rules (auto-load based on which
+  files are being edited) + 22 structured skills (enforce quality gates across the
+  SDLC), sold standalone at $149 one-time, or bundled with a full Next.js/Postgres/
+  Stripe SaaS boilerplate at $399. Explicitly portable across five engines (Claude
+  Code, Cursor, Windsurf, Gemini CLI, GitHub Copilot) by building on the open AGENTS.md
+  convention rather than one vendor's proprietary manifest format. The single most
+  direct evidence in this whole registry that people will PAY for assembled harness
+  equipment specifically, not just for adjacent app-scaffolding.
+components_bundled: ["instructions (AGENTS.md)", "rules (14, scoped/auto-loading)", "skills (22, quality-gate-enforcing)"]
+engine_lock: "engine-agnostic by construction (AGENTS.md-based) — the one bundle in this registry that is both assembled AND portable"
+license: "Proprietary, paid commercial product — no GitHub repo found; appears closed-source, sold as a template drop, not an open-source project"
+open_source: false
+activity:
+  stars: null
+  last_verified_note: "not independently verified beyond the vendor's own marketing site (vibeready.sh) — no GitHub repo, star count, or third-party corroboration found; treat commercial claims (pricing, exact rule/skill counts) as vendor-reported"
+provenance:
+  - url: https://vibeready.sh/ai-saas-boilerplate/
+    note: "found via WebSearch summary of the vendor's own marketing pages, 2026-07-05 — NOT an independently fetched primary source or repo; this entry is the weakest-provenance bundle in the registry and is flagged as such throughout"
+unverified:
+  - "all product details (pricing, exact 14-rules/22-skills counts, engine list) come from a WebSearch synthesis of the vendor's own marketing copy, not an independently fetched page or repo — no GitHub source was found to cross-check against"
+  - "no company/maintainer background, activity signal, or independent user review was found for this entry"
+deep_dive: deep-dives/bundles/vibeready.md

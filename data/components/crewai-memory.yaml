@@ -1,0 +1,24 @@
+name: CrewAI Memory
+slug: crewai-memory
+homepage: https://github.com/crewAIInc/crewAI
+category: memory
+layer: "Memory / data layer (equivalent to Block F) — one subsystem of a larger multi-agent framework"
+what_it_is: >
+  The memory subsystem of CrewAI (a multi-agent orchestration framework — the framework
+  itself is broader than equipment, this entry scopes to its memory piece
+  specifically). Positioned by the project as a "cognitive layer" for production agents:
+  remembers, resolves contradictions, forgets intentionally, and recognizes when it
+  lacks sufficient context, rather than being a plain search-backed store.
+integration: "A `memory` capability enabled on a CrewAI Crew/Agent alongside tools, knowledge, and checkpointing — part of the same Python package as the orchestration framework, not a separately installable component"
+license: MIT
+open_source: true
+activity:
+  stars: "54.9k (per GitHub page fetch, 2026-07-05, for the whole crewAI repo — memory is one module within it, not separately starred)"
+  last_verified_note: "fetched live 2026-07-05; latest release 1.15.1 (2026-06-27), 212 releases, 320 contributors — actively maintained"
+provenance:
+  - url: https://github.com/crewAIInc/crewAI
+    fetched: "2026-07-05"
+    note: "fetched directly (repo page): license, star count, activity signal, and confirmation that memory is a named capability; the fetched page did not enumerate memory-specific implementation details beyond the project's own framing quoted above"
+unverified:
+  - "this entry scopes to CrewAI's memory capability specifically, per this catalog's equipment focus — the surrounding multi-agent orchestration framework is out of scope here (CrewAI-the-framework is not itself catalogued as an engine or equipment elsewhere in this registry)"
+  - "specific memory architecture details (storage backend, contradiction-resolution mechanism) were not found in the fetched repo page content — only the project's own framing language"

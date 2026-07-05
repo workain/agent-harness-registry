@@ -2,25 +2,45 @@
 
 **Our definition (binding for this guide):** a **harness** is the **equipment layer** wrapped around an existing agent engine — its instructions/identity, its tools & skills, the data/memory/knowledge-base it draws on and where that data & access is placed, plus the gates that keep it honest. A harness is **NOT** the execution engine — the control loop that drives the model turn-by-turn is the *agent/engine*, a separate thing we catalog but do not build.
 
-**Terminology note:** the wider industry often uses "harness" more loosely, to mean the whole runtime including the engine (e.g. "Claude Code is a harness"). This guide's taxonomy deliberately narrows the term to the equipment layer only, and splits what a looser usage would lump together into three categories below — so readers comparing this guide to other sources aren't confused by the terminology mismatch.
+**Terminology note:** the wider industry often uses "harness" more loosely, to mean the whole runtime including the engine (e.g. "Claude Code is a harness"). This guide's taxonomy deliberately narrows the term to the equipment layer only, and splits what a looser usage would lump together into categories below — so readers comparing this guide to other sources aren't confused by the terminology mismatch.
 
 **Provenance rule (binding):** every load-bearing claim below is either reproduced/quoted from a source actually fetched (cited in each entry's Provenance block), or explicitly marked `[unverified — ...]`. A project's own marketing framing is never passed through as fact. Generated from the structured entries in `data/` — see `scripts/generate.py`; do not hand-edit this file.
 
 ---
 
-## 1. Harnesses — the equipment layer (primary)
+## Overview — map of this registry
 
-What you compose **onto** an existing agent engine: instruction/rules frameworks, tool & skill packs, memory/KB systems, access & data-placement patterns. This is the under-filled, just-opening niche — the actual catalog this registry exists to build out.
+**20 atomic components** across 5 categories, **7 assembled bundles**, **6 agent engines/runtimes**, **9 eval-frameworks**, **11 benchmarks** — 14 entries have a dedicated deep-dive file.
 
-| Name | Layer | License | What it is |
+**Atoms vs. bundles — why this split, and why atoms dominate.** Equipment splits cleanly into two levels. **Components** are single-purpose, atomic units — a memory layer, a skill, a rules file, an MCP server — that you compose yourself onto an engine. **Bundles** are pre-assembled multi-component kits someone else composed for you (instructions + skills + a knowledge base + subagents, etc., shipped together). Market research (this registry's own demand-vs-anti-signal study, `workain/harness-eval`'s `docs/DEMAND-vs-ANTI-SIGNALS-equipment-bundles.md` — **`[pending review — not yet merged as of this writing; treat the verdict below as a strong working hypothesis, not a settled finding, until that PR lands]`** — building on `workain/agent-lab-manager` PR#44's market-atomic verdict) found the market is overwhelmingly atomic — the Agent Skills standard alone spans 47,150 unique skills across 42 engines (mechanically recounted; an earlier eyeballed pass said 45) — and that this is **not** simply an oversight the bundle side is destined to fill in. Real, structural anti-signals exist (naive bundling has a real efficiency/consistency cost — 40-57% more tokens, up to 50x more latency, per two independently-verified papers on unbundled context injection, though neither paper directly measures output-quality degradation; a real 6k-star open-source project is built explicitly on the anti-monolith thesis; engine lock-in is a cost bundling pays that atomic components mostly don't). But real demand signals ALSO exist (a paid $149 commercial product sells exactly this shape; one bundle's fork:star ratio is 4-8x its peers', a stronger revealed-preference signal than starring). **Verdict: mixed, favors "untapped opportunity with real headwinds" over "flatly unwanted."** Every bundle catalogued below is scored against the three properties no single one combines — **sustained** (actively maintained, not abandoned), **engine-agnostic** (portable, not locked to one vendor), and **progressively-disclosed** (composes/loads its components lazily at runtime, the way a well-designed skill does, rather than as a static preloaded monolith) — see each bundle's own deep-dive for exactly which it has.
+
+**Component categories:**
+- **Memory** (10) — see below
+- **Skills / tools** (3) — see below
+- **Instructions / rules** (3) — see below
+- **Subagents** (2) — see below
+- **Access placement / MCP** (2) — see below
+
+---
+
+## 1. Components — atomic equipment (primary, work for volume)
+
+Single-purpose atomic units you compose yourself onto an engine. Cast wide here — breadth is the goal, not a strict savings bar. Every entry gets at least light annotation; the top/most notable also link out to a full deep-dive file.
+
+### 1.1 Memory
+
+| Name | License | Deep-dive? | What it is |
 |---|---|---|---|
-| [agent-memory (workain)](#agent-memory) | Memory / data layer (Block F, per agent-lab-manager's harness-architecture-v0) | MIT | A tiered, provenance-linked, self-reconsolidating memory architecture for LLM agents — de… |
-| [AGENTS.md](#agents-md) | Instruction / identity layer (equivalent to Block A) — a convention, not a piece of software | MIT | An open, tool-agnostic file-format convention for giving coding agents project context an… |
-| [Graphiti (open-source engine behind Zep)](#graphiti-zep) | Memory / data layer (equivalent to Block F) — temporal knowledge-graph shape | Apache-2.0 | An open-source framework for building TEMPORAL context/knowledge graphs for AI agents: en… |
-| [harness-skills (workain)](#harness-skills) | Capability / tools layer (Block B, per agent-lab-manager's harness-architecture-v0) | no LICENSE file present in the repo as… | A curated, security-reviewed pack of reusable Claude Code skills for the workain lab's ha… |
-| [Letta (formerly MemGPT)](#letta) | Memory / data layer (equivalent to Block F), with its own agent-hosting server | Apache-2.0 | A platform for "stateful agents" with self-editing, persistent memory — originated as Mem… |
-| [Mem0](#mem0) | Memory / data layer (equivalent to Block F) | Apache-2.0 | A "universal memory layer for AI agents" — LLM-based fact extraction from conversations,… |
-| [Model Context Protocol — reference servers](#mcp-servers) | Access placement / tool-access protocol layer (equivalent to Block B, the access/data-placement half specifically) | Apache-2.0 for new contributions, MIT f… | The reference implementations for the Model Context Protocol (MCP) — an open protocol, st… |
+| [agent-memory (workain)](#agent-memory) | MIT | — | A tiered, provenance-linked, self-reconsolidating memory architecture for LLM a… |
+| [Anthropic Memory Tool (Claude API)](#anthropic-memory-tool) | Proprietary Anthropic API feature — not… | — | A first-party Anthropic-provided tool (`{"type": "memory_20250818", "name": "me… |
+| [Cognee](#cognee) | Apache-2.0 | — | An open-source AI memory platform: ingests data in any format and continuously… |
+| [CrewAI Memory](#crewai-memory) | MIT | — | The memory subsystem of CrewAI (a multi-agent orchestration framework — the fra… |
+| [Graphiti (open-source engine behind Zep)](#graphiti-zep) | Apache-2.0 | ✅ | An open-source framework for building TEMPORAL context/knowledge graphs for AI… |
+| [LangMem (LangChain / LangGraph memory)](#langmem) | MIT | — | LangChain's memory package: extracts important information from conversations,… |
+| [Letta (formerly MemGPT)](#letta) | Apache-2.0 | ✅ | A platform for "stateful agents" with self-editing, persistent memory — origina… |
+| [LlamaIndex Memory](#llamaindex-memory) | MIT | — | The memory module of LlamaIndex (a document-agent/RAG/OCR platform — the framew… |
+| [Mem0](#mem0) | Apache-2.0 | ✅ | A "universal memory layer for AI agents" — LLM-based fact extraction from conve… |
+| [OpenAI Conversations API](#openai-conversations-api) | Proprietary OpenAI API feature — not op… | — | A stateful conversation-persistence system that pairs with OpenAI's Responses A… |
 
 ### agent-memory (workain)
 
@@ -40,27 +60,66 @@ A tiered, provenance-linked, self-reconsolidating memory architecture for LLM ag
   primary source — read directly from the local clone (README.md, LICENSE, kit/AGENTS.md, CITATION.cff, git log) on 2026-07-05, not a third-party fetch
 
 
-### AGENTS.md
+### Anthropic Memory Tool (Claude API)
 
-<a id="agents-md"></a>
+<a id="anthropic-memory-tool"></a>
 
-**Homepage:** https://github.com/agentsmd/agents.md  
-**Layer:** Instruction / identity layer (equivalent to Block A) — a convention, not a piece of software  
-**License:** MIT
+**Homepage:** https://platform.claude.com/docs/en/agents-and-tools/tool-use/memory-tool  
+**Layer:** Memory / data layer (equivalent to Block F) — the vendor-provided PATTERN, not a standalone product  
+**License:** Proprietary Anthropic API feature — not open-source software; this entry catalogs a PATTERN (client-executed, app-controlled file-based memory) available through Anthropic's commercial API, not a redistributable artifact
 
-An open, tool-agnostic file-format convention for giving coding agents project context and instructions — deliberately radically simple (single markdown file, no required structure, no custom syntax), covering setup commands, test/build workflows, coding style, and PR guidelines. Positioned as "a README for agents" — humans read READMEs, agents read AGENTS.md. Formalized as an open specification in August 2025 led by OpenAI with Google/Cursor/Factory participation [unverified — from search summary, not confirmed on the fetched repo page itself]; reportedly donated to the Linux Foundation's Agentic AI Foundation in December 2025 [unverified — same caveat].
+A first-party Anthropic-provided tool (`{"type": "memory_20250818", "name": "memory"}`) that lets Claude read/write files in a `/memories` directory across conversations — Claude requests file operations (view/create/str_replace/insert/delete/rename); YOUR application executes them against storage you control (filesystem, database, cloud, encrypted). Generally available on the Messages API (no beta header required), for Claude 4+ models. Designed to pair with context editing (client-side clearing of old tool results) and compaction (server-side conversation summarization) — memory preserves what must survive summarization. Anthropic's own docs cite an 84% token-reduction figure for extended workflows [unverified — vendor's own claim, not independently reproduced here].
 
-**How it's adopted:** Drop a file named AGENTS.md at a project's root (or nested per-package); over 20 AI coding tools reportedly read it directly [unverified — from search summary] — this is the same functional slot as CLAUDE.md/SOUL.md in agent-lab-manager's own Block-A convention.
-- **Activity:** 22.8k (per GitHub page fetch, 2026-07-05)
-- **Activity notes:** fetched live 2026-07-05; 1.7k forks, 83 open issues, 35 commits on main, no formal releases published — a spec/convention repo, not a versioned software product, so activity signals read differently than for a library
+**How it's adopted:** Add the tool to a Messages API request; implement a client-side handler for the six memory commands (view/create/str_replace/insert/delete/rename), restricting all operations to `/memories` (path-traversal protection is the integrator's responsibility, not built in). Python/TypeScript SDKs ship a ready-made `BetaLocalFilesystemMemoryTool`; other languages implement the tool-use loop directly.
+- **Activity notes:** fetched live 2026-07-05 from the official platform.claude.com docs — generally available (not beta) as of this fetch; eligible for Zero Data Retention
 
 **Provenance:**
-- https://github.com/agentsmd/agents.md (fetched 2026-07-05)
-  fetched directly (repo page): description, license, star count, what the format specifies, activity signal — did NOT independently confirm the Linux Foundation donation or the OpenAI/Google/Cursor/Factory formalization claim, both flagged unverified
+- https://platform.claude.com/docs/en/agents-and-tools/tool-use/memory-tool (fetched 2026-07-05)
+  fetched directly: mechanism, integration steps, GA status, ZDR eligibility, pairing with context editing/compaction
 
 **Unverified / caveats:**
-- the August 2025 formalization (OpenAI-led, Google/Cursor/Factory) and the December 2025 Linux Foundation Agentic AI Foundation donation are from search-result summaries of secondary articles, not confirmed on the repo's own page or a Linux Foundation primary source
-- the "60,000+ projects, 20+ tools" adoption figures are from the same secondary summaries, not independently counted
+- the 84% token-reduction figure is Anthropic's own reported number, not independently reproduced
+
+### Cognee
+
+<a id="cognee"></a>
+
+**Homepage:** https://github.com/topoteretes/cognee  
+**Layer:** Memory / data layer (equivalent to Block F) — knowledge-graph + vector, dual-layer shape  
+**License:** Apache-2.0
+
+An open-source AI memory platform: ingests data in any format and continuously builds a self-hosted knowledge graph combining vector embeddings, graph-based reasoning, and "cognitive-science-grounded ontology generation" so content is both semantically searchable and relationally connected. Exposes remember / recall / forget / improve as its core operations — a similar shape to our own agent-memory's remember/forget pump, but knowledge-graph-first rather than tiered-access-band-first.
+
+**How it's adopted:** Python SDK, REST API (localhost:8000 default), CLI (cognee-cli), Docker images, a TypeScript client (@cognee/cognee-ts), a Rust library (cognee-rs), and a Claude Code plugin integration
+- **Activity:** 27k (per GitHub page fetch, 2026-07-05)
+- **Activity notes:** fetched live 2026-07-05; latest release v1.2.2 (2026-06-26), 8,429 commits, 237 open issues, 345 open PRs — actively maintained; the project has 'graduated' GitHub's Secure Open Source program per its own README
+
+**Provenance:**
+- https://github.com/topoteretes/cognee (fetched 2026-07-05)
+  fetched directly (repo page): description, license, star count, architecture, integration surface, activity signal
+
+
+### CrewAI Memory
+
+<a id="crewai-memory"></a>
+
+**Homepage:** https://github.com/crewAIInc/crewAI  
+**Layer:** Memory / data layer (equivalent to Block F) — one subsystem of a larger multi-agent framework  
+**License:** MIT
+
+The memory subsystem of CrewAI (a multi-agent orchestration framework — the framework itself is broader than equipment, this entry scopes to its memory piece specifically). Positioned by the project as a "cognitive layer" for production agents: remembers, resolves contradictions, forgets intentionally, and recognizes when it lacks sufficient context, rather than being a plain search-backed store.
+
+**How it's adopted:** A `memory` capability enabled on a CrewAI Crew/Agent alongside tools, knowledge, and checkpointing — part of the same Python package as the orchestration framework, not a separately installable component
+- **Activity:** 54.9k (per GitHub page fetch, 2026-07-05, for the whole crewAI repo — memory is one module within it, not separately starred)
+- **Activity notes:** fetched live 2026-07-05; latest release 1.15.1 (2026-06-27), 212 releases, 320 contributors — actively maintained
+
+**Provenance:**
+- https://github.com/crewAIInc/crewAI (fetched 2026-07-05)
+  fetched directly (repo page): license, star count, activity signal, and confirmation that memory is a named capability; the fetched page did not enumerate memory-specific implementation details beyond the project's own framing quoted above
+
+**Unverified / caveats:**
+- this entry scopes to CrewAI's memory capability specifically, per this catalog's equipment focus — the surrounding multi-agent orchestration framework is out of scope here (CrewAI-the-framework is not itself catalogued as an engine or equipment elsewhere in this registry)
+- specific memory architecture details (storage backend, contradiction-resolution mechanism) were not found in the fetched repo page content — only the project's own framing language
 
 ### Graphiti (open-source engine behind Zep)
 
@@ -84,23 +143,28 @@ An open-source framework for building TEMPORAL context/knowledge graphs for AI a
 - Zep's April 2025 Community Edition deprecation is from a search-result summary, not independently re-fetched from a Zep primary source
 - an earlier search snippet claimed Graphiti was MIT-licensed; the direct repo fetch confirms Apache-2.0 — cataloged as Apache-2.0 since that came from fetching the repo/LICENSE directly, not a secondary summary
 
-### harness-skills (workain)
+**Full deep-dive:** [deep-dives/components/graphiti-zep.md](deep-dives/components/graphiti-zep.md)
 
-<a id="harness-skills"></a>
+### LangMem (LangChain / LangGraph memory)
 
-**Homepage:** https://github.com/workain/harness-skills  
-**Layer:** Capability / tools layer (Block B, per agent-lab-manager's harness-architecture-v0)  
-**License:** no LICENSE file present in the repo as of this fetch (private/internal repo; not yet a decided-on public license)
+<a id="langmem"></a>
 
-A curated, security-reviewed pack of reusable Claude Code skills for the workain lab's harness product line — the capability layer composed onto an engine (tools, skills, sub-agents). Each skill goes through an explicit confirmation process before shipping: independent security review + genericization evidence recorded in `Tasks/`.
+**Homepage:** https://github.com/langchain-ai/langmem  
+**Layer:** Memory / data layer (equivalent to Block F)  
+**License:** MIT
 
-**How it's adopted:** Skills live under `skills/<name>/`; adopted by dropping into a Claude Code project's skill directory. Shipped so far: `tdd` (RED-GREEN-REFACTOR TDD orchestrator, sourced from `glebis/claude-skills`), `llm-cli` (thin wrapper over Simon Willison's `llm` CLI, same source), `write-skill` (research/findings -> voice-matched draft, authored in-repo), `publish-skill` (generic WordPress publish primitive, draft/dry-run by default, pattern from `tellina-study/publishing`). One more (`smart-approve-hook`, forked from `liberzon/claude-hooks` with a fail-closed bypass fix applied) is fixed but not yet shipped pending its own independent re-review. Explicitly deferred/rejected candidates are tracked in issue history, not silently dropped.
-- **Activity notes:** our own active repo, verified directly from source (git log, file listing) on 2026-07-05 — not a third-party fetch
+LangChain's memory package: extracts important information from conversations, optimizes agent behavior through prompt refinement, and maintains long-term memory. Ships both functional primitives usable with any storage backend AND native integration with LangGraph's own long-term memory Store. Includes in-conversation memory-management tools an agent can call directly, plus a background memory manager that automatically extracts/consolidates/updates knowledge without the agent's explicit involvement.
+
+**How it's adopted:** Python package (`langgraph-ai/langmem`); `create_manage_memory_tool`/`create_search_memory_tool` for agent-callable memory ops; native LangGraph Store integration for long-term persistence
+- **Activity:** 1.5k (per GitHub page fetch, 2026-07-05)
+- **Activity notes:** fetched live 2026-07-05; 135 commits, 47 open issues, 10 open PRs, 173 forks
 
 **Provenance:**
-- https://github.com/workain/harness-skills
-  primary source — read directly from the local clone (README.md, git log, file listing) on 2026-07-05, not a third-party fetch
+- https://github.com/langchain-ai/langmem (fetched 2026-07-05)
+  fetched directly (repo page): description, license, star count, feature set, activity signal
 
+**Unverified / caveats:**
+- this entry scopes specifically to LangMem, the dedicated memory package — the broader LangChain/LangGraph ecosystem (agent orchestration, other memory-adjacent template repos like langgraph-memory/memory-template) was not separately catalogued
 
 ### Letta (formerly MemGPT)
 
@@ -124,6 +188,32 @@ A platform for "stateful agents" with self-editing, persistent memory — origin
 - Letta straddles our harness/engine split more than most entries here — its memory-block design is equipment-shaped (Block F), but its App Server also hosts/runs agents (engine-shaped). Catalogued under equipment because the memory architecture is the distinctive contribution; flagging the overlap rather than silently picking a side.
 - the separate 'Letta Agent' repo mentioned as the active-development successor was not independently fetched for this entry
 
+**Full deep-dive:** [deep-dives/components/letta.md](deep-dives/components/letta.md)
+
+### LlamaIndex Memory
+
+<a id="llamaindex-memory"></a>
+
+**Homepage:** https://developers.llamaindex.ai/python/framework/module_guides/deploying/agents/memory/  
+**Layer:** Memory / data layer (equivalent to Block F) — one module within a larger RAG/document-agent framework  
+**License:** MIT
+
+The memory module of LlamaIndex (a document-agent/RAG/OCR platform — the framework itself is broader than equipment, this entry scopes to its memory piece specifically). Short-term memory via `ChatMemoryBuffer` (last-N-messages within a token budget) or `ChatSummaryMemoryBuffer` (same, plus periodic summarization); long-term memory represented as `Memory Block` objects that receive flushed short-term messages and optionally process them — three predefined blocks ship: `StaticMemoryBlock`, `FactExtractionMemoryBlock`, `VectorMemoryBlock`. An agent calls `memory.put()`/`memory.get()`; short-term and long-term memory are merged at retrieval time.
+
+**How it's adopted:** Part of the `llama_index` Python package (`llama-index-core`); use an existing `BaseMemory` subclass or author a custom one
+- **Activity:** 50.7k (per GitHub page fetch, 2026-07-05, for the whole llama_index repo — memory is one module within it)
+- **Activity notes:** fetched live 2026-07-05; latest release v0.14.23 (2026-06-24), 495 releases, 7,855 commits, 24.4k dependent projects — actively maintained
+
+**Provenance:**
+- https://developers.llamaindex.ai/python/framework/module_guides/deploying/agents/memory/
+  fetched via search summary for the memory-class API surface (ChatMemoryBuffer, Memory Block types) — not independently re-fetched in full for this entry
+- https://github.com/run-llama/llama_index (fetched 2026-07-05)
+  fetched directly (repo page) for license, star count, activity signal; did not surface memory-specific implementation details in the fetched content
+
+**Unverified / caveats:**
+- this entry scopes to LlamaIndex's memory module specifically, per this catalog's equipment focus — the surrounding RAG/document-agent framework is out of scope here
+- the memory-class API details (ChatMemoryBuffer, Memory Block types) came from a search-result summary of the docs site, not an independent full fetch
+
 ### Mem0
 
 <a id="mem0"></a>
@@ -144,6 +234,245 @@ A "universal memory layer for AI agents" — LLM-based fact extraction from conv
 
 **Unverified / caveats:**
 - the project's own claimed +20/+27 point improvements on LoCoMo/LongMemEval (April 2026 algorithm change) are the project's own self-benchmark, not independently re-derived here
+
+**Full deep-dive:** [deep-dives/components/mem0.md](deep-dives/components/mem0.md)
+
+### OpenAI Conversations API
+
+<a id="openai-conversations-api"></a>
+
+**Homepage:** https://developers.openai.com/api/docs/guides/conversation-state  
+**Layer:** Memory / data layer (equivalent to Block F) — the vendor-provided PATTERN, not a standalone product  
+**License:** Proprietary OpenAI API feature — not open-source software; this entry catalogs a PATTERN (durable, TTL-exempt conversation state as a first-class API object) available through OpenAI's commercial platform, not a redistributable artifact
+
+A stateful conversation-persistence system that pairs with OpenAI's Responses API: create a conversation object once (a durable identifier), then pass its ID into subsequent Responses calls instead of manually re-chaining message history. Unlike bare response objects (which expire after 30 days), conversation objects and their items are NOT subject to that TTL — suitable for applications where users return across sessions/devices over long periods. Distinct from the separate, consumer-facing ChatGPT "memory" feature (ChatGPT's own ability to remember facts across chats) — the fetched docs make no connection between the two, treat them as separate implementations. The OpenAI Agents SDK also layers a `Session` memory abstraction on top (`session.run(...)`) that manages context length/history/ continuity automatically.
+
+**How it's adopted:** REST API call: create a conversation, then pass `conversation="conv_..."` on subsequent `responses.create(...)` calls; the Agents SDK's Session object wraps this for a more ergonomic loop
+- **Activity notes:** fetched live 2026-07-05 from the official developers.openai.com docs
+
+**Provenance:**
+- https://developers.openai.com/api/docs/guides/conversation-state (fetched 2026-07-05)
+  fetched directly: mechanism, TTL exemption, integration pattern, explicit note that the ChatGPT consumer memory feature is not mentioned/connected in this doc
+
+**Unverified / caveats:**
+- the relationship (if any) between this API-level conversation persistence and the consumer ChatGPT memory feature was not clarified in the fetched docs — treated as separate per the docs' own silence on a connection, not confirmed either way
+
+### 1.2 Skills / tools
+
+| Name | License | Deep-dive? | What it is |
+|---|---|---|---|
+| [Anthropic Agent Skills (agentskills.io)](#anthropic-skills) | mixed — the repo's own README states op… | ✅ | Reusable, filesystem-based capability packages: a directory containing a `SKILL… |
+| [Composio](#composio) | MIT | — | A tool-integration platform for AI agents: 1000+ pre-built "toolkits" (Slack, G… |
+| [harness-skills (workain)](#harness-skills) | no LICENSE file present in the repo as… | — | A curated, security-reviewed pack of reusable Claude Code skills for the workai… |
+
+### Anthropic Agent Skills (agentskills.io)
+
+<a id="anthropic-skills"></a>
+
+**Homepage:** https://github.com/anthropics/skills  
+**Layer:** Capability / tools layer (equivalent to Block B) — the closest thing to a cross-vendor OPEN STANDARD in this category  
+**License:** mixed — the repo's own README states open-source (Apache-2.0-style) for most skills, but document-creation skills are described as "source-available" rather than fully open [unverified — exact per-skill license terms not enumerated in the fetched content, verify before redistributing any specific skill]
+
+Reusable, filesystem-based capability packages: a directory containing a `SKILL.md` file (YAML frontmatter with required `name`/`description`, then markdown instructions/ examples/guidelines), following a "progressive disclosure" design — only the name+description preloads into the system prompt at startup; full skill content loads only when relevant. Anthropic open-sourced skills for document creation (PowerPoint/ Excel/Word/PDF) and other categories in this repo. Became a cross-vendor open standard (agentskills.io) in December 2025 [unverified — from search summary, not independently confirmed on a primary agentskills.io fetch] — reportedly adopted by ~40 clients beyond Claude, including GitHub Copilot, VS Code, Cursor, OpenAI Codex, Gemini CLI, Goose, and OpenCode [unverified — same caveat]. This is our own `harness-skills` repo's exact functional slot (Block B), at cross-vendor scale.
+
+**How it's adopted:** Drop a skill directory with a SKILL.md into a project/plugin marketplace; Claude Code supports installing skill packs via `/plugin install <pack>@anthropic-agent-skills`
+- **Activity:** 158k (per GitHub page fetch, 2026-07-05)
+- **Activity notes:** fetched live 2026-07-05; 43 commits, 283 open issues, 725 open PRs, 18.7k forks — very high engagement relative to commit count, consistent with a young, fast-adopted standard rather than a mature slow-moving codebase
+
+**Provenance:**
+- https://github.com/anthropics/skills (fetched 2026-07-05)
+  fetched directly (repo page): SKILL.md format, progressive-disclosure design, skill categories, license framing, activity signal
+
+**Unverified / caveats:**
+- the December 2025 agentskills.io standardization and the ~40-client cross-vendor adoption list (GitHub Copilot, Cursor, OpenAI Codex, Gemini CLI, Goose, OpenCode) are from a secondary search summary, not independently confirmed on a primary agentskills.io or per-vendor source
+- exact per-skill licensing (fully open vs. source-available for document-creation skills specifically) not enumerated in the fetched repo page — check the specific skill's own license before redistributing
+
+**Full deep-dive:** [deep-dives/components/anthropic-skills.md](deep-dives/components/anthropic-skills.md)
+
+### Composio
+
+<a id="composio"></a>
+
+**Homepage:** https://github.com/ComposioHQ/composio  
+**Layer:** Capability / tools layer + access placement (equivalent to Block B) — a tool-integration platform, not a single tool  
+**License:** MIT
+
+A tool-integration platform for AI agents: 1000+ pre-built "toolkits" (Slack, GitHub, Notion, Google Workspace, Microsoft 365, X/Twitter, Figma, web search, browser automation, etc.), tool search, authentication management, context management, and a sandboxed execution workbench — turning "intent into action" without hand-writing per-service integration code. Provides framework-specific provider packages so the same toolkits plug into OpenAI, Anthropic, LangChain, LangGraph, LlamaIndex, CrewAI, AutoGen, Google ADK, and others directly.
+
+**How it's adopted:** `pip install composio` (Python) or `npm install @composio/core` (TypeScript); framework-specific provider packages for direct integration with the major agent frameworks
+- **Activity:** 29.1k (per GitHub page fetch, 2026-07-05)
+- **Activity notes:** fetched live 2026-07-05; latest release @composio/slim@0.13.1 (2026-06-27), 860 releases, 4,339 commits, 402 dependent repositories — actively maintained
+
+**Provenance:**
+- https://github.com/ComposioHQ/composio (fetched 2026-07-05)
+  fetched directly (repo page): description, license, star count, SDK/provider surface, activity signal
+
+
+### harness-skills (workain)
+
+<a id="harness-skills"></a>
+
+**Homepage:** https://github.com/workain/harness-skills  
+**Layer:** Capability / tools layer (Block B, per agent-lab-manager's harness-architecture-v0)  
+**License:** no LICENSE file present in the repo as of this fetch (private/internal repo; not yet a decided-on public license)
+
+A curated, security-reviewed pack of reusable Claude Code skills for the workain lab's harness product line — the capability layer composed onto an engine (tools, skills, sub-agents). Each skill goes through an explicit confirmation process before shipping: independent security review + genericization evidence recorded in `Tasks/`.
+
+**How it's adopted:** Skills live under `skills/<name>/`; adopted by dropping into a Claude Code project's skill directory. Shipped so far: `tdd` (RED-GREEN-REFACTOR TDD orchestrator, sourced from `glebis/claude-skills`), `llm-cli` (thin wrapper over Simon Willison's `llm` CLI, same source), `write-skill` (research/findings -> voice-matched draft, authored in-repo), `publish-skill` (generic WordPress publish primitive, draft/dry-run by default, pattern from `tellina-study/publishing`). One more (`smart-approve-hook`, forked from `liberzon/claude-hooks` with a fail-closed bypass fix applied) is fixed but not yet shipped pending its own independent re-review. Explicitly deferred/rejected candidates are tracked in issue history, not silently dropped.
+- **Activity notes:** our own active repo, verified directly from source (git log, file listing) on 2026-07-05 — not a third-party fetch
+
+**Provenance:**
+- https://github.com/workain/harness-skills
+  primary source — read directly from the local clone (README.md, git log, file listing) on 2026-07-05, not a third-party fetch
+
+
+### 1.3 Instructions / rules
+
+| Name | License | Deep-dive? | What it is |
+|---|---|---|---|
+| [AGENTS.md](#agents-md) | MIT | ✅ | An open, tool-agnostic file-format convention for giving coding agents project… |
+| [Cursor Rules (.cursor/rules, formerly .cursorrules)](#cursor-rules) | Cursor itself (the IDE/engine this feat… | — | Cursor's persistent-instruction system: "system-level instructions to Agent" th… |
+| [Windsurf Rules & Memories (Cascade)](#windsurf-rules) | Documents a feature of Windsurf/Cascade… | — | Windsurf's (now under Cognition/Devin, per the docs' own redirect from docs.win… |
+
+### AGENTS.md
+
+<a id="agents-md"></a>
+
+**Homepage:** https://github.com/agentsmd/agents.md  
+**Layer:** Instruction / identity layer (equivalent to Block A) — a convention, not a piece of software  
+**License:** MIT
+
+An open, tool-agnostic file-format convention for giving coding agents project context and instructions — deliberately radically simple (single markdown file, no required structure, no custom syntax), covering setup commands, test/build workflows, coding style, and PR guidelines. Positioned as "a README for agents" — humans read READMEs, agents read AGENTS.md. Formalized as an open specification in August 2025 led by OpenAI with Google/Cursor/Factory participation [unverified — from search summary, not confirmed on the fetched repo page itself]; reportedly donated to the Linux Foundation's Agentic AI Foundation in December 2025 [unverified — same caveat].
+
+**How it's adopted:** Drop a file named AGENTS.md at a project's root (or nested per-package); over 20 AI coding tools reportedly read it directly [unverified — from search summary] — this is the same functional slot as CLAUDE.md/SOUL.md in agent-lab-manager's own Block-A convention.
+- **Activity:** 22.8k (per GitHub page fetch, 2026-07-05)
+- **Activity notes:** fetched live 2026-07-05; 1.7k forks, 83 open issues, 35 commits on main, no formal releases published — a spec/convention repo, not a versioned software product, so activity signals read differently than for a library
+
+**Provenance:**
+- https://github.com/agentsmd/agents.md (fetched 2026-07-05)
+  fetched directly (repo page): description, license, star count, what the format specifies, activity signal — did NOT independently confirm the Linux Foundation donation or the OpenAI/Google/Cursor/Factory formalization claim, both flagged unverified
+
+**Unverified / caveats:**
+- the August 2025 formalization (OpenAI-led, Google/Cursor/Factory) and the December 2025 Linux Foundation Agentic AI Foundation donation are from search-result summaries of secondary articles, not confirmed on the repo's own page or a Linux Foundation primary source
+- the "60,000+ projects, 20+ tools" adoption figures are from the same secondary summaries, not independently counted
+
+**Full deep-dive:** [deep-dives/components/agents-md.md](deep-dives/components/agents-md.md)
+
+### Cursor Rules (.cursor/rules, formerly .cursorrules)
+
+<a id="cursor-rules"></a>
+
+**Homepage:** https://cursor.com/docs/context/rules  
+**Layer:** Instruction / identity layer (equivalent to Block A) — a product FEATURE/convention, not standalone open-source software  
+**License:** Cursor itself (the IDE/engine this feature ships inside) is proprietary; the RULES FILES a team authors are the team's own content, with no special license imposed by Cursor — this entry catalogs the CONVENTION/mechanism, not a redistributable piece of software
+
+Cursor's persistent-instruction system: "system-level instructions to Agent" that bundle prompts, scripts, and workflows, shareable across a team. The modern format is `.mdc` files under `.cursor/rules/` (frontmatter metadata + content), superseding the legacy single `.cursorrules` file (still read, no longer recommended). Four application modes: Always Apply (every session), Apply Intelligently (agent judges relevance from the rule's own description), Apply to Specific Files (glob-scoped, e.g. `src/**/*.tsx`), and Apply Manually (@-mentioned). Also directly supports nested `AGENTS.md` files as a simpler no-metadata alternative — i.e. Cursor's own rules system and the cross-vendor AGENTS.md convention (see that entry) are interoperable, not competing, in Cursor specifically. Team Rules (org-wide, dashboard-managed) are a paid-plan feature.
+
+**How it's adopted:** Author `.mdc` files under a project's `.cursor/rules/` directory (or drop an AGENTS.md); User Rules are configured globally per developer; Team Rules via a paid-plan dashboard
+- **Activity notes:** fetched live 2026-07-05 from Cursor's own official docs (cursor.com/docs) — this documents a real, current product feature, not a deprecated or speculative one; recent addition noted: nested AGENTS.md support in subdirectories
+
+**Provenance:**
+- https://cursor.com/docs/context/rules (fetched 2026-07-05)
+  fetched directly: rule formats (.mdc vs legacy .cursorrules vs AGENTS.md), the four application modes, Team Rules paid-plan status
+
+**Unverified / caveats:**
+- Cursor the underlying engine/IDE is not itself catalogued in this registry's engines category (out of scope for this entry, which is about the rules CONVENTION specifically) — a future pass could add it alongside Claude Code/Codex CLI/etc.
+
+### Windsurf Rules & Memories (Cascade)
+
+<a id="windsurf-rules"></a>
+
+**Homepage:** https://docs.devin.ai/desktop/cascade/memories  
+**Layer:** Instruction / identity layer (equivalent to Block A) — a product FEATURE/convention, not standalone open-source software  
+**License:** Documents a feature of Windsurf/Cascade (proprietary, under Cognition/Devin) — the rules FILES a team authors are their own content, not licensed software
+
+Windsurf's (now under Cognition/Devin, per the docs' own redirect from docs.windsurf.com to docs.devin.ai) two-part context-persistence system: auto-generated **Memories** (Cascade writes contextual notes locally to `~/.codeium/windsurf/memories/`, machine-local and NOT team-shared by default) versus manually-authored **Rules** (durable, shareable, four activation modes: always_on, model_decision, glob, manual). Rules are scoped at three levels: Global (single `global_rules.md`, 6,000-char limit, always active), Workspace (multiple `.md` files under `.devin/rules/` or `.windsurf/rules/`, 12,000 chars each), and System/Enterprise (IT-deployed, org-wide). The legacy single `.windsurfrules` file at the workspace root is still recognized but superseded by the modular `.devin/rules/` directory approach — the same legacy-single-file -> modular-directory evolution AGENTS.md/Cursor Rules/ this registry's other rules entries all independently converged on.
+
+**How it's adopted:** Author Markdown files under `.devin/rules/` (or the legacy `.windsurfrules` at the workspace root); global rules go in `~/.codeium/windsurf/memories/global_rules.md`; enterprise rules are IT-deployed via OS-specific directories
+- **Activity notes:** fetched live 2026-07-05 from docs.devin.ai (redirected from the legacy docs.windsurf.com URL, confirming the Cognition/Devin acquisition is reflected in current documentation infrastructure, not just announcements)
+
+**Provenance:**
+- https://docs.devin.ai/desktop/cascade/memories (fetched 2026-07-05)
+  fetched directly (redirected live from docs.windsurf.com/windsurf/cascade/memories): Memories vs. Rules distinction, three scoping levels, legacy .windsurfrules status, character limits
+
+
+### 1.4 Subagents
+
+| Name | License | Deep-dive? | What it is |
+|---|---|---|---|
+| [Claude Code Subagents](#claude-code-subagents) | Documents a feature of Claude Code, whi… | — | A first-party Claude Code mechanism for delegating a task to a specialized assi… |
+| [wshobson/agents](#wshobson-agents) | MIT | — | A "multi-harness agentic plugin marketplace": 194 domain-organized subagents (a… |
+
+### Claude Code Subagents
+
+<a id="claude-code-subagents"></a>
+
+**Homepage:** https://code.claude.com/docs/en/sub-agents  
+**Layer:** Capability / subagents layer (equivalent to Block B) — the vendor-provided PATTERN, not a standalone product  
+**License:** Documents a feature of Claude Code, which is itself proprietary (see this registry's `engines/claude-code` entry) — the subagent files a team authors are their own content, not licensed software from Anthropic
+
+A first-party Claude Code mechanism for delegating a task to a specialized assistant that runs in its OWN context window, with its own system prompt, tool access, and permissions — the delegating conversation only receives the subagent's final summary, not its intermediate search results/logs/file contents, which keeps the main conversation's context clean. Delegation can be automatic (Claude matches a task against a subagent's own `description` field, which functions as the trigger, not mere documentation) or explicit (named). Multiple subagents can run concurrently (e.g. style-checker + security-scanner + test-coverage in parallel during a review). Subagents are plain Markdown files with YAML frontmatter (name/description/tools/ model) plus a system-prompt body — project-level ones live under `.claude/agents/` and are checked into version control for team sharing.
+
+**How it's adopted:** Author a Markdown file under `.claude/agents/` with YAML frontmatter (name, description, tools, model) + a system-prompt body; Claude Code auto-discovers and either auto-delegates or accepts explicit by-name invocation
+- **Activity notes:** fetched live 2026-07-05 from the official code.claude.com docs — describes a current, actively documented feature
+
+**Provenance:**
+- https://code.claude.com/docs/en/sub-agents
+  found via search summary of the official docs page (delegation mechanism, frontmatter format, project-level storage) — not independently fetched in full for this entry
+
+**Unverified / caveats:**
+- this entry's content is drawn from a WebSearch synthesis of the official docs page, not an independent full WebFetch of that page — the mechanism description should be treated as reliable (multiple independent sources converge on the same details) but not as a direct primary-source quote
+
+### wshobson/agents
+
+<a id="wshobson-agents"></a>
+
+**Homepage:** https://github.com/wshobson/agents  
+**Layer:** Capability / subagents layer (equivalent to Block B) — a large multi-engine subagent + skill + command collection  
+**License:** MIT
+
+A "multi-harness agentic plugin marketplace": 194 domain-organized subagents (architecture, languages, infrastructure, security, data, ML, docs, business, SEO), 158 skills (progressive-disclosure model), 106 commands, and 88 plugins bundling these into installable units — generated from a single Markdown source per engine (Claude Code as source-of-truth, then native artifacts for Codex CLI, Cursor, OpenCode, Gemini CLI, GitHub Copilot) rather than a lowest-common-denominator translation. Relevant to BOTH this registry's components and bundles sides: the 194 subagents/158 skills are atomic components in their own right; specific plugins within this marketplace (e.g. `agent-teams`) are themselves assembled bundles — see the separate `wshobson-agent-teams` bundle deep-dive.
+
+**How it's adopted:** Install the whole marketplace or individual plugins via Claude Code's plugin mechanism (`.claude-plugin/marketplace.json`); per-engine native artifacts are also generated for the other five supported platforms
+- **Activity:** 37.5k (per GitHub page fetch, 2026-07-05)
+- **Activity notes:** fetched live 2026-07-05; 508 commits, 4k forks, 311 watchers, 7 open PRs, 1 open issue — high star count relative to commit count is consistent with rapid recent adoption
+
+**Provenance:**
+- https://github.com/wshobson/agents (fetched 2026-07-05)
+  fetched directly (repo page): inventory counts (194 agents/158 skills/106 commands/88 plugins), six-engine generation model, license, activity signal
+
+
+### 1.5 Access placement / MCP
+
+| Name | License | Deep-dive? | What it is |
+|---|---|---|---|
+| [Model Context Protocol — official SDKs (client + server)](#mcp-client-sdk) | Apache-2.0 for new contributions; pre-e… | ✅ | The official language SDKs for implementing BOTH sides of the Model Context Pro… |
+| [Model Context Protocol — reference servers](#mcp-servers) | Apache-2.0 for new contributions, MIT f… | ✅ | The reference implementations for the Model Context Protocol (MCP) — an open pr… |
+
+### Model Context Protocol — official SDKs (client + server)
+
+<a id="mcp-client-sdk"></a>
+
+**Homepage:** https://github.com/modelcontextprotocol/typescript-sdk  
+**Layer:** Access placement / tool-access protocol layer (equivalent to Block B) — the CLIENT-SIDE half, complementing this registry's mcp-servers entry (the reference server implementations)  
+**License:** Apache-2.0 for new contributions; pre-existing code remains MIT-licensed (per the fetched TypeScript SDK repo) — verify per-file for redistribution, same mixed-license caveat as the mcp-servers entry
+
+The official language SDKs for implementing BOTH sides of the Model Context Protocol — not just servers (see the separate `mcp-servers` entry for the reference server implementations), but the CLIENT libraries an agent engine embeds to actually reach those servers. Official SDKs exist for TypeScript, Python, Go, Java (with Spring AI), C# (with Microsoft), Kotlin (with JetBrains), Ruby, and PHP (with the PHP Foundation) — a cross-vendor, multi-language commitment to the protocol, not a single-company library. The TypeScript SDK specifically splits into separate server/client packages (`@modelcontextprotocol/server`, `@modelcontextprotocol/client`) with optional middleware for Express/Hono/Node HTTP.
+
+**How it's adopted:** Per-language package install (e.g. `@modelcontextprotocol/sdk` for TS/JS, `mcp` for Python); an agent engine embeds the CLIENT half to discover and call MCP servers, and separately may embed the SERVER half to expose its own tools to other MCP-aware engines
+- **Activity:** 12.8k (TypeScript SDK specifically, per GitHub page fetch, 2026-07-05)
+- **Activity notes:** fetched live 2026-07-05; 123 releases, 2k forks, 243 open issues, 205 open PRs — currently in a v2 beta implementing the 2026-07-28 MCP spec revision, with v1.x in maintenance
+
+**Provenance:**
+- https://github.com/modelcontextprotocol/typescript-sdk (fetched 2026-07-05)
+  fetched directly (repo page): license, star count, client/server package split, spec-version status, activity signal
+- https://github.com/modelcontextprotocol
+  found via search: confirms the parallel official SDKs for Python, Go, Java, C#, Kotlin, Ruby, PHP under the same org — not independently fetched one-by-one for this entry
+
+**Unverified / caveats:**
+- the other 6 language SDKs (Python, Go, Java, C#, Kotlin, Ruby, PHP) were confirmed to exist via search, not individually fetched for license/activity detail — this entry's activity numbers are TypeScript-SDK-specific
+
+**Full deep-dive:** [deep-dives/components/mcp.md](deep-dives/components/mcp.md)
 
 ### Model Context Protocol — reference servers
 
@@ -166,11 +495,181 @@ The reference implementations for the Model Context Protocol (MCP) — an open p
 **Unverified / caveats:**
 - the broader community MCP-server ecosystem (hundreds of third-party servers indexed by "awesome-mcp-servers"-style lists) was found via search but not individually verified — this entry catalogs only the official reference-implementation repo
 
+**Full deep-dive:** [deep-dives/components/mcp.md](deep-dives/components/mcp.md)
+
 ---
 
-## 2. Agent engines / runtimes (substrate — not our product)
+## 2. Bundles — assembled equipment
 
-The control loop that actually drives a model turn-by-turn. We run ON these; we do not build our own. Cataloged for context — an equipment entry above is meaningless without knowing what it plugs into.
+Pre-assembled multi-component kits. Rare relative to components (see the Overview's atoms-vs-bundles narrative) — every bundle found gets a mandatory, separate deep-dive file, not just a table row.
+
+| Name | Engine lock-in | License | What it is |
+|---|---|---|---|
+| [agent-harness-kit (enmanuelmag)](#agent-harness-kit) | engine-agnostic by construction (Claude Code, Ope… | Apache-2.0 | The strongest available proof that engine-agnostic assembly is techni… |
+| [agent-teams plugin (wshobson/agents)](#wshobson-agent-teams) | Claude Code + Codex (both plugin manifests presen… | MIT | A concrete, verified example of the Claude Code Plugin mechanism actu… |
+| [ai-coding-project-boilerplate (shinpr)](#ai-coding-project-boilerplate) | Claude Code only | MIT | The richest single-vertical assembled bundle found in this sweep: a T… |
+| [Claude Code Plugins (mechanism)](#claude-code-plugins) | Claude-Code-native — the schema itself, not just… | Documents a Claude Code feature (propri… | Not a specific bundle but the closest thing to a standardized BUNDLIN… |
+| [GPT Store Custom GPTs](#gpt-store-custom-gpts) | hard-locked to the OpenAI/ChatGPT platform — no e… | Proprietary OpenAI product feature — no… | OpenAI's vendor-native "assembled" product: a Custom GPT genuinely bu… |
+| [gtm-starter-kit (KarlRaf)](#gtm-starter-kit) | Claude Code only | MIT | A single-vertical (go-to-market) assembled bundle for Claude Code: CL… |
+| [VibeReady (AI Framework layer)](#vibeready) | engine-agnostic by construction (AGENTS.md-based)… | Proprietary, paid commercial product —… | A PAID commercial product whose core "AI Framework" layer is exactly… |
+
+### agent-harness-kit (enmanuelmag)
+
+<a id="agent-harness-kit"></a>
+
+**Homepage:** https://github.com/enmanuelmag/agent-harness-kit  
+**Engine lock-in:** engine-agnostic by construction (Claude Code, OpenCode, Codex CLI natively; no skills/KB layer)  
+**License:** Apache-2.0
+
+The strongest available proof that engine-agnostic assembly is technically buildable: a provider-agnostic CLI (`ahk`) that scaffolds a five-role agent workflow (Lead, Explorer, Consultant, Builder, Reviewer) natively per engine — Claude Code (`.claude/agents/`, Markdown+YAML), OpenCode (`.opencode/agents/`, Markdown), Codex CLI (`.codex/agents/`, TOML) — from one config, rather than picking one engine and locking to it. Adds SQLite-backed task management with atomic claiming (no duplicate work across agents), a full audit trail, a configurable health-check gate that must pass before tasks start/close, a local MCP server, and a web dashboard. Notably has NO skills/ or knowledge-base layer — it solves the engine-portability problem for subagent scaffolding specifically, not the full component set.
+
+**Components bundled:** subagents (5 roles, per-engine generated), task-management DB, audit trail, health gate, MCP server, dashboard
+- **Activity:** 172 (per GitHub page fetch, 2026-07-05)
+- **Activity notes:** fetched live 2026-07-05; 31 releases, latest v1.8.1, 254 commits — young (created 2026-05-04 per gh api) but actively pushed (last push 2026-06-20), single-maintainer
+
+**Provenance:**
+- https://github.com/enmanuelmag/agent-harness-kit (fetched 2026-07-05)
+  fetched directly (repo page + README): per-engine generation mechanism, feature set, license, activity
+
+
+**Full deep-dive:** [deep-dives/bundles/agent-harness-kit.md](deep-dives/bundles/agent-harness-kit.md)
+
+### agent-teams plugin (wshobson/agents)
+
+<a id="wshobson-agent-teams"></a>
+
+**Homepage:** https://github.com/wshobson/agents/tree/main/plugins/agent-teams  
+**Engine lock-in:** Claude Code + Codex (both plugin manifests present); not verified for the other 4 engines wshobson/agents otherwise targets  
+**License:** MIT
+
+A concrete, verified example of the Claude Code Plugin mechanism actually being used to assemble a real multi-component bundle: 4 subagents (team-lead, team-implementer, team-reviewer, team-debugger) + 6 skills (task-coordination-strategies, parallel-feature-development, parallel-debugging, multi-reviewer-patterns, team-communication-protocols, team-composition-patterns — a small reference-doc KB in effect) + 7 commands, all under one manifest, generated for both Claude Code AND Codex (`.claude-plugin/` and `.codex-plugin/` both present) — a genuine cross-engine team-in-a-box for ONE task (parallel multi-agent orchestration). It is one plugin among 87 mostly single-purpose ones in its parent marketplace (`wshobson/agents`, see the separate `wshobson-agents` component entry) — the ecosystem's modal unit is still narrow/atomic, not assembled; this plugin is the exception, not the norm.
+
+**Components bundled:** subagents (4), skills (6, functioning as a reference KB), commands (7)
+- **Activity notes:** counted directly via `gh api repos/wshobson/agents/contents/plugins/agent-teams/{agents,skills,commands}`, 2026-07-05 — exact counts (4 agents, 6 skills, 7 commands) independently reconfirmed, not just cited from the parent repo's aggregate numbers
+
+**Provenance:**
+- https://api.github.com/repos/wshobson/agents/contents/plugins/agent-teams (fetched 2026-07-05)
+  fetched directly via GitHub REST API tree listing (not WebFetch/marketing content) — the most mechanically verified entry in this registry's bundle set, since it's a direct file-count recount rather than a README claim
+
+
+**Full deep-dive:** [deep-dives/bundles/wshobson-agent-teams.md](deep-dives/bundles/wshobson-agent-teams.md)
+
+### ai-coding-project-boilerplate (shinpr)
+
+<a id="ai-coding-project-boilerplate"></a>
+
+**Homepage:** https://github.com/shinpr/ai-coding-project-boilerplate  
+**Engine lock-in:** Claude Code only  
+**License:** MIT
+
+The richest single-vertical assembled bundle found in this sweep: a TypeScript boilerplate for Claude Code with 20+ specialized subagents covering the full dev lifecycle (requirement analysis, UI spec, design, planning, implementation, QA, code review, debugging, reverse engineering), 10 core skills (coding standards, testing/ documentation criteria, technical specs, frontend patterns, integration/E2E testing, project-context customization), a structured knowledge base (quick-start guides, use cases, skills-editing guide, design philosophy), and scale-aware orchestration (direct implementation for small tasks; design-then-build for medium; PRD -> design -> implementation for large projects). Actively maintained (unlike the other two real bundles found), not a one-shot artifact.
+
+**Components bundled:** subagents (20+), skills (10), knowledge base, orchestration/workflow logic
+- **Activity:** 221 (per GitHub page fetch, 2026-07-05)
+- **Activity notes:** fetched live 2026-07-05; 23 forks, 117 releases, latest v1.25.1 (2026-06-29) — actively maintained, distinguishing it from the other two real bundles found (both single-push snapshots)
+
+**Provenance:**
+- https://github.com/shinpr/ai-coding-project-boilerplate (fetched 2026-07-05)
+  fetched directly (repo page + README): subagent/skill counts, orchestration model, license, release cadence
+
+**Unverified / caveats:**
+- an earlier cross-referenced source (agent-lab-manager PR#44) counted 26 subagents; this entry's own direct fetch found '20+' stated in the README — the discrepancy is noted rather than silently reconciled, exact current count not independently recounted file-by-file
+
+**Full deep-dive:** [deep-dives/bundles/ai-coding-project-boilerplate.md](deep-dives/bundles/ai-coding-project-boilerplate.md)
+
+### Claude Code Plugins (mechanism)
+
+<a id="claude-code-plugins"></a>
+
+**Homepage:** https://code.claude.com/docs/en/plugins-reference  
+**Engine lock-in:** Claude-Code-native — the schema itself, not just individual plugins built on it, does not port to other engines  
+**License:** Documents a Claude Code feature (proprietary product, see engines/claude-code) — plugin authors' own content is unlicensed by Anthropic
+
+Not a specific bundle but the closest thing to a standardized BUNDLING MECHANISM in this whole registry: a plugin is "a self-contained directory of components that extends Claude Code," with six component types — skills, agents (subagents), hooks, MCP servers, LSP servers, and monitors — installable as one unit via a `.claude-plugin/marketplace.json` manifest. Anthropic's own framing justifies this explicitly on assembly-friction grounds: a workflow needing three slash commands, two subagents, and one MCP server ships as a single install rather than five manual steps. This is the schema every concrete bundle in this registry that touches Claude Code (agent-teams, and implicitly gtm-starter-kit/ai-coding-project-boilerplate as Claude-Code-native artifacts) is built on or could be packaged into. Notably: no first-class "memory/KB" component type exists in the six-type schema — memory ships as an ordinary skill if at all, not a structural layer.
+
+**Components bundled:** skills, subagents (agents), hooks, MCP servers, LSP servers, monitors
+- **Activity notes:** fetched live 2026-07-05 from the official code.claude.com plugins-reference docs
+
+**Provenance:**
+- https://code.claude.com/docs/en/plugins-reference (fetched 2026-07-05)
+  fetched directly: six-component schema, packaging/install mechanism, the explicit assembly-friction justification quoted from Anthropic's own docs
+
+**Unverified / caveats:**
+- cross-referenced against agent-lab-manager PR#44's independent fetch of the same page (knowledge/raw/harness-templates-market-2026-07/claude-code-plugins.md), which found the identical six-component schema — treated as strong corroboration, not blind trust in a single fetch
+
+**Full deep-dive:** [deep-dives/bundles/claude-code-plugins.md](deep-dives/bundles/claude-code-plugins.md)
+
+### GPT Store Custom GPTs
+
+<a id="gpt-store-custom-gpts"></a>
+
+**Homepage:** https://help.openai.com/en/articles/8554397-creating-and-editing-gpts  
+**Engine lock-in:** hard-locked to the OpenAI/ChatGPT platform — no export path for the assembled configuration itself  
+**License:** Proprietary OpenAI product feature — not open-source or redistributable
+
+OpenAI's vendor-native "assembled" product: a Custom GPT genuinely bundles instructions + knowledge files + tool/action wiring into one discoverable, browsable, deployable unit (the GPT Store itself IS the marketplace this whole registry's other bundles lack). But the assembly trades composability for total platform lock-in: GPTs live entirely within OpenAI's platform, with no exportable filesystem a user can clone, version, or migrate elsewhere. OpenAI provides no one-click bulk export of GPT configurations (only conversation history and, via a Code-Interpreter workaround, uploaded knowledge files) — independently confirmed via OpenAI's own community forum, where bulk export remains an open feature request as of this fetch. Also single-agent, not team: no subagent composition. Contrast with this registry's Claude Skills entry, which are "standard Markdown files" a user keeps regardless of platform.
+
+**Components bundled:** instructions, knowledge files, tool/action wiring
+- **Activity notes:** fetched live 2026-07-05 (OpenAI Help Center + community forum); lock-in claim independently corroborated across both sources, not resting on a single page
+
+**Provenance:**
+- https://help.openai.com/en/articles/8554397-creating-and-editing-gpts (fetched 2026-07-05)
+  official OpenAI Help Center: creation/editing mechanics
+- https://community.openai.com/t/any-way-to-export-your-custom-gpts-in-bulk/858737 (fetched 2026-07-05)
+  OpenAI's own developer community: confirms bulk export of GPT configurations remains an open, unresolved feature request — corroborates the lock-in claim from a second independent source
+
+
+**Full deep-dive:** [deep-dives/bundles/gpt-store-custom-gpts.md](deep-dives/bundles/gpt-store-custom-gpts.md)
+
+### gtm-starter-kit (KarlRaf)
+
+<a id="gtm-starter-kit"></a>
+
+**Homepage:** https://github.com/KarlRaf/gtm-starter-kit  
+**Engine lock-in:** Claude Code only  
+**License:** MIT
+
+A single-vertical (go-to-market) assembled bundle for Claude Code: CLAUDE.md (company overview/ICP/signals/personas) + 5 skills (account research, ICP scoring, signal-to-sequence campaign building, weekly context updates, repo setup) + a context/ knowledge base (company profile, ICP definitions, signal library, competitive battlecards, persona templates) + a weekly memory-refresh loop + a fully populated worked example. Built by The Revenue Architects, a GTM engineering firm, as a lead-gen/portfolio artifact.
+
+**Components bundled:** instructions (CLAUDE.md), skills (5), knowledge base, memory-refresh loop, worked example
+- **Activity:** 163 (per GitHub page fetch, 2026-07-05)
+- **Activity notes:** fetched live 2026-07-05; 65 forks (unusually high fork:star ratio, ~0.40 — see demand-research doc), 12 commits, created and last pushed the same day (2026-04-03) — a single-push snapshot, never updated since
+
+**Provenance:**
+- https://github.com/KarlRaf/gtm-starter-kit (fetched 2026-07-05)
+  fetched directly (repo page + README): bundled components, license, activity, fork/star counts re-verified via gh api
+
+
+**Full deep-dive:** [deep-dives/bundles/gtm-starter-kit.md](deep-dives/bundles/gtm-starter-kit.md)
+
+### VibeReady (AI Framework layer)
+
+<a id="vibeready"></a>
+
+**Homepage:** https://vibeready.sh/ai-saas-boilerplate/  
+**Engine lock-in:** engine-agnostic by construction (AGENTS.md-based) — the one bundle in this registry that is both assembled AND portable  
+**License:** Proprietary, paid commercial product — no GitHub repo found; appears closed-source, sold as a template drop, not an open-source project
+
+A PAID commercial product whose core "AI Framework" layer is exactly this registry's equipment shape: AGENTS.md + 14 scoped rules (auto-load based on which files are being edited) + 22 structured skills (enforce quality gates across the SDLC), sold standalone at $149 one-time, or bundled with a full Next.js/Postgres/ Stripe SaaS boilerplate at $399. Explicitly portable across five engines (Claude Code, Cursor, Windsurf, Gemini CLI, GitHub Copilot) by building on the open AGENTS.md convention rather than one vendor's proprietary manifest format. The single most direct evidence in this whole registry that people will PAY for assembled harness equipment specifically, not just for adjacent app-scaffolding.
+
+**Components bundled:** instructions (AGENTS.md), rules (14, scoped/auto-loading), skills (22, quality-gate-enforcing)
+- **Activity notes:** not independently verified beyond the vendor's own marketing site (vibeready.sh) — no GitHub repo, star count, or third-party corroboration found; treat commercial claims (pricing, exact rule/skill counts) as vendor-reported
+
+**Provenance:**
+- https://vibeready.sh/ai-saas-boilerplate/
+  found via WebSearch summary of the vendor's own marketing pages, 2026-07-05 — NOT an independently fetched primary source or repo; this entry is the weakest-provenance bundle in the registry and is flagged as such throughout
+
+**Unverified / caveats:**
+- all product details (pricing, exact 14-rules/22-skills counts, engine list) come from a WebSearch synthesis of the vendor's own marketing copy, not an independently fetched page or repo — no GitHub source was found to cross-check against
+- no company/maintainer background, activity signal, or independent user review was found for this entry
+
+**Full deep-dive:** [deep-dives/bundles/vibeready.md](deep-dives/bundles/vibeready.md)
+
+---
+
+## 3. Agent engines / runtimes (substrate — not our product)
+
+The control loop that actually drives a model turn-by-turn. We run ON these; we do not build our own. Cataloged for context — a component or bundle above is meaningless without knowing what it plugs into.
 
 | Name | Interface | Open source? | License |
 |---|---|---|---|
@@ -308,11 +807,11 @@ An agent SCAFFOLD (the control loop that drives the model turn-by-turn) from Pri
 
 ---
 
-## 3. Benchmarks + eval-frameworks (auxiliary)
+## 4. Benchmarks + eval-frameworks (auxiliary)
 
 Tooling and task sets for MEASURING agents, not for equipping them. Split into eval-frameworks (runners that execute many benchmarks) and benchmarks themselves (a fixed task set + scoring protocol).
 
-### 3a. Eval-frameworks
+### 4a. Eval-frameworks
 
 | Name | Contamination gate | Reward-hacking detection | Reliability | Sandboxing |
 |---|---|---|---|---|
@@ -541,7 +1040,7 @@ A general, actively-maintained eval framework from the UK AI Security Institute.
 **Unverified / caveats:**
 - stars/last-commit activity not independently re-checked for this registry entry
 
-### 3b. Benchmarks
+### 4b. Benchmarks
 
 | Name | Domain | Contamination handling | Scoring mechanism | License |
 |---|---|---|---|---|

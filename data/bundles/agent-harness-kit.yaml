@@ -1,0 +1,27 @@
+name: agent-harness-kit (enmanuelmag)
+slug: agent-harness-kit
+homepage: https://github.com/enmanuelmag/agent-harness-kit
+what_it_is: >
+  The strongest available proof that engine-agnostic assembly is technically
+  buildable: a provider-agnostic CLI (`ahk`) that scaffolds a five-role agent workflow
+  (Lead, Explorer, Consultant, Builder, Reviewer) natively per engine — Claude Code
+  (`.claude/agents/`, Markdown+YAML), OpenCode (`.opencode/agents/`, Markdown), Codex
+  CLI (`.codex/agents/`, TOML) — from one config, rather than picking one engine and
+  locking to it. Adds SQLite-backed task management with atomic claiming (no duplicate
+  work across agents), a full audit trail, a configurable health-check gate that must
+  pass before tasks start/close, a local MCP server, and a web dashboard. Notably has
+  NO skills/ or knowledge-base layer — it solves the engine-portability problem for
+  subagent scaffolding specifically, not the full component set.
+components_bundled: ["subagents (5 roles, per-engine generated)", "task-management DB", "audit trail", "health gate", "MCP server", "dashboard"]
+engine_lock: "engine-agnostic by construction (Claude Code, OpenCode, Codex CLI natively; no skills/KB layer)"
+license: Apache-2.0
+open_source: true
+activity:
+  stars: "172 (per GitHub page fetch, 2026-07-05)"
+  last_verified_note: "fetched live 2026-07-05; 31 releases, latest v1.8.1, 254 commits — young (created 2026-05-04 per gh api) but actively pushed (last push 2026-06-20), single-maintainer"
+provenance:
+  - url: https://github.com/enmanuelmag/agent-harness-kit
+    fetched: "2026-07-05"
+    note: "fetched directly (repo page + README): per-engine generation mechanism, feature set, license, activity"
+unverified: []
+deep_dive: deep-dives/bundles/agent-harness-kit.md

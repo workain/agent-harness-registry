@@ -1,0 +1,32 @@
+name: GPT Store Custom GPTs
+slug: gpt-store-custom-gpts
+homepage: https://help.openai.com/en/articles/8554397-creating-and-editing-gpts
+what_it_is: >
+  OpenAI's vendor-native "assembled" product: a Custom GPT genuinely bundles
+  instructions + knowledge files + tool/action wiring into one discoverable,
+  browsable, deployable unit (the GPT Store itself IS the marketplace this whole
+  registry's other bundles lack). But the assembly trades composability for total
+  platform lock-in: GPTs live entirely within OpenAI's platform, with no exportable
+  filesystem a user can clone, version, or migrate elsewhere. OpenAI provides no
+  one-click bulk export of GPT configurations (only conversation history and, via a
+  Code-Interpreter workaround, uploaded knowledge files) — independently confirmed via
+  OpenAI's own community forum, where bulk export remains an open feature request as
+  of this fetch. Also single-agent, not team: no subagent composition. Contrast with
+  this registry's Claude Skills entry, which are "standard Markdown files" a user
+  keeps regardless of platform.
+components_bundled: ["instructions", "knowledge files", "tool/action wiring"]
+engine_lock: "hard-locked to the OpenAI/ChatGPT platform — no export path for the assembled configuration itself"
+license: "Proprietary OpenAI product feature — not open-source or redistributable"
+open_source: false
+activity:
+  stars: null
+  last_verified_note: "fetched live 2026-07-05 (OpenAI Help Center + community forum); lock-in claim independently corroborated across both sources, not resting on a single page"
+provenance:
+  - url: https://help.openai.com/en/articles/8554397-creating-and-editing-gpts
+    fetched: "2026-07-05"
+    note: "official OpenAI Help Center: creation/editing mechanics"
+  - url: https://community.openai.com/t/any-way-to-export-your-custom-gpts-in-bulk/858737
+    fetched: "2026-07-05"
+    note: "OpenAI's own developer community: confirms bulk export of GPT configurations remains an open, unresolved feature request — corroborates the lock-in claim from a second independent source"
+unverified: []
+deep_dive: deep-dives/bundles/gpt-store-custom-gpts.md

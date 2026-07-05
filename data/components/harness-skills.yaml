@@ -1,6 +1,7 @@
 name: harness-skills (workain)
 slug: harness-skills
 homepage: https://github.com/workain/harness-skills
+category: skills-tools
 layer: "Capability / tools layer (Block B, per agent-lab-manager's harness-architecture-v0)"
 what_it_is: >
   A curated, security-reviewed pack of reusable Claude Code skills for the workain lab's

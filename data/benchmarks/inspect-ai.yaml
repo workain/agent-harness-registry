@@ -1,0 +1,29 @@
+name: UK AISI Inspect AI
+slug: inspect-ai
+homepage: https://github.com/UKGovernmentBEIS/inspect_ai
+kind: eval-framework
+what_it_is: >
+  A general, actively-maintained eval framework from the UK AI Security Institute.
+  Task = dataset + solver + scorer; six extension points (models / solvers / scorers /
+  sandboxes / approvers / hooks) all register via the same setuptools entry-point
+  mechanism. Ships a real, mature Docker sandbox backend with an explicit lifecycle
+  contract and its own eval-suite collection (`inspect_evals`, incl. an NIAH
+  implementation harness-bench itself ported from).
+capabilities:
+  contamination_gate: "confirmed absent — no canary, no contamination detector, no adversarial-perturbation harness; only adjacent primitives (seeded shuffle, tool-call Approver chains, idempotent eval_set())"
+  reward_hacking_detection: "confirmed absent — no reward-hacking gate built in"
+  reliability_methodology: "Epochs(count, reducer) with mean/median/mode/max/at_least_k reducers; implements BOTH pass_at(k) (Chen et al. 2021, arXiv:2107.03374) and pass_k(k) (tau-bench's all-k-must-succeed variant, arXiv:2406.12045, via math.comb)"
+  sandboxing: "real, mature Docker backend with auto-generated compose.yaml (network-isolated by default); SandboxEnvironment ABC (exec/read_file/write_file/connection) with guaranteed cleanup on task-group cancellation; explicit lifecycle contract (task_init/sample_init/sample_cleanup/task_cleanup/cli_cleanup) plus an interrupted flag for Ctrl+C handling and a --no-sandbox-cleanup debug flag; output-size limits (10MB exec / 100MB read, overridable via env) are part of the ABSTRACT interface, not just the Docker adapter; NaN used as an explicit unscored/inconclusive sentinel in reducers"
+license: MIT
+activity:
+  stars: null
+  last_verified_note: "actively maintained as of the 2026-07-01 fetch; a dated 2026-04-20 aisi.gov.uk blog post documents a real sandbox-escape incident (agent \"OpenClaw\" escaping an info-boundary sandbox via DNS/TLS/hostname side-channels despite a formally closed network) — a live risk precedent, not hypothetical"
+provenance:
+  - url: https://github.com/UKGovernmentBEIS/inspect_ai
+    fetched: "2026-07-01"
+    note: "via workain/harness-eval's own landscape review; also fetched inspect.aisi.org.uk docs and two aisi.gov.uk blog posts"
+  - url: https://raw.githubusercontent.com/UKGovernmentBEIS/inspect_ai/main/LICENSE
+    fetched: "2026-07-05"
+    note: "fetched directly to confirm license text (MIT License), not just an API label"
+unverified:
+  - "stars/last-commit activity not independently re-checked for this registry entry"

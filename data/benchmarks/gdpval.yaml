@@ -1,0 +1,29 @@
+name: GDPval (OpenAI)
+slug: gdpval
+homepage: https://arxiv.org/abs/2510.04374
+kind: benchmark
+domain: real-world economically-valuable professional tasks
+what_it_is: >
+  OpenAI's benchmark of 1,320 tasks covering the majority of U.S. Bureau of Labor
+  Statistics Work Activities for 44 occupations across the top 9 GDP-contributing
+  sectors. Tasks are constructed from the actual representative work of industry
+  professionals (avg. 14 years' experience) and are built from real deliverables/
+  work-products that exist today, NOT synthetic academic-exam-style questions — a
+  deliberate design contrast with MMLU-style benchmarks.
+scoring_mechanism: "a public automated grading service is provided [unverified — exact grading mechanism/rubric not detailed in the fetched abstract; the paper reportedly also uses expert/human grading for at least part of the evaluation, not confirmed here]"
+contamination_handling: "no contamination-avoidance discussion found in the fetched abstract"
+data_source: "real deliverables/work-products from industry professionals across 44 occupations; the paper explicitly contrasts this with synthetically-constructed exam-style benchmarks"
+license: "only a GOLD SUBSET of 220 (of the full 1,320) tasks is open-sourced; the full benchmark is gated, not publicly released — confirmed from the paper's own abstract, not a secondary claim"
+evaluated_by: []
+our_adapter: null
+reliability_note: null
+known_gaming_incidents: null
+activity:
+  stars: null
+  last_verified_note: "OpenAI's own project page (openai.com/index/gdpval/) returned HTTP 403 on fetch attempt; this entry is sourced from the arXiv abstract page instead"
+provenance:
+  - url: https://arxiv.org/abs/2510.04374
+    note: "fetched live 2026-07-05 — \"GDPval: Evaluating AI Model Performance on Real-World Economically Valuable Tasks\", Tejal Patwardhan et al. (OpenAI)"
+unverified:
+  - "openai.com/index/gdpval/ returned HTTP 403 — the \"100x faster/cheaper than experts\" headline finding and exact grading mechanism are from search-result summaries of that page, NOT independently confirmed by this guide's own fetch; treat as [unverified — secondary summary of a page this guide could not access directly]"
+  - "no public GitHub repo was found for GDPval — only the paper + a gated leaderboard/grading service"

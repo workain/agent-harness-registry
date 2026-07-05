@@ -1,0 +1,29 @@
+name: agent-memory (workain)
+slug: agent-memory
+homepage: https://github.com/workain/agent-memory
+layer: "Memory / data layer (Block F, per agent-lab-manager's harness-architecture-v0)"
+what_it_is: >
+  A tiered, provenance-linked, self-reconsolidating memory architecture for LLM agents —
+  design, a drop-in kit, and a reproducible experiment suite. Three knowledge classes
+  (experiential / reference / live-code) and three experiential tiers x three access
+  bands (curated=hot, buffer=indexed-on-demand, raw=cold/permanent-floor). An offline
+  "remember" pump promotes raw -> buffer -> curated gated by importance + surprise +
+  corroboration; a "forget" pump grades decay (cooling, never deletion). Every
+  load-bearing memory edit passes an NLI-entailment commit-gate against its cited
+  source before being written, and only the small curated tier loads by default (bounding
+  context cost as the corpus grows) — north-star metric SMU = sustained accuracy /
+  default-load cost, behind faithfulness + stability gates.
+integration: >
+  `kit/memory/` is the reference implementation (the liftable SUT); `kit/tools/` is a CLI
+  for consolidate/recall/search/gate-check; `kit/skills/` are agent-facing skill stubs;
+  `kit/AGENTS.md` is the instruction file an agent reads to actually USE the memory —
+  drop it into a Claude/Codex system prompt or CLAUDE.md.
+license: MIT
+open_source: true
+activity:
+  stars: null
+  last_verified_note: "our own active repo, verified directly from source (git log, LICENSE file) on 2026-07-05 — not a third-party fetch. Status per its own README: design + methodology + cited evidence complete and independently reviewed; the runnable experiment harness is scaffolded (structure/metrics/gates/scenarios defined), implementations are the next build phase."
+provenance:
+  - url: https://github.com/workain/agent-memory
+    note: "primary source — read directly from the local clone (README.md, LICENSE, kit/AGENTS.md, CITATION.cff, git log) on 2026-07-05, not a third-party fetch"
+unverified: []

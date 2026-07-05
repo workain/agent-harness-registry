@@ -1,0 +1,27 @@
+name: tau-bench / tau2-bench (τ²-bench)
+slug: tau2-bench
+homepage: https://github.com/sierra-research/tau2-bench
+kind: eval-framework
+what_it_is: >
+  Sierra Research's simulation framework for evaluating tool-using dialogue agents
+  against a simulated user (itself an LM) in real-world business domains: mock, airline,
+  retail, telecom, and banking_knowledge (knowledge-retrieval-based). Original tau-bench
+  (arXiv:2406.12045) was text-only; τ²-bench/1.0.0 added multimodal, knowledge-aware,
+  and voice (full-duplex, real-time audio) evaluation.
+capabilities:
+  contamination_gate: "none found in fetched content"
+  reward_hacking_detection: "none found in fetched content"
+  reliability_methodology: "not detailed in fetched content — evaluates action correctness against evaluation_criteria.actions, but specific metrics (pass@k, success-rate variance) not located [unverified]"
+  sandboxing: "n/a — dialogue/tool-call simulation, not code execution"
+license: MIT
+activity:
+  stars: "1.5k (per GitHub page fetch, tau2-bench repo)"
+  last_verified_note: "fetched live 2026-07-05; latest release noted was tau2-bench (aka \"tau3-bench\" per repo notes) 1.0.0 (2026-03-18), with \"75+ task fixes\" mentioned across airline/retail/banking domains"
+provenance:
+  - url: https://github.com/sierra-research/tau2-bench
+    note: "fetched live 2026-07-05"
+  - url: https://arxiv.org/pdf/2406.12045
+    note: "original tau-bench paper, found via search but not independently re-fetched for this entry [unverified beyond search summary]"
+unverified:
+  - "original tau-bench (sierra-research/tau-bench, predecessor repo) not independently re-checked — this entry covers the actively-developed tau2-bench successor"
+  - "exact scoring formula (pass^k vs single-run success rate) not confirmed from fetched content"

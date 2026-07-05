@@ -1,0 +1,28 @@
+name: AgentBench
+slug: agentbench
+homepage: https://github.com/THUDM/AgentBench
+kind: eval-framework
+what_it_is: >
+  An 8-environment benchmark for evaluating LLMs as agents (OS/bash, DB/SQL, Knowledge
+  Graph, Digital Card Game, Lateral Thinking Puzzles, House-Holding/ALFWorld, Web
+  Shopping/WebShop, Web Browsing/Mind2Web). Registration is YAML config (module +
+  parameters) for both agents and tasks, plus an assignment pairing layer.
+capabilities:
+  contamination_gate: "none found, despite ~half of task instructions being GPT-generated then filtered"
+  reward_hacking_detection: "n/a in the mechanical-gate sense — but scoring is mostly deterministic/environment-based (exit codes, exact/hash match, final-state check) rather than LLM-judge, which is itself a good anti-reward-hacking practice (judge models are themselves gameable/unreliable)"
+  reliability_methodology: "explicit temperature=0 greedy decoding \"to ensure reproducible results\", and EXPLICITLY no repeated-run variance reporting — single-shot only"
+  sandboxing: "some environments use isolated containers for agent actions [unverified depth — not independently re-confirmed for this entry]"
+license: Apache-2.0
+activity:
+  stars: null
+  last_verified_note: "[unverified — stars/last-commit activity not re-fetched for this entry; carried over from a 2026-07-01 landscape review]"
+provenance:
+  - url: https://github.com/THUDM/AgentBench
+    fetched: "2026-07-01"
+    note: "via workain/harness-eval's own landscape review; also fetched arXiv:2308.03688 via ar5iv and Config_en.md"
+  - url: https://raw.githubusercontent.com/THUDM/AgentBench/main/LICENSE
+    fetched: "2026-07-05"
+    note: "fetched directly to confirm license text (Apache License, Version 2.0), not just an API label"
+unverified:
+  - "no software-engineering/multi-file-code-repair task family — confirmed absent as of the 2026-07-01 fetch, a real coverage gap vs. devtasks-style suites"
+  - "stars/last-commit activity not independently re-checked for this registry entry"

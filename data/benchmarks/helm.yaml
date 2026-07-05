@@ -1,0 +1,27 @@
+name: HELM (Holistic Evaluation of Language Models)
+slug: helm
+homepage: https://github.com/stanford-crfm/helm
+kind: eval-framework
+what_it_is: >
+  Stanford CRFM's broad language-model benchmark suite — dozens of `Scenario` classes
+  covering a wide range of tasks, run through a common runner/metrics pipeline. Ships its
+  own robustness metric: worst-case accuracy over systematic input perturbations
+  (typos, contrast sets, dialect shifts).
+capabilities:
+  contamination_gate: "acknowledged as a limitation (evidence pushed to a paper appendix), not mechanically gated at eval time"
+  reward_hacking_detection: "none in the scoring-exploit sense; the input-perturbation robustness metric is a different axis (robustness to input variation, not resistance to a candidate gaming the SCORER)"
+  reliability_methodology: "not found in fetched text — no confidence-interval/repeated-run variance mechanism located [unverified — could exist deeper in unfetched appendices]"
+  sandboxing: "n/a — LM benchmark suite, not agentic code execution"
+license: Apache-2.0
+activity:
+  stars: null
+  last_verified_note: "[unverified — stars/last-commit activity not re-fetched for this entry; carried over from a 2026-07-01 landscape review]"
+provenance:
+  - url: https://github.com/stanford-crfm/helm
+    fetched: "2026-07-01"
+    note: "via workain/harness-eval's own landscape review (docs/LANDSCAPE.md); also fetched arXiv:2211.09110 via ar5iv and the scenario.py source"
+  - url: https://raw.githubusercontent.com/stanford-crfm/helm/main/LICENSE
+    fetched: "2026-07-05"
+    note: "fetched directly to confirm license text (Apache License, Version 2.0), not just an API label"
+unverified:
+  - "stars/last-commit activity not independently re-checked for this registry entry"

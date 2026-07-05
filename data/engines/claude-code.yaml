@@ -1,0 +1,24 @@
+name: Claude Code
+slug: claude-code
+homepage: https://github.com/anthropics/claude-code
+interface: "CLI, IDE extensions (VS Code/JetBrains), desktop app, GitHub Actions (@claude mentions)"
+what_it_is: >
+  Anthropic's agentic coding tool: lives in the terminal, understands a codebase, and
+  executes routine tasks (edits, tests, git workflows, PR creation) via natural-language
+  instructions, with a hooks/skills/subagent/MCP extension surface. This is an ENGINE in
+  our taxonomy — the control loop that drives the model turn-by-turn — not equipment; a
+  harness is what you compose ONTO something like this (skills, memory, rules files,
+  MCP tool access), which is exactly what this registry's PRIMARY (equipment) category
+  catalogs.
+license: "PROPRIETARY — the repo ships a LICENSE.md whose opening line is \"© Anthropic PBC. All rights reserved. Use is subject to Anthropic's Commercial Terms of Service\" (fetched directly, not inferred from a badge). The GitHub repo hosts issues/discussions and a real commit history, but this is NOT an open-source license in the OSI sense — contrast with Codex CLI (Apache-2.0) and OpenHands (MIT) in this same category."
+open_source: false
+sandboxing: "n/a at the engine level — sandboxing here is a HARNESS/deployment concern (permission modes, hook-based approval gates, MCP tool allowlisting) layered on top by the operator, not a fixed property of the engine itself"
+activity:
+  stars: "136k (per GitHub page fetch, 2026-07-05)"
+  last_verified_note: "fetched live 2026-07-05; 691 commits, 5k+ open issues, 642 open PRs, 21.9k forks on the public repo (which hosts issue tracking/community material around the closed-source binary, not the CLI's own source)"
+provenance:
+  - url: https://github.com/anthropics/claude-code
+    note: "fetched live 2026-07-05"
+  - url: https://raw.githubusercontent.com/anthropics/claude-code/main/LICENSE.md
+    note: "fetched live 2026-07-05 to confirm the license text directly, not a badge — this is the fact that most needed direct verification here (marketing pages could easily read as \"open source\" given the public repo and community activity)"
+unverified: []

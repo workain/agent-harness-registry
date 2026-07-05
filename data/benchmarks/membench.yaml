@@ -1,0 +1,32 @@
+name: MemBench
+slug: membench
+homepage: https://github.com/import-myself/Membench
+kind: benchmark
+domain: agent memory (factual + reflective)
+what_it_is: >
+  ACL 2025 Findings benchmark evaluating LLM-agent memory across "effectiveness,
+  efficiency, and capacity." Distinguishes factual memory (raw stored information) from
+  reflective memory (higher-level adaptation), across participation (first-person) and
+  observation (third-person) interaction scenarios, plus noise-extended dialogues
+  (FirstNoise/ThirdNoise, ~1k tokens per noise unit) to test retrieval at scale
+  (pre-sampled 0-10k and 100k-token variants).
+scoring_mechanism: "[unverified — specific metric formulas (paper mentions accuracy/recall/capacity/temporal-efficiency in secondary summaries, but the primary paper/repo pages fetched did not enumerate exact formulas)]"
+contamination_handling: "none found in fetched content"
+data_source: "dataset released via Baidu Drive / Google Drive links referenced from the GitHub README, not stored directly in-repo"
+license: "MIT indicated by a badge on the repo page; no explicit LICENSE file text was found/confirmed during the fetch — treat license as [unverified — badge seen, LICENSE file text not directly confirmed]"
+evaluated_by: []
+our_adapter: null
+reliability_note: null
+known_gaming_incidents: null
+activity:
+  stars: "55 (per GitHub page fetch, 2026-07-05)"
+  last_verified_note: "last-commit date not extracted from fetched content"
+provenance:
+  - url: https://github.com/import-myself/Membench
+    note: "fetched live 2026-07-05"
+  - url: https://arxiv.org/abs/2506.21605
+    note: "fetched live 2026-07-05 — \"MemBench: Towards More Comprehensive Evaluation on the Memory of LLM-based Agents\", Haoran Tan, Zeyu Zhang, Chen Ma, Xu Chen, Quanyu Dai, Zhenhua Dong; ACL 2025 Findings"
+unverified:
+  - "originally surfaced via a survey paper (arXiv 2603.07670) per harness-eval issue #29 — this entry independently re-confirmed existence/repo/paper directly, superseding the survey-only caveat"
+  - "exact scoring-metric formulas not confirmed from primary sources fetched"
+  - "license: MIT badge seen but LICENSE file text not directly confirmed"

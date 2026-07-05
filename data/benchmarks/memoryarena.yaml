@@ -1,0 +1,35 @@
+name: MemoryArena
+slug: memoryarena
+homepage: https://memoryarena.github.io/
+kind: benchmark
+domain: agent memory (interdependent multi-session agentic tasks)
+what_it_is: >
+  A benchmark where agents must acquire memory WHILE interacting with an environment,
+  then rely on that memory to guide later actions across explicitly interdependent
+  subtasks — four domains: web navigation, preference-constrained planning, progressive
+  information search, and sequential formal reasoning. Headline finding: agents that
+  near-saturate existing long-context memory benchmarks (e.g. LoCoMo) perform poorly
+  here, exposing a real evaluation gap between "recall a fact from a long transcript"
+  and "actually USE memory to guide multi-session action."
+scoring_mechanism: "[unverified — task-level scoring formula not enumerated in fetched pages]"
+contamination_handling: "not discussed in fetched content"
+data_source: "human-crafted agentic tasks; dataset hosted on Hugging Face (ZexueHe/memoryarena) under CC-BY-4.0; project website under CC-BY-SA-4.0"
+license: "dataset: CC-BY-4.0 (Hugging Face); website: CC-BY-SA-4.0; code repo (github.com/ZexueHe/MemoryArena): NO LICENSE FILE found — treat code reuse as unresolved absent explicit permission, same caveat class as other unlicensed research repos in this registry"
+evaluated_by: []
+our_adapter: null
+reliability_note: null
+known_gaming_incidents: null
+activity:
+  stars: "30 (per GitHub page fetch, 2026-07-05); repo appears to be at an early/preview stage (1 commit visible on main at fetch time)"
+  last_verified_note: "paper (arXiv:2602.16313) submitted 2026-02-18; authors from Stanford, UCSD, UIUC, Princeton, University of Pittsburgh, and 2077AI, including Yejin Choi and Alex Pentland"
+provenance:
+  - url: https://arxiv.org/abs/2602.16313
+    note: "fetched live 2026-07-05 — abstract/metadata only; full PDF not fetched"
+  - url: https://memoryarena.github.io/
+    note: "fetched live 2026-07-05 — project page with dataset/license links"
+  - url: https://github.com/ZexueHe/MemoryArena
+    note: "fetched live 2026-07-05"
+unverified:
+  - "originally surfaced via a survey paper (arXiv 2603.07670) per harness-eval issue #29 — this entry independently re-confirmed existence/repo/paper, superseding the survey-only caveat"
+  - "ICML 2026 acceptance was claimed by a search-result snippet but NOT confirmed on the paper's own arXiv page or project site — treat acceptance status as [unverified]"
+  - "exact scoring mechanism not confirmed from fetched pages"

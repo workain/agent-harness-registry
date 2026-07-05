@@ -1,0 +1,27 @@
+name: Terminal-Bench
+slug: terminal-bench
+homepage: https://github.com/harbor-framework/terminal-bench
+kind: eval-framework
+what_it_is: >
+  A flexible harness (adapter system supporting multiple agent frameworks, e.g. its own
+  "terminus" agent) plus its own benchmark of hard, realistic terminal/CLI tasks (89 tasks
+  as of v2.0: compiling code, training models, setting up servers). Each task = an
+  English instruction + a containerized Docker environment + a programmatic verification
+  test suite + a human-written oracle solution.
+capabilities:
+  contamination_gate: "none discussed in the paper or repo content fetched — no contamination-avoidance or training-data-overlap mitigation found"
+  reward_hacking_detection: "none discussed — no documented gaming/cheating safeguards found in fetched content"
+  reliability_methodology: "not addressed in fetched content [unverified — pass@k/repeated-run variance methodology not located]"
+  sandboxing: "Docker-based sandboxed terminal environment per task"
+license: Apache-2.0
+activity:
+  stars: "2.4k (per GitHub page fetch)"
+  last_verified_note: "fetched live 2026-07-05; leaderboard dataset in active use is terminal-bench-core v0.1.1; frontier models/agents score under 65% on the v2.0 (89-task) set per the paper's own abstract"
+provenance:
+  - url: https://github.com/harbor-framework/terminal-bench
+    note: "fetched live 2026-07-05"
+  - url: https://arxiv.org/abs/2601.11868
+    note: "fetched live 2026-07-05 — \"Terminal-Bench: Benchmarking Agents on Hard, Realistic Tasks in Command Line Interfaces\", 85 authors incl. Mike A. Merrill, Alexander G. Shaw, Nicholas Carlini"
+unverified:
+  - "exact last-commit date and contributor count not extracted from the fetched page content"
+  - "note: the project has iterated through terminal-bench-2 and terminal-bench-3 org repos (harbor-framework org) — this entry reflects the harbor-framework/terminal-bench repo and the v2.0/89-task paper; verify which version is current before citing task counts"

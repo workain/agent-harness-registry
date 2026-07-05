@@ -1,0 +1,23 @@
+name: Letta (formerly MemGPT)
+slug: letta
+homepage: https://github.com/letta-ai/letta
+layer: "Memory / data layer (equivalent to Block F), with its own agent-hosting server"
+what_it_is: >
+  A platform for "stateful agents" with self-editing, persistent memory — originated as
+  MemGPT (UC Berkeley Sky Computing Lab), renamed to distinguish the MemGPT AGENT DESIGN
+  from the Letta API server/runtime that hosts agents as a service. Agents can read AND
+  write their own internal memory blocks across turns, supporting continuous
+  learning/adaptation rather than treating each interaction as isolated context.
+integration: "CLI for local terminal use; TypeScript/Python SDKs to embed agents in an application; a self-hosted App Server for custom deployments. Note: this entry catalogs Letta as MEMORY EQUIPMENT (its self-editing memory-block architecture); its App Server/agent-hosting role overlaps with the engines category — see the note in unverified."
+license: Apache-2.0
+open_source: true
+activity:
+  stars: "23.7k (per GitHub page fetch, 2026-07-05)"
+  last_verified_note: "fetched live 2026-07-05; latest release v0.16.8 (2025-05-14), 177 releases, 7,467 commits on main — the fetch itself notes active development has shifted to a separate 'Letta Agent' repo, with this one now maintained mainly for API compatibility"
+provenance:
+  - url: https://github.com/letta-ai/letta
+    fetched: "2026-07-05"
+    note: "fetched directly (repo page): description, license, star count, architecture, integration surface, activity signal"
+unverified:
+  - "Letta straddles our harness/engine split more than most entries here — its memory-block design is equipment-shaped (Block F), but its App Server also hosts/runs agents (engine-shaped). Catalogued under equipment because the memory architecture is the distinctive contribution; flagging the overlap rather than silently picking a side."
+  - "the separate 'Letta Agent' repo mentioned as the active-development successor was not independently fetched for this entry"

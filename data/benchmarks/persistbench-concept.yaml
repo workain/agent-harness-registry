@@ -1,0 +1,52 @@
+name: persistbench (task concept)
+slug: persistbench-concept
+homepage: null
+kind: benchmark
+domain: long-term / cross-session agent memory
+what_it_is: >
+  A task CONCEPT (not copyrightable, unlike code/data) for evaluating an agent's
+  long-term memory across three axes: does a fact established once genuinely help
+  later (beneficial-memory)? does memory transfer correctly across unrelated domains
+  without bleeding (cross-domain)? does the agent resist being talked out of a correct,
+  memory-grounded answer by a confident but unsupported user pushback, while still
+  updating on a GENUINELY evidenced correction (sycophancy-resistance)? Originated in
+  rmr-rnd/harness-bench's persistbench module (30 JSON tasks, 100% LLM-judge via
+  regex-extracted JSON scoring).
+scoring_mechanism: "upstream (harness-bench): 100% LLM-judge via regex-extracted JSON score, with a defined-but-unconsumed epochs=3 field (no real reliability aggregation). harness-eval's clean-room reimplementation: fully mechanical (is_hedged marker-based trust check), no judge model on the core scoring path"
+contamination_handling: "n/a — synthetic task concept"
+data_source: "upstream harness-bench version: unknown provenance, no LICENSE file in that repo. harness-eval's version: 100% original synthetic content, authored from scratch"
+license: "upstream harness-bench repo has NO LICENSE FILE anywhere — nothing from its code/data can be legally vendored; the underlying TASK CONCEPT (not the implementation) is not copyrightable and is what harness-eval's port reuses"
+evaluated_by: [harness-bench, harness-kit]
+our_adapter:
+  suite: persistbench_v1
+  repo: https://github.com/workain/harness-eval
+  path: persistbench/
+  status: "NOT YET SHIPPED — built and through 6 rounds of independent review, but only on an open, UNMERGED pull request (workain/harness-eval#26, base main). Confirmed absent from origin/main via git ls-tree on 2026-07-05 — do not cite persistbench/ as present on harness-eval main until that PR merges."
+  notes: >
+    Clean-room redesign, not a port — 10 wholly original synthetic tasks. Includes a
+    sycophancy adversarial panel specifically closing the "resist everything" degenerate
+    strategy (a stubborn agent that never updates looks resistant on every invalid
+    pushback but must still fail the one genuinely-valid pushback task). Went through
+    6 independent ROAST rounds on the same underlying "surface-feature-gaming of the
+    hedge-detection check" threat class: round 1 (empty-string-only fixture bypass,
+    fixed), round 2 (single-feature fixture confound, fixed via decorrelated fixture
+    pairs + a brute-force selector-family gate), round 3 (an OR-of-two-features bypass
+    of that gate — first mis-classified as a fundamental limit, corrected after an
+    independent review showed the fix was actually cheap), round 4 (an
+    XOR/XNOR-combination gap in the "fixed" gate's own claimed coverage — again cheaply
+    closed), rounds 5-6 (the gate/fixture logic was independently reconfirmed CORRECT
+    both times; the block was purely the disclosure TEXT overclaiming its own coverage —
+    "all 16" when the real figure was 10 pairwise / 14 total). Net lesson: distinguishing
+    a genuinely fixable enumeration gap from a truly unbounded one is itself an easy
+    place to overclaim in either direction, and so is describing your own fix's coverage
+    without re-deriving it.
+reliability_note: null
+known_gaming_incidents: "documented and independently reproduced by harness-eval itself across 4 ROAST rounds — see our_adapter notes"
+provenance:
+  - url: https://github.com/rmr-rnd/harness-bench
+    fetched: "2026-07-01"
+    note: "cloned at commit 5d10678ef831c69ee875996b6ebaa010f6fcf1e6 during harness-eval's landscape review; confirmed no LICENSE file present"
+  - url: https://github.com/workain/harness-eval/pull/26
+    fetched: "2026-07-05"
+    note: "gh pr view 26 --json state,baseRefName -> {state: OPEN, baseRefName: main}; git ls-tree origin/main confirms no persistbench/ path on main as of this fetch"
+unverified: []

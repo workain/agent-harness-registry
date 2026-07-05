@@ -1,0 +1,28 @@
+name: harness-skills (workain)
+slug: harness-skills
+homepage: https://github.com/workain/harness-skills
+layer: "Capability / tools layer (Block B, per agent-lab-manager's harness-architecture-v0)"
+what_it_is: >
+  A curated, security-reviewed pack of reusable Claude Code skills for the workain lab's
+  harness product line — the capability layer composed onto an engine (tools, skills,
+  sub-agents). Each skill goes through an explicit confirmation process before shipping:
+  independent security review + genericization evidence recorded in `Tasks/`.
+integration: >
+  Skills live under `skills/<name>/`; adopted by dropping into a Claude Code project's
+  skill directory. Shipped so far: `tdd` (RED-GREEN-REFACTOR TDD orchestrator, sourced
+  from `glebis/claude-skills`), `llm-cli` (thin wrapper over Simon Willison's `llm` CLI,
+  same source), `write-skill` (research/findings -> voice-matched draft, authored
+  in-repo), `publish-skill` (generic WordPress publish primitive, draft/dry-run by
+  default, pattern from `tellina-study/publishing`). One more (`smart-approve-hook`,
+  forked from `liberzon/claude-hooks` with a fail-closed bypass fix applied) is fixed but
+  not yet shipped pending its own independent re-review. Explicitly deferred/rejected
+  candidates are tracked in issue history, not silently dropped.
+license: "no LICENSE file present in the repo as of this fetch (private/internal repo; not yet a decided-on public license)"
+open_source: false
+activity:
+  stars: null
+  last_verified_note: "our own active repo, verified directly from source (git log, file listing) on 2026-07-05 — not a third-party fetch"
+provenance:
+  - url: https://github.com/workain/harness-skills
+    note: "primary source — read directly from the local clone (README.md, git log, file listing) on 2026-07-05, not a third-party fetch"
+unverified: []

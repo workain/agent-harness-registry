@@ -1,0 +1,28 @@
+name: OpenAI Conversations API
+slug: openai-conversations-api
+homepage: https://developers.openai.com/api/docs/guides/conversation-state
+layer: "Memory / data layer (equivalent to Block F) — the vendor-provided PATTERN, not a standalone product"
+what_it_is: >
+  A stateful conversation-persistence system that pairs with OpenAI's Responses API:
+  create a conversation object once (a durable identifier), then pass its ID into
+  subsequent Responses calls instead of manually re-chaining message history. Unlike
+  bare response objects (which expire after 30 days), conversation objects and their
+  items are NOT subject to that TTL — suitable for applications where users return
+  across sessions/devices over long periods. Distinct from the separate,
+  consumer-facing ChatGPT "memory" feature (ChatGPT's own ability to remember facts
+  across chats) — the fetched docs make no connection between the two, treat them as
+  separate implementations. The OpenAI Agents SDK also layers a `Session` memory
+  abstraction on top (`session.run(...)`) that manages context length/history/
+  continuity automatically.
+integration: "REST API call: create a conversation, then pass `conversation=\"conv_...\"` on subsequent `responses.create(...)` calls; the Agents SDK's Session object wraps this for a more ergonomic loop"
+license: "Proprietary OpenAI API feature — not open-source software; this entry catalogs a PATTERN (durable, TTL-exempt conversation state as a first-class API object) available through OpenAI's commercial platform, not a redistributable artifact"
+open_source: false
+activity:
+  stars: null
+  last_verified_note: "fetched live 2026-07-06 from the official developers.openai.com docs"
+provenance:
+  - url: https://developers.openai.com/api/docs/guides/conversation-state
+    fetched: "2026-07-06"
+    note: "fetched directly: mechanism, TTL exemption, integration pattern, explicit note that the ChatGPT consumer memory feature is not mentioned/connected in this doc"
+unverified:
+  - "the relationship (if any) between this API-level conversation persistence and the consumer ChatGPT memory feature was not clarified in the fetched docs — treated as separate per the docs' own silence on a connection, not confirmed either way"

@@ -1,0 +1,32 @@
+name: Anthropic Memory Tool (Claude API)
+slug: anthropic-memory-tool
+homepage: https://platform.claude.com/docs/en/agents-and-tools/tool-use/memory-tool
+layer: "Memory / data layer (equivalent to Block F) — the vendor-provided PATTERN, not a standalone product"
+what_it_is: >
+  A first-party Anthropic-provided tool (`{"type": "memory_20250818", "name": "memory"}`)
+  that lets Claude read/write files in a `/memories` directory across conversations —
+  Claude requests file operations (view/create/str_replace/insert/delete/rename); YOUR
+  application executes them against storage you control (filesystem, database, cloud,
+  encrypted). Generally available on the Messages API (no beta header required), for
+  Claude 4+ models. Designed to pair with context editing (client-side clearing of old
+  tool results) and compaction (server-side conversation summarization) — memory
+  preserves what must survive summarization. Anthropic's own docs cite an 84%
+  token-reduction figure for extended workflows [unverified — vendor's own claim, not
+  independently reproduced here].
+integration: >
+  Add the tool to a Messages API request; implement a client-side handler for the six
+  memory commands (view/create/str_replace/insert/delete/rename), restricting all
+  operations to `/memories` (path-traversal protection is the integrator's
+  responsibility, not built in). Python/TypeScript SDKs ship a ready-made
+  `BetaLocalFilesystemMemoryTool`; other languages implement the tool-use loop directly.
+license: "Proprietary Anthropic API feature — not open-source software; this entry catalogs a PATTERN (client-executed, app-controlled file-based memory) available through Anthropic's commercial API, not a redistributable artifact"
+open_source: false
+activity:
+  stars: null
+  last_verified_note: "fetched live 2026-07-06 from the official platform.claude.com docs — generally available (not beta) as of this fetch; eligible for Zero Data Retention"
+provenance:
+  - url: https://platform.claude.com/docs/en/agents-and-tools/tool-use/memory-tool
+    fetched: "2026-07-06"
+    note: "fetched directly: mechanism, integration steps, GA status, ZDR eligibility, pairing with context editing/compaction"
+unverified:
+  - "the 84% token-reduction figure is Anthropic's own reported number, not independently reproduced"

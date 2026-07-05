@@ -1,0 +1,29 @@
+name: LlamaIndex Memory
+slug: llamaindex-memory
+homepage: https://developers.llamaindex.ai/python/framework/module_guides/deploying/agents/memory/
+layer: "Memory / data layer (equivalent to Block F) — one module within a larger RAG/document-agent framework"
+what_it_is: >
+  The memory module of LlamaIndex (a document-agent/RAG/OCR platform — the framework
+  itself is broader than equipment, this entry scopes to its memory piece
+  specifically). Short-term memory via `ChatMemoryBuffer` (last-N-messages within a
+  token budget) or `ChatSummaryMemoryBuffer` (same, plus periodic summarization);
+  long-term memory represented as `Memory Block` objects that receive flushed
+  short-term messages and optionally process them — three predefined blocks ship:
+  `StaticMemoryBlock`, `FactExtractionMemoryBlock`, `VectorMemoryBlock`. An agent calls
+  `memory.put()`/`memory.get()`; short-term and long-term memory are merged at
+  retrieval time.
+integration: "Part of the `llama_index` Python package (`llama-index-core`); use an existing `BaseMemory` subclass or author a custom one"
+license: MIT
+open_source: true
+activity:
+  stars: "50.7k (per GitHub page fetch, 2026-07-06, for the whole llama_index repo — memory is one module within it)"
+  last_verified_note: "fetched live 2026-07-06; latest release v0.14.23 (2026-06-24), 495 releases, 7,855 commits, 24.4k dependent projects — actively maintained"
+provenance:
+  - url: https://developers.llamaindex.ai/python/framework/module_guides/deploying/agents/memory/
+    note: "fetched via search summary for the memory-class API surface (ChatMemoryBuffer, Memory Block types) — not independently re-fetched in full for this entry"
+  - url: https://github.com/run-llama/llama_index
+    fetched: "2026-07-06"
+    note: "fetched directly (repo page) for license, star count, activity signal; did not surface memory-specific implementation details in the fetched content"
+unverified:
+  - "this entry scopes to LlamaIndex's memory module specifically, per this catalog's equipment focus — the surrounding RAG/document-agent framework is out of scope here"
+  - "the memory-class API details (ChatMemoryBuffer, Memory Block types) came from a search-result summary of the docs site, not an independent full fetch"

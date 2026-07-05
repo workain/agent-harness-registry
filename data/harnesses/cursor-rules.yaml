@@ -1,0 +1,28 @@
+name: Cursor Rules (.cursor/rules, formerly .cursorrules)
+slug: cursor-rules
+homepage: https://cursor.com/docs/context/rules
+layer: "Instruction / identity layer (equivalent to Block A) — a product FEATURE/convention, not standalone open-source software"
+what_it_is: >
+  Cursor's persistent-instruction system: "system-level instructions to Agent" that
+  bundle prompts, scripts, and workflows, shareable across a team. The modern format is
+  `.mdc` files under `.cursor/rules/` (frontmatter metadata + content), superseding the
+  legacy single `.cursorrules` file (still read, no longer recommended). Four
+  application modes: Always Apply (every session), Apply Intelligently (agent judges
+  relevance from the rule's own description), Apply to Specific Files (glob-scoped, e.g.
+  `src/**/*.tsx`), and Apply Manually (@-mentioned). Also directly supports nested
+  `AGENTS.md` files as a simpler no-metadata alternative — i.e. Cursor's own rules
+  system and the cross-vendor AGENTS.md convention (see that entry) are interoperable,
+  not competing, in Cursor specifically. Team Rules (org-wide, dashboard-managed) are a
+  paid-plan feature.
+integration: "Author `.mdc` files under a project's `.cursor/rules/` directory (or drop an AGENTS.md); User Rules are configured globally per developer; Team Rules via a paid-plan dashboard"
+license: "Cursor itself (the IDE/engine this feature ships inside) is proprietary; the RULES FILES a team authors are the team's own content, with no special license imposed by Cursor — this entry catalogs the CONVENTION/mechanism, not a redistributable piece of software"
+open_source: false
+activity:
+  stars: null
+  last_verified_note: "fetched live 2026-07-06 from Cursor's own official docs (cursor.com/docs) — this documents a real, current product feature, not a deprecated or speculative one; recent addition noted: nested AGENTS.md support in subdirectories"
+provenance:
+  - url: https://cursor.com/docs/context/rules
+    fetched: "2026-07-06"
+    note: "fetched directly: rule formats (.mdc vs legacy .cursorrules vs AGENTS.md), the four application modes, Team Rules paid-plan status"
+unverified:
+  - "Cursor the underlying engine/IDE is not itself catalogued in this registry's engines category (out of scope for this entry, which is about the rules CONVENTION specifically) — a future pass could add it alongside Claude Code/Codex CLI/etc."

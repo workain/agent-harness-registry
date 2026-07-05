@@ -1,0 +1,22 @@
+name: Cognee
+slug: cognee
+homepage: https://github.com/topoteretes/cognee
+layer: "Memory / data layer (equivalent to Block F) — knowledge-graph + vector, dual-layer shape"
+what_it_is: >
+  An open-source AI memory platform: ingests data in any format and continuously builds
+  a self-hosted knowledge graph combining vector embeddings, graph-based reasoning, and
+  "cognitive-science-grounded ontology generation" so content is both semantically
+  searchable and relationally connected. Exposes remember / recall / forget / improve
+  as its core operations — a similar shape to our own agent-memory's remember/forget
+  pump, but knowledge-graph-first rather than tiered-access-band-first.
+integration: "Python SDK, REST API (localhost:8000 default), CLI (cognee-cli), Docker images, a TypeScript client (@cognee/cognee-ts), a Rust library (cognee-rs), and a Claude Code plugin integration"
+license: Apache-2.0
+open_source: true
+activity:
+  stars: "27k (per GitHub page fetch, 2026-07-06)"
+  last_verified_note: "fetched live 2026-07-06; latest release v1.2.2 (2026-06-26), 8,429 commits, 237 open issues, 345 open PRs — actively maintained; the project has 'graduated' GitHub's Secure Open Source program per its own README"
+provenance:
+  - url: https://github.com/topoteretes/cognee
+    fetched: "2026-07-06"
+    note: "fetched directly (repo page): description, license, star count, architecture, integration surface, activity signal"
+unverified: []

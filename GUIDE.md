@@ -16,11 +16,21 @@ What you compose **onto** an existing agent engine: instruction/rules frameworks
 |---|---|---|---|
 | [agent-memory (workain)](#agent-memory) | Memory / data layer (Block F, per agent-lab-manager's harness-architecture-v0) | MIT | A tiered, provenance-linked, self-reconsolidating memory architecture for LLM agents — de… |
 | [AGENTS.md](#agents-md) | Instruction / identity layer (equivalent to Block A) — a convention, not a piece of software | MIT | An open, tool-agnostic file-format convention for giving coding agents project context an… |
+| [Anthropic Agent Skills (agentskills.io)](#anthropic-skills) | Capability / tools layer (equivalent to Block B) — the closest thing to a cross-vendor OPEN STANDARD in this category | mixed — the repo's own README states op… | Reusable, filesystem-based capability packages: a directory containing a `SKILL.md` file… |
+| [Anthropic Memory Tool (Claude API)](#anthropic-memory-tool) | Memory / data layer (equivalent to Block F) — the vendor-provided PATTERN, not a standalone product | Proprietary Anthropic API feature — not… | A first-party Anthropic-provided tool (`{"type": "memory_20250818", "name": "memory"}`) t… |
+| [Cognee](#cognee) | Memory / data layer (equivalent to Block F) — knowledge-graph + vector, dual-layer shape | Apache-2.0 | An open-source AI memory platform: ingests data in any format and continuously builds a s… |
+| [Composio](#composio) | Capability / tools layer + access placement (equivalent to Block B) — a tool-integration platform, not a single tool | MIT | A tool-integration platform for AI agents: 1000+ pre-built "toolkits" (Slack, GitHub, Not… |
+| [CrewAI Memory](#crewai-memory) | Memory / data layer (equivalent to Block F) — one subsystem of a larger multi-agent framework | MIT | The memory subsystem of CrewAI (a multi-agent orchestration framework — the framework its… |
+| [Cursor Rules (.cursor/rules, formerly .cursorrules)](#cursor-rules) | Instruction / identity layer (equivalent to Block A) — a product FEATURE/convention, not standalone open-source software | Cursor itself (the IDE/engine this feat… | Cursor's persistent-instruction system: "system-level instructions to Agent" that bundle… |
 | [Graphiti (open-source engine behind Zep)](#graphiti-zep) | Memory / data layer (equivalent to Block F) — temporal knowledge-graph shape | Apache-2.0 | An open-source framework for building TEMPORAL context/knowledge graphs for AI agents: en… |
 | [harness-skills (workain)](#harness-skills) | Capability / tools layer (Block B, per agent-lab-manager's harness-architecture-v0) | no LICENSE file present in the repo as… | A curated, security-reviewed pack of reusable Claude Code skills for the workain lab's ha… |
+| [LangMem (LangChain / LangGraph memory)](#langmem) | Memory / data layer (equivalent to Block F) | MIT | LangChain's memory package: extracts important information from conversations, optimizes… |
 | [Letta (formerly MemGPT)](#letta) | Memory / data layer (equivalent to Block F), with its own agent-hosting server | Apache-2.0 | A platform for "stateful agents" with self-editing, persistent memory — originated as Mem… |
+| [LlamaIndex Memory](#llamaindex-memory) | Memory / data layer (equivalent to Block F) — one module within a larger RAG/document-agent framework | MIT | The memory module of LlamaIndex (a document-agent/RAG/OCR platform — the framework itself… |
 | [Mem0](#mem0) | Memory / data layer (equivalent to Block F) | Apache-2.0 | A "universal memory layer for AI agents" — LLM-based fact extraction from conversations,… |
+| [Model Context Protocol — official SDKs (client + server)](#mcp-client-sdk) | Access placement / tool-access protocol layer (equivalent to Block B) — the CLIENT-SIDE half, complementing this registry's mcp-servers entry (the reference server implementations) | Apache-2.0 for new contributions; pre-e… | The official language SDKs for implementing BOTH sides of the Model Context Protocol — no… |
 | [Model Context Protocol — reference servers](#mcp-servers) | Access placement / tool-access protocol layer (equivalent to Block B, the access/data-placement half specifically) | Apache-2.0 for new contributions, MIT f… | The reference implementations for the Model Context Protocol (MCP) — an open protocol, st… |
+| [OpenAI Conversations API](#openai-conversations-api) | Memory / data layer (equivalent to Block F) — the vendor-provided PATTERN, not a standalone product | Proprietary OpenAI API feature — not op… | A stateful conversation-persistence system that pairs with OpenAI's Responses API: create… |
 
 ### agent-memory (workain)
 
@@ -62,6 +72,128 @@ An open, tool-agnostic file-format convention for giving coding agents project c
 - the August 2025 formalization (OpenAI-led, Google/Cursor/Factory) and the December 2025 Linux Foundation Agentic AI Foundation donation are from search-result summaries of secondary articles, not confirmed on the repo's own page or a Linux Foundation primary source
 - the "60,000+ projects, 20+ tools" adoption figures are from the same secondary summaries, not independently counted
 
+### Anthropic Agent Skills (agentskills.io)
+
+<a id="anthropic-skills"></a>
+
+**Homepage:** https://github.com/anthropics/skills  
+**Layer:** Capability / tools layer (equivalent to Block B) — the closest thing to a cross-vendor OPEN STANDARD in this category  
+**License:** mixed — the repo's own README states open-source (Apache-2.0-style) for most skills, but document-creation skills are described as "source-available" rather than fully open [unverified — exact per-skill license terms not enumerated in the fetched content, verify before redistributing any specific skill]
+
+Reusable, filesystem-based capability packages: a directory containing a `SKILL.md` file (YAML frontmatter with required `name`/`description`, then markdown instructions/ examples/guidelines), following a "progressive disclosure" design — only the name+description preloads into the system prompt at startup; full skill content loads only when relevant. Anthropic open-sourced skills for document creation (PowerPoint/ Excel/Word/PDF) and other categories in this repo. Became a cross-vendor open standard (agentskills.io) in December 2025 [unverified — from search summary, not independently confirmed on a primary agentskills.io fetch] — reportedly adopted by ~40 clients beyond Claude, including GitHub Copilot, VS Code, Cursor, OpenAI Codex, Gemini CLI, Goose, and OpenCode [unverified — same caveat]. This is our own `harness-skills` repo's exact functional slot (Block B), at cross-vendor scale.
+
+**How it's adopted:** Drop a skill directory with a SKILL.md into a project/plugin marketplace; Claude Code supports installing skill packs via `/plugin install <pack>@anthropic-agent-skills`
+- **Activity:** 158k (per GitHub page fetch, 2026-07-06)
+- **Activity notes:** fetched live 2026-07-06; 43 commits, 283 open issues, 725 open PRs, 18.7k forks — very high engagement relative to commit count, consistent with a young, fast-adopted standard rather than a mature slow-moving codebase
+
+**Provenance:**
+- https://github.com/anthropics/skills (fetched 2026-07-06)
+  fetched directly (repo page): SKILL.md format, progressive-disclosure design, skill categories, license framing, activity signal
+
+**Unverified / caveats:**
+- the December 2025 agentskills.io standardization and the ~40-client cross-vendor adoption list (GitHub Copilot, Cursor, OpenAI Codex, Gemini CLI, Goose, OpenCode) are from a secondary search summary, not independently confirmed on a primary agentskills.io or per-vendor source
+- exact per-skill licensing (fully open vs. source-available for document-creation skills specifically) not enumerated in the fetched repo page — check the specific skill's own license before redistributing
+
+### Anthropic Memory Tool (Claude API)
+
+<a id="anthropic-memory-tool"></a>
+
+**Homepage:** https://platform.claude.com/docs/en/agents-and-tools/tool-use/memory-tool  
+**Layer:** Memory / data layer (equivalent to Block F) — the vendor-provided PATTERN, not a standalone product  
+**License:** Proprietary Anthropic API feature — not open-source software; this entry catalogs a PATTERN (client-executed, app-controlled file-based memory) available through Anthropic's commercial API, not a redistributable artifact
+
+A first-party Anthropic-provided tool (`{"type": "memory_20250818", "name": "memory"}`) that lets Claude read/write files in a `/memories` directory across conversations — Claude requests file operations (view/create/str_replace/insert/delete/rename); YOUR application executes them against storage you control (filesystem, database, cloud, encrypted). Generally available on the Messages API (no beta header required), for Claude 4+ models. Designed to pair with context editing (client-side clearing of old tool results) and compaction (server-side conversation summarization) — memory preserves what must survive summarization. Anthropic's own docs cite an 84% token-reduction figure for extended workflows [unverified — vendor's own claim, not independently reproduced here].
+
+**How it's adopted:** Add the tool to a Messages API request; implement a client-side handler for the six memory commands (view/create/str_replace/insert/delete/rename), restricting all operations to `/memories` (path-traversal protection is the integrator's responsibility, not built in). Python/TypeScript SDKs ship a ready-made `BetaLocalFilesystemMemoryTool`; other languages implement the tool-use loop directly.
+- **Activity notes:** fetched live 2026-07-06 from the official platform.claude.com docs — generally available (not beta) as of this fetch; eligible for Zero Data Retention
+
+**Provenance:**
+- https://platform.claude.com/docs/en/agents-and-tools/tool-use/memory-tool (fetched 2026-07-06)
+  fetched directly: mechanism, integration steps, GA status, ZDR eligibility, pairing with context editing/compaction
+
+**Unverified / caveats:**
+- the 84% token-reduction figure is Anthropic's own reported number, not independently reproduced
+
+### Cognee
+
+<a id="cognee"></a>
+
+**Homepage:** https://github.com/topoteretes/cognee  
+**Layer:** Memory / data layer (equivalent to Block F) — knowledge-graph + vector, dual-layer shape  
+**License:** Apache-2.0
+
+An open-source AI memory platform: ingests data in any format and continuously builds a self-hosted knowledge graph combining vector embeddings, graph-based reasoning, and "cognitive-science-grounded ontology generation" so content is both semantically searchable and relationally connected. Exposes remember / recall / forget / improve as its core operations — a similar shape to our own agent-memory's remember/forget pump, but knowledge-graph-first rather than tiered-access-band-first.
+
+**How it's adopted:** Python SDK, REST API (localhost:8000 default), CLI (cognee-cli), Docker images, a TypeScript client (@cognee/cognee-ts), a Rust library (cognee-rs), and a Claude Code plugin integration
+- **Activity:** 27k (per GitHub page fetch, 2026-07-06)
+- **Activity notes:** fetched live 2026-07-06; latest release v1.2.2 (2026-06-26), 8,429 commits, 237 open issues, 345 open PRs — actively maintained; the project has 'graduated' GitHub's Secure Open Source program per its own README
+
+**Provenance:**
+- https://github.com/topoteretes/cognee (fetched 2026-07-06)
+  fetched directly (repo page): description, license, star count, architecture, integration surface, activity signal
+
+
+### Composio
+
+<a id="composio"></a>
+
+**Homepage:** https://github.com/ComposioHQ/composio  
+**Layer:** Capability / tools layer + access placement (equivalent to Block B) — a tool-integration platform, not a single tool  
+**License:** MIT
+
+A tool-integration platform for AI agents: 1000+ pre-built "toolkits" (Slack, GitHub, Notion, Google Workspace, Microsoft 365, X/Twitter, Figma, web search, browser automation, etc.), tool search, authentication management, context management, and a sandboxed execution workbench — turning "intent into action" without hand-writing per-service integration code. Provides framework-specific provider packages so the same toolkits plug into OpenAI, Anthropic, LangChain, LangGraph, LlamaIndex, CrewAI, AutoGen, Google ADK, and others directly.
+
+**How it's adopted:** `pip install composio` (Python) or `npm install @composio/core` (TypeScript); framework-specific provider packages for direct integration with the major agent frameworks
+- **Activity:** 29.1k (per GitHub page fetch, 2026-07-06)
+- **Activity notes:** fetched live 2026-07-06; latest release @composio/slim@0.13.1 (2026-06-27), 860 releases, 4,339 commits, 402 dependent repositories — actively maintained
+
+**Provenance:**
+- https://github.com/ComposioHQ/composio (fetched 2026-07-06)
+  fetched directly (repo page): description, license, star count, SDK/provider surface, activity signal
+
+
+### CrewAI Memory
+
+<a id="crewai-memory"></a>
+
+**Homepage:** https://github.com/crewAIInc/crewAI  
+**Layer:** Memory / data layer (equivalent to Block F) — one subsystem of a larger multi-agent framework  
+**License:** MIT
+
+The memory subsystem of CrewAI (a multi-agent orchestration framework — the framework itself is broader than equipment, this entry scopes to its memory piece specifically). Positioned by the project as a "cognitive layer" for production agents: remembers, resolves contradictions, forgets intentionally, and recognizes when it lacks sufficient context, rather than being a plain search-backed store.
+
+**How it's adopted:** A `memory` capability enabled on a CrewAI Crew/Agent alongside tools, knowledge, and checkpointing — part of the same Python package as the orchestration framework, not a separately installable component
+- **Activity:** 54.9k (per GitHub page fetch, 2026-07-06, for the whole crewAI repo — memory is one module within it, not separately starred)
+- **Activity notes:** fetched live 2026-07-06; latest release 1.15.1 (2026-06-27), 212 releases, 320 contributors — actively maintained
+
+**Provenance:**
+- https://github.com/crewAIInc/crewAI (fetched 2026-07-06)
+  fetched directly (repo page): license, star count, activity signal, and confirmation that memory is a named capability; the fetched page did not enumerate memory-specific implementation details beyond the project's own framing quoted above
+
+**Unverified / caveats:**
+- this entry scopes to CrewAI's memory capability specifically, per this catalog's equipment focus — the surrounding multi-agent orchestration framework is out of scope here (CrewAI-the-framework is not itself catalogued as an engine or equipment elsewhere in this registry)
+- specific memory architecture details (storage backend, contradiction-resolution mechanism) were not found in the fetched repo page content — only the project's own framing language
+
+### Cursor Rules (.cursor/rules, formerly .cursorrules)
+
+<a id="cursor-rules"></a>
+
+**Homepage:** https://cursor.com/docs/context/rules  
+**Layer:** Instruction / identity layer (equivalent to Block A) — a product FEATURE/convention, not standalone open-source software  
+**License:** Cursor itself (the IDE/engine this feature ships inside) is proprietary; the RULES FILES a team authors are the team's own content, with no special license imposed by Cursor — this entry catalogs the CONVENTION/mechanism, not a redistributable piece of software
+
+Cursor's persistent-instruction system: "system-level instructions to Agent" that bundle prompts, scripts, and workflows, shareable across a team. The modern format is `.mdc` files under `.cursor/rules/` (frontmatter metadata + content), superseding the legacy single `.cursorrules` file (still read, no longer recommended). Four application modes: Always Apply (every session), Apply Intelligently (agent judges relevance from the rule's own description), Apply to Specific Files (glob-scoped, e.g. `src/**/*.tsx`), and Apply Manually (@-mentioned). Also directly supports nested `AGENTS.md` files as a simpler no-metadata alternative — i.e. Cursor's own rules system and the cross-vendor AGENTS.md convention (see that entry) are interoperable, not competing, in Cursor specifically. Team Rules (org-wide, dashboard-managed) are a paid-plan feature.
+
+**How it's adopted:** Author `.mdc` files under a project's `.cursor/rules/` directory (or drop an AGENTS.md); User Rules are configured globally per developer; Team Rules via a paid-plan dashboard
+- **Activity notes:** fetched live 2026-07-06 from Cursor's own official docs (cursor.com/docs) — this documents a real, current product feature, not a deprecated or speculative one; recent addition noted: nested AGENTS.md support in subdirectories
+
+**Provenance:**
+- https://cursor.com/docs/context/rules (fetched 2026-07-06)
+  fetched directly: rule formats (.mdc vs legacy .cursorrules vs AGENTS.md), the four application modes, Team Rules paid-plan status
+
+**Unverified / caveats:**
+- Cursor the underlying engine/IDE is not itself catalogued in this registry's engines category (out of scope for this entry, which is about the rules CONVENTION specifically) — a future pass could add it alongside Claude Code/Codex CLI/etc.
+
 ### Graphiti (open-source engine behind Zep)
 
 <a id="graphiti-zep"></a>
@@ -102,6 +234,27 @@ A curated, security-reviewed pack of reusable Claude Code skills for the workain
   primary source — read directly from the local clone (README.md, git log, file listing) on 2026-07-05, not a third-party fetch
 
 
+### LangMem (LangChain / LangGraph memory)
+
+<a id="langmem"></a>
+
+**Homepage:** https://github.com/langchain-ai/langmem  
+**Layer:** Memory / data layer (equivalent to Block F)  
+**License:** MIT
+
+LangChain's memory package: extracts important information from conversations, optimizes agent behavior through prompt refinement, and maintains long-term memory. Ships both functional primitives usable with any storage backend AND native integration with LangGraph's own long-term memory Store. Includes in-conversation memory-management tools an agent can call directly, plus a background memory manager that automatically extracts/consolidates/updates knowledge without the agent's explicit involvement.
+
+**How it's adopted:** Python package (`langgraph-ai/langmem`); `create_manage_memory_tool`/`create_search_memory_tool` for agent-callable memory ops; native LangGraph Store integration for long-term persistence
+- **Activity:** 1.5k (per GitHub page fetch, 2026-07-06)
+- **Activity notes:** fetched live 2026-07-06; 135 commits, 47 open issues, 10 open PRs, 173 forks
+
+**Provenance:**
+- https://github.com/langchain-ai/langmem (fetched 2026-07-06)
+  fetched directly (repo page): description, license, star count, feature set, activity signal
+
+**Unverified / caveats:**
+- this entry scopes specifically to LangMem, the dedicated memory package — the broader LangChain/LangGraph ecosystem (agent orchestration, other memory-adjacent template repos like langgraph-memory/memory-template) was not separately catalogued
+
 ### Letta (formerly MemGPT)
 
 <a id="letta"></a>
@@ -124,6 +277,30 @@ A platform for "stateful agents" with self-editing, persistent memory — origin
 - Letta straddles our harness/engine split more than most entries here — its memory-block design is equipment-shaped (Block F), but its App Server also hosts/runs agents (engine-shaped). Catalogued under equipment because the memory architecture is the distinctive contribution; flagging the overlap rather than silently picking a side.
 - the separate 'Letta Agent' repo mentioned as the active-development successor was not independently fetched for this entry
 
+### LlamaIndex Memory
+
+<a id="llamaindex-memory"></a>
+
+**Homepage:** https://developers.llamaindex.ai/python/framework/module_guides/deploying/agents/memory/  
+**Layer:** Memory / data layer (equivalent to Block F) — one module within a larger RAG/document-agent framework  
+**License:** MIT
+
+The memory module of LlamaIndex (a document-agent/RAG/OCR platform — the framework itself is broader than equipment, this entry scopes to its memory piece specifically). Short-term memory via `ChatMemoryBuffer` (last-N-messages within a token budget) or `ChatSummaryMemoryBuffer` (same, plus periodic summarization); long-term memory represented as `Memory Block` objects that receive flushed short-term messages and optionally process them — three predefined blocks ship: `StaticMemoryBlock`, `FactExtractionMemoryBlock`, `VectorMemoryBlock`. An agent calls `memory.put()`/`memory.get()`; short-term and long-term memory are merged at retrieval time.
+
+**How it's adopted:** Part of the `llama_index` Python package (`llama-index-core`); use an existing `BaseMemory` subclass or author a custom one
+- **Activity:** 50.7k (per GitHub page fetch, 2026-07-06, for the whole llama_index repo — memory is one module within it)
+- **Activity notes:** fetched live 2026-07-06; latest release v0.14.23 (2026-06-24), 495 releases, 7,855 commits, 24.4k dependent projects — actively maintained
+
+**Provenance:**
+- https://developers.llamaindex.ai/python/framework/module_guides/deploying/agents/memory/
+  fetched via search summary for the memory-class API surface (ChatMemoryBuffer, Memory Block types) — not independently re-fetched in full for this entry
+- https://github.com/run-llama/llama_index (fetched 2026-07-06)
+  fetched directly (repo page) for license, star count, activity signal; did not surface memory-specific implementation details in the fetched content
+
+**Unverified / caveats:**
+- this entry scopes to LlamaIndex's memory module specifically, per this catalog's equipment focus — the surrounding RAG/document-agent framework is out of scope here
+- the memory-class API details (ChatMemoryBuffer, Memory Block types) came from a search-result summary of the docs site, not an independent full fetch
+
 ### Mem0
 
 <a id="mem0"></a>
@@ -145,6 +322,29 @@ A "universal memory layer for AI agents" — LLM-based fact extraction from conv
 **Unverified / caveats:**
 - the project's own claimed +20/+27 point improvements on LoCoMo/LongMemEval (April 2026 algorithm change) are the project's own self-benchmark, not independently re-derived here
 
+### Model Context Protocol — official SDKs (client + server)
+
+<a id="mcp-client-sdk"></a>
+
+**Homepage:** https://github.com/modelcontextprotocol/typescript-sdk  
+**Layer:** Access placement / tool-access protocol layer (equivalent to Block B) — the CLIENT-SIDE half, complementing this registry's mcp-servers entry (the reference server implementations)  
+**License:** Apache-2.0 for new contributions; pre-existing code remains MIT-licensed (per the fetched TypeScript SDK repo) — verify per-file for redistribution, same mixed-license caveat as the mcp-servers entry
+
+The official language SDKs for implementing BOTH sides of the Model Context Protocol — not just servers (see the separate `mcp-servers` entry for the reference server implementations), but the CLIENT libraries an agent engine embeds to actually reach those servers. Official SDKs exist for TypeScript, Python, Go, Java (with Spring AI), C# (with Microsoft), Kotlin (with JetBrains), Ruby, and PHP (with the PHP Foundation) — a cross-vendor, multi-language commitment to the protocol, not a single-company library. The TypeScript SDK specifically splits into separate server/client packages (`@modelcontextprotocol/server`, `@modelcontextprotocol/client`) with optional middleware for Express/Hono/Node HTTP.
+
+**How it's adopted:** Per-language package install (e.g. `@modelcontextprotocol/sdk` for TS/JS, `mcp` for Python); an agent engine embeds the CLIENT half to discover and call MCP servers, and separately may embed the SERVER half to expose its own tools to other MCP-aware engines
+- **Activity:** 12.8k (TypeScript SDK specifically, per GitHub page fetch, 2026-07-06)
+- **Activity notes:** fetched live 2026-07-06; 123 releases, 2k forks, 243 open issues, 205 open PRs — currently in a v2 beta implementing the 2026-07-28 MCP spec revision, with v1.x in maintenance
+
+**Provenance:**
+- https://github.com/modelcontextprotocol/typescript-sdk (fetched 2026-07-06)
+  fetched directly (repo page): license, star count, client/server package split, spec-version status, activity signal
+- https://github.com/modelcontextprotocol
+  found via search: confirms the parallel official SDKs for Python, Go, Java, C#, Kotlin, Ruby, PHP under the same org — not independently fetched one-by-one for this entry
+
+**Unverified / caveats:**
+- the other 6 language SDKs (Python, Go, Java, C#, Kotlin, Ruby, PHP) were confirmed to exist via search, not individually fetched for license/activity detail — this entry's activity numbers are TypeScript-SDK-specific
+
 ### Model Context Protocol — reference servers
 
 <a id="mcp-servers"></a>
@@ -165,6 +365,26 @@ The reference implementations for the Model Context Protocol (MCP) — an open p
 
 **Unverified / caveats:**
 - the broader community MCP-server ecosystem (hundreds of third-party servers indexed by "awesome-mcp-servers"-style lists) was found via search but not individually verified — this entry catalogs only the official reference-implementation repo
+
+### OpenAI Conversations API
+
+<a id="openai-conversations-api"></a>
+
+**Homepage:** https://developers.openai.com/api/docs/guides/conversation-state  
+**Layer:** Memory / data layer (equivalent to Block F) — the vendor-provided PATTERN, not a standalone product  
+**License:** Proprietary OpenAI API feature — not open-source software; this entry catalogs a PATTERN (durable, TTL-exempt conversation state as a first-class API object) available through OpenAI's commercial platform, not a redistributable artifact
+
+A stateful conversation-persistence system that pairs with OpenAI's Responses API: create a conversation object once (a durable identifier), then pass its ID into subsequent Responses calls instead of manually re-chaining message history. Unlike bare response objects (which expire after 30 days), conversation objects and their items are NOT subject to that TTL — suitable for applications where users return across sessions/devices over long periods. Distinct from the separate, consumer-facing ChatGPT "memory" feature (ChatGPT's own ability to remember facts across chats) — the fetched docs make no connection between the two, treat them as separate implementations. The OpenAI Agents SDK also layers a `Session` memory abstraction on top (`session.run(...)`) that manages context length/history/ continuity automatically.
+
+**How it's adopted:** REST API call: create a conversation, then pass `conversation="conv_..."` on subsequent `responses.create(...)` calls; the Agents SDK's Session object wraps this for a more ergonomic loop
+- **Activity notes:** fetched live 2026-07-06 from the official developers.openai.com docs
+
+**Provenance:**
+- https://developers.openai.com/api/docs/guides/conversation-state (fetched 2026-07-06)
+  fetched directly: mechanism, TTL exemption, integration pattern, explicit note that the ChatGPT consumer memory feature is not mentioned/connected in this doc
+
+**Unverified / caveats:**
+- the relationship (if any) between this API-level conversation persistence and the consumer ChatGPT memory feature was not clarified in the fetched docs — treated as separate per the docs' own silence on a connection, not confirmed either way
 
 ---
 

@@ -1,0 +1,29 @@
+name: Anthropic Agent Skills (agentskills.io)
+slug: anthropic-skills
+homepage: https://github.com/anthropics/skills
+layer: "Capability / tools layer (equivalent to Block B) — the closest thing to a cross-vendor OPEN STANDARD in this category"
+what_it_is: >
+  Reusable, filesystem-based capability packages: a directory containing a `SKILL.md`
+  file (YAML frontmatter with required `name`/`description`, then markdown instructions/
+  examples/guidelines), following a "progressive disclosure" design — only the
+  name+description preloads into the system prompt at startup; full skill content loads
+  only when relevant. Anthropic open-sourced skills for document creation (PowerPoint/
+  Excel/Word/PDF) and other categories in this repo. Became a cross-vendor open standard
+  (agentskills.io) in December 2025 [unverified — from search summary, not independently
+  confirmed on a primary agentskills.io fetch] — reportedly adopted by ~40 clients beyond
+  Claude, including GitHub Copilot, VS Code, Cursor, OpenAI Codex, Gemini CLI, Goose, and
+  OpenCode [unverified — same caveat]. This is our own `harness-skills` repo's exact
+  functional slot (Block B), at cross-vendor scale.
+integration: "Drop a skill directory with a SKILL.md into a project/plugin marketplace; Claude Code supports installing skill packs via `/plugin install <pack>@anthropic-agent-skills`"
+license: "mixed — the repo's own README states open-source (Apache-2.0-style) for most skills, but document-creation skills are described as \"source-available\" rather than fully open [unverified — exact per-skill license terms not enumerated in the fetched content, verify before redistributing any specific skill]"
+open_source: true
+activity:
+  stars: "158k (per GitHub page fetch, 2026-07-06)"
+  last_verified_note: "fetched live 2026-07-06; 43 commits, 283 open issues, 725 open PRs, 18.7k forks — very high engagement relative to commit count, consistent with a young, fast-adopted standard rather than a mature slow-moving codebase"
+provenance:
+  - url: https://github.com/anthropics/skills
+    fetched: "2026-07-06"
+    note: "fetched directly (repo page): SKILL.md format, progressive-disclosure design, skill categories, license framing, activity signal"
+unverified:
+  - "the December 2025 agentskills.io standardization and the ~40-client cross-vendor adoption list (GitHub Copilot, Cursor, OpenAI Codex, Gemini CLI, Goose, OpenCode) are from a secondary search summary, not independently confirmed on a primary agentskills.io or per-vendor source"
+  - "exact per-skill licensing (fully open vs. source-available for document-creation skills specifically) not enumerated in the fetched repo page — check the specific skill's own license before redistributing"

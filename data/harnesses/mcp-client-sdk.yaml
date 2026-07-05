@@ -1,0 +1,28 @@
+name: Model Context Protocol — official SDKs (client + server)
+slug: mcp-client-sdk
+homepage: https://github.com/modelcontextprotocol/typescript-sdk
+layer: "Access placement / tool-access protocol layer (equivalent to Block B) — the CLIENT-SIDE half, complementing this registry's mcp-servers entry (the reference server implementations)"
+what_it_is: >
+  The official language SDKs for implementing BOTH sides of the Model Context Protocol
+  — not just servers (see the separate `mcp-servers` entry for the reference server
+  implementations), but the CLIENT libraries an agent engine embeds to actually reach
+  those servers. Official SDKs exist for TypeScript, Python, Go, Java (with Spring AI),
+  C# (with Microsoft), Kotlin (with JetBrains), Ruby, and PHP (with the PHP Foundation)
+  — a cross-vendor, multi-language commitment to the protocol, not a single-company
+  library. The TypeScript SDK specifically splits into separate server/client packages
+  (`@modelcontextprotocol/server`, `@modelcontextprotocol/client`) with optional
+  middleware for Express/Hono/Node HTTP.
+integration: "Per-language package install (e.g. `@modelcontextprotocol/sdk` for TS/JS, `mcp` for Python); an agent engine embeds the CLIENT half to discover and call MCP servers, and separately may embed the SERVER half to expose its own tools to other MCP-aware engines"
+license: "Apache-2.0 for new contributions; pre-existing code remains MIT-licensed (per the fetched TypeScript SDK repo) — verify per-file for redistribution, same mixed-license caveat as the mcp-servers entry"
+open_source: true
+activity:
+  stars: "12.8k (TypeScript SDK specifically, per GitHub page fetch, 2026-07-06)"
+  last_verified_note: "fetched live 2026-07-06; 123 releases, 2k forks, 243 open issues, 205 open PRs — currently in a v2 beta implementing the 2026-07-28 MCP spec revision, with v1.x in maintenance"
+provenance:
+  - url: https://github.com/modelcontextprotocol/typescript-sdk
+    fetched: "2026-07-06"
+    note: "fetched directly (repo page): license, star count, client/server package split, spec-version status, activity signal"
+  - url: https://github.com/modelcontextprotocol
+    note: "found via search: confirms the parallel official SDKs for Python, Go, Java, C#, Kotlin, Ruby, PHP under the same org — not independently fetched one-by-one for this entry"
+unverified:
+  - "the other 6 language SDKs (Python, Go, Java, C#, Kotlin, Ruby, PHP) were confirmed to exist via search, not individually fetched for license/activity detail — this entry's activity numbers are TypeScript-SDK-specific"

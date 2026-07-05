@@ -1,0 +1,36 @@
+name: NIAH (Needle-in-a-Haystack)
+slug: niah
+homepage: https://github.com/UKGovernmentBEIS/inspect_evals
+domain: long-context retrieval
+what_it_is: >
+  A well-established long-context-retrieval task family: bury a short "needle" fact
+  inside a long "haystack" document (classically Paul Graham essays) at a controlled
+  position/depth, then ask the model to retrieve it. The public concept is openly
+  implemented in UK AISI's `inspect_evals` collection (which harness-bench's own port
+  was itself derived from).
+scoring_mechanism: "varies by implementation — inspect_evals' own port uses an LLM-judge rubric scale; harness-eval's clean-room port uses mechanical, adversarially-hardened checks (see our_adapter)"
+contamination_handling: "n/a to the base concept — depends on implementation"
+data_source: "openly licensed via inspect_evals; harness-bench's port used only 40 of 225 grid cells, by its own docstring's admission not comparable to \"full NIAH\""
+license: "inspect_evals is openly licensed [unverified — exact license not independently re-checked for this registry entry]"
+used_by_harnesses: [inspect-ai, harness-kit]
+our_adapter:
+  suite: niah_v1
+  repo: https://github.com/workain/harness-eval
+  path: niah/
+  notes: >
+    Built from the public NIAH concept/inspect_evals data, not from harness-bench's
+    unlicensed port. Went through 3 independent ROAST rounds: round 1 found the fixed
+    one-decoy-before/one-after design left the needle at a constant ordinal rank
+    (closed via variable decoy count 3-6 + variable before/after split per task, both
+    from a per-task seeded RNG — closing the whole ordinal-position family, not just
+    the two ends that were found); a `no_ordinal_shortcut_gate`-style brute-force
+    selector-family check was added as the durable fix rather than one more named agent
+    per finding.
+reliability_note: null
+known_gaming_incidents: "documented and independently reproduced by harness-eval itself — see our_adapter notes"
+provenance:
+  - url: https://github.com/UKGovernmentBEIS/inspect_ai
+    fetched: "2026-07-01"
+    note: "via workain/harness-eval's own landscape review, in the course of confirming inspect_evals' NIAH implementation is the openly-licensed original harness-bench ported from"
+unverified:
+  - "exact license of inspect_evals not independently re-checked for this registry entry"

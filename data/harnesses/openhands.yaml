@@ -1,0 +1,28 @@
+name: OpenHands
+slug: openhands
+homepage: https://github.com/All-Hands-AI/OpenHands
+type: harness
+what_it_is: >
+  An open, self-hosted "developer control center" / agent orchestration platform
+  (formerly OpenDevin) that can run its own open-source agent or third-party agents
+  (Claude Code, Codex, Gemini, etc.) via the Agent-Client Protocol (ACP), across local,
+  Docker-sandboxed, or remote/cloud backends. Regularly benchmarked on SWE-bench Verified
+  and GAIA; launched its own broader "OpenHands Index" (issue resolution, greenfield app
+  dev, frontend tasks, testing) in January 2026 [unverified — index details not
+  independently fetched, from search-summary only].
+capabilities:
+  contamination_gate: "none found in fetched content"
+  reward_hacking_detection: "none found in fetched content"
+  reliability_methodology: "not addressed in fetched content [unverified]"
+  sandboxing: "local execution (full filesystem access, explicitly warned against), Docker sandbox (isolates to a mounted PROJECTS_PATH), or remote backends (VMs/cloud/OpenHands Cloud+Enterprise)"
+license: "MIT for the main repo; the enterprise/ subdirectory has separate licensing (confirmed: first line of LICENSE file reads \"The MIT License (MIT)\")"
+activity:
+  stars: "79.5k (per GitHub page fetch, 2026-07-05); a separate search snippet claimed 78.5k/64k+ at different points — treat the 79.5k GitHub-page number as most current since it was fetched live"
+  last_verified_note: "fetched live 2026-07-05; latest release noted was cloud-1.40.0 (2026-06-26), 105 total releases, 129 open issues, 212 open PRs at fetch time"
+provenance:
+  - url: https://github.com/All-Hands-AI/OpenHands
+    note: "fetched live 2026-07-05"
+  - url: https://github.com/All-Hands-AI/OpenHands/blob/main/LICENSE
+    note: "fetched live 2026-07-05 to confirm MIT text directly, not just a badge"
+unverified:
+  - "SWE-bench Verified \"53%+\" resolve-rate figure and the \"OpenHands Index\" (Jan 2026) are from a search-result summary, not independently re-fetched from a primary source — treat as [unverified — from secondary summary]"

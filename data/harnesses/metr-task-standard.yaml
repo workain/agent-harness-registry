@@ -1,0 +1,23 @@
+name: METR Task Standard / Vivaria
+slug: metr-task-standard
+homepage: https://github.com/METR/task-standard
+type: harness
+what_it_is: >
+  An autonomous-task eval methodology + infrastructure (Task Standard spec + Vivaria
+  runner) used for frontier-model dangerous-capability and autonomy evaluations.
+  Emphasizes elicitation discipline and adversarial review over mechanical gates.
+capabilities:
+  contamination_gate: "process-based — elicitation guidelines, mandatory adversarial second-team review, sandbagging-detection cross-checks; not a mechanical gate"
+  reward_hacking_detection: "discipline-based, not mechanical — elicitation guidelines (no dev-set overfitting), canary strings in public write-ups, sandbagging detection via compute-scaling cross-checks (documented in their GPT-5 evaluation report)"
+  reliability_methodology: "explicit score@k (best-of-k, a pass@k variant, not the exact Chen et al. combinatorial formula) plus bootstrap confidence intervals (percentile and hierarchical family→task→attempt), with honest disclosure of where results become unreliable (e.g. \"above 16h\")"
+  sandboxing: "isolated \"primary machine\" (container or VM, implementation-agnostic), non-root agent user, default-deny network (opt-in full_internet flag), root-owned /protected scoring directory the agent cannot read/write; METR's own docs flag a known residual hole (exfiltration via executable submission files); production runs use VMs (Vivaria, 20-48 vCPU up to 6xH100) [unverified whether an additional gVisor/Firecracker-style layer sits on top]"
+license: "[unverified — not independently re-checked for this registry entry]"
+activity:
+  stars: null
+  last_verified_note: "[unverified — not re-fetched for this entry; carried over from a 2026-07-01 landscape review]"
+provenance:
+  - url: https://github.com/METR/task-standard
+    fetched: "2026-07-01"
+    note: "via workain/harness-eval's own landscape review; also fetched STANDARD.md, RE-Bench paper (arXiv:2411.15114), and METR blog posts"
+unverified:
+  - "stars/last-commit activity and license not independently re-checked for this registry entry"

@@ -1,0 +1,24 @@
+name: rmr-rnd/harness-bench
+slug: harness-bench
+homepage: https://github.com/rmr-rnd/harness-bench
+type: harness
+what_it_is: >
+  A plugin-based multi-benchmark harness shipping three benchmark ports: bfcl_memory (real
+  Berkeley BFCL v4 data, exact-match scoring), persistbench (30 JSON tasks, 3 task types,
+  entirely LLM-judge scored via regex-extracted JSON), and niah (40 of 225 grid cells of a
+  needle-in-a-haystack port, LLM-judge on a 1/3/5/7/10 rubric scale). Auto-discovery via a
+  register_benchmark() decorator + pkgutil-based package walk.
+capabilities:
+  contamination_gate: "none found (grepped for contamination/leakage/canary/etc. — zero real hits; the few matches were incidental substrings in task content)"
+  reward_hacking_detection: "none found (same grep — zero hits for reward-hack/tamper/adversarial/canary/allowlist/denylist)"
+  reliability_methodology: "epochs=3 is SET for 2 of 3 task types but never consumed for variance/reliability aggregation anywhere in the codebase — a defined-but-unused field, confirmed by direct grep, not assumed"
+  sandboxing: "uses Docker, but for RUNNING agent actions in some task environments — not for eval-integrity/anti-tamper purposes"
+license: "none found — no LICENSE file anywhere in the repo, no SPDX headers, no copyright notices (checked directly)"
+activity:
+  stars: null
+  last_verified_note: "2 commits, 1 author, spanning ~25 hours (2026-06-29 to 2026-06-30) despite a substantial codebase — looks like a bulk import of a pre-existing internal tool, not organic history"
+provenance:
+  - url: https://github.com/rmr-rnd/harness-bench
+    fetched: "2026-07-01"
+    note: "cloned at commit 5d10678ef831c69ee875996b6ebaa010f6fcf1e6; full grep audit performed directly against the clone, not inferred from README claims"
+unverified: []

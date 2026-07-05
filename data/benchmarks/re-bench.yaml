@@ -1,0 +1,22 @@
+name: RE-Bench (METR)
+slug: re-bench
+homepage: https://arxiv.org/abs/2411.15114
+domain: ML-research-engineering autonomy
+what_it_is: >
+  METR's benchmark of hard, open-ended ML research-engineering environments used to
+  study frontier-model autonomous-research capability, run through the METR Task
+  Standard / Vivaria infrastructure.
+scoring_mechanism: "score@k (best-of-k) plus bootstrap confidence intervals (percentile and hierarchical family->task->attempt)"
+contamination_handling: "elicitation guidelines + adversarial second-team review (process discipline, not a mechanical gate) — see the metr-task-standard harness entry"
+data_source: "hand-authored ML research-engineering environments, per the paper"
+license: "[unverified — not independently re-checked for this registry entry]"
+used_by_harnesses: [metr-task-standard]
+our_adapter: null
+reliability_note: "honest disclosure of where results become unreliable (e.g. \"above 16h\") — a good norm worth citing"
+known_gaming_incidents: null
+provenance:
+  - url: https://arxiv.org/abs/2411.15114
+    fetched: "2026-07-01"
+    note: "via workain/harness-eval's own landscape review"
+unverified:
+  - "license not independently re-checked"

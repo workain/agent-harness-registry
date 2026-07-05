@@ -1,0 +1,25 @@
+name: harness_kit (workain/harness-eval)
+slug: harness-kit
+homepage: https://github.com/workain/harness-eval
+type: harness
+what_it_is: >
+  A generic, reusable eval-harness kit (suite/agent/gate/report primitives) plus five
+  task-family adapters built on it: devtasks (real OSS bug-repair, JUnit-verified),
+  honest_eval / agent_memory_E1 (citation-grounded factbench), niah_v1 (needle-in-a-haystack
+  long-context retrieval), bfcl_memory_v1 (BFCL v4 multi-turn tool-memory), and persistbench_v1
+  (beneficial-memory / cross-domain / sycophancy-resistance). Built specifically to mechanically
+  gate every verdict on contamination, answer-leakage, and reward-hacking resistance rather than
+  relying on process discipline alone.
+capabilities:
+  contamination_gate: "mechanical — G3 no-context/no-ingest control on every suite (an honest agent given no task context must score at/near floor); a build-time grounding check additionally verifies every task's gold answer is actually present in the context shipped with it"
+  reward_hacking_detection: "mechanical — G4 perturbation-collapse gates (does accuracy collapse under a distractor/decoy variant) plus NAMED adversarial agent panels per suite (e.g. NonemptyOnlyAgent, ContextAwareStuffingAgent, LateOccurrenceStuffingAgent) and, in two suites, brute-force selector-family gates (no_ordinal_shortcut_gate, no_surface_shortcut_gate) that mechanically enumerate whole families of cheap zero-verification shortcuts rather than relying on one named agent per finding"
+  reliability_methodology: "pass@1 / pass^k (Chen et al. 2021 estimator) plus bootstrap confidence intervals and an explicit NaN/inconclusive sentinel for sandbox-failure-vs-wrong-answer disambiguation, modeled on Inspect AI's Epochs/NaN convention"
+  sandboxing: "process-boundary isolation for devtasks (direct test invocation over a dedicated pipe, not full-container — disclosed as such); no sandbox needed for the four other suites (pure text-in/text-out scoring, no code execution)"
+license: not yet public (private repo as of this writing; operator decides on making it public)
+activity:
+  stars: null
+  last_verified_note: "this is the guide author's own working repo — verified directly from source, not fetched externally"
+provenance:
+  - url: https://github.com/workain/harness-eval
+    note: "primary source — this guide's author IS this project; entries reflect the shipped code/docs as of 2026-07-05, not a third-party fetch"
+unverified: []

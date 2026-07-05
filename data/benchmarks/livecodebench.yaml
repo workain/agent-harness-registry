@@ -1,0 +1,33 @@
+name: LiveCodeBench
+slug: livecodebench
+homepage: https://github.com/livecodebench/livecodebench
+domain: code generation / execution / self-repair
+what_it_is: >
+  A "holistic and contamination-free" code-evaluation benchmark that continuously
+  collects NEW problems over time from live programming contests (LeetCode, AtCoder,
+  CodeForces), and evaluates broader coding capability than plain generation —
+  self-repair, code execution, and test-output prediction.
+scoring_mechanism: "pass@1 and pass@5, computed via a modified checker adapted from the APPS benchmark (with adjustments for edge cases found during data collection)"
+contamination_handling: >
+  Problems are annotated with real release dates; evaluation windows can be restricted
+  via --start_date/--end_date flags, so a model can be scored only on problems released
+  AFTER its training cutoff. The paper's own worked example: to counter contamination in
+  DeepSeek models, they report results only on problems released after August 2023 —
+  a genuinely mechanical, temporal contamination control (a rarer, stronger pattern
+  than most benchmarks surveyed in this registry).
+data_source: "live competitive-programming contest problems (LeetCode/AtCoder/CodeForces), continuously updated"
+license: MIT
+used_by_harnesses: []
+our_adapter: null
+reliability_note: "documentation acknowledges timing-related evaluation can cause <0.5-point variation; mitigated via --num_process_evaluate and --timeout parameters"
+known_gaming_incidents: null
+activity:
+  stars: "901 (per GitHub page fetch, 2026-07-05); 143 total commits on main at fetch time"
+  last_verified_note: "exact last-commit date not extracted from fetched content"
+provenance:
+  - url: https://github.com/livecodebench/livecodebench
+    note: "fetched live 2026-07-05"
+  - url: https://arxiv.org/pdf/2403.07974
+    note: "found via search (\"LiveCodeBench: Holistic and Contamination Free Evaluation of Large Language Models for Code\") but not independently re-fetched in full for this entry [unverified beyond search summary + repo README]"
+unverified:
+  - "exact last-commit date not confirmed"

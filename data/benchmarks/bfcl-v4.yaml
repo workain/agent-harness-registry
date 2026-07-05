@@ -1,0 +1,42 @@
+name: BFCL v4 (Berkeley Function-Calling Leaderboard, "memory" category)
+slug: bfcl-v4
+homepage: https://github.com/ShishirPatil/gorilla
+domain: multi-turn tool-call / agent memory
+what_it_is: >
+  The "memory" category of Berkeley's Function-Calling Leaderboard v4: multi-turn
+  prereq dialogues (fact-planting conversations) followed by a final question that can
+  only be answered correctly by retaining a fact established earlier. Real, curated
+  questions across 5 scenario types (customer/finance/healthcare/notetaker/student).
+scoring_mechanism: >
+  Word-boundary, normalised (case/`,./-_*^()`-insensitive) SUBSTRING match of any
+  ground-truth string inside the model's free-text final answer — via
+  bfcl_eval/eval_checker/agentic_eval/agentic_checker.py, confirmed by reading the real
+  upstream source (NOT the AST/function-call checker used for other BFCL categories,
+  a common wrong assumption). This substring-match-with-no-length-penalty convention is
+  itself a genuine reward-hacking surface (see the harness-eval adapter notes below).
+contamination_handling: "none built into the upstream benchmark itself"
+data_source: "ShishirPatil/gorilla, Apache-2.0 licensed, real curated questions + real prereq dialogues + real ground-truth answers"
+license: Apache-2.0 (confirmed by fetching the actual LICENSE file text at the pinned commit, not just the GitHub API's license label)
+used_by_harnesses: [harness-kit]
+our_adapter:
+  suite: bfcl_memory_v1
+  repo: https://github.com/workain/harness-eval
+  path: bfcl_memory/
+  notes: >
+    Clean-room adapter (12 curated tasks across all 5 scenarios) built directly against
+    the pinned public upstream data + our own scoring/gates — NOT a port of
+    rmr-rnd/harness-bench's version (that repo has no LICENSE file, so nothing from it
+    could be legally vendored). Adds a G4 reward-hacking gate
+    (mentions_off_target_distractor) specifically because the upstream substring-match
+    convention has no length/precision penalty and is gameable by shotgun-stuffing a
+    long answer with plausible candidate values — went through 4 independent ROAST
+    rounds finding progressively narrower stuffing-agent bypasses (fixed-count ->
+    category-order -> capped-window -> finally disclosed an open-ended
+    candidate-SHAPE gap as a genuine, not-yet-closable limit).
+reliability_note: null
+known_gaming_incidents: "documented and independently reproduced by harness-eval itself — see our_adapter notes; this is a first-party finding, not a third-party report"
+provenance:
+  - url: https://github.com/ShishirPatil/gorilla
+    fetched: "2026-07-01 (pinned commit 6ea57973c7a6097fd7c5915698c54c17c5b1b6c8)"
+    note: "license text, eval-checker source, and data all fetched and byte-verified directly by harness-eval during its bfcl_memory_v1 adapter build"
+unverified: []

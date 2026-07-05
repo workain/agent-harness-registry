@@ -1,0 +1,30 @@
+name: MemoryAgentBench
+slug: memoryagentbench
+homepage: https://github.com/HUST-AI-HYZ/MemoryAgentBench
+domain: agent memory (incremental multi-turn)
+what_it_is: >
+  ICLR 2026 paper + open-source code evaluating memory in LLM agents via incremental
+  multi-turn interactions — data is split into chunks to simulate real multi-turn
+  conversation, using an "inject once, query multiple times" design (one long text maps
+  to multiple questions, for evaluation efficiency). Tests four competencies: accurate
+  retrieval, test-time learning, long-range understanding, and conflict resolution.
+  Functions as BOTH a benchmark (two new datasets, EventQA and FactConsolidation, plus
+  reformulated data from RULER/InfBench/HELMET) and a harness (configurable bash-script
+  runner for long-context agents, RAG agents, and agentic-memory methods).
+scoring_mechanism: "mixed by task type: substring exact match, exact match, recall@5, and LLM-as-judge; repo notes exact_match parsing is strict, flexible parsing recommended for adaptation"
+contamination_handling: "none found in fetched content"
+data_source: "two newly constructed datasets (EventQA, FactConsolidation) plus reformulated data drawn from RULER, InfiniteBench, and HELMET"
+license: "MIT (LICENSE file present, confirmed directly)"
+used_by_harnesses: []
+our_adapter: null
+reliability_note: null
+known_gaming_incidents: null
+activity:
+  stars: "391 (per GitHub page fetch, 2026-07-05); 24 commits on main branch at fetch time"
+  last_verified_note: "GPT-5-mini results were added to the repo/leaderboard in May 2026 per search summary [unverified — from search summary, not the repo page directly]; a related work, MemoryArena, is noted in the repo as accepted at ICML 2026 [unverified — see the memoryarena entry, this specific acceptance claim was not confirmed on MemoryArena's own paper page]"
+provenance:
+  - url: https://github.com/HUST-AI-HYZ/MemoryAgentBench
+    note: "fetched live 2026-07-05"
+unverified:
+  - "originally surfaced via a survey paper (arXiv 2603.07670) per harness-eval issue #29 — this entry independently re-confirmed existence/repo/license, superseding the survey-only caveat"
+  - "GPT-5-mini result timing and MemoryArena's ICML 2026 acceptance claim are from search summaries, not confirmed on primary pages"

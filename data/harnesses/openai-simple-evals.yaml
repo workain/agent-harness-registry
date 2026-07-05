@@ -1,0 +1,25 @@
+name: OpenAI simple-evals
+slug: openai-simple-evals
+homepage: https://github.com/openai/simple-evals
+type: harness
+what_it_is: >
+  A deliberately narrow, mostly-deprecated set of eval scripts OpenAI built for its own
+  number-transparency (as of July 2025, only HealthBench/BrowseComp/SimpleQA remain
+  actively used) — explicitly not a full eval framework. Scoring is mixed: regex/exact-match
+  (MMLU, GPQA) and LLM-as-judge (MATH via a gpt-4-turbo equality-checker; SimpleQA/
+  BrowseComp/HealthBench via rubric grading).
+capabilities:
+  contamination_gate: "confirmed absent — grepped the README and all code, zero mentions of decontamination/leakage/held-out data"
+  reward_hacking_detection: "confirmed absent"
+  reliability_methodology: "partial — --n-repeats (MATH/GPQA, default 10) duplicates the WHOLE dataset and reports mean/std/bootstrap_std over aggregate accuracy, not per-item pass@k; MMLU/HumanEval/DROP/MGSM are single-run only"
+  sandboxing: "n/a"
+license: "[unverified — not independently re-checked for this registry entry]"
+activity:
+  stars: null
+  last_verified_note: "[unverified — not re-fetched for this entry; carried over from a 2026-07-01 landscape review]"
+provenance:
+  - url: https://github.com/openai/simple-evals
+    fetched: "2026-07-01"
+    note: "via workain/harness-eval's own landscape review — code and README grepped directly"
+unverified:
+  - "stars/last-commit activity and license not independently re-checked for this registry entry"

@@ -6,6 +6,10 @@
 
 A two-agent role-playing primitive (`role_playing.py`) that spawned a broader "Finding the Scaling Law of Agents" framework and the `camel-ai/owl` (Optimized Workforce Learning) follow-on project.
 
+## Scope note: framework, not just equipment
+
+CAMEL is a full research framework with its own execution runtime — the framework itself is broader than equipment, and that runtime is engine territory. CAMEL is NOT catalogued in this registry's `engines/` category; this entry documents its role-playing primitive specifically, not a recommendation to adopt the whole framework as equipment.
+
 ## When to use it
 
 Researching or building on the role-playing primitive itself, or exploring CAMEL's scaling-law framework.

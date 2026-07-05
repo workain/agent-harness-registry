@@ -6,6 +6,10 @@
 
 Five fixed, SOP-bound roles (product manager, architect, project manager, engineer, QA) simulating a software company, communicating via a shared global message pool — "Code = SOP(Team)" philosophy.
 
+## Scope note: framework, not just equipment
+
+MetaGPT is a full multi-agent framework with its own execution runtime (a shared global message pool) — the framework itself is broader than equipment, and that runtime is engine territory. MetaGPT is NOT catalogued in this registry's `engines/` category; this entry documents its role/SOP design specifically, not a recommendation to adopt the whole framework as equipment.
+
 ## When to use it
 
 Studying or adopting a rigidly SOP-constrained role pipeline for software generation — best understood as a reference design, not necessarily adopted wholesale.

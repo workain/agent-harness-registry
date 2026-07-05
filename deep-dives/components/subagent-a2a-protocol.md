@@ -4,7 +4,11 @@
 
 ## What it is
 
-A Google-originated, now Linux-Foundation-governed (launched June 2025, 100+ company backing) cross-vendor protocol: HTTP/JSON/SSE-based schema for capability discovery, task delegation, and lifecycle management BETWEEN agents built on DIFFERENT frameworks/vendors.
+A Google-originated, now Linux-Foundation-governed cross-vendor protocol: HTTP/JSON/SSE-based schema for capability discovery, task delegation, and lifecycle management BETWEEN agents built on DIFFERENT frameworks/vendors. The repo's own README confirms directly: "The A2A Protocol is an open source project under the Linux Foundation, contributed by Google."
+
+## Correction (post-ROAST self-audit, 2026-07-05)
+
+The initial version of this entry stated "launched June 2025, 100+ company backing" as fact. A direct re-fetch of the repo page could not corroborate either figure — only the Linux Foundation governance and Google origin are independently confirmed. Treat the launch date and company count as unverified until sourced directly (e.g. a Linux Foundation press release), not as settled fact.
 
 ## When to use it
 

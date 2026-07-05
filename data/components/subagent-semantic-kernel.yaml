@@ -7,7 +7,7 @@ license_tag: "MIT"
 open_source: true
 use_cases: "plugin/agent role composition for .NET and Python"
 what_it_is: >
-  Plugin/agent role composition across .NET and Python — still actively pushed despite being officially in the process of being superseded.
+  Plugin/agent role composition across .NET and Python — still actively pushed despite being officially in the process of being superseded. Semantic Kernel is a full framework with its own execution runtime (its kernel/plugin invocation loop) — the framework itself is broader than equipment, and that runtime is engine territory per this registry's harness=equipment-vs-engine split. It is NOT catalogued in this registry's `engines/` category; treat this entry as documenting a plugin/agent role-composition pattern worth knowing about, not a recommendation to adopt the whole framework as equipment.
 activity:
   stars: "28.3k"
   last_verified_note: "pushed 2026-07-02"
@@ -15,5 +15,6 @@ provenance:
   - url: https://github.com/microsoft/semantic-kernel
     fetched: "2026-07-05"
     note: "verified directly via gh api (stars/forks/license/push date)"
-unverified: []
+unverified:
+  - "this entry scopes to Semantic Kernel's plugin/agent role-composition API specifically — its own execution runtime is out of scope and is NOT catalogued as an engine elsewhere in this registry"
 deep_dive: deep-dives/components/subagent-semantic-kernel.md

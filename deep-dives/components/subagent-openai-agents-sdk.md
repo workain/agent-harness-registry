@@ -6,6 +6,10 @@
 
 Swarm's production successor: handoffs, guardrails as first-class objects, OTLP-exportable tracing, provider-agnostic (100+ LLMs via Responses/Chat Completions compatibility).
 
+## Scope note: framework, not just equipment
+
+The OpenAI Agents SDK is a full production framework with its own execution runtime (`Runner.run()` drives the whole handoff/guardrail loop) — the framework itself is broader than equipment, and that runtime is engine territory. It is NOT catalogued in this registry's `engines/` category; this entry documents its handoff/guardrail design specifically, not a recommendation to adopt the whole framework as equipment.
+
 ## When to use it
 
 Evaluating OpenAI's ecosystem for production subagent delegation — start here, not Swarm.

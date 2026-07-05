@@ -6,6 +6,10 @@
 
 CEO/CTO/programmer/reviewer/tester/designer roles collaborating via "seminars"; rewritten as "ChatDev 2.0 (DevAll)" in Jan 2026, broadening scope beyond just software.
 
+## Scope note: framework, not just equipment
+
+ChatDev is a full multi-agent framework with its own execution runtime (the seminar/ChatChain mechanism) — the framework itself is broader than equipment, and that runtime is engine territory. ChatDev is NOT catalogued in this registry's `engines/` category; this entry documents its role/communication design specifically, not a recommendation to adopt the whole framework as equipment.
+
 ## When to use it
 
 You want a role-based simulation with a distinct communication pattern (seminars/ChatChain) from MetaGPT's message-pool broadcast.

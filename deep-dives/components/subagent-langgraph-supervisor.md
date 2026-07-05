@@ -6,6 +6,10 @@
 
 The canonical hub-and-spoke "supervisor" role pattern for LangGraph — a supervisor LLM node reads full history and routes to specialist nodes.
 
+## Scope note: framework, not just equipment
+
+This pattern runs inside LangGraph's own graph-execution runtime — LangGraph itself is broader than equipment, and that runtime is engine territory. LangGraph is NOT catalogued in this registry's `engines/` category; this entry documents the supervisor-routing pattern specifically, not a recommendation to adopt the whole framework as equipment.
+
 ## When to use it
 
 Studying or implementing supervisor-style routing specifically within LangGraph.

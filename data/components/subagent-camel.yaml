@@ -7,7 +7,7 @@ license_tag: "Apache-2.0 + CC-BY-NC-4.0"
 open_source: true
 use_cases: "two-agent role-playing primitive, research into agent scaling laws"
 what_it_is: >
-  A two-agent role-playing primitive (`role_playing.py`) that spawned a broader "Finding the Scaling Law of Agents" framework and the `camel-ai/owl` (Optimized Workforce Learning) follow-on project.
+  A two-agent role-playing primitive (`role_playing.py`) that spawned a broader "Finding the Scaling Law of Agents" framework and the `camel-ai/owl` (Optimized Workforce Learning) follow-on project. CAMEL is a full research framework with its own execution runtime (the `role_playing.py` loop and the broader scaling-law/OWL infrastructure it spawned) — the framework itself is broader than equipment, and that runtime is engine territory per this registry's harness=equipment-vs-engine split. CAMEL is NOT catalogued in this registry's `engines/` category; treat this entry as documenting a role-playing primitive worth knowing about, not a recommendation to adopt the whole framework as equipment.
 activity:
   stars: "17.3k"
   last_verified_note: "pushed 2026-06-28"
@@ -15,5 +15,6 @@ provenance:
   - url: https://github.com/camel-ai/camel
     fetched: "2026-07-05"
     note: "verified directly via gh api (stars/forks/license/push date)"
-unverified: []
+unverified:
+  - "this entry scopes to CAMEL's role-playing primitive specifically — its own execution runtime and the broader scaling-law/OWL framework are out of scope and are NOT catalogued as an engine elsewhere in this registry"
 deep_dive: deep-dives/components/subagent-camel.md

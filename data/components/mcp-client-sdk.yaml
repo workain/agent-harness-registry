@@ -20,13 +20,17 @@ open_source: true
 use_cases: "building MCP clients and servers across 8 languages"
 activity:
   stars: "12.8k (TypeScript SDK specifically, per GitHub page fetch, 2026-07-05)"
-  last_verified_note: "fetched live 2026-07-05; 123 releases, 2k forks, 243 open issues, 205 open PRs — currently in a v2 beta implementing the 2026-07-28 MCP spec revision, with v1.x in maintenance"
+  last_verified_note: "fetched live 2026-07-05; 123 releases, 2k forks, 243 open issues, 205 open PRs. v1.x (stable, recommended for production) implements the ratified 'legacy' spec family (2024-11-05 through 2025-11-25). The `main` branch is v2 (package.json version 2.0.0-alpha.0) and adds support for what the SDK's own docs call a 'modern' era, labelled 2026-07-28 — POST-ROAST CORRECTION: this is NOT a ratified spec revision. Directly checked `modelcontextprotocol/modelcontextprotocol`'s `schema/` directory (2026-07-05): only 2024-11-05, 2025-03-26, 2025-06-18, 2025-11-25, and an undated `draft` folder exist — no 2026-07-28 revision has been published by the spec's own steering group. '2026-07-28' is the SDK maintainers' own internal label/target date for that still-unpublished draft, asserted in the SDK's docs, not a confirmed fact about the ratified protocol."
 provenance:
   - url: https://github.com/modelcontextprotocol/typescript-sdk
     fetched: "2026-07-05"
-    note: "fetched directly (repo page): license, star count, client/server package split, spec-version status, activity signal"
+    note: "fetched directly (repo page + docs/protocol-versions.md): license, star count, client/server package split, era-negotiation mechanics"
+  - url: https://api.github.com/repos/modelcontextprotocol/modelcontextprotocol/contents/schema
+    fetched: "2026-07-05"
+    note: "fetched directly (post-ROAST correction): confirms only 2024-11-05/2025-03-26/2025-06-18/2025-11-25/draft exist in the spec's own schema directory — no 2026-07-28 folder, contradicting the SDK docs' own '2026-07-28 spec' framing"
   - url: https://github.com/modelcontextprotocol
     note: "found via search: confirms the parallel official SDKs for Python, Go, Java, C#, Kotlin, Ruby, PHP under the same org — not independently fetched one-by-one for this entry"
 unverified:
   - "the other 6 language SDKs (Python, Go, Java, C#, Kotlin, Ruby, PHP) were confirmed to exist via search, not individually fetched for license/activity detail — this entry's activity numbers are TypeScript-SDK-specific"
+  - "whether the spec's own steering group will actually ratify a revision dated '2026-07-28', or a different date, or defer further — the SDK's docs assert this date but the spec repo itself has not published it as of this fetch"
 deep_dive: deep-dives/components/mcp.md

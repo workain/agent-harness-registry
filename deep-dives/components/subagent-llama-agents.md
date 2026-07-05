@@ -6,6 +6,10 @@
 
 Event-driven, async-first, step-based multi-agent workflow control for the LlamaIndex ecosystem — complements this registry's `llamaindex-memory` entry (memory-scoped); this one is orchestration-scoped.
 
+## Scope note: framework, not just equipment
+
+llama-agents is itself an execution runtime (event-driven, async, step-based), not just role definitions — that runtime is engine territory, the same narrowing already applied to the companion `llamaindex-memory` entry. It is NOT catalogued in this registry's `engines/` category; this entry documents its orchestration design specifically, not a recommendation to adopt the whole runtime as equipment.
+
 ## When to use it
 
 You're building multi-agent workflows on LlamaIndex specifically and want its native orchestration layer.

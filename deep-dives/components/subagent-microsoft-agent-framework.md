@@ -6,6 +6,10 @@
 
 The unified AutoGen + Semantic-Kernel successor (1.0 shipped 2026-04-07): sequential/concurrent/handoff/group-chat/Magentic-One orchestration patterns, all with checkpointing and human-in-the-loop pause/resume built in.
 
+## Scope note: framework, not just equipment
+
+Microsoft Agent Framework is a full orchestration framework with its own execution runtime (with checkpointing/pause-resume) — the framework itself is broader than equipment, and that runtime is engine territory. It is NOT catalogued in this registry's `engines/` category; this entry documents its orchestration-pattern catalog specifically, not a recommendation to adopt the whole framework as equipment.
+
 ## When to use it
 
 Starting new Microsoft-ecosystem multi-agent work — this is the recommended entry point over both AutoGen and Semantic Kernel now.

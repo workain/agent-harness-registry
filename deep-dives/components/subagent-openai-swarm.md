@@ -6,6 +6,10 @@
 
 Introduced the "handoff" primitive as a multi-agent mental model — explicitly educational-only per OpenAI's own README, superseded once the production SDK shipped.
 
+## Scope note: framework, not just equipment
+
+Swarm is a full (if deliberately minimal) multi-agent framework with its own execution runtime — the framework itself is broader than equipment, and that runtime is engine territory. Swarm is NOT catalogued in this registry's `engines/` category; this entry documents its handoff primitive/mental model specifically, not a recommendation to adopt the whole framework as equipment (it's also explicitly not for production use, regardless).
+
 ## When to use it
 
 Studying the handoff concept historically — NOT for production use.

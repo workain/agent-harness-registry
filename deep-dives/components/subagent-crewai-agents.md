@@ -6,6 +6,10 @@
 
 The role/task-composition layer of CrewAI (distinct from this registry's existing `crewai-memory` entry, which scopes to memory specifically) — the Agent/Crew/Task API for defining who does what.
 
+## Scope note: framework, not just equipment
+
+CrewAI is a full orchestration framework with its own execution runtime (`kickoff()` drives the whole multi-agent loop) — the framework itself is broader than equipment, and that runtime is engine territory, the same narrowing already applied to the companion `crewai-memory` entry. CrewAI is NOT catalogued in this registry's `engines/` category; this entry documents its role/task-composition API specifically, not a recommendation to adopt the whole framework as equipment.
+
 ## When to use it
 
 You're building on CrewAI and want its role-composition API specifically, as distinct from its memory subsystem.

@@ -12,8 +12,8 @@ implementations — Filesystem, Git, Fetch, Memory, Sequential Thinking, Time) a
 (the official CLIENT libraries an engine embeds to actually reach those servers, across 8 languages:
 TypeScript, Python, Go, Java, C#, Kotlin, Ruby, PHP). Most registries/surveys of MCP only discuss the
 server side; this split exists because an engine adopting MCP needs BOTH halves, and they have
-separate maintenance/version lifecycles (the TypeScript SDK, for instance, is independently in a v2
-beta implementing a newer spec revision while v1.x stays in maintenance).
+separate maintenance/version lifecycles (the TypeScript SDK, for instance, has a v1.x line in
+production maintenance and a v2 alpha/beta line on `main` under active development).
 
 ## Governance — a genuinely cross-vendor commitment, not a single-company library
 
@@ -37,8 +37,22 @@ this registry flags identically in both entries rather than only once.
 
 88.1k stars on the servers reference repo (this registry's second-highest star count after Anthropic
 Agent Skills' 158k) — 25 releases, 4,130 commits, actively maintained. The TypeScript client/server
-SDK specifically: 12.8k stars, 123 releases, currently in a v2 beta cycle implementing a 2026-07-28
-spec revision — i.e. under active protocol evolution, not a frozen v1.
+SDK specifically: 12.8k stars, 123 releases — under active protocol evolution, not a frozen v1 (see
+the correction below on exactly what that evolution targets).
+
+## Correction (post-ROAST, 2026-07-05): the "2026-07-28 spec revision" is not a ratified fact
+
+The initial version of this entry stated the TypeScript SDK's v2 beta "implements the 2026-07-28 MCP
+spec revision" as settled fact. It doesn't, as of this fetch. Directly checked the protocol's own
+source of truth — `modelcontextprotocol/modelcontextprotocol`'s `schema/` directory — which contains
+exactly five entries: `2024-11-05`, `2025-03-26`, `2025-06-18`, `2025-11-25`, and an undated `draft`.
+**No `2026-07-28` folder exists.** The SDK's own `docs/protocol-versions.md` (fetched directly) does
+use "2026-07-28" extensively — as the label for what it calls the upcoming "modern era," alongside
+version-negotiation code (`mode: { pin: '2026-07-28' }`) that treats it as a real, addressable
+version string. But labelling a target date in an alpha SDK's own docs is not the same as the
+protocol's steering group having published that revision. Treat "2026-07-28" as the SDK maintainers'
+own anticipated target for the still-unpublished `draft` revision, not a confirmed spec fact — and
+re-check the schema directory before citing a specific date if this entry is revisited later.
 
 ## What this registry did NOT verify
 
@@ -62,5 +76,7 @@ tools/skills layer.
 
 - https://github.com/modelcontextprotocol/servers — fetched directly, 2026-07-05
 - https://github.com/modelcontextprotocol/typescript-sdk — fetched directly, 2026-07-05
+- https://api.github.com/repos/modelcontextprotocol/modelcontextprotocol/contents/schema — fetched
+  directly, 2026-07-05 (post-ROAST correction: confirms the actual set of ratified spec revisions)
 - https://github.com/modelcontextprotocol — found via search (parallel SDK existence confirmation),
   not individually fetched per language

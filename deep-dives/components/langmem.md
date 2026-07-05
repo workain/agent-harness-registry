@@ -34,8 +34,10 @@ consolidation without agent involvement.
   unanswered memory-poisoning issues (#163/#164) sit unaddressed 7+ weeks.
 - Open, unfixed correctness bugs in the two headline functions: `create_search_memory_tool`
   sometimes doesn't retrieve memories `create_memory_store_manager` just wrote (#140); records can
-  silently fail to persist to Postgres (#154). A harness-eval live run independently reproduced the
-  #140-shaped gap.
+  silently fail to persist to Postgres (#154). A harness-eval live run observed a matching-shape
+  gap (a complete, well-formed write followed by a fruitless search, verified against the raw
+  request/response log) — consistent with #140, though the exact internal mechanism wasn't traced
+  to the byte level, so treat this as corroborating evidence, not a proven identical reproduction.
 
 ## How it compares
 
@@ -71,18 +73,22 @@ autonomous consolidation on top, independently.
 **The catch:**
 1. Registry claims check out (unlike Mem0, LangMem makes no benchmark claim to dispute) — the
    problem is what's omitted, not what's asserted.
-2. A live run beat the naive `abstain` baseline but only *tied* a naive "always trust the latest
-   correction" baseline on a long-term-memory suite, once a scoring artifact was manually corrected
-   for (LangMem's verbose consolidation text incidentally retained old values as context, giving it
-   credit on 2 tasks where it had actually been fooled by an unsupported correction).
+2. A live run beat the naive `abstain` baseline but, across 2 epochs, only banded 0.583–0.75
+   against a naive "always trust the latest correction" baseline (0.583) on a long-term-memory
+   suite, once a scoring artifact was manually corrected for (LangMem's verbose consolidation text
+   incidentally retained old values as context, giving it credit on 2 tasks where it had actually
+   been fooled by an unsupported correction) — a real but inconsistent edge, not a clean win.
 3. Scored 0.0 on a multi-turn customer/finance/healthcare memory suite — not because the facts were
    wrong (they were usually present) but because the default `Memory(content: str)` schema returns
    one broad narrative blob per consolidation pass, with no built-in step to scope an answer down to
    what was actually asked. Getting a precise answer out of LangMem's primitives is the adopter's
    own engineering problem to solve.
-4. The live run independently reproduced one of the pre-screen's headline findings (the
-   write-then-immediately-unsearchable gap, #140-shaped) — not just a documented complaint, an
-   observed failure in a fresh run.
+4. The live run observed a real reliability gap on valid-update tasks whose shape is consistent
+   with one of the pre-screen's headline findings (the write-then-unsearchable gap, #140-shaped),
+   verified against the raw request/response log rather than just inferred — plus a second,
+   distinct failure mode in a repeat run (the model emitting a valid-but-differently-shaped
+   tool-call the test harness's own shim didn't handle, triggering a self-correction round-trip
+   that succeeded on content but not always on substance).
 
 **If you use it anyway:** budget for an answer-precision layer on top of the raw retrieval (a
 second extraction pass scoping the retrieved memory to the actual question), pin

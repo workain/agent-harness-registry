@@ -49,6 +49,20 @@ than a survey or a forum thread, precedented on nothing but the vendor's own com
 See `workain/harness-eval`'s `docs/DEMAND-vs-ANTI-SIGNALS-equipment-bundles.md` for how this feeds
 the overall verdict.
 
+## Scored against the three properties no bundle in this registry combines (all vendor-claimed, unverified)
+
+| Property | Status | Evidence |
+|---|---|---|
+| Sustained | **Unknown/unverified** | No GitHub repo found, so no commit/release history to check — cannot confirm or deny |
+| Engine-agnostic | **Yes (claimed)** | Built on AGENTS.md specifically, marketed as portable across 5 engines — the only bundle in this registry claiming this property by design, not as an afterthought; still vendor-marketing-only, not independently confirmed |
+| Progressively-disclosed | **Yes (claimed)** | The 14 rules are marketed as auto-loading "based on what files you edit" — a context-aware, non-bulk loading pattern, if accurate |
+
+**Score: 2 of 3 claimed (engine-agnostic + progressively-disclosed), 1 unverifiable (sustained).**
+If the vendor's claims hold up, this would be the ONLY bundle in the registry combining two of the
+three properties by design rather than by inheritance or accident — which is exactly why the weak
+provenance here matters so much: this is the one case where independent verification could change
+the registry's overall verdict, not just refine a detail.
+
 ## Bottom line
 
 If accurate, VibeReady is the one entry in this whole bundle survey that combines assembly with
@@ -60,5 +74,5 @@ claim here is treated as load-bearing for the eventual blog post.
 ## Sources
 
 - https://vibeready.sh/ai-saas-boilerplate/, https://vibeready.sh/, https://vibeready.sh/docs/ —
-  found via WebSearch summary, 2026-07-06, NOT independently fetched in full
+  found via WebSearch summary, 2026-07-05, NOT independently fetched in full
 - No GitHub repository, license, or third-party review was located for this product in this pass

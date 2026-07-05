@@ -14,10 +14,10 @@ integration: "Python SDK, REST API (localhost:8000 default), CLI (cognee-cli), D
 license: Apache-2.0
 open_source: true
 activity:
-  stars: "27k (per GitHub page fetch, 2026-07-06)"
-  last_verified_note: "fetched live 2026-07-06; latest release v1.2.2 (2026-06-26), 8,429 commits, 237 open issues, 345 open PRs — actively maintained; the project has 'graduated' GitHub's Secure Open Source program per its own README"
+  stars: "27k (per GitHub page fetch, 2026-07-05)"
+  last_verified_note: "fetched live 2026-07-05; latest release v1.2.2 (2026-06-26), 8,429 commits, 237 open issues, 345 open PRs — actively maintained; the project has 'graduated' GitHub's Secure Open Source program per its own README"
 provenance:
   - url: https://github.com/topoteretes/cognee
-    fetched: "2026-07-06"
+    fetched: "2026-07-05"
     note: "fetched directly (repo page): description, license, star count, architecture, integration surface, activity signal"
 unverified: []

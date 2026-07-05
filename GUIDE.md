@@ -12,7 +12,7 @@
 
 **20 atomic components** across 5 categories, **7 assembled bundles**, **6 agent engines/runtimes**, **9 eval-frameworks**, **11 benchmarks** — 14 entries have a dedicated deep-dive file.
 
-**Atoms vs. bundles — why this split, and why atoms dominate.** Equipment splits cleanly into two levels. **Components** are single-purpose, atomic units — a memory layer, a skill, a rules file, an MCP server — that you compose yourself onto an engine. **Bundles** are pre-assembled multi-component kits someone else composed for you (instructions + skills + a knowledge base + subagents, etc., shipped together). Market research (this registry's own demand-vs-anti-signal study, `workain/harness-eval`'s `docs/DEMAND-vs-ANTI-SIGNALS-equipment-bundles.md`, building on `workain/agent-lab-manager` PR#44's market-atomic verdict) found the market is overwhelmingly atomic — the Agent Skills standard alone spans 47,150 unique skills across 45 engines — and that this is **not** simply an oversight the bundle side is destined to fill in. Real, structural anti-signals exist (naive bundling causes measurable context-bloat performance degradation; a real 6k-star open-source project is built explicitly on the anti-monolith thesis; engine lock-in is a cost bundling pays that atomic components mostly don't). But real demand signals ALSO exist (a paid $149 commercial product sells exactly this shape; one bundle's fork:star ratio is 4-8x its peers', a stronger revealed-preference signal than starring). **Verdict: mixed, favors "untapped opportunity with real headwinds" over "flatly unwanted."** Every bundle catalogued below satisfies at most two of "sustained," "engine-agnostic," and "memory-complete" simultaneously — see each bundle's own deep-dive for exactly which two.
+**Atoms vs. bundles — why this split, and why atoms dominate.** Equipment splits cleanly into two levels. **Components** are single-purpose, atomic units — a memory layer, a skill, a rules file, an MCP server — that you compose yourself onto an engine. **Bundles** are pre-assembled multi-component kits someone else composed for you (instructions + skills + a knowledge base + subagents, etc., shipped together). Market research (this registry's own demand-vs-anti-signal study, `workain/harness-eval`'s `docs/DEMAND-vs-ANTI-SIGNALS-equipment-bundles.md` — **`[pending review — not yet merged as of this writing; treat the verdict below as a strong working hypothesis, not a settled finding, until that PR lands]`** — building on `workain/agent-lab-manager` PR#44's market-atomic verdict) found the market is overwhelmingly atomic — the Agent Skills standard alone spans 47,150 unique skills across 42 engines (mechanically recounted; an earlier eyeballed pass said 45) — and that this is **not** simply an oversight the bundle side is destined to fill in. Real, structural anti-signals exist (naive bundling has a real efficiency/consistency cost — 40-57% more tokens, up to 50x more latency, per two independently-verified papers on unbundled context injection, though neither paper directly measures output-quality degradation; a real 6k-star open-source project is built explicitly on the anti-monolith thesis; engine lock-in is a cost bundling pays that atomic components mostly don't). But real demand signals ALSO exist (a paid $149 commercial product sells exactly this shape; one bundle's fork:star ratio is 4-8x its peers', a stronger revealed-preference signal than starring). **Verdict: mixed, favors "untapped opportunity with real headwinds" over "flatly unwanted."** Every bundle catalogued below is scored against the three properties no single one combines — **sustained** (actively maintained, not abandoned), **engine-agnostic** (portable, not locked to one vendor), and **progressively-disclosed** (composes/loads its components lazily at runtime, the way a well-designed skill does, rather than as a static preloaded monolith) — see each bundle's own deep-dive for exactly which it has.
 
 **Component categories:**
 - **Memory** (10) — see below
@@ -71,10 +71,10 @@ A tiered, provenance-linked, self-reconsolidating memory architecture for LLM ag
 A first-party Anthropic-provided tool (`{"type": "memory_20250818", "name": "memory"}`) that lets Claude read/write files in a `/memories` directory across conversations — Claude requests file operations (view/create/str_replace/insert/delete/rename); YOUR application executes them against storage you control (filesystem, database, cloud, encrypted). Generally available on the Messages API (no beta header required), for Claude 4+ models. Designed to pair with context editing (client-side clearing of old tool results) and compaction (server-side conversation summarization) — memory preserves what must survive summarization. Anthropic's own docs cite an 84% token-reduction figure for extended workflows [unverified — vendor's own claim, not independently reproduced here].
 
 **How it's adopted:** Add the tool to a Messages API request; implement a client-side handler for the six memory commands (view/create/str_replace/insert/delete/rename), restricting all operations to `/memories` (path-traversal protection is the integrator's responsibility, not built in). Python/TypeScript SDKs ship a ready-made `BetaLocalFilesystemMemoryTool`; other languages implement the tool-use loop directly.
-- **Activity notes:** fetched live 2026-07-06 from the official platform.claude.com docs — generally available (not beta) as of this fetch; eligible for Zero Data Retention
+- **Activity notes:** fetched live 2026-07-05 from the official platform.claude.com docs — generally available (not beta) as of this fetch; eligible for Zero Data Retention
 
 **Provenance:**
-- https://platform.claude.com/docs/en/agents-and-tools/tool-use/memory-tool (fetched 2026-07-06)
+- https://platform.claude.com/docs/en/agents-and-tools/tool-use/memory-tool (fetched 2026-07-05)
   fetched directly: mechanism, integration steps, GA status, ZDR eligibility, pairing with context editing/compaction
 
 **Unverified / caveats:**
@@ -91,11 +91,11 @@ A first-party Anthropic-provided tool (`{"type": "memory_20250818", "name": "mem
 An open-source AI memory platform: ingests data in any format and continuously builds a self-hosted knowledge graph combining vector embeddings, graph-based reasoning, and "cognitive-science-grounded ontology generation" so content is both semantically searchable and relationally connected. Exposes remember / recall / forget / improve as its core operations — a similar shape to our own agent-memory's remember/forget pump, but knowledge-graph-first rather than tiered-access-band-first.
 
 **How it's adopted:** Python SDK, REST API (localhost:8000 default), CLI (cognee-cli), Docker images, a TypeScript client (@cognee/cognee-ts), a Rust library (cognee-rs), and a Claude Code plugin integration
-- **Activity:** 27k (per GitHub page fetch, 2026-07-06)
-- **Activity notes:** fetched live 2026-07-06; latest release v1.2.2 (2026-06-26), 8,429 commits, 237 open issues, 345 open PRs — actively maintained; the project has 'graduated' GitHub's Secure Open Source program per its own README
+- **Activity:** 27k (per GitHub page fetch, 2026-07-05)
+- **Activity notes:** fetched live 2026-07-05; latest release v1.2.2 (2026-06-26), 8,429 commits, 237 open issues, 345 open PRs — actively maintained; the project has 'graduated' GitHub's Secure Open Source program per its own README
 
 **Provenance:**
-- https://github.com/topoteretes/cognee (fetched 2026-07-06)
+- https://github.com/topoteretes/cognee (fetched 2026-07-05)
   fetched directly (repo page): description, license, star count, architecture, integration surface, activity signal
 
 
@@ -110,11 +110,11 @@ An open-source AI memory platform: ingests data in any format and continuously b
 The memory subsystem of CrewAI (a multi-agent orchestration framework — the framework itself is broader than equipment, this entry scopes to its memory piece specifically). Positioned by the project as a "cognitive layer" for production agents: remembers, resolves contradictions, forgets intentionally, and recognizes when it lacks sufficient context, rather than being a plain search-backed store.
 
 **How it's adopted:** A `memory` capability enabled on a CrewAI Crew/Agent alongside tools, knowledge, and checkpointing — part of the same Python package as the orchestration framework, not a separately installable component
-- **Activity:** 54.9k (per GitHub page fetch, 2026-07-06, for the whole crewAI repo — memory is one module within it, not separately starred)
-- **Activity notes:** fetched live 2026-07-06; latest release 1.15.1 (2026-06-27), 212 releases, 320 contributors — actively maintained
+- **Activity:** 54.9k (per GitHub page fetch, 2026-07-05, for the whole crewAI repo — memory is one module within it, not separately starred)
+- **Activity notes:** fetched live 2026-07-05; latest release 1.15.1 (2026-06-27), 212 releases, 320 contributors — actively maintained
 
 **Provenance:**
-- https://github.com/crewAIInc/crewAI (fetched 2026-07-06)
+- https://github.com/crewAIInc/crewAI (fetched 2026-07-05)
   fetched directly (repo page): license, star count, activity signal, and confirmation that memory is a named capability; the fetched page did not enumerate memory-specific implementation details beyond the project's own framing quoted above
 
 **Unverified / caveats:**
@@ -156,11 +156,11 @@ An open-source framework for building TEMPORAL context/knowledge graphs for AI a
 LangChain's memory package: extracts important information from conversations, optimizes agent behavior through prompt refinement, and maintains long-term memory. Ships both functional primitives usable with any storage backend AND native integration with LangGraph's own long-term memory Store. Includes in-conversation memory-management tools an agent can call directly, plus a background memory manager that automatically extracts/consolidates/updates knowledge without the agent's explicit involvement.
 
 **How it's adopted:** Python package (`langgraph-ai/langmem`); `create_manage_memory_tool`/`create_search_memory_tool` for agent-callable memory ops; native LangGraph Store integration for long-term persistence
-- **Activity:** 1.5k (per GitHub page fetch, 2026-07-06)
-- **Activity notes:** fetched live 2026-07-06; 135 commits, 47 open issues, 10 open PRs, 173 forks
+- **Activity:** 1.5k (per GitHub page fetch, 2026-07-05)
+- **Activity notes:** fetched live 2026-07-05; 135 commits, 47 open issues, 10 open PRs, 173 forks
 
 **Provenance:**
-- https://github.com/langchain-ai/langmem (fetched 2026-07-06)
+- https://github.com/langchain-ai/langmem (fetched 2026-07-05)
   fetched directly (repo page): description, license, star count, feature set, activity signal
 
 **Unverified / caveats:**
@@ -201,13 +201,13 @@ A platform for "stateful agents" with self-editing, persistent memory — origin
 The memory module of LlamaIndex (a document-agent/RAG/OCR platform — the framework itself is broader than equipment, this entry scopes to its memory piece specifically). Short-term memory via `ChatMemoryBuffer` (last-N-messages within a token budget) or `ChatSummaryMemoryBuffer` (same, plus periodic summarization); long-term memory represented as `Memory Block` objects that receive flushed short-term messages and optionally process them — three predefined blocks ship: `StaticMemoryBlock`, `FactExtractionMemoryBlock`, `VectorMemoryBlock`. An agent calls `memory.put()`/`memory.get()`; short-term and long-term memory are merged at retrieval time.
 
 **How it's adopted:** Part of the `llama_index` Python package (`llama-index-core`); use an existing `BaseMemory` subclass or author a custom one
-- **Activity:** 50.7k (per GitHub page fetch, 2026-07-06, for the whole llama_index repo — memory is one module within it)
-- **Activity notes:** fetched live 2026-07-06; latest release v0.14.23 (2026-06-24), 495 releases, 7,855 commits, 24.4k dependent projects — actively maintained
+- **Activity:** 50.7k (per GitHub page fetch, 2026-07-05, for the whole llama_index repo — memory is one module within it)
+- **Activity notes:** fetched live 2026-07-05; latest release v0.14.23 (2026-06-24), 495 releases, 7,855 commits, 24.4k dependent projects — actively maintained
 
 **Provenance:**
 - https://developers.llamaindex.ai/python/framework/module_guides/deploying/agents/memory/
   fetched via search summary for the memory-class API surface (ChatMemoryBuffer, Memory Block types) — not independently re-fetched in full for this entry
-- https://github.com/run-llama/llama_index (fetched 2026-07-06)
+- https://github.com/run-llama/llama_index (fetched 2026-07-05)
   fetched directly (repo page) for license, star count, activity signal; did not surface memory-specific implementation details in the fetched content
 
 **Unverified / caveats:**
@@ -248,10 +248,10 @@ A "universal memory layer for AI agents" — LLM-based fact extraction from conv
 A stateful conversation-persistence system that pairs with OpenAI's Responses API: create a conversation object once (a durable identifier), then pass its ID into subsequent Responses calls instead of manually re-chaining message history. Unlike bare response objects (which expire after 30 days), conversation objects and their items are NOT subject to that TTL — suitable for applications where users return across sessions/devices over long periods. Distinct from the separate, consumer-facing ChatGPT "memory" feature (ChatGPT's own ability to remember facts across chats) — the fetched docs make no connection between the two, treat them as separate implementations. The OpenAI Agents SDK also layers a `Session` memory abstraction on top (`session.run(...)`) that manages context length/history/ continuity automatically.
 
 **How it's adopted:** REST API call: create a conversation, then pass `conversation="conv_..."` on subsequent `responses.create(...)` calls; the Agents SDK's Session object wraps this for a more ergonomic loop
-- **Activity notes:** fetched live 2026-07-06 from the official developers.openai.com docs
+- **Activity notes:** fetched live 2026-07-05 from the official developers.openai.com docs
 
 **Provenance:**
-- https://developers.openai.com/api/docs/guides/conversation-state (fetched 2026-07-06)
+- https://developers.openai.com/api/docs/guides/conversation-state (fetched 2026-07-05)
   fetched directly: mechanism, TTL exemption, integration pattern, explicit note that the ChatGPT consumer memory feature is not mentioned/connected in this doc
 
 **Unverified / caveats:**
@@ -276,11 +276,11 @@ A stateful conversation-persistence system that pairs with OpenAI's Responses AP
 Reusable, filesystem-based capability packages: a directory containing a `SKILL.md` file (YAML frontmatter with required `name`/`description`, then markdown instructions/ examples/guidelines), following a "progressive disclosure" design — only the name+description preloads into the system prompt at startup; full skill content loads only when relevant. Anthropic open-sourced skills for document creation (PowerPoint/ Excel/Word/PDF) and other categories in this repo. Became a cross-vendor open standard (agentskills.io) in December 2025 [unverified — from search summary, not independently confirmed on a primary agentskills.io fetch] — reportedly adopted by ~40 clients beyond Claude, including GitHub Copilot, VS Code, Cursor, OpenAI Codex, Gemini CLI, Goose, and OpenCode [unverified — same caveat]. This is our own `harness-skills` repo's exact functional slot (Block B), at cross-vendor scale.
 
 **How it's adopted:** Drop a skill directory with a SKILL.md into a project/plugin marketplace; Claude Code supports installing skill packs via `/plugin install <pack>@anthropic-agent-skills`
-- **Activity:** 158k (per GitHub page fetch, 2026-07-06)
-- **Activity notes:** fetched live 2026-07-06; 43 commits, 283 open issues, 725 open PRs, 18.7k forks — very high engagement relative to commit count, consistent with a young, fast-adopted standard rather than a mature slow-moving codebase
+- **Activity:** 158k (per GitHub page fetch, 2026-07-05)
+- **Activity notes:** fetched live 2026-07-05; 43 commits, 283 open issues, 725 open PRs, 18.7k forks — very high engagement relative to commit count, consistent with a young, fast-adopted standard rather than a mature slow-moving codebase
 
 **Provenance:**
-- https://github.com/anthropics/skills (fetched 2026-07-06)
+- https://github.com/anthropics/skills (fetched 2026-07-05)
   fetched directly (repo page): SKILL.md format, progressive-disclosure design, skill categories, license framing, activity signal
 
 **Unverified / caveats:**
@@ -300,11 +300,11 @@ Reusable, filesystem-based capability packages: a directory containing a `SKILL.
 A tool-integration platform for AI agents: 1000+ pre-built "toolkits" (Slack, GitHub, Notion, Google Workspace, Microsoft 365, X/Twitter, Figma, web search, browser automation, etc.), tool search, authentication management, context management, and a sandboxed execution workbench — turning "intent into action" without hand-writing per-service integration code. Provides framework-specific provider packages so the same toolkits plug into OpenAI, Anthropic, LangChain, LangGraph, LlamaIndex, CrewAI, AutoGen, Google ADK, and others directly.
 
 **How it's adopted:** `pip install composio` (Python) or `npm install @composio/core` (TypeScript); framework-specific provider packages for direct integration with the major agent frameworks
-- **Activity:** 29.1k (per GitHub page fetch, 2026-07-06)
-- **Activity notes:** fetched live 2026-07-06; latest release @composio/slim@0.13.1 (2026-06-27), 860 releases, 4,339 commits, 402 dependent repositories — actively maintained
+- **Activity:** 29.1k (per GitHub page fetch, 2026-07-05)
+- **Activity notes:** fetched live 2026-07-05; latest release @composio/slim@0.13.1 (2026-06-27), 860 releases, 4,339 commits, 402 dependent repositories — actively maintained
 
 **Provenance:**
-- https://github.com/ComposioHQ/composio (fetched 2026-07-06)
+- https://github.com/ComposioHQ/composio (fetched 2026-07-05)
   fetched directly (repo page): description, license, star count, SDK/provider surface, activity signal
 
 
@@ -369,10 +369,10 @@ An open, tool-agnostic file-format convention for giving coding agents project c
 Cursor's persistent-instruction system: "system-level instructions to Agent" that bundle prompts, scripts, and workflows, shareable across a team. The modern format is `.mdc` files under `.cursor/rules/` (frontmatter metadata + content), superseding the legacy single `.cursorrules` file (still read, no longer recommended). Four application modes: Always Apply (every session), Apply Intelligently (agent judges relevance from the rule's own description), Apply to Specific Files (glob-scoped, e.g. `src/**/*.tsx`), and Apply Manually (@-mentioned). Also directly supports nested `AGENTS.md` files as a simpler no-metadata alternative — i.e. Cursor's own rules system and the cross-vendor AGENTS.md convention (see that entry) are interoperable, not competing, in Cursor specifically. Team Rules (org-wide, dashboard-managed) are a paid-plan feature.
 
 **How it's adopted:** Author `.mdc` files under a project's `.cursor/rules/` directory (or drop an AGENTS.md); User Rules are configured globally per developer; Team Rules via a paid-plan dashboard
-- **Activity notes:** fetched live 2026-07-06 from Cursor's own official docs (cursor.com/docs) — this documents a real, current product feature, not a deprecated or speculative one; recent addition noted: nested AGENTS.md support in subdirectories
+- **Activity notes:** fetched live 2026-07-05 from Cursor's own official docs (cursor.com/docs) — this documents a real, current product feature, not a deprecated or speculative one; recent addition noted: nested AGENTS.md support in subdirectories
 
 **Provenance:**
-- https://cursor.com/docs/context/rules (fetched 2026-07-06)
+- https://cursor.com/docs/context/rules (fetched 2026-07-05)
   fetched directly: rule formats (.mdc vs legacy .cursorrules vs AGENTS.md), the four application modes, Team Rules paid-plan status
 
 **Unverified / caveats:**
@@ -389,10 +389,10 @@ Cursor's persistent-instruction system: "system-level instructions to Agent" tha
 Windsurf's (now under Cognition/Devin, per the docs' own redirect from docs.windsurf.com to docs.devin.ai) two-part context-persistence system: auto-generated **Memories** (Cascade writes contextual notes locally to `~/.codeium/windsurf/memories/`, machine-local and NOT team-shared by default) versus manually-authored **Rules** (durable, shareable, four activation modes: always_on, model_decision, glob, manual). Rules are scoped at three levels: Global (single `global_rules.md`, 6,000-char limit, always active), Workspace (multiple `.md` files under `.devin/rules/` or `.windsurf/rules/`, 12,000 chars each), and System/Enterprise (IT-deployed, org-wide). The legacy single `.windsurfrules` file at the workspace root is still recognized but superseded by the modular `.devin/rules/` directory approach — the same legacy-single-file -> modular-directory evolution AGENTS.md/Cursor Rules/ this registry's other rules entries all independently converged on.
 
 **How it's adopted:** Author Markdown files under `.devin/rules/` (or the legacy `.windsurfrules` at the workspace root); global rules go in `~/.codeium/windsurf/memories/global_rules.md`; enterprise rules are IT-deployed via OS-specific directories
-- **Activity notes:** fetched live 2026-07-06 from docs.devin.ai (redirected from the legacy docs.windsurf.com URL, confirming the Cognition/Devin acquisition is reflected in current documentation infrastructure, not just announcements)
+- **Activity notes:** fetched live 2026-07-05 from docs.devin.ai (redirected from the legacy docs.windsurf.com URL, confirming the Cognition/Devin acquisition is reflected in current documentation infrastructure, not just announcements)
 
 **Provenance:**
-- https://docs.devin.ai/desktop/cascade/memories (fetched 2026-07-06)
+- https://docs.devin.ai/desktop/cascade/memories (fetched 2026-07-05)
   fetched directly (redirected live from docs.windsurf.com/windsurf/cascade/memories): Memories vs. Rules distinction, three scoping levels, legacy .windsurfrules status, character limits
 
 
@@ -414,7 +414,7 @@ Windsurf's (now under Cognition/Devin, per the docs' own redirect from docs.wind
 A first-party Claude Code mechanism for delegating a task to a specialized assistant that runs in its OWN context window, with its own system prompt, tool access, and permissions — the delegating conversation only receives the subagent's final summary, not its intermediate search results/logs/file contents, which keeps the main conversation's context clean. Delegation can be automatic (Claude matches a task against a subagent's own `description` field, which functions as the trigger, not mere documentation) or explicit (named). Multiple subagents can run concurrently (e.g. style-checker + security-scanner + test-coverage in parallel during a review). Subagents are plain Markdown files with YAML frontmatter (name/description/tools/ model) plus a system-prompt body — project-level ones live under `.claude/agents/` and are checked into version control for team sharing.
 
 **How it's adopted:** Author a Markdown file under `.claude/agents/` with YAML frontmatter (name, description, tools, model) + a system-prompt body; Claude Code auto-discovers and either auto-delegates or accepts explicit by-name invocation
-- **Activity notes:** fetched live 2026-07-06 from the official code.claude.com docs — describes a current, actively documented feature
+- **Activity notes:** fetched live 2026-07-05 from the official code.claude.com docs — describes a current, actively documented feature
 
 **Provenance:**
 - https://code.claude.com/docs/en/sub-agents
@@ -434,11 +434,11 @@ A first-party Claude Code mechanism for delegating a task to a specialized assis
 A "multi-harness agentic plugin marketplace": 194 domain-organized subagents (architecture, languages, infrastructure, security, data, ML, docs, business, SEO), 158 skills (progressive-disclosure model), 106 commands, and 88 plugins bundling these into installable units — generated from a single Markdown source per engine (Claude Code as source-of-truth, then native artifacts for Codex CLI, Cursor, OpenCode, Gemini CLI, GitHub Copilot) rather than a lowest-common-denominator translation. Relevant to BOTH this registry's components and bundles sides: the 194 subagents/158 skills are atomic components in their own right; specific plugins within this marketplace (e.g. `agent-teams`) are themselves assembled bundles — see the separate `wshobson-agent-teams` bundle deep-dive.
 
 **How it's adopted:** Install the whole marketplace or individual plugins via Claude Code's plugin mechanism (`.claude-plugin/marketplace.json`); per-engine native artifacts are also generated for the other five supported platforms
-- **Activity:** 37.5k (per GitHub page fetch, 2026-07-06)
-- **Activity notes:** fetched live 2026-07-06; 508 commits, 4k forks, 311 watchers, 7 open PRs, 1 open issue — high star count relative to commit count is consistent with rapid recent adoption
+- **Activity:** 37.5k (per GitHub page fetch, 2026-07-05)
+- **Activity notes:** fetched live 2026-07-05; 508 commits, 4k forks, 311 watchers, 7 open PRs, 1 open issue — high star count relative to commit count is consistent with rapid recent adoption
 
 **Provenance:**
-- https://github.com/wshobson/agents (fetched 2026-07-06)
+- https://github.com/wshobson/agents (fetched 2026-07-05)
   fetched directly (repo page): inventory counts (194 agents/158 skills/106 commands/88 plugins), six-engine generation model, license, activity signal
 
 
@@ -460,11 +460,11 @@ A "multi-harness agentic plugin marketplace": 194 domain-organized subagents (ar
 The official language SDKs for implementing BOTH sides of the Model Context Protocol — not just servers (see the separate `mcp-servers` entry for the reference server implementations), but the CLIENT libraries an agent engine embeds to actually reach those servers. Official SDKs exist for TypeScript, Python, Go, Java (with Spring AI), C# (with Microsoft), Kotlin (with JetBrains), Ruby, and PHP (with the PHP Foundation) — a cross-vendor, multi-language commitment to the protocol, not a single-company library. The TypeScript SDK specifically splits into separate server/client packages (`@modelcontextprotocol/server`, `@modelcontextprotocol/client`) with optional middleware for Express/Hono/Node HTTP.
 
 **How it's adopted:** Per-language package install (e.g. `@modelcontextprotocol/sdk` for TS/JS, `mcp` for Python); an agent engine embeds the CLIENT half to discover and call MCP servers, and separately may embed the SERVER half to expose its own tools to other MCP-aware engines
-- **Activity:** 12.8k (TypeScript SDK specifically, per GitHub page fetch, 2026-07-06)
-- **Activity notes:** fetched live 2026-07-06; 123 releases, 2k forks, 243 open issues, 205 open PRs — currently in a v2 beta implementing the 2026-07-28 MCP spec revision, with v1.x in maintenance
+- **Activity:** 12.8k (TypeScript SDK specifically, per GitHub page fetch, 2026-07-05)
+- **Activity notes:** fetched live 2026-07-05; 123 releases, 2k forks, 243 open issues, 205 open PRs — currently in a v2 beta implementing the 2026-07-28 MCP spec revision, with v1.x in maintenance
 
 **Provenance:**
-- https://github.com/modelcontextprotocol/typescript-sdk (fetched 2026-07-06)
+- https://github.com/modelcontextprotocol/typescript-sdk (fetched 2026-07-05)
   fetched directly (repo page): license, star count, client/server package split, spec-version status, activity signal
 - https://github.com/modelcontextprotocol
   found via search: confirms the parallel official SDKs for Python, Go, Java, C#, Kotlin, Ruby, PHP under the same org — not independently fetched one-by-one for this entry
@@ -524,11 +524,11 @@ Pre-assembled multi-component kits. Rare relative to components (see the Overvie
 The strongest available proof that engine-agnostic assembly is technically buildable: a provider-agnostic CLI (`ahk`) that scaffolds a five-role agent workflow (Lead, Explorer, Consultant, Builder, Reviewer) natively per engine — Claude Code (`.claude/agents/`, Markdown+YAML), OpenCode (`.opencode/agents/`, Markdown), Codex CLI (`.codex/agents/`, TOML) — from one config, rather than picking one engine and locking to it. Adds SQLite-backed task management with atomic claiming (no duplicate work across agents), a full audit trail, a configurable health-check gate that must pass before tasks start/close, a local MCP server, and a web dashboard. Notably has NO skills/ or knowledge-base layer — it solves the engine-portability problem for subagent scaffolding specifically, not the full component set.
 
 **Components bundled:** subagents (5 roles, per-engine generated), task-management DB, audit trail, health gate, MCP server, dashboard
-- **Activity:** 172 (per GitHub page fetch, 2026-07-06)
-- **Activity notes:** fetched live 2026-07-06; 31 releases, latest v1.8.1, 254 commits — young (created 2026-05-04 per gh api) but actively pushed (last push 2026-06-20), single-maintainer
+- **Activity:** 172 (per GitHub page fetch, 2026-07-05)
+- **Activity notes:** fetched live 2026-07-05; 31 releases, latest v1.8.1, 254 commits — young (created 2026-05-04 per gh api) but actively pushed (last push 2026-06-20), single-maintainer
 
 **Provenance:**
-- https://github.com/enmanuelmag/agent-harness-kit (fetched 2026-07-06)
+- https://github.com/enmanuelmag/agent-harness-kit (fetched 2026-07-05)
   fetched directly (repo page + README): per-engine generation mechanism, feature set, license, activity
 
 
@@ -545,10 +545,10 @@ The strongest available proof that engine-agnostic assembly is technically build
 A concrete, verified example of the Claude Code Plugin mechanism actually being used to assemble a real multi-component bundle: 4 subagents (team-lead, team-implementer, team-reviewer, team-debugger) + 6 skills (task-coordination-strategies, parallel-feature-development, parallel-debugging, multi-reviewer-patterns, team-communication-protocols, team-composition-patterns — a small reference-doc KB in effect) + 7 commands, all under one manifest, generated for both Claude Code AND Codex (`.claude-plugin/` and `.codex-plugin/` both present) — a genuine cross-engine team-in-a-box for ONE task (parallel multi-agent orchestration). It is one plugin among 87 mostly single-purpose ones in its parent marketplace (`wshobson/agents`, see the separate `wshobson-agents` component entry) — the ecosystem's modal unit is still narrow/atomic, not assembled; this plugin is the exception, not the norm.
 
 **Components bundled:** subagents (4), skills (6, functioning as a reference KB), commands (7)
-- **Activity notes:** counted directly via `gh api repos/wshobson/agents/contents/plugins/agent-teams/{agents,skills,commands}`, 2026-07-06 — exact counts (4 agents, 6 skills, 7 commands) independently reconfirmed, not just cited from the parent repo's aggregate numbers
+- **Activity notes:** counted directly via `gh api repos/wshobson/agents/contents/plugins/agent-teams/{agents,skills,commands}`, 2026-07-05 — exact counts (4 agents, 6 skills, 7 commands) independently reconfirmed, not just cited from the parent repo's aggregate numbers
 
 **Provenance:**
-- https://api.github.com/repos/wshobson/agents/contents/plugins/agent-teams (fetched 2026-07-06)
+- https://api.github.com/repos/wshobson/agents/contents/plugins/agent-teams (fetched 2026-07-05)
   fetched directly via GitHub REST API tree listing (not WebFetch/marketing content) — the most mechanically verified entry in this registry's bundle set, since it's a direct file-count recount rather than a README claim
 
 
@@ -565,11 +565,11 @@ A concrete, verified example of the Claude Code Plugin mechanism actually being 
 The richest single-vertical assembled bundle found in this sweep: a TypeScript boilerplate for Claude Code with 20+ specialized subagents covering the full dev lifecycle (requirement analysis, UI spec, design, planning, implementation, QA, code review, debugging, reverse engineering), 10 core skills (coding standards, testing/ documentation criteria, technical specs, frontend patterns, integration/E2E testing, project-context customization), a structured knowledge base (quick-start guides, use cases, skills-editing guide, design philosophy), and scale-aware orchestration (direct implementation for small tasks; design-then-build for medium; PRD -> design -> implementation for large projects). Actively maintained (unlike the other two real bundles found), not a one-shot artifact.
 
 **Components bundled:** subagents (20+), skills (10), knowledge base, orchestration/workflow logic
-- **Activity:** 221 (per GitHub page fetch, 2026-07-06)
-- **Activity notes:** fetched live 2026-07-06; 23 forks, 117 releases, latest v1.25.1 (2026-06-29) — actively maintained, distinguishing it from the other two real bundles found (both single-push snapshots)
+- **Activity:** 221 (per GitHub page fetch, 2026-07-05)
+- **Activity notes:** fetched live 2026-07-05; 23 forks, 117 releases, latest v1.25.1 (2026-06-29) — actively maintained, distinguishing it from the other two real bundles found (both single-push snapshots)
 
 **Provenance:**
-- https://github.com/shinpr/ai-coding-project-boilerplate (fetched 2026-07-06)
+- https://github.com/shinpr/ai-coding-project-boilerplate (fetched 2026-07-05)
   fetched directly (repo page + README): subagent/skill counts, orchestration model, license, release cadence
 
 **Unverified / caveats:**
@@ -588,10 +588,10 @@ The richest single-vertical assembled bundle found in this sweep: a TypeScript b
 Not a specific bundle but the closest thing to a standardized BUNDLING MECHANISM in this whole registry: a plugin is "a self-contained directory of components that extends Claude Code," with six component types — skills, agents (subagents), hooks, MCP servers, LSP servers, and monitors — installable as one unit via a `.claude-plugin/marketplace.json` manifest. Anthropic's own framing justifies this explicitly on assembly-friction grounds: a workflow needing three slash commands, two subagents, and one MCP server ships as a single install rather than five manual steps. This is the schema every concrete bundle in this registry that touches Claude Code (agent-teams, and implicitly gtm-starter-kit/ai-coding-project-boilerplate as Claude-Code-native artifacts) is built on or could be packaged into. Notably: no first-class "memory/KB" component type exists in the six-type schema — memory ships as an ordinary skill if at all, not a structural layer.
 
 **Components bundled:** skills, subagents (agents), hooks, MCP servers, LSP servers, monitors
-- **Activity notes:** fetched live 2026-07-06 from the official code.claude.com plugins-reference docs
+- **Activity notes:** fetched live 2026-07-05 from the official code.claude.com plugins-reference docs
 
 **Provenance:**
-- https://code.claude.com/docs/en/plugins-reference (fetched 2026-07-06)
+- https://code.claude.com/docs/en/plugins-reference (fetched 2026-07-05)
   fetched directly: six-component schema, packaging/install mechanism, the explicit assembly-friction justification quoted from Anthropic's own docs
 
 **Unverified / caveats:**
@@ -610,12 +610,12 @@ Not a specific bundle but the closest thing to a standardized BUNDLING MECHANISM
 OpenAI's vendor-native "assembled" product: a Custom GPT genuinely bundles instructions + knowledge files + tool/action wiring into one discoverable, browsable, deployable unit (the GPT Store itself IS the marketplace this whole registry's other bundles lack). But the assembly trades composability for total platform lock-in: GPTs live entirely within OpenAI's platform, with no exportable filesystem a user can clone, version, or migrate elsewhere. OpenAI provides no one-click bulk export of GPT configurations (only conversation history and, via a Code-Interpreter workaround, uploaded knowledge files) — independently confirmed via OpenAI's own community forum, where bulk export remains an open feature request as of this fetch. Also single-agent, not team: no subagent composition. Contrast with this registry's Claude Skills entry, which are "standard Markdown files" a user keeps regardless of platform.
 
 **Components bundled:** instructions, knowledge files, tool/action wiring
-- **Activity notes:** fetched live 2026-07-06 (OpenAI Help Center + community forum); lock-in claim independently corroborated across both sources, not resting on a single page
+- **Activity notes:** fetched live 2026-07-05 (OpenAI Help Center + community forum); lock-in claim independently corroborated across both sources, not resting on a single page
 
 **Provenance:**
-- https://help.openai.com/en/articles/8554397-creating-and-editing-gpts (fetched 2026-07-06)
+- https://help.openai.com/en/articles/8554397-creating-and-editing-gpts (fetched 2026-07-05)
   official OpenAI Help Center: creation/editing mechanics
-- https://community.openai.com/t/any-way-to-export-your-custom-gpts-in-bulk/858737 (fetched 2026-07-06)
+- https://community.openai.com/t/any-way-to-export-your-custom-gpts-in-bulk/858737 (fetched 2026-07-05)
   OpenAI's own developer community: confirms bulk export of GPT configurations remains an open, unresolved feature request — corroborates the lock-in claim from a second independent source
 
 
@@ -632,11 +632,11 @@ OpenAI's vendor-native "assembled" product: a Custom GPT genuinely bundles instr
 A single-vertical (go-to-market) assembled bundle for Claude Code: CLAUDE.md (company overview/ICP/signals/personas) + 5 skills (account research, ICP scoring, signal-to-sequence campaign building, weekly context updates, repo setup) + a context/ knowledge base (company profile, ICP definitions, signal library, competitive battlecards, persona templates) + a weekly memory-refresh loop + a fully populated worked example. Built by The Revenue Architects, a GTM engineering firm, as a lead-gen/portfolio artifact.
 
 **Components bundled:** instructions (CLAUDE.md), skills (5), knowledge base, memory-refresh loop, worked example
-- **Activity:** 163 (per GitHub page fetch, 2026-07-06)
-- **Activity notes:** fetched live 2026-07-06; 65 forks (unusually high fork:star ratio, ~0.40 — see demand-research doc), 12 commits, created and last pushed the same day (2026-04-03) — a single-push snapshot, never updated since
+- **Activity:** 163 (per GitHub page fetch, 2026-07-05)
+- **Activity notes:** fetched live 2026-07-05; 65 forks (unusually high fork:star ratio, ~0.40 — see demand-research doc), 12 commits, created and last pushed the same day (2026-04-03) — a single-push snapshot, never updated since
 
 **Provenance:**
-- https://github.com/KarlRaf/gtm-starter-kit (fetched 2026-07-06)
+- https://github.com/KarlRaf/gtm-starter-kit (fetched 2026-07-05)
   fetched directly (repo page + README): bundled components, license, activity, fork/star counts re-verified via gh api
 
 
@@ -657,7 +657,7 @@ A PAID commercial product whose core "AI Framework" layer is exactly this regist
 
 **Provenance:**
 - https://vibeready.sh/ai-saas-boilerplate/
-  found via WebSearch summary of the vendor's own marketing pages, 2026-07-06 — NOT an independently fetched primary source or repo; this entry is the weakest-provenance bundle in the registry and is flagged as such throughout
+  found via WebSearch summary of the vendor's own marketing pages, 2026-07-05 — NOT an independently fetched primary source or repo; this entry is the weakest-provenance bundle in the registry and is flagged as such throughout
 
 **Unverified / caveats:**
 - all product details (pricing, exact 14-rules/22-skills counts, engine list) come from a WebSearch synthesis of the vendor's own marketing copy, not an independently fetched page or repo — no GitHub source was found to cross-check against

@@ -11,7 +11,7 @@ component) because it's the infrastructure every concrete Claude-Code-side bundl
 (`wshobson-agent-teams`) is built on, and because understanding its exact schema is necessary to
 judge what a bundle CAN and CANNOT contain in this ecosystem today.
 
-## The schema (fetched directly from Anthropic's own docs, 2026-07-06)
+## The schema (fetched directly from Anthropic's own docs, 2026-07-05)
 
 A plugin is "a self-contained directory of components that extends Claude Code." **Six component
 types**, and only six:
@@ -48,18 +48,31 @@ to other engines. `wshobson/agents` works around this by generating separate nat
 engine from a shared source rather than expecting the plugin manifest itself to be portable; that is
 a workaround at the marketplace level, not evidence the schema generalizes.
 
+## Scored against the three properties no bundle in this registry combines
+
+| Property | Status | Evidence |
+|---|---|---|
+| Sustained | **Yes** | A core, actively maintained Claude Code feature, not a side project — inherits the maintenance guarantee of the whole product |
+| Engine-agnostic | **No** | Explicitly Claude-Code-native; the schema itself doesn't port, only individual marketplaces (like `wshobson/agents`) work around this by generating separate native artifacts per engine |
+| Progressively-disclosed | **Partial** | The Skills component type uses genuine progressive disclosure (same SKILL.md mechanism as `anthropic-skills`); but Agents/hooks/MCP-servers/LSP-servers/monitors are installed and activated in bulk at plugin-install time, not lazily — so the MECHANISM as a whole is only partially progressive, even though one of its six component types is |
+
+**Score: 1 of 3 confidently (sustained), partial credit on progressive disclosure limited to one of
+six component types.** This mechanism is the most mature bundling infrastructure in the survey, but
+scoring it against these three properties shows precisely why it's infrastructure, not itself a
+general-purpose harness template — the schema is committed to one engine and only partially
+lazy-loads what it bundles.
+
 ## Bottom line
 
 The most mature bundling INFRASTRUCTURE found in this survey, and the reason Claude Code plugins are
 the one ecosystem where assembled bundles exist at meaningful scale (88 plugins in `wshobson/agents`
 alone) rather than as isolated one-off repos. But its single-vendor schema and its missing
-memory/KB component type are exactly the two properties a general-purpose, engine-agnostic,
-memory-complete harness template would need to solve independently of this mechanism, not by
-adopting it as-is.
+memory/KB component type are exactly the properties a general-purpose, engine-agnostic harness
+template would need to solve independently of this mechanism, not by adopting it as-is.
 
 ## Sources
 
-- https://code.claude.com/docs/en/plugins-reference — fetched directly, 2026-07-06
+- https://code.claude.com/docs/en/plugins-reference — fetched directly, 2026-07-05
 - Cross-referenced (independently corroborating): `workain/agent-lab-manager` PR#44,
   `knowledge/raw/harness-templates-market-2026-07/claude-code-plugins.md` — same page fetched
   independently there, same six-component schema found

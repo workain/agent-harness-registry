@@ -20,10 +20,10 @@ license: "Documents a Claude Code feature (proprietary product, see engines/clau
 open_source: false
 activity:
   stars: null
-  last_verified_note: "fetched live 2026-07-06 from the official code.claude.com plugins-reference docs"
+  last_verified_note: "fetched live 2026-07-05 from the official code.claude.com plugins-reference docs"
 provenance:
   - url: https://code.claude.com/docs/en/plugins-reference
-    fetched: "2026-07-06"
+    fetched: "2026-07-05"
     note: "fetched directly: six-component schema, packaging/install mechanism, the explicit assembly-friction justification quoted from Anthropic's own docs"
 unverified:
   - "cross-referenced against agent-lab-manager PR#44's independent fetch of the same page (knowledge/raw/harness-templates-market-2026-07/claude-code-plugins.md), which found the identical six-component schema — treated as strong corroboration, not blind trust in a single fetch"

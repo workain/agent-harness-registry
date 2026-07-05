@@ -55,7 +55,7 @@ the specific artifact that made it portable" narrative this whole registry is bu
 
 ## Sources
 
-- https://github.com/agentsmd/agents.md — fetched directly, 2026-07-05/2026-07-06 (this registry's
+- https://github.com/agentsmd/agents.md — fetched directly, 2026-07-05 (this registry's
   own component entry)
 - Cross-referenced (not independently re-verified): search-result summaries citing the Linux
   Foundation donation and 60k+ project adoption — explicitly NOT corroborated by a primary source in

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Generate GUIDE.md from data/{components,bundles,engines,benchmarks}/*.yaml.
 
-Registry v2 structure (operator spec, 2026-07-06 — see GUIDE.md's own overview section):
+Registry v2 structure (operator spec, 2026-07-05 — see GUIDE.md's own overview section):
   - data/components/  -- ATOMIC equipment (PRIMARY, work-for-volume): memory, skills-tools,
     instructions-rules, subagents, access-mcp. Grouped by each entry's own `category:` field.
   - data/bundles/      -- ASSEMBLED equipment: multi-component kits (or bundling mechanisms/
@@ -411,21 +411,28 @@ def main() -> None:
         "composed for you (instructions + skills + a knowledge base + subagents, etc., "
         "shipped together). Market research (this registry's own demand-vs-anti-signal "
         "study, `workain/harness-eval`'s "
-        "`docs/DEMAND-vs-ANTI-SIGNALS-equipment-bundles.md`, building on "
-        "`workain/agent-lab-manager` PR#44's market-atomic verdict) found the market is "
-        "overwhelmingly atomic — the Agent Skills standard alone spans 47,150 unique "
-        "skills across 45 engines — and that this is **not** simply an oversight the "
-        "bundle side is destined to fill in. Real, structural anti-signals exist (naive "
-        "bundling causes measurable context-bloat performance degradation; a real 6k-star "
-        "open-source project is built explicitly on the anti-monolith thesis; engine "
-        "lock-in is a cost bundling pays that atomic components mostly don't). But real "
-        "demand signals ALSO exist (a paid $149 commercial product sells exactly this "
-        "shape; one bundle's fork:star ratio is 4-8x its peers', a stronger revealed-"
-        "preference signal than starring). **Verdict: mixed, favors \"untapped "
-        "opportunity with real headwinds\" over \"flatly unwanted.\"** Every bundle "
-        "catalogued below satisfies at most two of \"sustained,\" \"engine-agnostic,\" and "
-        "\"memory-complete\" simultaneously — see each bundle's own deep-dive for exactly "
-        "which two."
+        "`docs/DEMAND-vs-ANTI-SIGNALS-equipment-bundles.md` — **`[pending review — not yet "
+        "merged as of this writing; treat the verdict below as a strong working hypothesis, "
+        "not a settled finding, until that PR lands]`** — building on `workain/agent-lab-"
+        "manager` PR#44's market-atomic verdict) found the market is overwhelmingly atomic "
+        "— the Agent Skills standard alone spans 47,150 unique skills across 42 engines "
+        "(mechanically recounted; an earlier eyeballed pass said 45) — and that this is "
+        "**not** simply an oversight the bundle side is destined to fill in. Real, "
+        "structural anti-signals exist (naive bundling has a real efficiency/consistency "
+        "cost — 40-57% more tokens, up to 50x more latency, per two independently-verified "
+        "papers on unbundled context injection, though neither paper directly measures "
+        "output-quality degradation; a real 6k-star open-source project is built "
+        "explicitly on the anti-monolith thesis; engine lock-in is a cost bundling pays "
+        "that atomic components mostly don't). But real demand signals ALSO exist (a paid "
+        "$149 commercial product sells exactly this shape; one bundle's fork:star ratio is "
+        "4-8x its peers', a stronger revealed-preference signal than starring). **Verdict: "
+        "mixed, favors \"untapped opportunity with real headwinds\" over \"flatly "
+        "unwanted.\"** Every bundle catalogued below is scored against the three "
+        "properties no single one combines — **sustained** (actively maintained, not "
+        "abandoned), **engine-agnostic** (portable, not locked to one vendor), and "
+        "**progressively-disclosed** (composes/loads its components lazily at runtime, "
+        "the way a well-designed skill does, rather than as a static preloaded monolith) "
+        "— see each bundle's own deep-dive for exactly which it has."
     )
     out.append("")
     out.append("**Component categories:**")

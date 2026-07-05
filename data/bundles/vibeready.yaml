@@ -20,7 +20,7 @@ activity:
   last_verified_note: "not independently verified beyond the vendor's own marketing site (vibeready.sh) — no GitHub repo, star count, or third-party corroboration found; treat commercial claims (pricing, exact rule/skill counts) as vendor-reported"
 provenance:
   - url: https://vibeready.sh/ai-saas-boilerplate/
-    note: "found via WebSearch summary of the vendor's own marketing pages, 2026-07-06 — NOT an independently fetched primary source or repo; this entry is the weakest-provenance bundle in the registry and is flagged as such throughout"
+    note: "found via WebSearch summary of the vendor's own marketing pages, 2026-07-05 — NOT an independently fetched primary source or repo; this entry is the weakest-provenance bundle in the registry and is flagged as such throughout"
 unverified:
   - "all product details (pricing, exact 14-rules/22-skills counts, engine list) come from a WebSearch synthesis of the vendor's own marketing copy, not an independently fetched page or repo — no GitHub source was found to cross-check against"
   - "no company/maintainer background, activity signal, or independent user review was found for this entry"

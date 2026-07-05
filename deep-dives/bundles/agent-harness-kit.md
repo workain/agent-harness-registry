@@ -10,7 +10,7 @@ technically buildable** — a provider-agnostic CLI (`ahk`, "Agent Harness Kit")
 harness-native agent-role files for multiple engines from ONE config, rather than hand-authoring a
 separate bundle per engine (the approach every other bundle in this registry takes instead).
 
-## What's actually bundled (verified via direct repo/README fetch, 2026-07-06)
+## What's actually bundled (verified via direct repo/README fetch, 2026-07-05)
 
 - **A five-role agent workflow**, generated natively per engine from one config:
   - Claude Code: `.claude/agents/` (Markdown + YAML frontmatter)
@@ -46,6 +46,19 @@ young (created 2026-05-04, per `gh api`), single-maintainer, 172 stars vs. tens 
 atomic-standard ecosystems (Agent Skills: 158k stars on the reference repo alone). Actively pushed
 (last push 2026-06-20), 31 releases, 254 commits — real, ongoing development, just small-scale.
 
+## Scored against the three properties no bundle in this registry combines
+
+| Property | Status | Evidence |
+|---|---|---|
+| Sustained | **Partial** | Young (created 2026-05-04) but actively pushed since (last push 2026-06-20), 31 releases, 254 commits — real ongoing development at small scale, not yet a long enough track record to call unambiguously "sustained" |
+| Engine-agnostic | **Yes** | The registry's only bundle confirmed to generate native artifacts for 3 distinct engines (Claude Code, OpenCode, Codex CLI) from one config — independently verified via matching role files under two different engines' directories |
+| Progressively-disclosed | **No** | No skills/KB layer at all — nothing to progressively disclose; the subagent role files themselves are not designed around lazy-loading |
+
+**Score: 1 of 3 confidently (engine-agnostic), arguably 1.5-2 of 3 if the young-but-active
+maintenance record counts as "sustained."** The mirror image of `ai-coding-project-boilerplate`:
+this bundle solves engine-agnosticism at the cost of everything else that would make it a complete
+harness template.
+
 ## Bottom line
 
 This is the reference implementation to study for the "how do you generate portable, per-engine
@@ -55,7 +68,7 @@ would need, even though it doesn't itself solve the skills/KB/memory side of the
 
 ## Sources
 
-- https://github.com/enmanuelmag/agent-harness-kit — fetched directly (repo + README), 2026-07-06
+- https://github.com/enmanuelmag/agent-harness-kit — fetched directly (repo + README), 2026-07-05
 - Star/release/commit data — same fetch
 - Cross-referenced (not re-fetched): `workain/agent-lab-manager` PR#44,
   `knowledge/raw/harness-templates-market-2026-07/engine-agnostic-scaffolds.md` (source of the

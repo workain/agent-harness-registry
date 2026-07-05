@@ -14,11 +14,11 @@ engine_lock: "Claude Code only"
 license: MIT
 open_source: true
 activity:
-  stars: "163 (per GitHub page fetch, 2026-07-06)"
-  last_verified_note: "fetched live 2026-07-06; 65 forks (unusually high fork:star ratio, ~0.40 — see demand-research doc), 12 commits, created and last pushed the same day (2026-04-03) — a single-push snapshot, never updated since"
+  stars: "163 (per GitHub page fetch, 2026-07-05)"
+  last_verified_note: "fetched live 2026-07-05; 65 forks (unusually high fork:star ratio, ~0.40 — see demand-research doc), 12 commits, created and last pushed the same day (2026-04-03) — a single-push snapshot, never updated since"
 provenance:
   - url: https://github.com/KarlRaf/gtm-starter-kit
-    fetched: "2026-07-06"
+    fetched: "2026-07-05"
     note: "fetched directly (repo page + README): bundled components, license, activity, fork/star counts re-verified via gh api"
 unverified: []
 deep_dive: deep-dives/bundles/gtm-starter-kit.md

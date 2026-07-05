@@ -17,11 +17,11 @@ engine_lock: "Claude Code only"
 license: MIT
 open_source: true
 activity:
-  stars: "221 (per GitHub page fetch, 2026-07-06)"
-  last_verified_note: "fetched live 2026-07-06; 23 forks, 117 releases, latest v1.25.1 (2026-06-29) — actively maintained, distinguishing it from the other two real bundles found (both single-push snapshots)"
+  stars: "221 (per GitHub page fetch, 2026-07-05)"
+  last_verified_note: "fetched live 2026-07-05; 23 forks, 117 releases, latest v1.25.1 (2026-06-29) — actively maintained, distinguishing it from the other two real bundles found (both single-push snapshots)"
 provenance:
   - url: https://github.com/shinpr/ai-coding-project-boilerplate
-    fetched: "2026-07-06"
+    fetched: "2026-07-05"
     note: "fetched directly (repo page + README): subagent/skill counts, orchestration model, license, release cadence"
 unverified:
   - "an earlier cross-referenced source (agent-lab-manager PR#44) counted 26 subagents; this entry's own direct fetch found '20+' stated in the README — the discrepancy is noted rather than silently reconciled, exact current count not independently recounted file-by-file"

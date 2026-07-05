@@ -15,11 +15,11 @@ integration: "Python package (`langgraph-ai/langmem`); `create_manage_memory_too
 license: MIT
 open_source: true
 activity:
-  stars: "1.5k (per GitHub page fetch, 2026-07-06)"
-  last_verified_note: "fetched live 2026-07-06; 135 commits, 47 open issues, 10 open PRs, 173 forks"
+  stars: "1.5k (per GitHub page fetch, 2026-07-05)"
+  last_verified_note: "fetched live 2026-07-05; 135 commits, 47 open issues, 10 open PRs, 173 forks"
 provenance:
   - url: https://github.com/langchain-ai/langmem
-    fetched: "2026-07-06"
+    fetched: "2026-07-05"
     note: "fetched directly (repo page): description, license, star count, feature set, activity signal"
 unverified:
   - "this entry scopes specifically to LangMem, the dedicated memory package — the broader LangChain/LangGraph ecosystem (agent orchestration, other memory-adjacent template repos like langgraph-memory/memory-template) was not separately catalogued"

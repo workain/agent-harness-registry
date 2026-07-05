@@ -57,5 +57,5 @@ be independently re-verified before an architecture decision leans on it.
 
 ## Sources
 
-- https://github.com/getzep/graphiti — fetched directly, 2026-07-05/2026-07-06 (this registry's own
+- https://github.com/getzep/graphiti — fetched directly, 2026-07-05 (this registry's own
   component entry, including the direct LICENSE resolution)

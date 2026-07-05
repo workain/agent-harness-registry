@@ -17,11 +17,11 @@ integration: "Per-language package install (e.g. `@modelcontextprotocol/sdk` for
 license: "Apache-2.0 for new contributions; pre-existing code remains MIT-licensed (per the fetched TypeScript SDK repo) — verify per-file for redistribution, same mixed-license caveat as the mcp-servers entry"
 open_source: true
 activity:
-  stars: "12.8k (TypeScript SDK specifically, per GitHub page fetch, 2026-07-06)"
-  last_verified_note: "fetched live 2026-07-06; 123 releases, 2k forks, 243 open issues, 205 open PRs — currently in a v2 beta implementing the 2026-07-28 MCP spec revision, with v1.x in maintenance"
+  stars: "12.8k (TypeScript SDK specifically, per GitHub page fetch, 2026-07-05)"
+  last_verified_note: "fetched live 2026-07-05; 123 releases, 2k forks, 243 open issues, 205 open PRs — currently in a v2 beta implementing the 2026-07-28 MCP spec revision, with v1.x in maintenance"
 provenance:
   - url: https://github.com/modelcontextprotocol/typescript-sdk
-    fetched: "2026-07-06"
+    fetched: "2026-07-05"
     note: "fetched directly (repo page): license, star count, client/server package split, spec-version status, activity signal"
   - url: https://github.com/modelcontextprotocol
     note: "found via search: confirms the parallel official SDKs for Python, Go, Java, C#, Kotlin, Ruby, PHP under the same org — not independently fetched one-by-one for this entry"

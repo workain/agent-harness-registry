@@ -11,7 +11,7 @@ Claude Code that ships a full multi-subagent development workflow with built-in 
 context engineering — and, unlike the other real bundles catalogued here, it is **actively
 maintained**, not a one-shot snapshot.
 
-## What's actually bundled (verified via direct repo/README fetch, 2026-07-06)
+## What's actually bundled (verified via direct repo/README fetch, 2026-07-05)
 
 - **20+ specialized subagents** covering the full development lifecycle: requirement analysis, UI
   specification, design, planning, implementation, quality assurance, code review, debugging, and
@@ -39,7 +39,7 @@ maintained**, not a one-shot snapshot.
 
 `agent-lab-manager` PR#44's earlier pass counted **26 distinct subagents** (planner/decomposer/
 executor/reviewer x N/security/UI specialists). This registry's own independent re-fetch of the
-same repo (2026-07-06) found the README itself stating "20+." Both numbers may be consistent
+same repo (2026-07-05) found the README itself stating "20+." Both numbers may be consistent
 (PR#44 may have counted individual files including variants; "20+" is a floor, not a precise
 count) — but neither source did a file-by-file recount to settle it exactly. Treat "20+" as the
 conservative, source-stated figure and the discrepancy as flagged rather than resolved.
@@ -50,10 +50,22 @@ conservative, source-stated figure and the discrepancy as flagged rather than re
 conventions) — no evidence of multi-engine portability.
 
 **Actively maintained**: 117 releases, latest v1.25.1 dated 2026-06-29 (per direct fetch,
-2026-07-06) — a materially different maturity profile than `gtm-starter-kit`'s single-push history.
+2026-07-05) — a materially different maturity profile than `gtm-starter-kit`'s single-push history.
 This is the one real assembled-bundle example in this survey that looks like an ongoing project
 rather than a portfolio snapshot, even though it remains a single-maintainer, single-engine artifact
 rather than a funded product line.
+
+## Scored against the three properties no bundle in this registry combines
+
+| Property | Status | Evidence |
+|---|---|---|
+| Sustained | **Yes** | 117 releases, latest v1.25.1 dated 2026-06-29 — the one real bundle in this registry with an ongoing release cadence rather than a single-push history |
+| Engine-agnostic | **No** | Claude-Code-only; no per-engine generation step, no evidence of portability |
+| Progressively-disclosed | **Partial (inherited, not designed-in)** | Its 10 skills and 20+ subagents use Claude Code's own progressive-disclosure/delegation mechanisms, but this is inherited from the engine, not an added design property |
+
+**Score: 1 of 3 by design (sustained), 2 of 3 counting an inherited property.** The best-scoring
+bundle in this registry, and still missing engine-agnosticism entirely — exactly the property
+`agent-harness-kit` solves instead, at the cost of no skills/KB layer.
 
 ## Bottom line
 
@@ -65,7 +77,7 @@ the cost of no skills/KB layer).
 ## Sources
 
 - https://github.com/shinpr/ai-coding-project-boilerplate — fetched directly (repo + README),
-  2026-07-06
+  2026-07-05
 - Star/fork/release data — same fetch
 - Cross-referenced (not re-fetched): `workain/agent-lab-manager` PR#44,
   `knowledge/raw/harness-templates-market-2026-07/starter-kit-repos.md` (source of the 26-subagent

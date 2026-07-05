@@ -24,10 +24,10 @@ license: "Proprietary Anthropic API feature — not open-source software; this e
 open_source: false
 activity:
   stars: null
-  last_verified_note: "fetched live 2026-07-06 from the official platform.claude.com docs — generally available (not beta) as of this fetch; eligible for Zero Data Retention"
+  last_verified_note: "fetched live 2026-07-05 from the official platform.claude.com docs — generally available (not beta) as of this fetch; eligible for Zero Data Retention"
 provenance:
   - url: https://platform.claude.com/docs/en/agents-and-tools/tool-use/memory-tool
-    fetched: "2026-07-06"
+    fetched: "2026-07-05"
     note: "fetched directly: mechanism, integration steps, GA status, ZDR eligibility, pairing with context editing/compaction"
 unverified:
   - "the 84% token-reduction figure is Anthropic's own reported number, not independently reproduced"

@@ -60,5 +60,5 @@ are.
 
 ## Sources
 
-- https://github.com/letta-ai/letta — fetched directly, 2026-07-05/2026-07-06 (this registry's own
+- https://github.com/letta-ai/letta — fetched directly, 2026-07-05 (this registry's own
   component entry)

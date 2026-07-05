@@ -19,11 +19,11 @@ integration: "Drop a skill directory with a SKILL.md into a project/plugin marke
 license: "mixed — the repo's own README states open-source (Apache-2.0-style) for most skills, but document-creation skills are described as \"source-available\" rather than fully open [unverified — exact per-skill license terms not enumerated in the fetched content, verify before redistributing any specific skill]"
 open_source: true
 activity:
-  stars: "158k (per GitHub page fetch, 2026-07-06)"
-  last_verified_note: "fetched live 2026-07-06; 43 commits, 283 open issues, 725 open PRs, 18.7k forks — very high engagement relative to commit count, consistent with a young, fast-adopted standard rather than a mature slow-moving codebase"
+  stars: "158k (per GitHub page fetch, 2026-07-05)"
+  last_verified_note: "fetched live 2026-07-05; 43 commits, 283 open issues, 725 open PRs, 18.7k forks — very high engagement relative to commit count, consistent with a young, fast-adopted standard rather than a mature slow-moving codebase"
 provenance:
   - url: https://github.com/anthropics/skills
-    fetched: "2026-07-06"
+    fetched: "2026-07-05"
     note: "fetched directly (repo page): SKILL.md format, progressive-disclosure design, skill categories, license framing, activity signal"
 unverified:
   - "the December 2025 agentskills.io standardization and the ~40-client cross-vendor adoption list (GitHub Copilot, Cursor, OpenAI Codex, Gemini CLI, Goose, OpenCode) are from a secondary search summary, not independently confirmed on a primary agentskills.io or per-vendor source"

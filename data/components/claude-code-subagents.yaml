@@ -20,7 +20,7 @@ license: "Documents a feature of Claude Code, which is itself proprietary (see t
 open_source: false
 activity:
   stars: null
-  last_verified_note: "fetched live 2026-07-06 from the official code.claude.com docs — describes a current, actively documented feature"
+  last_verified_note: "fetched live 2026-07-05 from the official code.claude.com docs — describes a current, actively documented feature"
 provenance:
   - url: https://code.claude.com/docs/en/sub-agents
     note: "found via search summary of the official docs page (delegation mechanism, frontmatter format, project-level storage) — not independently fetched in full for this entry"

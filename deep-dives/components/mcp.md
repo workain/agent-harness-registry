@@ -61,6 +61,6 @@ tools/skills layer.
 ## Sources
 
 - https://github.com/modelcontextprotocol/servers — fetched directly, 2026-07-05
-- https://github.com/modelcontextprotocol/typescript-sdk — fetched directly, 2026-07-06
+- https://github.com/modelcontextprotocol/typescript-sdk — fetched directly, 2026-07-05
 - https://github.com/modelcontextprotocol — found via search (parallel SDK existence confirmation),
   not individually fetched per language

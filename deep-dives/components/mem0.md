@@ -54,4 +54,4 @@ re-testing, which this registry has not performed.
 ## Sources
 
 See `data/components/mem0.yaml`'s own `provenance` block: https://github.com/mem0ai/mem0, fetched
-directly 2026-07-05/2026-07-06.
+directly 2026-07-05.

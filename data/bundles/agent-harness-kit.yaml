@@ -17,11 +17,11 @@ engine_lock: "engine-agnostic by construction (Claude Code, OpenCode, Codex CLI 
 license: Apache-2.0
 open_source: true
 activity:
-  stars: "172 (per GitHub page fetch, 2026-07-06)"
-  last_verified_note: "fetched live 2026-07-06; 31 releases, latest v1.8.1, 254 commits — young (created 2026-05-04 per gh api) but actively pushed (last push 2026-06-20), single-maintainer"
+  stars: "172 (per GitHub page fetch, 2026-07-05)"
+  last_verified_note: "fetched live 2026-07-05; 31 releases, latest v1.8.1, 254 commits — young (created 2026-05-04 per gh api) but actively pushed (last push 2026-06-20), single-maintainer"
 provenance:
   - url: https://github.com/enmanuelmag/agent-harness-kit
-    fetched: "2026-07-06"
+    fetched: "2026-07-05"
     note: "fetched directly (repo page + README): per-engine generation mechanism, feature set, license, activity"
 unverified: []
 deep_dive: deep-dives/bundles/agent-harness-kit.md

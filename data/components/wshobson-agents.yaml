@@ -18,10 +18,10 @@ integration: "Install the whole marketplace or individual plugins via Claude Cod
 license: MIT
 open_source: true
 activity:
-  stars: "37.5k (per GitHub page fetch, 2026-07-06)"
-  last_verified_note: "fetched live 2026-07-06; 508 commits, 4k forks, 311 watchers, 7 open PRs, 1 open issue — high star count relative to commit count is consistent with rapid recent adoption"
+  stars: "37.5k (per GitHub page fetch, 2026-07-05)"
+  last_verified_note: "fetched live 2026-07-05; 508 commits, 4k forks, 311 watchers, 7 open PRs, 1 open issue — high star count relative to commit count is consistent with rapid recent adoption"
 provenance:
   - url: https://github.com/wshobson/agents
-    fetched: "2026-07-06"
+    fetched: "2026-07-05"
     note: "fetched directly (repo page): inventory counts (194 agents/158 skills/106 commands/88 plugins), six-engine generation model, license, activity signal"
 unverified: []

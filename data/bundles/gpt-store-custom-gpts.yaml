@@ -20,13 +20,13 @@ license: "Proprietary OpenAI product feature — not open-source or redistributa
 open_source: false
 activity:
   stars: null
-  last_verified_note: "fetched live 2026-07-06 (OpenAI Help Center + community forum); lock-in claim independently corroborated across both sources, not resting on a single page"
+  last_verified_note: "fetched live 2026-07-05 (OpenAI Help Center + community forum); lock-in claim independently corroborated across both sources, not resting on a single page"
 provenance:
   - url: https://help.openai.com/en/articles/8554397-creating-and-editing-gpts
-    fetched: "2026-07-06"
+    fetched: "2026-07-05"
     note: "official OpenAI Help Center: creation/editing mechanics"
   - url: https://community.openai.com/t/any-way-to-export-your-custom-gpts-in-bulk/858737
-    fetched: "2026-07-06"
+    fetched: "2026-07-05"
     note: "OpenAI's own developer community: confirms bulk export of GPT configurations remains an open, unresolved feature request — corroborates the lock-in claim from a second independent source"
 unverified: []
 deep_dive: deep-dives/bundles/gpt-store-custom-gpts.md

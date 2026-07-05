@@ -20,10 +20,10 @@ license: "Proprietary OpenAI API feature — not open-source software; this entr
 open_source: false
 activity:
   stars: null
-  last_verified_note: "fetched live 2026-07-06 from the official developers.openai.com docs"
+  last_verified_note: "fetched live 2026-07-05 from the official developers.openai.com docs"
 provenance:
   - url: https://developers.openai.com/api/docs/guides/conversation-state
-    fetched: "2026-07-06"
+    fetched: "2026-07-05"
     note: "fetched directly: mechanism, TTL exemption, integration pattern, explicit note that the ChatGPT consumer memory feature is not mentioned/connected in this doc"
 unverified:
   - "the relationship (if any) between this API-level conversation persistence and the consumer ChatGPT memory feature was not clarified in the fetched docs — treated as separate per the docs' own silence on a connection, not confirmed either way"

@@ -15,10 +15,10 @@ integration: "`pip install composio` (Python) or `npm install @composio/core` (T
 license: MIT
 open_source: true
 activity:
-  stars: "29.1k (per GitHub page fetch, 2026-07-06)"
-  last_verified_note: "fetched live 2026-07-06; latest release @composio/slim@0.13.1 (2026-06-27), 860 releases, 4,339 commits, 402 dependent repositories — actively maintained"
+  stars: "29.1k (per GitHub page fetch, 2026-07-05)"
+  last_verified_note: "fetched live 2026-07-05; latest release @composio/slim@0.13.1 (2026-06-27), 860 releases, 4,339 commits, 402 dependent repositories — actively maintained"
 provenance:
   - url: https://github.com/ComposioHQ/composio
-    fetched: "2026-07-06"
+    fetched: "2026-07-05"
     note: "fetched directly (repo page): description, license, star count, SDK/provider surface, activity signal"
 unverified: []

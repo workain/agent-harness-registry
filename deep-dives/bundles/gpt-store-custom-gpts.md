@@ -20,7 +20,7 @@ elsewhere: **a marketplace for assembled configurations**, not just atomic skill
 ## The trade: assembly bought with total lock-in
 
 This is the sharpest lock-in case in the entire registry. Two independent sources confirm it
-(fetched directly, 2026-07-06):
+(fetched directly, 2026-07-05):
 
 - **OpenAI Help Center**: documents GPT creation/editing/sharing mechanics, but no export path for
   the assembled configuration itself.
@@ -44,6 +44,18 @@ GPT is the opposite design point on the same axis — maximally assembled, minim
 | Memory (persistent, evolving) | Not evaluated in this pass — GPT Store memory behavior vs. the separate ChatGPT consumer memory feature was not disambiguated here |
 | Subagents | **No** — single-agent only, no team/delegation composition |
 
+## Scored against the three properties no bundle in this registry combines
+
+| Property | Status | Evidence |
+|---|---|---|
+| Sustained | **Yes** | A mature, actively-operated OpenAI product, not a side project |
+| Engine-agnostic | **No** | The sharpest lock-in case in the registry — hard-locked to the OpenAI/ChatGPT platform, no export path for the assembled configuration itself (independently confirmed via two OpenAI sources) |
+| Progressively-disclosed | **Not established** | No evidence found either way in this pass — GPT instructions/knowledge typically load as a fixed configuration per invocation rather than a documented lazy-loading scheme; not scored as "no" for lack of positive evidence, but not "yes" either |
+
+**Score: 1 of 3 confidently (sustained), 1 unresolved.** Illustrates that "sustained" alone, without
+engine-agnosticism, doesn't make a product a general-purpose harness template — it makes it a
+single-vendor content-management product with real staying power but no portability story.
+
 ## Bottom line
 
 Proof that "assembled AND discoverable-as-a-product" is achievable — OpenAI has literally built it
@@ -55,8 +67,8 @@ portability currently trade off against each other; nobody has both.
 ## Sources
 
 - https://help.openai.com/en/articles/8554397-creating-and-editing-gpts — fetched directly,
-  2026-07-06
+  2026-07-05
 - https://community.openai.com/t/any-way-to-export-your-custom-gpts-in-bulk/858737 — fetched
-  directly, 2026-07-06 (independent corroboration of the lock-in claim)
+  directly, 2026-07-05 (independent corroboration of the lock-in claim)
 - Cross-referenced (not re-fetched): `workain/agent-lab-manager` PR#44,
   `knowledge/raw/harness-templates-market-2026-07/atomic-ecosystem-and-vendor-store.md`

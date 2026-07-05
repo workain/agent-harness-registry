@@ -17,13 +17,13 @@ integration: "Part of the `llama_index` Python package (`llama-index-core`); use
 license: MIT
 open_source: true
 activity:
-  stars: "50.7k (per GitHub page fetch, 2026-07-06, for the whole llama_index repo — memory is one module within it)"
-  last_verified_note: "fetched live 2026-07-06; latest release v0.14.23 (2026-06-24), 495 releases, 7,855 commits, 24.4k dependent projects — actively maintained"
+  stars: "50.7k (per GitHub page fetch, 2026-07-05, for the whole llama_index repo — memory is one module within it)"
+  last_verified_note: "fetched live 2026-07-05; latest release v0.14.23 (2026-06-24), 495 releases, 7,855 commits, 24.4k dependent projects — actively maintained"
 provenance:
   - url: https://developers.llamaindex.ai/python/framework/module_guides/deploying/agents/memory/
     note: "fetched via search summary for the memory-class API surface (ChatMemoryBuffer, Memory Block types) — not independently re-fetched in full for this entry"
   - url: https://github.com/run-llama/llama_index
-    fetched: "2026-07-06"
+    fetched: "2026-07-05"
     note: "fetched directly (repo page) for license, star count, activity signal; did not surface memory-specific implementation details in the fetched content"
 unverified:
   - "this entry scopes to LlamaIndex's memory module specifically, per this catalog's equipment focus — the surrounding RAG/document-agent framework is out of scope here"

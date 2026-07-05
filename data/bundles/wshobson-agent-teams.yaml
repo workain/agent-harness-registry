@@ -19,10 +19,10 @@ license: MIT
 open_source: true
 activity:
   stars: null
-  last_verified_note: "counted directly via `gh api repos/wshobson/agents/contents/plugins/agent-teams/{agents,skills,commands}`, 2026-07-06 — exact counts (4 agents, 6 skills, 7 commands) independently reconfirmed, not just cited from the parent repo's aggregate numbers"
+  last_verified_note: "counted directly via `gh api repos/wshobson/agents/contents/plugins/agent-teams/{agents,skills,commands}`, 2026-07-05 — exact counts (4 agents, 6 skills, 7 commands) independently reconfirmed, not just cited from the parent repo's aggregate numbers"
 provenance:
   - url: https://api.github.com/repos/wshobson/agents/contents/plugins/agent-teams
-    fetched: "2026-07-06"
+    fetched: "2026-07-05"
     note: "fetched directly via GitHub REST API tree listing (not WebFetch/marketing content) — the most mechanically verified entry in this registry's bundle set, since it's a direct file-count recount rather than a README claim"
 unverified: []
 deep_dive: deep-dives/bundles/wshobson-agent-teams.md

@@ -10,7 +10,7 @@ verified "structure + skills + KB + memory-refresh" bundles found in agent-lab-m
 survey (PR#44) — and the one with the strongest demand signal despite the weakest supply-side
 investment (see below).
 
-## What's actually bundled (verified via direct repo/README fetch, 2026-07-06)
+## What's actually bundled (verified via direct repo/README fetch, 2026-07-05)
 
 - **`CLAUDE.md`** — the entry point Claude reads automatically at session start: company overview,
   ideal-customer-profile (ICP), buying signals, buyer personas, and current priorities.
@@ -43,13 +43,13 @@ investment (see below).
 against Claude Code's CLAUDE.md convention with no per-engine generation step (contrast with
 `agent-harness-kit`'s explicit multi-engine generation approach).
 
-**Created and pushed the same day** (2026-04-03, per direct `gh api` fetch, 2026-07-06) — 12
+**Created and pushed the same day** (2026-04-03, per direct `gh api` fetch, 2026-07-05) — 12
 commits total, zero commits since. This is a snapshot, not a maintained product: no roadmap, no
 issue-driven iteration, no evidence the maintainer intends to keep updating it.
 
 ## The demand signal (why this one is flagged, not just catalogued)
 
-Re-verified directly via `gh api repos/KarlRaf/gtm-starter-kit`, 2026-07-06: **163 stars, 65
+Re-verified directly via `gh api repos/KarlRaf/gtm-starter-kit`, 2026-07-05: **163 stars, 65
 forks** — a fork:star ratio of **0.40**, roughly 4-8x higher than the other two real bundles found
 in the same sweep (`ai-coding-project-boilerplate`: 0.10; `agent-harness-kit`: 0.05). Forking is a
 stronger revealed-preference signal than starring — it implies intent to adapt and use the artifact,
@@ -58,6 +58,19 @@ push is the single most interesting data point in this whole bundle survey: **re
 specific assembled-GTM-kit shape, decoupled entirely from ongoing supply-side investment.** See
 `workain/harness-eval`'s `docs/DEMAND-vs-ANTI-SIGNALS-equipment-bundles.md` for the full argument
 this feeds.
+
+## Scored against the three properties no bundle in this registry combines
+
+| Property | Status | Evidence |
+|---|---|---|
+| Sustained | **No** | Created and pushed the same day (2026-04-03); 12 commits total, zero since |
+| Engine-agnostic | **No** | Claude-Code-native (CLAUDE.md convention), no per-engine generation |
+| Progressively-disclosed | **Partial (inherited, not designed-in)** | Its 5 skills use Claude Code's own SKILL.md progressive-disclosure mechanism, but this is inherited from the underlying engine convention, not a design choice gtm-starter-kit itself made — the bundle doesn't add or subtract from what the engine already does here |
+
+**Score: 0 of 3 by design, 1 of 3 counting an inherited property.** The weakest bundle in this
+registry on this scoring, which makes its fork:star demand signal (see above) more striking, not
+less — people want it despite it having almost none of the three properties that would make it a
+durable product.
 
 ## Bottom line
 
@@ -68,7 +81,7 @@ bundling.
 
 ## Sources
 
-- https://github.com/KarlRaf/gtm-starter-kit — fetched directly (repo + README), 2026-07-06
-- Star/fork/commit/push-date data — `gh api repos/KarlRaf/gtm-starter-kit`, 2026-07-06
+- https://github.com/KarlRaf/gtm-starter-kit — fetched directly (repo + README), 2026-07-05
+- Star/fork/commit/push-date data — `gh api repos/KarlRaf/gtm-starter-kit`, 2026-07-05
 - Cross-referenced (not re-fetched): `workain/agent-lab-manager` PR#44,
   `knowledge/raw/harness-templates-market-2026-07/starter-kit-repos.md`

@@ -20,10 +20,10 @@ license: "Cursor itself (the IDE/engine this feature ships inside) is proprietar
 open_source: false
 activity:
   stars: null
-  last_verified_note: "fetched live 2026-07-06 from Cursor's own official docs (cursor.com/docs) — this documents a real, current product feature, not a deprecated or speculative one; recent addition noted: nested AGENTS.md support in subdirectories"
+  last_verified_note: "fetched live 2026-07-05 from Cursor's own official docs (cursor.com/docs) — this documents a real, current product feature, not a deprecated or speculative one; recent addition noted: nested AGENTS.md support in subdirectories"
 provenance:
   - url: https://cursor.com/docs/context/rules
-    fetched: "2026-07-06"
+    fetched: "2026-07-05"
     note: "fetched directly: rule formats (.mdc vs legacy .cursorrules vs AGENTS.md), the four application modes, Team Rules paid-plan status"
 unverified:
   - "Cursor the underlying engine/IDE is not itself catalogued in this registry's engines category (out of scope for this entry, which is about the rules CONVENTION specifically) — a future pass could add it alongside Claude Code/Codex CLI/etc."

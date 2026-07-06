@@ -7,31 +7,105 @@ license_tag: MIT
 open_source: true
 use_cases: "believable agent simulations, importance-weighted long-term recall, self-reflection/higher-level inference, social-behavior research"
 what_it_is: >
-  The memory architecture from the 2023 Stanford/Google "Generative Agents: Interactive Simulacra
-  of Human Behavior" paper (arXiv:2304.03442) — one of the most-cited agent-memory designs, and
-  the direct ancestor of the "importance + recency + relevance" scoring pattern several commercial
-  memory products in this registry (Mem0, Cognee) now use as a retrieval heuristic. Three parts:
-  (1) a **Memory Stream** — a timestamped, append-only log of every observation, each entry
-  carrying a natural-language description, a creation timestamp, a last-accessed timestamp, and an
+  The "importance + recency + relevance" memory-stream design that traces back to the 2023
+  Stanford/Google "Generative Agents: Interactive Simulacra of Human Behavior" paper
+  (arXiv:2304.03442) — one of the most-cited agent-memory designs, and the ancestor of the
+  retrieval heuristic several commercial memory products in this registry now use. IMPORTANT
+  CITATION CORRECTION: `StanfordHCI/genagents` (this entry's homepage) is NOT the 2023 paper's
+  own reference implementation — its own README cites a different, later paper,
+  arXiv:2411.10109 ("Generative Agent Simulations of 1,000 People" / "LLM Agents Grounded in
+  Self-Reports Enable General-Purpose Simulation of Individuals," 2024). It genuinely reuses
+  the 2023 memory-stream architecture (confirmed directly in `memory_stream.py`) as a
+  component of that later, different project. The 2023 paper's actual reference repo is the
+  separate `joonspk-research/generative_agents` (21.7k★, Apache-2.0) — not linked here
+  previously; cite that repo for the original paper's own code. Three parts, confirmed
+  in-code: (1) a **Memory Stream** — a timestamped, append-only log of every observation, each
+  entry carrying a natural-language description, a creation/last-accessed timestamp, and an
   LLM-assigned importance score; (2) **Retrieval** — a scoring function combining recency
-  (exponential decay), importance, and relevance (embedding cosine similarity) to surface the
-  handful of memories that matter for the current moment, rather than replaying the whole log; (3)
-  **Reflection** — a periodic synthesis step that generates higher-level inferences FROM raw
-  memories (e.g. noticing a pattern across several observations), which are themselves written
-  back into the stream and become retrievable — memory reasoning about memory, not just storing
-  it. `StanfordHCI/genagents` is the official reference implementation, including a bank of 3,000+
-  demographic agents built from real interview data (General Social Survey) for social-science
-  research use.
-integration: "Reference Python implementation in the linked repo — this is a research codebase (13 commits, last touched as an academic release, not a maintained product) rather than an installable SDK; most production memory products in this registry (Mem0 especially) implement variations of this same importance/recency/relevance retrieval formula rather than depending on this repo directly"
+  (exponential decay), importance, and relevance (embedding cosine similarity); (3)
+  **Reflection** — a periodic synthesis step generating higher-level inferences from raw
+  memories, written back into the stream. `StanfordHCI/genagents` ships a bank of 3,505
+  GSS-demographic agents (fictional names/addresses, built from General Social Survey
+  responses, NOT interview transcripts) plus a SEPARATE, privacy-restricted bank of
+  interview-grounded agents (1,052 real people) of which only 1 sample is shipped publicly —
+  correcting a prior "3,000+ agents built from real interview data" framing that conflated the
+  two banks. LIVE-TESTED CAVEAT (harness-eval #45): the public `GenerativeAgent` API's
+  default retrieval ships with recency weight **0** (`hp=[0,1,0.5]`) and a 120-node top-N
+  cutoff that is a no-op full-stream dump on anything under 120 memories — including the
+  repo's own shipped demo agent (116 nodes). There is no search/query method on the public API
+  at all; getting genuine recency-weighted top-k retrieval requires calling the internal
+  `MemoryStream.retrieve()` directly.
+integration: >
+  Reference Python implementation in the linked repo — a research codebase (13 commits, zero
+  commits in ~19.5 months as of 2026-07-05, no test suite, no CI) rather than a maintained,
+  installable SDK. Hardcoded to OpenAI (`openai.OpenAI(...)`/module-level
+  `openai.embeddings.create`, no `base_url`/provider config anywhere, grep-confirmed) — a
+  ~19-month-unmerged community PR adding Anthropic/GPT4All support has never been merged.
+  Real, non-trivial per-item call cost: `remember()` = 1 LLM call + 1 embedding call (not
+  batched); `reflect()` = 2 LLM calls + up to 6 embedding calls. No `settings.py` ships (must
+  hand-copy from `example-settings.py`), no env-var support for the API key. Most production
+  memory products in this registry (Mem0, Cognee) use variations of an importance/recency/
+  relevance retrieval formula with a similar shape to this one, but no direct dependency on
+  this repo was found — a prior "Mem0 especially implements variations of this formula" claim
+  is unsupported (Mem0's own arXiv paper, 2504.19413, never cites Park et al. or Generative
+  Agents) and has been removed.
 activity:
   stars: "566 (per GitHub page fetch, 2026-07-05)"
-  last_verified_note: "fetched live 2026-07-05; 153 forks, 6 open issues, 6 open PRs, 13 commits on main — an academic reference release, not an actively iterated product; treat as a stable historical artifact, not a live dependency"
+  last_verified_note: "fetched live 2026-07-05; 153 forks, 6 open issues, 6 open PRs, 13 commits on main, zero commits in ~19.5 months — a stable, unmaintained academic reference release, not a live dependency."
 provenance:
   - url: https://github.com/StanfordHCI/genagents
     fetched: "2026-07-05"
-    note: "fetched directly (repo page): license, star count, capabilities, activity signal"
+    note: "fetched directly (repo page + source files memory_stream.py/gpt_structure.py): license, star count, capabilities, activity signal, retrieval defaults, OpenAI hardcoding"
   - url: https://ar5iv.labs.arxiv.org/html/2304.03442
     note: "found via search summary of the original paper: Memory Stream/Retrieval/Reflection architecture description — not independently re-fetched in full for this entry"
+  - url: https://github.com/workain/harness-eval (issue #45)
+    fetched: "2026-07-05/2026-07-06"
+    note: "3-lens source pre-screen (claims-match/completeness/red-flags, all independently re-derived against primary sources) plus a LIVE key-free run (a `claude -p`-subscription-backed shim + local sentence-transformers embeddings, no paid API key) through persistbench_v1, bfcl_memory_v1, and niah_v1 vs. a bare-model floor and a flat-file (file-wiki) baseline — see harness_eval_verdict below and https://github.com/workain/harness-eval/blob/main/reports/generative_agents_memory_stream_live.md"
 unverified:
   - "the paper's own architecture description (memory stream/retrieval/reflection mechanics) is drawn from a WebSearch synthesis of the arXiv paper and secondary explainer articles, not an independent full read of the primary paper text"
+  - "the one interview-derived sample agent shipped publicly carries a real, named individual's (the corresponding author's) real political/religious/immigration-status detail and life narrative — a materially different privacy posture than the fictional-name GSS bank; not independently re-verified beyond the harness-eval pre-screen's finding"
+harness_eval_verdict:
+  reviewed: "2026-07-06"
+  tier: "C"
+  testability: "tested-live"
+  one_liner: >
+    A historically important, cleanly-coded memory-stream reference architecture whose public
+    API ships crippled (recency weight 0, a 120-node dump disguised as retrieval) — but once you
+    bypass that API and call its retrieval internals directly, it produced the strongest
+    live-tested result of any memory component in this registry's series so far, actually
+    beating a flat-file baseline on one bench.
+  what_to_steal: >
+    The importance+recency+relevance retrieval formula and the reflection step (periodic
+    higher-level synthesis written back into the same retrievable stream) are the real,
+    citable contribution — worth reimplementing with a proper top-k/recency-enabled search
+    layer on top, which is exactly what this eval's "fixed" configuration did to get its
+    strong numbers. Cite `joonspk-research/generative_agents` (21.7k★, Apache-2.0), not this
+    repo, when referencing the ORIGINAL 2023 paper's code.
+  the_catch: >
+    Citation mismatch: this entry's homepage, `StanfordHCI/genagents`, is not the 2023 paper's
+    own reference implementation — it is a component of a separate, later (2024) project; the
+    true 2023 reference repo is `joonspk-research/generative_agents`. Live-tested
+    (harness-eval #45, key-free: a Claude-Code-subscription shim + local sentence-transformers
+    embeddings, no paid API key), through persistbench_v1/bfcl_memory_v1/niah_v1 vs. a
+    bare-model floor and a file-wiki flat-text baseline, same underlying LLM throughout: using
+    ONLY the public `GenerativeAgent.utterance()` API (which ships with recency weight 0 and a
+    120-node dump cutoff), genagents scored 0.667 on persistbench — worse than file-wiki's
+    0.833. Bypassing the public API to call `MemoryStream.retrieve()` directly with a genuine
+    top-5 and non-zero recency weight recovered 0.917 on persistbench (BEATING file-wiki,
+    0.833 — a first for any memory component tested in this series; `#35` letta and `#36`
+    graphiti-zep both lost to file-wiki on every fully-run bench, often by 25-67 points), 0.667
+    on bfcl_memory_v1 (vs. file-wiki 0.75), and 0.833 on niah_v1's short+medium tiers (vs.
+    file-wiki 1.0, with the one miss an honest abstention, not a hallucinated code). Real cost
+    overhead confirmed: 1.9x-14.6x file-wiki's wall-clock across the three benches, from
+    non-batched per-item LLM+embedding calls (`remember()` = 1 LLM + 1 embedding call each).
+    3 of genagents' 4 bfcl_memory misses were flagged by that suite's own anti-reward-hacking
+    gate for narrative answers bleeding in off-target distractor content — a smaller-scale
+    echo of letta's same failure mode. Separately (source-level, not live-tested): the project
+    is a ~19.5-month-stale academic release (13 commits, no test suite, no CI), hardcoded to
+    OpenAI with a ~19-month-unmerged community PR for alternate providers, and its shipped
+    "3,000+ interview-based agents" framing conflates a 3,505-agent fictional-identity
+    GSS-demographic bank with a separate, privacy-restricted, mostly-unpublished
+    interview-grounded bank (1 public sample, carrying a real named individual's real
+    political/religious/immigration-status details).
+  raw_evidence: https://github.com/workain/harness-eval/tree/main/reports/genagents_live
 deep_dive: deep-dives/components/generative-agents-memory-stream.md

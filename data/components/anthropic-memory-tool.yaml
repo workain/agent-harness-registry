@@ -79,12 +79,17 @@ harness_eval_verdict:
     documented six-command contract through a real MCP tool-use loop). niah_v1: perfect
     (1.0, 9/9) — the best niah result of any live-tested memory component in this
     registry so far; the `view`/`view_range` file interface is a strong fit for exact-
-    token retrieval. persistbench_v1: raw 0.8333, manually audited down to 0.6667 after
-    correcting a scoring artifact (the candidate gets fooled by 2 of 2 invalid-pushback
-    tasks but is scored "correct" because it also mentions the old value parenthetically)
-    — the SAME artifact, on the SAME two task IDs, already found for a completely
-    different candidate (LangMem) in this registry's prior live round, strong evidence
-    it's a bench-scoring-convention gap, not component-specific. Still beats the
+    token retrieval. persistbench_v1: raw 0.8333, manually audited down to 0.7500 (round
+    2) after correcting a scoring artifact (the candidate gets fooled by 2 of 2 invalid-
+    pushback tasks but is scored "correct" because it also mentions the old value
+    parenthetically) — the SAME artifact, on the SAME two task IDs, already found for a
+    completely different candidate (LangMem) in this registry's prior live round, strong
+    evidence it's a bench-scoring-convention gap, not component-specific. A round-2 audit
+    also caught and fixed a real bug in the live-run harness's own pushback-turn phrasing
+    (it silently dropped the correction's actual new value whenever supporting text was
+    present) that round 1 had mis-attributed to a bench fixture quirk — re-verified
+    empirically after the fix (the candidate updates correctly once actually told the new
+    value), moving the audited score from 0.6667 to 0.7500. Still beats the
     `recency_naive` honest baseline (0.5833) after correction, and cleanly discriminates
     hedged/unconfirmed pushback from confident evidenced pushback on 4/4 such cases.
     bfcl_memory_v1: 0.25, hacked_rate=0.5 — but 5 of 6 "hacked" flags are concise,

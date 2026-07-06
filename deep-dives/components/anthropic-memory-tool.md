@@ -60,12 +60,17 @@ by the operator's Claude Code subscription) against `persistbench_v1`, `bfcl_mem
 `niah_v1`, each against deterministic honest baselines. Result: **niah_v1 scored a perfect 1.0
 (9/9)** — the file-based `view`/`view_range` interface is a strong fit for exact-token retrieval,
 the best niah result of any live-tested memory component in this registry so far.
-**persistbench_v1** scored a raw 0.8333, manually audited down to **0.6667** after correcting a
-scoring artifact where the candidate gets fooled by BOTH invalid-pushback tasks but is scored
-"correct" anyway because it also mentions the old (right) value parenthetically — the SAME
-artifact, on the SAME two task IDs, was already found for a completely different candidate
+**persistbench_v1** scored a raw 0.8333, manually audited down to **0.7500** (round 2) after
+correcting a scoring artifact where the candidate gets fooled by BOTH invalid-pushback tasks but
+is scored "correct" anyway because it also mentions the old (right) value parenthetically — the
+SAME artifact, on the SAME two task IDs, was already found for a completely different candidate
 (LangMem) in this registry's prior live round, meaning it's a property of the bench's
-scoring convention, not this component. Once corrected, the candidate still beats the
+scoring convention, not this component. A second audit round also caught and fixed a real bug in
+the live-run harness's OWN pushback-turn phrasing (it silently dropped the correction's actual
+new value from the turn whenever supporting text was present) that had first been mis-attributed
+to a bench fixture quirk — re-verified empirically after the fix (the candidate updates correctly
+once actually told the new value), moving the audited score from 0.6667 to 0.7500. Once
+corrected, the candidate still beats the
 `recency_naive` honest baseline (0.5833) and cleanly discriminates hedged/unconfirmed pushback
 from confident evidenced pushback on 4/4 such cases. **bfcl_memory_v1** scored 0.25 with a
 hacked_rate of 0.5 — but a per-task audit found 5 of those 6 "hacked" flags are concise,

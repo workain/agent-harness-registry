@@ -187,7 +187,7 @@ The control loop that drives a model turn-by-turn — what a component or bundle
 | [Claude Code](https://github.com/anthropics/claude-code) | CLI, IDE extensions (VS Code/JetBrains), des… | No (proprietary) | 136k | [write-up](deep-dives/engines/claude-code.md) |
 | [Cline](https://github.com/cline/cline) | VS Code extension, JetBrains plugin, CLI, SDK | Yes | 64.3k | [write-up](deep-dives/engines/cline.md) |
 | [OpenAI Codex CLI](https://github.com/openai/codex) | CLI (single Rust binary) | Yes | 95.6k | [write-up](deep-dives/engines/codex-cli.md) |
-| [OpenHands](https://github.com/All-Hands-AI/OpenHands) | self-hosted platform (local / Docker / cloud… | Yes | 79.5k | [write-up](deep-dives/engines/openhands.md) |
+| [OpenHands](https://github.com/OpenHands/OpenHands) | self-hosted platform (local / Docker / cloud… | Yes | 80.6k | [write-up](deep-dives/engines/openhands.md) |
 | [SWE-agent](https://github.com/SWE-agent/SWE-agent) | CLI / library (agent scaffold you embed, not… | Yes | 19.7k | [write-up](deep-dives/engines/swe-agent.md) |
 
 ---

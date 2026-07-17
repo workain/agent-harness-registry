@@ -38,8 +38,9 @@ harness_eval_verdict:
   testability: "tested-live"
   one_liner: >
     A historically important, mechanically real self-editing-memory design — confirmed
-    working end-to-end in a live key-free test — shipped in a repository its own vendor
-    declared deprecated legacy two days before this eval, and one that loses to both a
+    working end-to-end in a live key-free test (at v0.6.7; see the version-scope
+    disclosure in the_catch) — shipped in a repository its own vendor declared deprecated
+    legacy two days before this eval, and one that, at the tested version, loses to both a
     bare model and a trivial flat-file baseline on every fully-tested bench, sometimes
     dramatically.
   what_to_steal: >
@@ -50,6 +51,14 @@ harness_eval_verdict:
     — it is architecturally closer to Anthropic's own memory tool than to the
     vector-extraction-pipeline school.
   the_catch: >
+    Version-scope disclosure (fairness — read first): the LIVE test ran on
+    **letta==0.6.7 (released 2024-12-31)**, ~18 months and ~119 releases behind the
+    current catalogued **v0.16.8**. The pin is a genuine Python-3.14 compatibility wall,
+    not a shortcut — pip's own resolver stops at 0.6.7 on a 3.14 interpreter (reproduced).
+    So the two findings below are DISTINCT and must not be conflated: (1) the deprecation
+    is about the CURRENT repo; (2) the performance numbers characterize the TESTED 0.6.7
+    artifact, not necessarily what v0.16.8 would score. We did not test v0.16.8. With that
+    scope stated:
     Two independent problems stack here, either one alone would be a serious caveat.
     (1) Vendor-confirmed deprecation: `letta-ai/letta`'s own `AGENTS.md` (merged
     2026-07-03, two days before this eval) states in the vendor's own words that this

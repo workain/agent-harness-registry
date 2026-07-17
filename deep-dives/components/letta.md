@@ -60,6 +60,13 @@ far.
 
 ## Live-tested: real capability, but it loses to a flat file
 
+> **Version scope (fairness — read first):** the live run was on **letta==0.6.7 (2024-12-31)**,
+> ~18 months / ~119 releases behind the currently-catalogued **v0.16.8**. That pin is a genuine
+> Python-3.14 compatibility wall (pip's resolver stops at 0.6.7 on a 3.14 interpreter,
+> reproduced), not a shortcut — but it means the numbers below characterize the **tested 0.6.7
+> artifact**, not necessarily v0.16.8, which we did not test. Keep this distinct from the
+> deprecation finding above, which is about the current repo.
+
 `workain/harness-eval` issue #35 ran this component live (key-free: a tool-calling-capable
 Claude-Code-subscription shim — the first one this assembler series has needed, since Letta's
 entire agent loop runs on function calls rather than plain text — plus local

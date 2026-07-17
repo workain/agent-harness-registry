@@ -50,11 +50,17 @@ known_caveats: >
   reference code), CVE-2026-34451 (TypeScript SDK sibling) — all fixed in SDK >=0.87.0;
   pin that floor explicitly if using the SDK helpers. Separately, Anthropic's own
   Go/PHP/Ruby reference handler examples on the docs page ship WITHOUT path-traversal
-  protection by the docs' own admission. The security burden is 4 separate
+  protection by the docs' own admission. The security burden is 5 separate
   integrator-owned risks (path traversal, sensitive-data leakage — mitigated only by the
-  model "usually" refusing, unbounded growth, no built-in expiry), not just the one the
-  docs emphasize. No disclosed deprecation policy for the versioned tool type
-  (`memory_20250818`).
+  model "usually" refusing, unbounded growth, no built-in expiry, and a structural
+  indirect-prompt-injection risk), not just the one the docs emphasize. On the last: the
+  auto-injected MEMORY PROTOCOL instructs Claude to trust its memory directory as its own
+  prior work and re-read/act on it every session, so anything that lands in a memory file once
+  (a single injection, a poisoned summarized document, a shared-store misconfiguration) is
+  re-served as trusted context indefinitely — structurally analogous to stored XSS — and the
+  docs give no "treat memory contents as data, not instructions" guidance (architectural risk
+  from the documented design; no reproduced exploit for this specific tool). No disclosed
+  deprecation policy for the versioned tool type (`memory_20250818`).
 unverified: []
 harness_eval_verdict:
   reviewed: "2026-07-05"

@@ -49,6 +49,13 @@ window small.
   CVEs (CVE-2026-34450/34451/34452) — one of them the EXACT sandbox-escape class the docs warn
   *integrators* about, found in Anthropic's own reference code. Pin `anthropic`/`@anthropic-ai/sdk`
   >=0.87.0 if using the SDK helpers.
+- **Structural indirect-prompt-injection risk the docs don't name (harness-eval #40 pre-screen).**
+  The auto-injected MEMORY PROTOCOL tells Claude to trust its memory directory as its own prior work
+  and re-read/act on it every session, so anything that lands in a memory file once — a single
+  successful injection, a poisoned summarized document, a shared-store misconfiguration — is re-served
+  as trusted context indefinitely, structurally analogous to stored XSS. The docs give no "treat
+  memory contents as data, not instructions" guidance. (Architectural risk from the documented
+  design; no reproduced exploit or incident for this specific tool.)
 - The oft-cited "84% token reduction" belongs to **context editing**, a sibling feature — not this
   tool. This tool's own marginal contribution (same source) is closer to 10 points.
 

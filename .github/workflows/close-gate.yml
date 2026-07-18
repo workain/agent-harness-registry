@@ -1,20 +1,33 @@
 name: close-gate
 
-# Deployment-anchored close-gate (issue #107, generalizing the rule from
-# agent-lab-manager's CLAUDE.md §3.8 / harness-control#261's anchor case,
-# harness-control#239: closed 04:47Z citing a review that had not run, reopened
-# 05:22Z, closed for real 06:31Z, 2026-07-17).
+# Deployment-anchored close-gate (issue #107, generalizing the rule from CLAUDE.md
+# §3.8 / harness-control#261's anchor case, hc#239: closed 04:47Z citing a review
+# that had not run, reopened 05:22Z, closed for real 06:31Z, 2026-07-17).
 #
 # An issue may only close on MERGED evidence: either (a) a merged PR referenced it
-# with a GitHub close-keyword (Closes/Fixes/Resolves #N), or (b) one of its own
-# comments names a merged commit SHA / deployed artifact. An issue closed without
-# either is reopened automatically with an explanatory comment — mechanical, not
-# advisory (CLAUDE.md §3 point 5: "a rule is prose + gate, or it is advisory").
+# with a real GitHub close-keyword (Closes/Fixes/Resolves #N — not just a passing
+# mention), or (b) one of its own comments names a commit SHA that actually exists
+# in this repo. An issue closed without either is reopened automatically with an
+# explanatory comment — mechanical, not advisory (CLAUDE.md §3 point 5: "a rule is
+# prose + gate, or it is advisory").
 #
 # This is intentionally a scan on the `closed` event, not a branch-protection rule —
 # GitHub issue closure is a server-side action with no local git hook surface to
 # intercept it, so a scheduled/event-driven Actions check is the correct mechanism
 # (matches the AC's own "hook/scan" wording).
+#
+# ROAST BLOCK fix (round 1): the original version had two false-OK paths —
+# (1) it accepted ANY merged PR that merely CROSS-REFERENCED the issue (GitHub fires
+#     a 'cross-referenced' timeline event for any mention, e.g. "see also #107" —
+#     no close-keyword required), so an issue could be closed by hand while some
+#     unrelated merged PR happened to mention its number.
+# (2) its SHA check was a bare regex (`/[0-9a-f]{7,40}/`) with no verification that
+#     the matched string is an ACTUAL commit in this repo — any random hex-looking
+#     token in a comment would satisfy it.
+# Both are fixed below: (1) uses GitHub's own `closedByPullRequestsReferences` field
+# — the authoritative "which merged PRs would auto-close this issue via a real close
+# keyword" signal — instead of a hand-rolled cross-reference heuristic; (2) verifies
+# each SHA candidate against the commits API before accepting it.
 
 on:
   issues:
@@ -35,36 +48,52 @@ jobs:
             const repo = context.repo.repo;
             const issue_number = context.payload.issue.number;
 
-            // 1) Closed by a merged PR carrying a close-keyword reference (GitHub's own
-            //    timeline records this as a "closed" event with a commit_id, or a
-            //    cross-referenced event pointing at a merged, closed PR).
-            const timeline = await github.paginate(
-              github.rest.issues.listEventsForTimeline,
-              { owner, repo, issue_number, per_page: 100 }
-            );
-            const closedByMergedPR = timeline.some(ev => {
-              if (ev.event === 'closed' && ev.commit_id) return true;
-              if (ev.event === 'cross-referenced') {
-                const src = ev.source && ev.source.issue;
-                return !!(src && src.pull_request && src.pull_request.merged_at);
-              }
-              return false;
-            });
+            // 1) Real close-keyword linkage via GitHub's purpose-built GraphQL field —
+            //    NOT a generic "this PR mentions #N somewhere" cross-reference (that was
+            //    round-1's false-OK: any merged PR merely mentioning the issue number
+            //    satisfied the old check without ever using a close keyword).
+            const closeQuery = `
+              query($owner: String!, $repo: String!, $number: Int!) {
+                repository(owner: $owner, name: $repo) {
+                  issue(number: $number) {
+                    closedByPullRequestsReferences(first: 25, includeClosedPrs: true) {
+                      nodes { number merged mergedAt }
+                    }
+                  }
+                }
+              }`;
+            const closeResult = await github.graphql(closeQuery, { owner, repo, number: issue_number });
+            const closingRefs = closeResult.repository.issue.closedByPullRequestsReferences.nodes;
+            const closedByMergedPR = closingRefs.some(pr => pr.merged);
             if (closedByMergedPR) {
-              console.log('Close-gate: merge evidence found via linked/merged PR. OK.');
+              console.log('Close-gate: real close-keyword linkage to a merged PR found. OK.');
               return;
             }
 
-            // 2) Or a recent comment on the issue itself names a commit SHA (7-40 hex
-            //    chars) — the "comment naming the merged SHA" path CLAUDE.md allows.
+            // 2) Or a recent comment names a commit SHA that is VERIFIED to actually exist
+            //    in this repo (round-1 ROAST finding: the old regex accepted any 7-40 char
+            //    hex string with no existence check).
             const comments = await github.paginate(
               github.rest.issues.listComments,
               { owner, repo, issue_number, per_page: 100 }
             );
-            const shaPattern = /\b[0-9a-f]{7,40}\b/i;
-            const hasShaCitation = comments.slice(-8).some(c => shaPattern.test(c.body || ''));
-            if (hasShaCitation) {
-              console.log('Close-gate: merge evidence found via SHA citation in a recent comment. OK.');
+            const shaPattern = /\b[0-9a-f]{7,40}\b/gi;
+            let shaVerified = false;
+            for (const c of comments.slice(-8)) {
+              const candidates = (c.body || '').match(shaPattern) || [];
+              for (const candidate of candidates) {
+                try {
+                  await github.rest.repos.getCommit({ owner, repo, ref: candidate });
+                  shaVerified = true;
+                  break;
+                } catch (e) {
+                  // not a real commit in this repo — try the next candidate
+                }
+              }
+              if (shaVerified) break;
+            }
+            if (shaVerified) {
+              console.log('Close-gate: a recent comment cites a verified, real commit SHA. OK.');
               return;
             }
 
@@ -73,9 +102,9 @@ jobs:
             await github.rest.issues.createComment({
               owner, repo, issue_number,
               body: [
-                '🔒 **Close-gate**: this issue was closed without merged evidence — no linked/merged PR ',
-                'carrying a close-keyword (`Closes #' + issue_number + '` etc.), and no recent comment ',
-                'naming a merged commit SHA or deployed artifact.',
+                '🔒 **Close-gate**: this issue was closed without merged evidence — no merged PR with ',
+                'a real close-keyword link (`Closes #' + issue_number + '` etc.), and no recent comment ',
+                'naming a commit SHA that actually exists in this repo.',
                 '',
                 'Reopening automatically per the deployment-anchored close-gate policy ',
                 '(workain/agent-lab-manager#107, CLAUDE.md §3 point 5/8).',

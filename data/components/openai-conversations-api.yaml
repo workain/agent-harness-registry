@@ -89,7 +89,13 @@ harness_eval_verdict:
     names (`openai-agents-python` issues #1709, #1539, #2727 — reasoning-model
     replay failures and broken compaction); (5) no published item/conversation-count
     ceiling or bulk-export path was found, an unbounded-growth-with-no-visibility
-    risk. What would close the testability gap: a sandbox with a funded/free-tier
+    risk; (6) hard vendor/model lock-in — Responses-API-only, no cross-vendor read or
+    export path — plus only partial, price-tagged data residency (a ~10% uplift for
+    eligible models, with inference still US-based); (7) naming-collision risk: Azure
+    OpenAI / Microsoft Foundry ships its OWN, separately-implemented "Conversations"
+    resource under a different access model (`AIProjectClient`) — that is NOT the
+    platform API evaluated here, and future audits must disambiguate the two.
+    What would close the testability gap: a sandbox with a funded/free-tier
     OpenAI API key, running the standard bare/file-wiki/candidate 3-way bench
     (persistbench/bfcl_memory/niah) through real `responses.create()` calls.
   raw_evidence: https://github.com/workain/harness-eval/tree/main/docs/raw/memory-components/openai-conversations-api-2026-07-05

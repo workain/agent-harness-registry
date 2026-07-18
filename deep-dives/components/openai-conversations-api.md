@@ -58,6 +58,15 @@ persistence.
   `openai-agents-python` issues #1709 (400 error replaying reasoning-model items),
   #1539 (no native compaction/context-length tooling for long sessions), #2727 (a related
   compaction session breaks with gpt-5.4 due to orphaned reasoning-item IDs).
+- **Hard vendor/model lock-in + only partial, price-tagged data residency.** State lives inside
+  OpenAI's Responses API with no cross-vendor read or export path — you cannot point another
+  provider (or a local model) at this conversation store. Data residency is available only
+  partially and at a price (a ~10% uplift for eligible models), with inference still US-based.
+- **Naming-collision risk — disambiguate from Azure/Microsoft Foundry.** Azure OpenAI /
+  Microsoft Foundry ships its OWN, separately-implemented "Conversations" resource under a
+  different access model (`AIProjectClient`). That is a distinct product from the platform
+  Conversations API evaluated here; do not conflate them — future audits must state which one
+  they mean.
 
 ## Vendor-churn risk — this is OpenAI's third stateful-conversation product in ~2 years
 

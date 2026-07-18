@@ -32,6 +32,7 @@ provenance:
     note: "3-lens source pre-screen (claims-match/completeness/red-flags, all independently re-derived) plus a LIVE key-free run of letta==0.6.7 (a tool-calling-capable Claude-Code-subscription shim + local sentence-transformers embeddings, no paid API key) through this repo's persistbench_v1, bfcl_memory_v1, and niah_v1 benches vs. a bare-model floor and a flat-file (file-wiki) baseline — see harness_eval_verdict below and https://github.com/workain/harness-eval/blob/main/reports/letta/RESULTS.md"
 unverified:
   - "Letta straddles our harness/engine split more than most entries here — its memory-block design is equipment-shaped (Block F), but its App Server also hosts/runs agents (engine-shaped). Catalogued under equipment because the memory architecture is the distinctive contribution; flagging the overlap rather than silently picking a side."
+  - "tested at small scale (corpus fits in context); large-corpus / long-horizon performance untested — see harness-eval#53's operator directive, 2026-07-06"
 harness_eval_verdict:
   reviewed: "2026-07-05"
   tier: "D"
@@ -42,7 +43,8 @@ harness_eval_verdict:
     disclosure in the_catch) — shipped in a repository its own vendor declared deprecated
     legacy two days before this eval, and one that, at the tested version, loses to both a
     bare model and a trivial flat-file baseline on every fully-tested bench, sometimes
-    dramatically.
+    dramatically. Tested at small scale (corpus fits in context); large-corpus/long-horizon
+    performance untested (harness-eval#53, operator directive 2026-07-06).
   what_to_steal: >
     The agent-edits-its-own-memory-via-tool-calls architecture (core memory blocks the
     agent can append/replace directly, distinct from Mem0/Cognee's extraction-pipeline
@@ -96,6 +98,11 @@ harness_eval_verdict:
     [Letta's] official website" with no confirmation the self-hosted OSS path received
     the same fix; CVE-2026-4965 (code-injection, public exploit indicators) and
     CVE-2024-39025 (pre-rename MemGPT missing-authorization) both apply to versions in
-    this package's lineage.
+    this package's lineage. SCALE CAVEAT (operator directive, harness-eval#53,
+    2026-07-06): persistbench_v1's session1 corpus (~170 characters/task) fits entirely
+    in the model's context window, so this comparison cannot show whether letta's
+    self-editing memory-block design would fare differently once the corpus exceeds what
+    fits in context. Tested at small scale only; large-corpus/long-horizon performance is
+    untested and not claimed here.
   raw_evidence: https://github.com/workain/harness-eval/tree/main/reports/letta
 deep_dive: deep-dives/components/letta.md

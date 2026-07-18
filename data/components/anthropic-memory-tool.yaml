@@ -61,7 +61,8 @@ known_caveats: >
   docs give no "treat memory contents as data, not instructions" guidance (architectural risk
   from the documented design; no reproduced exploit for this specific tool). No disclosed
   deprecation policy for the versioned tool type (`memory_20250818`).
-unverified: []
+unverified:
+  - "tested at small scale (corpus fits in context); large-corpus / long-horizon performance untested — see harness-eval#53's operator directive, 2026-07-06"
 harness_eval_verdict:
   reviewed: "2026-07-05"
   tier: "B"
@@ -71,7 +72,9 @@ harness_eval_verdict:
     multi-session-recovery pattern and the cheapest live-testable setup in this registry's
     memory category (zero external deps) — undermined only by the model's own
     discretionary judgment about what's "worth" remembering, which caused real, silently
-    inconsistent recall failures in a live head-to-head.
+    inconsistent recall failures in a live head-to-head. Tested at small scale (corpus
+    fits in context); large-corpus/long-horizon performance untested (harness-eval#53,
+    operator directive 2026-07-06).
   what_to_steal: >
     The multi-session software-development recovery pattern (an initializer session
     deliberately seeds a progress log + feature checklist + init-script reference BEFORE
@@ -119,6 +122,11 @@ harness_eval_verdict:
     figure for the memory tool itself, same source); Anthropic's own SDK helper classes
     had 3 real, now-patched sandbox-escape CVEs (>=0.87.0 fixes all three) — the exact
     vulnerability class its own docs warn *integrators* about, found in Anthropic's own
-    reference code for one release window.
+    reference code for one release window. SCALE CAVEAT (operator directive,
+    harness-eval#53, 2026-07-06): persistbench_v1's session1 corpus (~170 characters/task)
+    fits entirely in the model's context window, so this comparison cannot show whether
+    the memory tool's discretionary file-based approach would fare differently once the
+    corpus exceeds what fits in context. Tested at small scale only; large-corpus/
+    long-horizon performance is untested and not claimed here.
   raw_evidence: https://github.com/workain/harness-eval/blob/main/reports/anthropic_memory_tool_live.md
 deep_dive: deep-dives/components/anthropic-memory-tool.md

@@ -59,6 +59,14 @@ update/patch path) at `workain/harness-eval` issue #38: pre-screen in
 `reports/langmem_live.md` + `reports/langmem_persistbench_live.json` /
 `reports/langmem_bfcl_memory_live.json`.
 
+**Live-run methodology limits (read the tier with these):** (1) **G1_determinism** — no TRUSTWORTHY
+badge was earned; the tier is scoped to what the two benches measured, not a general reliability
+guarantee. (2) **G3 no-context control scored 0.1667**, above the mechanical gate's own 0.10
+threshold — independently verified **benign** (the pushback-handling path fires unconditionally in
+`scoring.py` regardless of the no-context override, so 0.1667 is a scoring-path artifact, not answer
+leakage). (3) the **niah** (needle-in-a-haystack) suite was deliberately **not run** — the tier
+rests on persistbench + bfcl_memory only.
+
 **One-liner:** an honestly-described, narrowly-scoped LangGraph memory package whose core
 write→read path has open, unfixed correctness bugs, whose merge logic depends on a ~12-month-stale
 third-party package, and which is maintained by essentially one person who hasn't shipped a

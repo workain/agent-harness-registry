@@ -56,4 +56,22 @@ provenance:
 unverified:
   - "this entry scopes specifically to LangMem, the dedicated memory package — the broader LangChain/LangGraph ecosystem (agent orchestration, other memory-adjacent template repos like langgraph-memory/memory-template) was not separately catalogued"
   - "the langchain-core/langgraph CVE chain cited in known_caveats is from secondary security press (Check Point Research, The Hacker News, CSA), not yet reproduced against primary NVD/GHSA records"
+harness_eval_verdict:
+  reviewed: "2026-07-05"
+  tier: "B-minus"
+  testability: "tested-live"
+  one_liner: >
+    an honestly-described, narrowly-scoped LangGraph memory package whose core write→read path has
+    open, unfixed correctness bugs, whose merge logic depends on a ~12-month-stale third-party
+    package, and which is maintained by essentially one person who hasn't shipped a release in 9+
+    months — good primitives, risky to depend on today.
+  live_run_disclaimers: >
+    Three methodology limits from the live run (harness-eval #38) that a reader of this tier must
+    see: (1) **G1_determinism** — no TRUSTWORTHY badge was earned; the tier is scoped to what the
+    two benches measured, not a general reliability guarantee. (2) **G3 no-context control scored
+    0.1667**, above the mechanical gate's own 0.10 threshold — independently verified **benign**:
+    the pushback-handling path fires unconditionally in `scoring.py` regardless of the no-context
+    override, so 0.1667 is a scoring-path artifact, NOT answer leakage. (3) the **niah** suite was
+    deliberately NOT run — the tier rests on persistbench + bfcl_memory only.
+  raw_evidence: https://github.com/workain/harness-eval/tree/main/reports
 deep_dive: deep-dives/components/langmem.md

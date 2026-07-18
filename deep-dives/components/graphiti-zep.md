@@ -82,6 +82,11 @@ beat. Worth reading for the temporal-graph *idea*; not yet worth adopting as-is 
 deployment without budgeting time to hand-roll the node-search fix and re-verify retrieval quality
 on your own fact shapes.
 
+**Scale caveat (operator directive, harness-eval#53, 2026-07-06):** tested at small scale
+(persistbench_v1's corpus is ~170 characters/task — small enough to fit entirely in context);
+large-corpus/long-horizon performance is untested. This result does not show whether graphiti-zep's
+graph-then-search approach would fare differently once the corpus exceeds what fits in context.
+
 ## Sources
 
 - https://github.com/getzep/graphiti — fetched directly, 2026-07-05 (this registry's own

@@ -92,6 +92,12 @@ LongMemEval result showing memory underperforming no-memory, this is a real, wor
 worth reading for its design — not yet a clear win to adopt over just handing an LLM the raw
 context, on the tasks tested here.
 
+**Scale caveat (operator directive, harness-eval#53, 2026-07-06):** tested at small scale
+(persistbench_v1's corpus is ~170 characters/task — small enough to fit entirely in context);
+large-corpus/long-horizon performance is untested. This result does not show whether
+crewai-memory's consolidation/recall design would fare differently once the corpus exceeds what
+fits in context.
+
 ## Sources
 
 - https://github.com/crewAIInc/crewAI — fetched directly via `gh api` + WebFetch against

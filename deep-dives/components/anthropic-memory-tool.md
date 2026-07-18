@@ -115,6 +115,12 @@ for API-native Claude deployments that can tolerate (or actively want) that disc
 explicit content-completeness check layered on top if the use case needs everything recorded
 verbatim.
 
+**Scale caveat (operator directive, harness-eval#53, 2026-07-06):** tested at small scale
+(persistbench_v1's corpus is ~170 characters/task — small enough to fit entirely in context);
+large-corpus/long-horizon performance is untested. This result does not show whether the memory
+tool's discretionary file-based approach would fare differently once the corpus exceeds what fits
+in context.
+
 ## References
 
 - https://platform.claude.com/docs/en/agents-and-tools/tool-use/memory-tool — fetched directly, 2026-07-05

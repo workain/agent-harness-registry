@@ -15,7 +15,7 @@ Every claim is cited (see each entry's References) or marked `[unverified]`. Eac
 **Testing status.** `workain/harness-eval` live-tests components against real benchmarks (not vendor self-reports) and this registry publishes the resulting `harness_eval_verdict` — a tier, a testability label (`tested-live` / `static-verified` / `untestable-here`), and the honest catch. This is a registry-wide mechanism, not a memory-only one, but **memory is the only category the eval pipeline has worked through so far** — every other category below is catalogued (sourced, license/activity-verified, described) but not yet benchmarked. The **Tested** column in each table below shows this per entry; a catalogued entry is not a worse entry, just an unranked one — don't read its absence from a tier as a verdict.
 
 **Component categories:**
-- **Memory** (11, 6 tested) — see below
+- **Memory** (11, 7 tested) — see below
 - **Skills / tools** (26, catalogued only, not yet tested) — see below
 - **Subagents** (32, catalogued only, not yet tested) — see below
 - **Access placement / MCP** (34, catalogued only, not yet tested) — see below
@@ -31,7 +31,7 @@ Single-purpose units composed onto an engine. Name links to the tool itself; wri
 | Name | Tested | License | Stars | Use cases | Details |
 |---|---|---|---|---|---|
 | [Anthropic Memory Tool (Claude API)](https://platform.claude.com/docs/en/agents-and-tools/tool-use/memory-tool) | Tier B (tested-live) | Proprietary API (usable) | — | cross-session memory for Claude API agents, progress tracki… | [write-up](deep-dives/components/anthropic-memory-tool.md) |
-| [Cognee](https://github.com/topoteretes/cognee) | Catalogued | Apache-2.0 | 27k | knowledge-graph memory, ontology-linked retrieval, long-ter… | [write-up](deep-dives/components/cognee.md) |
+| [Cognee](https://github.com/topoteretes/cognee) | Tier B-minus (tested-live) | Apache-2.0 | 27k | knowledge-graph memory, ontology-linked retrieval, long-ter… | [write-up](deep-dives/components/cognee.md) |
 | [CrewAI Memory](https://github.com/crewAIInc/crewAI) | Tier C (tested-live) | MIT | 54,976 | production multi-agent memory, contradiction resolution, co… | [write-up](deep-dives/components/crewai-memory.md) |
 | [Generative Agents Memory Stream (Stanford)](https://github.com/StanfordHCI/genagents) | Catalogued | MIT | 566 | believable agent simulations, importance-weighted long-term… | [write-up](deep-dives/components/generative-agents-memory-stream.md) |
 | [Graphiti (open-source engine behind Zep)](https://github.com/getzep/graphiti) | Tier C (tested-live) | Apache-2.0 | 28.4k | temporal knowledge graphs, fact-validity tracking, provenan… | [write-up](deep-dives/components/graphiti-zep.md) |

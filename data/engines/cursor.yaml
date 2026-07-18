@@ -1,0 +1,23 @@
+name: Cursor
+slug: cursor
+homepage: https://cursor.com
+interface: "Desktop IDE (VS Code fork), CLI, Agents Window (Cursor 3.0)"
+what_it_is: >
+  An AI-native code editor — a VS Code fork rebuilt so AI is a first-class part of the
+  editor rather than a plugin. Ships Composer (a proprietary mixture-of-experts coding
+  model), an Agent Mode that reads the codebase/edits files/runs terminal commands in a
+  loop, Background Agents (sandboxed cloud execution, hands back a PR), and a browser
+  tool for testing web apps directly inside the editor. No public source repository —
+  proprietary, closed-source product.
+license: "Proprietary — no public source repository found; closed-source commercial product"
+open_source: false
+sandboxing: "Background Agents run in a sandboxed cloud environment Cursor provisions; local Agent Mode runs with the invoking user's own filesystem/process permissions, gated by an approval/guardrail loop"
+activity:
+  stars: null
+  last_verified_note: "Cursor 3.0 launched 2026-04-02 with a dedicated Agents Window; version/release cadence not independently tracked since there is no public repo"
+provenance:
+  - url: https://cursor.com/product
+    note: "found via search summary of official product pages and independent reviews — not independently re-fetched in full for this entry"
+unverified:
+  - "product details (Composer model specifics, exact agent-loop mechanics) are drawn from a WebSearch synthesis of official pages and third-party reviews, not an independent full fetch of cursor.com or its docs"
+deep_dive: deep-dives/engines/cursor.md

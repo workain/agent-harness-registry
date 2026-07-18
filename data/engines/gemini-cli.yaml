@@ -1,0 +1,20 @@
+name: Gemini CLI
+slug: gemini-cli
+homepage: https://github.com/google-gemini/gemini-cli
+interface: "CLI"
+what_it_is: >
+  Google's open-source terminal AI agent bringing Gemini into the command line —
+  hierarchical GEMINI.md instruction files (global/project/subdirectory), MCP tool
+  support, and an `/init` command to bootstrap project context.
+license: Apache-2.0
+open_source: true
+sandboxing: "n/a documented at the engine level — deployment/permission concerns layered on top by the operator"
+activity:
+  stars: "106k (per GitHub page fetch, 2026-07-05)"
+  last_verified_note: "537 releases, latest v0.49.0 (2026-06-25), 6,285 commits, 206 open PRs, 1.1k open issues — actively maintained"
+provenance:
+  - url: https://github.com/google-gemini/gemini-cli
+    fetched: "2026-07-05"
+    note: "fetched directly — same source as this registry's gemini-md component entry"
+unverified: []
+deep_dive: deep-dives/engines/gemini-cli.md

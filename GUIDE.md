@@ -8,7 +8,7 @@ Every claim is cited (see each entry's References) or marked `[unverified]`. Eac
 
 ## Overview — map of this registry
 
-**103 atomic components** across 4 categories, **8 assembled bundles**, **6 agent engines/runtimes**, **9 eval-frameworks**, **11 benchmarks**.
+**103 atomic components** across 4 categories, **8 assembled bundles**, **11 agent engines/runtimes**, **9 eval-frameworks**, **11 benchmarks**.
 
 **Components** are single-purpose atoms (a memory layer, a skill, an MCP server) composed one at a time. **Bundles** are pre-assembled multi-component kits. The market today is overwhelmingly atomic — Agent Skills alone spans 47,150 skills across 42 engines — though real demand for bundles exists too (see `workain/harness-eval`'s `docs/DEMAND-vs-ANTI-SIGNALS-equipment-bundles.md`). Each bundle's write-up scores it against three properties none yet fully combine: **sustained**, **engine-agnostic**, **progressively-disclosed**.
 
@@ -188,9 +188,14 @@ The control loop that drives a model turn-by-turn — what a component or bundle
 | [Aider](https://github.com/Aider-AI/aider) | CLI | Yes | 47.1k | [write-up](deep-dives/engines/aider.md) |
 | [Claude Code](https://github.com/anthropics/claude-code) | CLI, IDE extensions (VS Code/JetBrains), des… | No (proprietary) | 136k | [write-up](deep-dives/engines/claude-code.md) |
 | [Cline](https://github.com/cline/cline) | VS Code extension, JetBrains plugin, CLI, SDK | Yes | 64.3k | [write-up](deep-dives/engines/cline.md) |
+| [Cursor](https://cursor.com) | Desktop IDE (VS Code fork), CLI, Agents Wind… | No (proprietary) | — | [write-up](deep-dives/engines/cursor.md) |
+| [Devin](https://devin.ai) | Web app, Slack integration, Linear integrati… | No (proprietary) | — | [write-up](deep-dives/engines/devin.md) |
+| [Gemini CLI](https://github.com/google-gemini/gemini-cli) | CLI | Yes | 106k | [write-up](deep-dives/engines/gemini-cli.md) |
+| [Goose](https://github.com/block/goose) | Native desktop app (macOS/Linux/Windows), CL… | Yes | 50.7k | [write-up](deep-dives/engines/goose.md) |
 | [OpenAI Codex CLI](https://github.com/openai/codex) | CLI (single Rust binary) | Yes | 95.6k | [write-up](deep-dives/engines/codex-cli.md) |
 | [OpenHands](https://github.com/All-Hands-AI/OpenHands) | self-hosted platform (local / Docker / cloud… | Yes | 79.5k | [write-up](deep-dives/engines/openhands.md) |
 | [SWE-agent](https://github.com/SWE-agent/SWE-agent) | CLI / library (agent scaffold you embed, not… | Yes | 19.7k | [write-up](deep-dives/engines/swe-agent.md) |
+| [Windsurf (Cascade)](https://windsurf.com) | Desktop IDE (VS Code fork), Cascade agent pa… | No (proprietary) | — | [write-up](deep-dives/engines/windsurf.md) |
 
 ---
 

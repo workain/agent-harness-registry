@@ -1,0 +1,23 @@
+name: Devin
+slug: devin
+homepage: https://devin.ai
+interface: "Web app, Slack integration, Linear integration, API, Devin Desktop (IDE + agent dashboard)"
+what_it_is: >
+  Cognition's autonomous AI software engineer: a tool-using agent with a persistent
+  workspace (terminal, code editor, browser) plus planning/reflection loops supporting
+  long-running tasks. Sessions can be started from Slack (tag Devin in a thread), Linear
+  (assign a ticket), the web app, or the API. Devin Desktop (a later release) combines an
+  IDE with a dashboard for coordinating agents across projects/codebases/environments.
+  No public source repository — proprietary, closed-source product.
+license: "Proprietary — no public source repository found; closed-source commercial product"
+open_source: false
+sandboxing: "Runs in a persistent, Cognition-managed workspace per session — not self-hosted or user-controlled infrastructure"
+activity:
+  stars: null
+  last_verified_note: "Devin 1.2 added improved in-context reasoning and Slack voice-message support; Devin Desktop is a more recent addition per official/press sources"
+provenance:
+  - url: https://docs.devin.ai/get-started/devin-intro
+    note: "found via search summary of official docs and press coverage — not independently re-fetched in full for this entry"
+unverified:
+  - "product details (exact reflection-loop mechanics, Devin Desktop feature set) are drawn from a WebSearch synthesis of official docs/press, not an independent full fetch"
+deep_dive: deep-dives/engines/devin.md

@@ -29,12 +29,25 @@ name: close-gate
 # keyword" signal — instead of a hand-rolled cross-reference heuristic; (2) verifies
 # each SHA candidate against the commits API before accepting it.
 
+# ROAST-style live-repro fix (found the hard way, self-caught by actually watching a
+# real close-and-reopen cycle, not assumed): `permissions: issues: write` alone does
+# NOT grant `contents: read`, which `repos.getCommit()` (the SHA-verification step)
+# needs. Without it, EVERY getCommit call 403'd, and the original broad
+# `catch (e) { /* not a real commit */ }` silently treated that permission failure
+# exactly like "not a real commit" -- meaning the entire SHA-verification backstop
+# had never actually worked in any deployment of this file. Added `contents: read`
+# below, AND narrowed the catch to only swallow a genuine 404 (not a real commit) --
+# any OTHER error (403, 5xx, network) now fails the job loudly instead of silently
+# masquerading as "no evidence found", so a future permissions/infra regression is
+# visible as a broken CI check, not a wrongly-reopened issue.
+
 on:
   issues:
     types: [closed]
 
 permissions:
   issues: write
+  contents: read
 
 jobs:
   verify-merge-evidence:
@@ -92,7 +105,21 @@ jobs:
                   shaVerified = true;
                   break;
                 } catch (e) {
-                  // not a real commit in this repo — try the next candidate
+                  // A genuine 404 means this candidate just isn't a real commit in this
+                  // repo -- keep trying the next one. Any OTHER status (403 permission
+                  // denied, 5xx, network) is NOT "not a real commit" -- it means we
+                  // couldn't actually check, and silently treating that as "no evidence"
+                  // is exactly the bug this comment exists to prevent (a permissions
+                  // regression masquerading as a real close-gate verdict). Fail the job
+                  // loudly instead.
+                  if (e.status !== 404) {
+                    throw new Error(
+                      `close-gate: SHA verification failed with a non-404 error for `
+                      + `candidate "${candidate}" -- this is NOT the same as "not a real `
+                      + `commit" and must not be silently treated that way (see this `
+                      + `workflow's own header comment). Underlying error: ${e.status} ${e.message}`
+                    );
+                  }
                 }
               }
               if (shaVerified) break;

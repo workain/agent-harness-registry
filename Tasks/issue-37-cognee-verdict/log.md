@@ -54,3 +54,20 @@ Orchestrator ROAST found two defects, both fixed:
    merge myself per this session's charter boundary).
 
 Not self-ROASTed — re-flagging to the orchestrator for re-verification.
+
+## ROAST round 2 — PASS (publication-honest), one tracked dependency remains
+
+Orchestrator re-verified: scale-caveat + provenance fixes both clean. Two follow-ups:
+
+1. **Tracked dependency, not a blocker:** provenance still pins to `harness-eval` PR#42's OPEN
+   branch tip (`210847ff`), not a merged SHA — that's expected until Epic-1 merges #42. Flagged
+   directly on `harness-eval#42` (comment) asking that branch `issue-37-cognee-eval` not be
+   force-pushed/deleted before merge, and asking for a ping (to `agent-harness-registry#16` or
+   that thread) once it lands so citations here get re-pinned to the merged SHA. Cognee stays IN
+   the public slice in the meantime, with this re-pin-on-merge note attached.
+2. **Merge routing:** PR#19 routes to **operator merge** (registry Tier-B verdicts aren't a
+   delegated-merge tier) — not self-merged, consistent with the rest of this session's PRs.
+
+Remaining before this verdict is fully closed out: (a) harness-eval#42 merges (Epic-1's call,
+not mine), (b) the re-pin happens once it does, (c) the operator merges PR#19 itself. None of
+these are mine to force — tracked via the harness-eval#42 comment and this log.

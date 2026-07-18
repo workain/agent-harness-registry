@@ -70,16 +70,21 @@ jobs:
               return;
             }
 
-            // 2) Or a recent comment names a commit SHA that is VERIFIED to actually exist
-            //    in this repo (round-1 ROAST finding: the old regex accepted any 7-40 char
-            //    hex string with no existence check).
+            // 2) Or a comment names a commit SHA that is VERIFIED to actually exist in
+            //    this repo (round-1 ROAST finding #2: the old regex accepted any 7-40 char
+            //    hex string with no existence check). Checks ALL comments, not just the
+            //    most recent N (round-1 ROAST finding #3: a `.slice(-8)` cutoff is a
+            //    Type-II false-REOPEN risk — a real SHA citation made earlier in a long
+            //    comment thread, then pushed out of the tail window by later unrelated
+            //    comments, would make a properly-closed issue look unevidenced and get
+            //    wrongly reopened).
             const comments = await github.paginate(
               github.rest.issues.listComments,
               { owner, repo, issue_number, per_page: 100 }
             );
             const shaPattern = /\b[0-9a-f]{7,40}\b/gi;
             let shaVerified = false;
-            for (const c of comments.slice(-8)) {
+            for (const c of comments) {
               const candidates = (c.body || '').match(shaPattern) || [];
               for (const candidate of candidates) {
                 try {

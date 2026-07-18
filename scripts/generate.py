@@ -84,6 +84,21 @@ def _use_cases(e: dict) -> str:
     return _cell(e.get("use_cases")) if e.get("use_cases") else "—"
 
 
+# Testing status is registry-wide, not memory-specific: any component in ANY category can
+# carry a `harness_eval_verdict:` block once `workain/harness-eval` runs it. Today only the
+# memory category has been through that pipeline — this column is what makes that visible in
+# the index itself, instead of only inside each entry's deep-dive (see README's "Testing
+# status" section for the convention this renders).
+def _tested_status(e: dict) -> str:
+    verdict = e.get("harness_eval_verdict")
+    if not verdict:
+        return "Catalogued"
+    tier = verdict.get("tier")
+    testability = verdict.get("testability")
+    label = f"Tier {tier}" if tier else "Tested"
+    return f"{label} ({testability})" if testability else label
+
+
 def _deep_dive_link(e: dict, required: bool = True) -> str:
     dd = e.get("deep_dive")
     if not dd:
@@ -102,14 +117,15 @@ def _name_cell(e: dict) -> str:
 
 def render_component_table(entries: list[dict]) -> str:
     lines = [
-        "| Name | License | Stars | Use cases | Details |",
-        "|---|---|---|---|---|",
+        "| Name | Tested | License | Stars | Use cases | Details |",
+        "|---|---|---|---|---|---|",
     ]
     for e in entries:
         dd = _deep_dive_link(e)
         lines.append(
-            "| {name} | {lic} | {stars} | {use} | [write-up]({dd}) |".format(
+            "| {name} | {tested} | {lic} | {stars} | {use} | [write-up]({dd}) |".format(
                 name=_name_cell(e),
+                tested=_tested_status(e),
                 lic=_license_tag(e),
                 stars=_stars(e),
                 use=_truncate(_use_cases(e), 60),
@@ -419,9 +435,25 @@ def main() -> None:
         "combine: **sustained**, **engine-agnostic**, **progressively-disclosed**."
     )
     out.append("")
+    out.append(
+        "**Testing status.** `workain/harness-eval` live-tests components against real "
+        "benchmarks (not vendor self-reports) and this registry publishes the resulting "
+        "`harness_eval_verdict` — a tier, a testability label (`tested-live` / "
+        "`static-verified` / `untestable-here`), and the honest catch. This is a "
+        "registry-wide mechanism, not a memory-only one, but **memory is the only category "
+        "the eval pipeline has worked through so far** — every other category below is "
+        "catalogued (sourced, license/activity-verified, described) but not yet benchmarked. "
+        "The **Tested** column in each table below shows this per entry; a catalogued entry "
+        "is not a worse entry, just an unranked one — don't read its absence from a tier as a "
+        "verdict."
+    )
+    out.append("")
     out.append("**Component categories:**")
     for cat in CATEGORY_ORDER:
-        out.append(f"- **{CATEGORY_TITLES[cat]}** ({len(by_category[cat])}) — see below")
+        entries = by_category[cat]
+        tested_n = sum(1 for e in entries if e.get("harness_eval_verdict"))
+        status = f"{tested_n} tested" if tested_n else "catalogued only, not yet tested"
+        out.append(f"- **{CATEGORY_TITLES[cat]}** ({len(entries)}, {status}) — see below")
     out.append("")
 
     out.append("---")

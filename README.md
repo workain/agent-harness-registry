@@ -54,6 +54,27 @@ with practical guidance (when to use it, how to get started, gotchas, comparison
   this for).
 - `activity.stars` — free text like `"60.1k (per GitHub page fetch, 2026-07-05)"`; the generator
   extracts just the leading number for the table, full context stays in the deep-dive.
+- `harness_eval_verdict` — **optional, registry-wide** (not a memory-only field). Set it once a
+  component has been live-tested by `workain/harness-eval` against a real benchmark: `reviewed`
+  (date), `tier` (a letter grade), `testability` (`tested-live` / `static-verified` /
+  `untestable-here (why)`), `one_liner`, `what_to_steal`, `the_catch`, and `raw_evidence` (a URL
+  into the eval's own repo). The generator surfaces this as a **Tested** column in every
+  component table (`Tier X (testability)` if set, `Catalogued` if not) — see "Testing status"
+  below. Any category can carry this field; memory is just the first one the eval pipeline has
+  worked through.
+
+## Testing status
+
+Two different things live in this repo and it's worth keeping them distinct: **catalogued**
+(sourced, license/activity-verified, described — every entry here) and **tested** (independently
+live-run against a real benchmark by `workain/harness-eval`, verdict cited via
+`harness_eval_verdict`). As of this writing only the **memory** category has been through the
+testing pipeline; skills/tools, subagents, and access-placement/MCP entries are catalogued-only —
+real, sourced, and useful for discovery, but not yet ranked against each other on measured
+capability. This is a sequencing fact, not a permanent scope limit: the schema, the generator's
+rendering, and the contribution contract below are the same for every category, so a future
+testing pass over any category drops in without a structural change. Don't read a missing tier as
+a negative verdict — it means "not yet run," not "failed."
 
 ## Provenance rule (binding)
 
@@ -77,7 +98,11 @@ framing is never passed through as fact.
    `methodology:` for benchmarks/eval-frameworks).
 4. Every claim needs either a `provenance` entry (URL + what was fetched) or an `unverified`
    caveat.
-5. Run `python3 scripts/generate.py` and commit the resulting `GUIDE.md` diff alongside your
+5. If the component has been independently live-tested (any category — see "Testing status"
+   above), add its `harness_eval_verdict:` block, citing the `workain/harness-eval` issue/PR it
+   came from in `provenance`. Never author a verdict from a self-report or vendor benchmark —
+   only from an eval this lab actually ran.
+6. Run `python3 scripts/generate.py` and commit the resulting `GUIDE.md` diff alongside your
    YAML/deep-dive change. The generator raises an error (not a silent skip) if a required field is
    missing or invalid — a growing catalog (including future weekly-cron additions) can't silently
    drift out of taxonomy or lose its separate-file discipline.

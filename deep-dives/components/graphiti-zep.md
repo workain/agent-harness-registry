@@ -14,13 +14,37 @@ model as its headline feature — Graphiti's time dimension is its clearest poin
 ## The open-core relationship — and why it matters for anyone evaluating this entry
 
 Graphiti is the open-source engine underneath **Zep**, a commercial platform layering enterprise
-user-management, access control, and managed scale on top. Critically: **Zep deprecated its
-self-hosted Community Edition in April 2025** [unverified — from search summary, not independently
-re-fetched from a Zep primary source]. If accurate, this means self-hosting today means running raw
-Graphiti directly against a supported graph backend (Neo4j, FalkorDB, or Kuzu) — there is no more
-"give me the all-in-one open package" option; the open and commercial tiers have structurally
-diverged, not just feature-gated. Anyone evaluating this entry for a self-hosted deployment should
-verify the CE-deprecation claim independently before committing to an architecture around it.
+user-management, access control, and managed scale on top. **Zep deprecated its self-hosted
+Community Edition on 2025-04-02** (confirmed directly from Zep's own blog post — this entry's
+earlier `[unverified]` tag on the date is now resolved). Self-hosting today means running raw
+Graphiti directly against a supported graph backend (Neo4j, FalkorDB, Kuzu, or Amazon Neptune) —
+there is no more "give me the all-in-one open package" option; the open and commercial tiers have
+structurally diverged, not just feature-gated. Of those four backends, only Kuzu needs no separate
+service to run — and Kuzu's own upstream project is itself deprecated/unmaintained, so there is no
+low-ops self-hosted path today (see harness-eval issue #36's pre-screen).
+
+## Live-tested: a real gap between the documented API and what the graph actually knows
+
+`workain/harness-eval` issue #36 ran this component live (key-free: Kuzu + local
+`sentence-transformers` embeddings + a Claude-Code-subscription-backed shim, no paid API key)
+against its `persistbench_v1` bench, with a bare-model floor and a flat-file (`file-wiki`) baseline
+for comparison — all three sharing the same underlying LLM, so the only variable is the memory
+mechanism. Result: using ONLY `Graphiti.search()` — the sole search method shown in the project's
+own README/quickstart — graphiti-zep scored **0.167 accuracy, statistically identical to the
+zero-memory floor (also 0.167)**, versus file-wiki's 0.917. A follow-up diagnostic confirmed this
+isn't a data problem: ingesting "I have a severe peanut allergy" correctly creates an entity node
+with an accurate summary — but `Graphiti.search()` only returns entity-RELATIONSHIP edges, and a
+single-entity attribute fact has no second entity to form an edge with, so it is invisible to the
+documented retrieval path. Manually adding the lower-level `NODE_HYBRID_SEARCH_RRF` search call
+recovered most of the gap (0.667) but still trailed file-wiki. The same pattern reproduced on two
+more, differently-shaped benches with the fix applied: `bfcl_memory_v1` (12 real BFCL v4 tasks)
+scored 0.25 vs. file-wiki's 0.75; `niah_v1`'s short tier (3 tasks) scored 0.333 vs. file-wiki's 1.0.
+Every time, graphiti-zep clears the zero-memory floor but trails the trivial flat-file baseline by
+25-67 points. Full writeup, raw logs, and 3 more live-reproduced graphiti-core bugs (an
+`OPENAI_API_KEY`-requiring cross-encoder built even with a fully custom client set, a `KuzuDriver`
+crash on any non-`None` `group_id`, and a dead-no-op index builder that breaks Kuzu's first hybrid
+search) at
+[reports/graphiti_zep_live.md](https://github.com/workain/harness-eval/blob/main/reports/graphiti_zep_live.md).
 
 ## A provenance correction worth surfacing
 
@@ -50,12 +74,19 @@ indicate an actively-engaged community, not a quiet repo.
 
 ## Bottom line
 
-The registry's reference entry for anyone specifically needing time-aware fact tracking (not just
-"remember things," but "remember what was true when, and let that change be queryable") — with the
-caveat that the commercial-to-open-source path has apparently narrowed (CE deprecation) and should
-be independently re-verified before an architecture decision leans on it.
+**Tier C** (harness-eval verdict, live-tested 2026-07-05). The temporal-validity-window design is
+genuinely worth stealing — but the component as shipped has a real, live-reproduced API footgun
+(the documented search call misses most single-fact memories) that a live head-to-head shows even a
+manual fix doesn't fully close versus the flat-file baseline every heavier memory system needs to
+beat. Worth reading for the temporal-graph *idea*; not yet worth adopting as-is for a self-hosted
+deployment without budgeting time to hand-roll the node-search fix and re-verify retrieval quality
+on your own fact shapes.
 
 ## Sources
 
 - https://github.com/getzep/graphiti — fetched directly, 2026-07-05 (this registry's own
   component entry, including the direct LICENSE resolution)
+- `workain/harness-eval` issue #36 — 3-lens pre-screen + live key-free run (persistbench_v1) vs.
+  bare-model and file-wiki baselines, 2026-07-05:
+  [reports/graphiti_zep_prescreen.md](https://github.com/workain/harness-eval/blob/main/reports/graphiti_zep_prescreen.md),
+  [reports/graphiti_zep_live.md](https://github.com/workain/harness-eval/blob/main/reports/graphiti_zep_live.md)

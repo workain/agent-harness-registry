@@ -30,7 +30,7 @@ Single-purpose units composed onto an engine. Name links to the tool itself; wri
 |---|---|---|---|---|
 | [Anthropic Memory Tool (Claude API)](https://platform.claude.com/docs/en/agents-and-tools/tool-use/memory-tool) | Proprietary API (usable) | — | cross-session memory for Claude API agents, progress tracki… | [write-up](deep-dives/components/anthropic-memory-tool.md) |
 | [Cognee](https://github.com/topoteretes/cognee) | Apache-2.0 | 27k | knowledge-graph memory, ontology-linked retrieval, long-ter… | [write-up](deep-dives/components/cognee.md) |
-| [CrewAI Memory](https://github.com/crewAIInc/crewAI) | MIT | 54.9k | production multi-agent memory, contradiction resolution, co… | [write-up](deep-dives/components/crewai-memory.md) |
+| [CrewAI Memory](https://github.com/crewAIInc/crewAI) | MIT | 54,976 | production multi-agent memory, contradiction resolution, co… | [write-up](deep-dives/components/crewai-memory.md) |
 | [Generative Agents Memory Stream (Stanford)](https://github.com/StanfordHCI/genagents) | MIT | 566 | believable agent simulations, importance-weighted long-term… | [write-up](deep-dives/components/generative-agents-memory-stream.md) |
 | [Graphiti (open-source engine behind Zep)](https://github.com/getzep/graphiti) | Apache-2.0 | 28.4k | temporal knowledge graphs, fact-validity tracking, provenan… | [write-up](deep-dives/components/graphiti-zep.md) |
 | [Karpathy LLM Wiki pattern](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) | Pattern (not a package) | — | self-maintaining knowledge base, entity/semantic memory, re… | [write-up](deep-dives/components/karpathy-llm-wiki.md) |

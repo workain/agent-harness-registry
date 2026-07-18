@@ -31,3 +31,26 @@ claims introduced beyond what that ROASTed draft already established.
 
 Opened as PR against `agent-harness-registry` main. Not self-merged, not self-ROASTed — awaiting
 independent ROAST per this repo's CREATE→ROAST→IMPROVE gate before merge.
+
+## ROAST round 1 — BLOCK (HIGH), findings addressed
+
+Orchestrator ROAST found two defects, both fixed:
+
+1. **Missing small-scale caveat.** `harness-eval#53` carries a binding operator directive
+   (2026-07-06): every public verdict tested only at context-fitting scale must carry "tested at
+   small scale (corpus fits in context); large-corpus / long-horizon performance untested."
+   `persistbench_v1`'s corpus (~170 chars/task) fits entirely in context, so this applies here.
+   Verified the directive text directly on `harness-eval#53` before applying it. Added the exact
+   caveat to `what_it_is`, the `unverified` list, `harness_eval_verdict.one_liner`, `the_catch`,
+   and a new "Scale caveat" section in the deep-dive.
+2. **Dead provenance links.** `reports/cognee_live_run.md` etc. were cited at
+   `harness-eval/blob/main/...`, but the source (`harness-eval` PR#42) is still OPEN — those files
+   don't exist on harness-eval's `main`, so the links 404. Verified PR#42's actual state
+   (`state: OPEN`, `mergedAt: null`) and re-pinned every citation to PR#42's tip commit
+   (`210847ffd8d9ba3c133d2d28d044e2e46d83bc9c`) instead — confirmed all three now resolve (HTTP
+   200) via a direct API check. Disclosed explicitly, in both the YAML and the deep-dive, that
+   PR#42 is still unmerged and these links need re-pinning to a merged SHA once it lands
+   (cross-epic dependency on Epic-1's `sprint-w30-epic1-memory` session — not something I can
+   merge myself per this session's charter boundary).
+
+Not self-ROASTed — re-flagging to the orchestrator for re-verification.

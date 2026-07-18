@@ -15,7 +15,12 @@ what_it_is: >
   but ships a verified, currently-exploitable unauthenticated privilege-escalation bug
   in its REST API (self-registration to global LLM-config takeover), and its own
   answer-generation step is non-deterministic enough that no single accuracy number
-  should be read as exact.
+  should be read as exact. TESTED AT SMALL SCALE (corpus fits in context); large-corpus
+  / long-horizon performance untested (operator directive, harness-eval#53, 2026-07-06)
+  — at the ~170-character/task scale persistbench_v1 actually exercises, the entire
+  corpus fits in the model's context window, so this "beats file-wiki" result does not
+  yet show whether cognee's retrieval/consolidation earns its keep once the corpus
+  exceeds what fits in context.
 integration: "Python SDK, REST API (localhost:8000 default), CLI (cognee-cli), Docker images, a TypeScript client (@cognee/cognee-ts), a Rust library (cognee-rs), and a Claude Code plugin integration"
 license: Apache-2.0
 license_tag: "Apache-2.0"
@@ -30,8 +35,10 @@ provenance:
     note: "fetched directly (repo page): description, license, star count, architecture, integration surface, activity signal"
   - url: https://github.com/workain/harness-eval (issue #37)
     fetched: "2026-07-05"
-    note: "3-lens source pre-screen (claims/completeness/red-flags, all independently re-derived) plus a LIVE key-free run of cognee 1.2.2 (fastembed local embeddings + a Claude-Code-subscription-backed LLM shim, no paid API key) through this repo's persistbench_v1 bench vs. a bare-model floor and a flat-file (file-wiki) baseline, and a direct re-check of the actual installed 1.2.2 package's REST API code — see harness_eval_verdict below and https://github.com/workain/harness-eval/blob/main/reports/cognee_live_run.md. Verdict independently ROASTed once (harness-eval#42): the original security catch (CVE-2026-31231) was retracted as not reproducing in 1.2.2 and replaced with a directly-reproduced finding (cognee#3084); eval-core numbers unchanged."
-unverified: []
+    note: "3-lens source pre-screen (claims/completeness/red-flags, all independently re-derived) plus a LIVE key-free run of cognee 1.2.2 (fastembed local embeddings + a Claude-Code-subscription-backed LLM shim, no paid API key) through this repo's persistbench_v1 bench vs. a bare-model floor and a flat-file (file-wiki) baseline, and a direct re-check of the actual installed 1.2.2 package's REST API code — see harness_eval_verdict below and https://github.com/workain/harness-eval/blob/210847ffd8d9ba3c133d2d28d044e2e46d83bc9c/reports/cognee_live_run.md (pinned to a commit SHA, not `main` — the source eval is harness-eval PR#42, STILL OPEN/unmerged to harness-eval's own main as of this citation; re-pin to a merged SHA once #42 lands). Verdict independently ROASTed once (harness-eval#42): the original security catch (CVE-2026-31231) was retracted as not reproducing in 1.2.2 and replaced with a directly-reproduced finding (cognee#3084); eval-core numbers unchanged."
+unverified:
+  - "tested at small scale (corpus fits in context); large-corpus / long-horizon performance untested — see harness-eval#53's operator directive, 2026-07-06"
+  - "source eval (harness-eval PR#42) is still open, not yet merged to harness-eval's own main — provenance links below are pinned to PR#42's tip commit (210847ff) rather than `main` so they resolve; re-verify/re-pin once #42 merges"
 harness_eval_verdict:
   reviewed: "2026-07-05"
   tier: "B-minus"
@@ -41,7 +48,10 @@ harness_eval_verdict:
     baseline — the opposite of this cycle's graphiti-zep finding — but ships a verified,
     currently-exploitable unauthenticated privilege-escalation bug (self-registration to
     global LLM-config takeover), and its own answer-generation step is non-deterministic
-    enough that no single accuracy number should be taken as exact.
+    enough that no single accuracy number should be taken as exact. Tested at small scale
+    (corpus fits in context); large-corpus/long-horizon performance untested — this result
+    does not yet show whether cognee's retrieval earns its keep once the corpus exceeds
+    what fits in context (harness-eval#53, operator directive 2026-07-06).
   what_to_steal: >
     The ECL (extract-cognify-load) shape — remember/recall/forget/improve as a second,
     more ergonomic API layered on top of a lower-level add/cognify/search/prune pipeline,
@@ -86,7 +96,14 @@ harness_eval_verdict:
     treat as marketing, not evidence. bfcl_memory_v1 and niah_v1 were not run live this
     pass (rig proven and directly reusable; deferred for wall-clock cost under
     shared-host contention, not a technical blocker) — disclosed scope gap, not a
-    silent omission.
+    silent omission. SCALE CAVEAT (operator directive, harness-eval#53, 2026-07-06):
+    persistbench_v1's session1 corpus is ~170 characters/task — small enough that the
+    entire corpus fits in the model's context window, so a flat-file baseline is simply
+    read in full. Retrieval/consolidation (the whole point of a knowledge-graph memory
+    system) cannot show its real advantage by construction at this scale. This verdict's
+    headline ("beats file-wiki") is tested at small scale only; large-corpus/long-horizon
+    performance (corpus exceeding context, thousands of facts, multi-session accumulation)
+    is untested and not claimed here.
   live_numbers: >
     persistbench_v1, against LLM-backed apples-to-apples baselines sharing the same
     underlying shim/model as cognee_agent itself: cognee_agent (real cognee) 0.833-1.0
@@ -95,5 +112,5 @@ harness_eval_verdict:
     floor) 0.167. Cognee beat every baseline (mechanical and LLM-backed) on every sampled
     pass, showed zero contamination, and resisted a hedged-rumor distractor perturbation
     every time it was tested.
-  raw_evidence: https://github.com/workain/harness-eval/tree/main/reports/cognee_live_run.md
+  raw_evidence: "https://github.com/workain/harness-eval/tree/210847ffd8d9ba3c133d2d28d044e2e46d83bc9c/reports/cognee_live_run.md (pinned to harness-eval PR#42's tip commit; PR#42 is still open/unmerged — re-pin to a merged SHA once it lands)"
 deep_dive: deep-dives/components/cognee.md

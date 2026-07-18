@@ -31,7 +31,20 @@ byte-identical-reproduction bar, not a cognee-specific defect — but it means n
 number from a cognee benchmark (including the range above) should be quoted as exact.
 
 Full writeup and raw logs at
-[reports/cognee_live_run.md](https://github.com/workain/harness-eval/blob/main/reports/cognee_live_run.md).
+[reports/cognee_live_run.md](https://github.com/workain/harness-eval/blob/210847ffd8d9ba3c133d2d28d044e2e46d83bc9c/reports/cognee_live_run.md)
+(pinned to harness-eval PR#42's tip commit — PR#42 is still open, not yet merged to
+harness-eval's own `main`; re-pin this link to a merged SHA once it lands).
+
+## Scale caveat (operator directive, harness-eval#53, 2026-07-06) — this result is small-scale only
+
+**Tested at small scale (corpus fits in context); large-corpus/long-horizon performance
+untested.** `persistbench_v1`'s `session1` corpus is ~170 characters per task — small enough that
+the whole thing fits in the model's context window, so a flat-file baseline can simply be read in
+full. At that scale, retrieval/consolidation — the entire reason a knowledge-graph memory system
+exists — cannot demonstrate its real advantage by construction. The "beats file-wiki" headline
+above is real and reproducible, but it is a small-scale result: whether cognee's
+extract-cognify-search pipeline still wins once the corpus **exceeds** what fits in context
+(thousands of facts, multi-session accumulation) has not been tested and is not claimed here.
 
 ## A verified, currently-exploitable security bug — and a release-hygiene gap behind it
 
@@ -107,7 +120,9 @@ any memory component in this registry's series so far — genuinely worth adopti
 extract-cognify-search mechanism and the fully-embedded default stack — but security-gated: a
 verified, currently-exploitable privilege-escalation bug ships in the actual PyPI 1.2.2 release's
 REST API, not just an old, already-patched CVE. Safe today via the SDK-only path this eval tested;
-patch or avoid the REST API until a release actually contains the GitHub-side fix.
+patch or avoid the REST API until a release actually contains the GitHub-side fix. **And read the
+scale caveat above** — this is a small-scale result; whether it holds once the corpus exceeds
+context is untested.
 
 ## Sources
 
@@ -115,7 +130,11 @@ patch or avoid the REST API until a release actually contains the GitHub-side fi
 - `workain/harness-eval` issue #37 — 3-lens pre-screen + live key-free run (persistbench_v1) vs.
   bare-model and file-wiki baselines, plus a direct installed-package re-check of the REST API
   security surface, 2026-07-05; independently ROASTed once (`harness-eval#42`), one correction
-  applied (CVE-2026-31231 retracted, cognee#3084 substituted):
-  [reports/cognee_pre_screen.md](https://github.com/workain/harness-eval/blob/main/reports/cognee_pre_screen.md),
-  [reports/cognee_live_run.md](https://github.com/workain/harness-eval/blob/main/reports/cognee_live_run.md),
-  [reports/cognee_registry_verdict_draft.md](https://github.com/workain/harness-eval/blob/main/reports/cognee_registry_verdict_draft.md)
+  applied (CVE-2026-31231 retracted, cognee#3084 substituted). Links below are pinned to PR#42's
+  tip commit (`210847ff`) because PR#42 is still open/unmerged to harness-eval's own `main` as of
+  this citation — re-pin to a merged SHA once it lands:
+  [reports/cognee_pre_screen.md](https://github.com/workain/harness-eval/blob/210847ffd8d9ba3c133d2d28d044e2e46d83bc9c/reports/cognee_pre_screen.md),
+  [reports/cognee_live_run.md](https://github.com/workain/harness-eval/blob/210847ffd8d9ba3c133d2d28d044e2e46d83bc9c/reports/cognee_live_run.md),
+  [reports/cognee_registry_verdict_draft.md](https://github.com/workain/harness-eval/blob/210847ffd8d9ba3c133d2d28d044e2e46d83bc9c/reports/cognee_registry_verdict_draft.md)
+- `workain/harness-eval#53` — operator directive (2026-07-06) requiring the small-scale caveat on
+  every public verdict tested only at context-fitting scale.

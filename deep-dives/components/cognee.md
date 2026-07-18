@@ -31,9 +31,9 @@ byte-identical-reproduction bar, not a cognee-specific defect — but it means n
 number from a cognee benchmark (including the range above) should be quoted as exact.
 
 Full writeup and raw logs at
-[reports/cognee_live_run.md](https://github.com/workain/harness-eval/blob/210847ffd8d9ba3c133d2d28d044e2e46d83bc9c/reports/cognee_live_run.md)
-(pinned to harness-eval PR#42's tip commit — PR#42 is still open, not yet merged to
-harness-eval's own `main`; re-pin this link to a merged SHA once it lands).
+[reports/cognee_live_run.md](https://github.com/workain/harness-eval/blob/main/reports/cognee_live_run.md)
+(harness-eval PR#42 merged 2026-07-18, commit `5bd59b6` — link re-pinned from the prior
+branch-tip SHA now that it's on `main`).
 
 ## Scale caveat (operator directive, harness-eval#53, 2026-07-06) — this result is small-scale only
 
@@ -130,11 +130,10 @@ context is untested.
 - `workain/harness-eval` issue #37 — 3-lens pre-screen + live key-free run (persistbench_v1) vs.
   bare-model and file-wiki baselines, plus a direct installed-package re-check of the REST API
   security surface, 2026-07-05; independently ROASTed once (`harness-eval#42`), one correction
-  applied (CVE-2026-31231 retracted, cognee#3084 substituted). Links below are pinned to PR#42's
-  tip commit (`210847ff`) because PR#42 is still open/unmerged to harness-eval's own `main` as of
-  this citation — re-pin to a merged SHA once it lands:
-  [reports/cognee_pre_screen.md](https://github.com/workain/harness-eval/blob/210847ffd8d9ba3c133d2d28d044e2e46d83bc9c/reports/cognee_pre_screen.md),
-  [reports/cognee_live_run.md](https://github.com/workain/harness-eval/blob/210847ffd8d9ba3c133d2d28d044e2e46d83bc9c/reports/cognee_live_run.md),
-  [reports/cognee_registry_verdict_draft.md](https://github.com/workain/harness-eval/blob/210847ffd8d9ba3c133d2d28d044e2e46d83bc9c/reports/cognee_registry_verdict_draft.md)
+  applied (CVE-2026-31231 retracted, cognee#3084 substituted). PR#42 merged to harness-eval's
+  `main` 2026-07-18 (commit `5bd59b6`) — links below re-pinned from the prior branch-tip SHA:
+  [reports/cognee_pre_screen.md](https://github.com/workain/harness-eval/blob/main/reports/cognee_pre_screen.md),
+  [reports/cognee_live_run.md](https://github.com/workain/harness-eval/blob/main/reports/cognee_live_run.md),
+  [reports/cognee_registry_verdict_draft.md](https://github.com/workain/harness-eval/blob/main/reports/cognee_registry_verdict_draft.md)
 - `workain/harness-eval#53` — operator directive (2026-07-06) requiring the small-scale caveat on
   every public verdict tested only at context-fitting scale.

@@ -71,3 +71,13 @@ Orchestrator re-verified: scale-caveat + provenance fixes both clean. Two follow
 Remaining before this verdict is fully closed out: (a) harness-eval#42 merges (Epic-1's call,
 not mine), (b) the re-pin happens once it does, (c) the operator merges PR#19 itself. None of
 these are mine to force — tracked via the harness-eval#42 comment and this log.
+
+## Re-pin done — harness-eval#42 merged 2026-07-18T10:00:12Z
+
+`harness-eval#42` merged to `main` (commit `5bd59b61c44b6051f052de10b953bae4f4dfe2d6`). Verified
+all three report paths resolve on `main` (HTTP 200) before re-pinning. Re-pinned every citation
+in `data/components/cognee.yaml` and `deep-dives/components/cognee.md` from the branch-tip SHA
+(`210847ff`) to `main`, and updated the `unverified` disclosure text accordingly (removed the
+"still open" caveat entry, since it no longer applies). Merged `origin/main` into this branch
+first (picks up PR#20's now-merged #18 scaffolding; resolved the resulting `GUIDE.md` conflict by
+regenerating). Only remaining step: the operator merging PR#19 itself.

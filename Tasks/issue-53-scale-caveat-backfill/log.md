@@ -51,3 +51,13 @@ No new claims — every added sentence traces directly to `harness-eval#53`'s op
 ## Status
 
 Opened as PR against `agent-harness-registry` main. Not self-merged, not self-ROASTed.
+Orchestrator ROAST: **PASS**.
+
+## Rebase after PR#20 merged (2026-07-18)
+
+PR#20 (#18 testing-status scaffold) merged first, putting this branch in conflict on `GUIDE.md`
+(both PRs regenerate it; no other file touched by both). Rebased onto current `main`: only
+`GUIDE.md` conflicted, resolved by regenerating rather than hand-editing (deterministic output —
+no content decision involved). All 5 verdicts' caveat text confirmed intact post-rebase, no
+conflict markers left anywhere. Force-pushed. `mergeStateStatus` confirmed `CLEAN` afterward — no
+new ROAST round needed per the orchestrator's own call (mechanical rebase, no substantive change).

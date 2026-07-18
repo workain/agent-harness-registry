@@ -193,7 +193,7 @@ The control loop that drives a model turn-by-turn — what a component or bundle
 | [Gemini CLI](https://github.com/google-gemini/gemini-cli) | CLI | Yes | 106k | [write-up](deep-dives/engines/gemini-cli.md) |
 | [Goose](https://github.com/block/goose) | Native desktop app (macOS/Linux/Windows), CL… | Yes | 50.7k | [write-up](deep-dives/engines/goose.md) |
 | [OpenAI Codex CLI](https://github.com/openai/codex) | CLI (single Rust binary) | Yes | 95.6k | [write-up](deep-dives/engines/codex-cli.md) |
-| [OpenHands](https://github.com/All-Hands-AI/OpenHands) | self-hosted platform (local / Docker / cloud… | Yes | 79.5k | [write-up](deep-dives/engines/openhands.md) |
+| [OpenHands](https://github.com/OpenHands/OpenHands) | self-hosted platform (local / Docker / cloud… | Yes | 80.6k | [write-up](deep-dives/engines/openhands.md) |
 | [SWE-agent](https://github.com/SWE-agent/SWE-agent) | CLI / library (agent scaffold you embed, not… | Yes | 19.7k | [write-up](deep-dives/engines/swe-agent.md) |
 | [Windsurf (Cascade)](https://windsurf.com) | Desktop IDE (VS Code fork), Cascade agent pa… | No (proprietary) | — | [write-up](deep-dives/engines/windsurf.md) |
 

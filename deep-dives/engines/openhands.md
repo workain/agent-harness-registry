@@ -18,10 +18,15 @@ the MIT text itself — confirmed by fetching the actual file, not a badge.
 
 ## Activity
 
-79.5k stars (fetched 2026-07-05; a separate search snippet claimed 78.5k/64k+ at different points
-— the GitHub-page number is treated as most current since it was fetched live); latest release
-noted was cloud-1.40.0 (2026-06-26), 105 total releases, 129 open issues, 212 open PRs at fetch
-time.
+80.6k stars (re-fetched 2026-07-13 via `gh api`; 79.5k at the prior 2026-07-05 fetch — a separate
+search snippet had also claimed 78.5k/64k+ at different points, the live-fetched number is treated
+as most current). Latest release noted at the 2026-07-05 fetch was cloud-1.40.0 (2026-06-26), 105
+total releases, 129 open issues, 212 open PRs.
+
+**Org rename (2026-07-13):** the GitHub org moved from `All-Hands-AI` to `OpenHands` —
+`github.com/OpenHands/OpenHands` is now the canonical URL (the old `All-Hands-AI/OpenHands` URL
+still redirects). Not archived, actively pushed as of the fetch date — this is a rebrand, not a
+wind-down.
 
 ## Caveats
 
@@ -34,3 +39,5 @@ re-fetched from a primary source. [unverified — from secondary summary]
 
 - https://github.com/All-Hands-AI/OpenHands — fetched directly, 2026-07-05
 - https://github.com/All-Hands-AI/OpenHands/blob/main/LICENSE — fetched directly, 2026-07-05
+- https://github.com/OpenHands/OpenHands — re-fetched via `gh api`, 2026-07-13 (org rename, star
+  count refresh)

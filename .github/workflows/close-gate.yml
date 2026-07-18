@@ -1,0 +1,87 @@
+name: close-gate
+
+# Deployment-anchored close-gate (issue #107, generalizing the rule from
+# agent-lab-manager's CLAUDE.md §3.8 / harness-control#261's anchor case,
+# harness-control#239: closed 04:47Z citing a review that had not run, reopened
+# 05:22Z, closed for real 06:31Z, 2026-07-17).
+#
+# An issue may only close on MERGED evidence: either (a) a merged PR referenced it
+# with a GitHub close-keyword (Closes/Fixes/Resolves #N), or (b) one of its own
+# comments names a merged commit SHA / deployed artifact. An issue closed without
+# either is reopened automatically with an explanatory comment — mechanical, not
+# advisory (CLAUDE.md §3 point 5: "a rule is prose + gate, or it is advisory").
+#
+# This is intentionally a scan on the `closed` event, not a branch-protection rule —
+# GitHub issue closure is a server-side action with no local git hook surface to
+# intercept it, so a scheduled/event-driven Actions check is the correct mechanism
+# (matches the AC's own "hook/scan" wording).
+
+on:
+  issues:
+    types: [closed]
+
+permissions:
+  issues: write
+
+jobs:
+  verify-merge-evidence:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check for merge evidence, reopen if absent
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const issue_number = context.payload.issue.number;
+
+            // 1) Closed by a merged PR carrying a close-keyword reference (GitHub's own
+            //    timeline records this as a "closed" event with a commit_id, or a
+            //    cross-referenced event pointing at a merged, closed PR).
+            const timeline = await github.paginate(
+              github.rest.issues.listEventsForTimeline,
+              { owner, repo, issue_number, per_page: 100 }
+            );
+            const closedByMergedPR = timeline.some(ev => {
+              if (ev.event === 'closed' && ev.commit_id) return true;
+              if (ev.event === 'cross-referenced') {
+                const src = ev.source && ev.source.issue;
+                return !!(src && src.pull_request && src.pull_request.merged_at);
+              }
+              return false;
+            });
+            if (closedByMergedPR) {
+              console.log('Close-gate: merge evidence found via linked/merged PR. OK.');
+              return;
+            }
+
+            // 2) Or a recent comment on the issue itself names a commit SHA (7-40 hex
+            //    chars) — the "comment naming the merged SHA" path CLAUDE.md allows.
+            const comments = await github.paginate(
+              github.rest.issues.listComments,
+              { owner, repo, issue_number, per_page: 100 }
+            );
+            const shaPattern = /\b[0-9a-f]{7,40}\b/i;
+            const hasShaCitation = comments.slice(-8).some(c => shaPattern.test(c.body || ''));
+            if (hasShaCitation) {
+              console.log('Close-gate: merge evidence found via SHA citation in a recent comment. OK.');
+              return;
+            }
+
+            // No evidence — reopen + explain. Never silently accept an unanchored close.
+            console.log('Close-gate: NO merge evidence found — reopening.');
+            await github.rest.issues.createComment({
+              owner, repo, issue_number,
+              body: [
+                '🔒 **Close-gate**: this issue was closed without merged evidence — no linked/merged PR ',
+                'carrying a close-keyword (`Closes #' + issue_number + '` etc.), and no recent comment ',
+                'naming a merged commit SHA or deployed artifact.',
+                '',
+                'Reopening automatically per the deployment-anchored close-gate policy ',
+                '(workain/agent-lab-manager#107, CLAUDE.md §3 point 5/8).',
+                '',
+                'To close for real: merge a PR that references this issue with a close-keyword, or ',
+                'comment here naming the merged SHA / deployed artifact before closing again.'
+              ].join('\n')
+            });
+            await github.rest.issues.update({ owner, repo, issue_number, state: 'open' });

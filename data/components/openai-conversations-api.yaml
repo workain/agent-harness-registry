@@ -12,21 +12,91 @@ what_it_is: >
   across sessions/devices over long periods. Distinct from the separate,
   consumer-facing ChatGPT "memory" feature (ChatGPT's own ability to remember facts
   across chats) — the fetched docs make no connection between the two, treat them as
-  separate implementations. The OpenAI Agents SDK also layers a `Session` memory
-  abstraction on top (`session.run(...)`) that manages context length/history/
-  continuity automatically.
-integration: "REST API call: create a conversation, then pass `conversation=\"conv_...\"` on subsequent `responses.create(...)` calls; the Agents SDK's Session object wraps this for a more ergonomic loop"
+  separate implementations. The OpenAI Agents SDK also provides a generic `Session`
+  abstraction (invoked via `Runner.run(agent, input, session=session)`, not a method
+  on the session object itself); one concrete implementation,
+  `OpenAIConversationsSession`, wraps this Conversations API specifically, while
+  other built-in sessions (SQLite, Redis, SQLAlchemy, MongoDB, Dapr, etc.) are
+  independent local/self-hosted backends behind the same interface. CAUTION
+  (source-pre-screen, harness-eval #43): this is OpenAI's third stateful-conversation
+  product in ~2 years — the Assistants API's Threads are being force-retired on
+  2026-08-26 with no automated migration tool, and a developer in OpenAI's own
+  community asked directly whether Conversations will get the same treatment. Using
+  `conversation=`/`previous_response_id` does NOT reduce token billing — OpenAI's own
+  docs confirm all accumulated history is billed as input tokens every turn
+  ("quadratic billing"). Conversation objects/items are explicitly ineligible for
+  Zero Data Retention and are retained "until deleted" (stricter than the general
+  30-day abuse-monitoring framing); deleting a conversation does not delete its
+  items.
+integration: "REST API call: create a conversation, then pass `conversation=\"conv_...\"` on subsequent `responses.create(...)` calls; the Agents SDK's `OpenAIConversationsSession` (one of several interchangeable Session backends) wraps this for a more ergonomic loop"
 license: "Proprietary OpenAI API feature — not open-source software; this entry catalogs a PATTERN (durable, TTL-exempt conversation state as a first-class API object) available through OpenAI's commercial platform, not a redistributable artifact"
 license_tag: "Proprietary API (usable)"
 open_source: false
 use_cases: "durable multi-session conversation state for OpenAI Responses API agents"
 activity:
   stars: null
-  last_verified_note: "fetched live 2026-07-05 from the official developers.openai.com docs"
+  last_verified_note: "fetched live 2026-07-05 from the official developers.openai.com docs; re-verified and corrected 2026-07-05 by harness-eval issue #43's 3-lens pre-screen"
 provenance:
   - url: https://developers.openai.com/api/docs/guides/conversation-state
     fetched: "2026-07-05"
     note: "fetched directly: mechanism, TTL exemption, integration pattern, explicit note that the ChatGPT consumer memory feature is not mentioned/connected in this doc"
+  - url: https://github.com/workain/harness-eval (issue #43)
+    fetched: "2026-07-05"
+    note: "3-lens source pre-screen (claims/completeness/red-flags, all independently re-derived against primary OpenAI docs, the Agents SDK source, and OpenAI's developer community) plus a genuine key-free live-testability investigation (read openai-python 2.44.0 and openai-agents 0.17.7 SDK source directly) that concluded untestable-here — see harness_eval_verdict below and https://github.com/workain/harness-eval/blob/main/reports/openai_conversations_api_live.md"
 unverified:
   - "the relationship (if any) between this API-level conversation persistence and the consumer ChatGPT memory feature was not clarified in the fetched docs — treated as separate per the docs' own silence on a connection, not confirmed either way"
+  - "no documented maximum items-per-conversation or maximum-conversations-per-org ceiling, and no documented bulk-export mechanism, were found in primary docs as of 2026-07-05 — absence noted, not confirmed as 'no limit exists'"
+harness_eval_verdict:
+  reviewed: "2026-07-05"
+  tier: "C"
+  testability: "untestable-here (needs OpenAI account) — architectural, not just no-key"
+  one_liner: >
+    A real, working durable-conversation-state primitive with no independent memory
+    algorithm to evaluate — it is a thin proprietary wrapper around OpenAI's
+    server-side storage, carrying a documented vendor-churn pattern (3rd
+    stateful-conversation product in ~2 years, predecessor force-retired on a hard
+    date) and a stricter-than-expected data-retention posture.
+  what_to_steal: >
+    The TTL-exemption design (durable objects opt out of the default 30-day
+    ephemeral-response window, rather than requiring the caller to re-POST full
+    history every turn) is a clean API shape worth copying for any hosted
+    conversation-state feature, independent of who implements it.
+  the_catch: >
+    Live-testability was genuinely investigated, not assumed from the issue's own
+    "likely untestable" framing: reading openai-python 2.44.0's
+    `resources/conversations/conversations.py` and openai-agents 0.17.7's
+    `agents/memory/openai_conversations_session.py` directly confirms
+    `OpenAIConversationsSession.get_items`/`add_items`/`pop_item`/`clear_session` are
+    pure passthroughs to `self._openai_client.conversations.*` REST calls — zero
+    client-side retrieval/consolidation/ranking logic exists to substitute a local
+    LLM shim into (contrast: the SDK's own `SQLiteSession`/`RedisSession`/etc. DO
+    contain real local logic and would be legitimately testable, but are a different
+    component). No `OPENAI_API_KEY` is available in this sandbox either. Source-level
+    findings (not live-scored) that an adopter should weigh: (1) this is OpenAI's
+    THIRD stateful-conversation product in ~2 years — the Assistants API's Threads
+    (the second) are hard-sunset 2026-08-26 with "no automated tool for migrating
+    Threads to Conversations" per OpenAI's own migration guide, and a developer in
+    OpenAI's community asked point-blank whether Conversations will suffer the same
+    fate; (2) `conversation=`/`previous_response_id` do NOT reduce token billing — all
+    accumulated history is billed as input tokens every single turn regardless of
+    who stores it (the community calls this "quadratic billing"); (3) conversation
+    objects/items are explicitly ineligible for Zero Data Retention and retained
+    "until deleted" (stricter than a general 30-day-abuse-window reading), and
+    deleting a conversation does not cascade to delete its items (a real
+    right-to-be-forgotten trap, compounded by legal holds that can override deletion
+    entirely); (4) confirmed production bugs in both the raw API (500s listing items
+    with tool-calls, 400s on image items) and the exact SDK wrapper this component
+    names (`openai-agents-python` issues #1709, #1539, #2727 — reasoning-model
+    replay failures and broken compaction); (5) no published item/conversation-count
+    ceiling or bulk-export path was found, an unbounded-growth-with-no-visibility
+    risk; (6) hard vendor/model lock-in — Responses-API-only, no cross-vendor read or
+    export path — plus only partial, price-tagged data residency (a ~10% uplift for
+    eligible models, with inference still US-based); (7) naming-collision risk: Azure
+    OpenAI / Microsoft Foundry ships its OWN, separately-implemented "Conversations"
+    resource under a different access model (`AIProjectClient`) — that is NOT the
+    platform API evaluated here, and future audits must disambiguate the two.
+    What would close the testability gap: a sandbox with a funded/free-tier
+    OpenAI API key, running the standard bare/file-wiki/candidate 3-way bench
+    (persistbench/bfcl_memory/niah) through real `responses.create()` calls.
+  raw_evidence: https://github.com/workain/harness-eval/tree/main/docs/raw/memory-components/openai-conversations-api-2026-07-05
 deep_dive: deep-dives/components/openai-conversations-api.md

@@ -65,7 +65,11 @@ guarantee. (2) **G3 no-context control scored 0.1667**, above the mechanical gat
 threshold — independently verified **benign** (the pushback-handling path fires unconditionally in
 `scoring.py` regardless of the no-context override, so 0.1667 is a scoring-path artifact, not answer
 leakage). (3) the **niah** (needle-in-a-haystack) suite was deliberately **not run** — the tier
-rests on persistbench + bfcl_memory only.
+rests on persistbench + bfcl_memory only. (4) **Scale caveat (operator directive, harness-eval#53,
+2026-07-06):** tested at small scale (persistbench_v1's corpus is ~170 characters/task — small
+enough to fit entirely in context); large-corpus/long-horizon performance is untested. This result
+does not show whether LangMem's extraction/consolidation pipeline would fare differently once the
+corpus exceeds what fits in context.
 
 **One-liner:** an honestly-described, narrowly-scoped LangGraph memory package whose core
 write→read path has open, unfixed correctness bugs, whose merge logic depends on a ~12-month-stale

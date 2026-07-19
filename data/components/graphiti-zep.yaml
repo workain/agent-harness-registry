@@ -35,7 +35,8 @@ provenance:
   - url: https://github.com/workain/harness-eval (issue #36)
     fetched: "2026-07-05"
     note: "3-lens source pre-screen (claims/completeness/red-flags, all independently re-derived) plus a LIVE key-free run of graphiti-core 0.29.2 (Kuzu embedded backend + local sentence-transformers embeddings + a Claude-Code-subscription-backed LLM shim, no paid API key) through this repo's persistbench_v1 and bfcl_memory_v1 benches vs. a bare-model floor and a flat-file (file-wiki) baseline — see harness_eval_verdict below and https://github.com/workain/harness-eval/blob/main/reports/graphiti_zep_live.md"
-unverified: []
+unverified:
+  - "tested at small scale (corpus fits in context); large-corpus / long-horizon performance untested — see harness-eval#53's operator directive, 2026-07-06"
 harness_eval_verdict:
   reviewed: "2026-07-05"
   tier: "C"
@@ -43,7 +44,9 @@ harness_eval_verdict:
   one_liner: >
     A genuinely distinctive temporal knowledge-graph design, undermined by a real API
     footgun (the documented search call misses most single-fact memories) that, even after
-    a manual fix, still trails a flat-file baseline on a live head-to-head.
+    a manual fix, still trails a flat-file baseline on a live head-to-head. Tested at small
+    scale (corpus fits in context); large-corpus/long-horizon performance untested
+    (harness-eval#53, operator directive 2026-07-06).
   what_to_steal: >
     The temporal-validity-window model (facts have explicit valid_at/invalid_at, superseded
     facts are kept not deleted, full provenance back to the source episode) is a genuinely
@@ -77,6 +80,11 @@ harness_eval_verdict:
     ~5KB episode in the worst case (not reproduced at that severity here — Claude-backed
     extraction took 20-55s/episode — but the complaint pattern itself was independently
     confirmed to exist). CVE-2026-32247 (Cypher injection via LLM-supplied entity_types,
-    CVSS 8.1) is patched in >=0.28.2 — pin above that floor.
+    CVSS 8.1) is patched in >=0.28.2 — pin above that floor. SCALE CAVEAT (operator
+    directive, harness-eval#53, 2026-07-06): persistbench_v1's session1 corpus (~170
+    characters/task) fits entirely in the model's context window, so this comparison
+    cannot show whether graphiti-zep's graph-then-search approach would fare differently
+    once the corpus exceeds what fits in context. Tested at small scale only;
+    large-corpus/long-horizon performance is untested and not claimed here.
   raw_evidence: https://github.com/workain/harness-eval/tree/main/reports/graphiti_zep_live
 deep_dive: deep-dives/components/graphiti-zep.md

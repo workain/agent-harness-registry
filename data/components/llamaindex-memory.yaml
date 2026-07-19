@@ -42,7 +42,8 @@ provenance:
   - url: https://github.com/workain/harness-eval (issue #46)
     fetched: "2026-07-05/2026-07-06"
     note: "3-lens source pre-screen (claims/completeness/red-flags, all independently re-derived against primary source, i.e. reading llama-index-core's own source) plus a LIVE key-free run (local sentence-transformers embeddings + a Claude-Code-subscription-backed LLM shim, no paid API key) through this repo's persistbench_v1, bfcl_memory_v1, and niah_v1 benches vs. a bare-model floor and a flat-file (file-wiki) baseline — see harness_eval_verdict below and https://github.com/workain/harness-eval/blob/main/reports/llamaindex_memory_live.md"
-unverified: []
+unverified:
+  - "tested at small scale (corpus fits in context); large-corpus / long-horizon performance untested — see harness-eval#53's operator directive, 2026-07-06"
 harness_eval_verdict:
   reviewed: "2026-07-06"
   tier: "B"

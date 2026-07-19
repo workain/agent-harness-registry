@@ -1,6 +1,6 @@
 name: OpenHands
 slug: openhands
-homepage: https://github.com/All-Hands-AI/OpenHands
+homepage: https://github.com/OpenHands/OpenHands
 interface: "self-hosted platform (local / Docker / cloud); orchestrates its own agent or third-party agents"
 what_it_is: >
   An open, self-hosted "developer control center" / agent orchestration platform
@@ -15,13 +15,16 @@ license: "MIT for the repo overall, with a carve-out: the LICENSE file opens wit
 open_source: true
 sandboxing: "local execution (full filesystem access, explicitly warned against), Docker sandbox (isolates to a mounted PROJECTS_PATH), or remote backends (VMs/cloud/OpenHands Cloud+Enterprise)"
 activity:
-  stars: "79.5k (per GitHub page fetch, 2026-07-05); a separate search snippet claimed 78.5k/64k+ at different points — treat the 79.5k GitHub-page number as most current since it was fetched live"
-  last_verified_note: "fetched live 2026-07-05; latest release noted was cloud-1.40.0 (2026-06-26), 105 total releases, 129 open issues, 212 open PRs at fetch time"
+  stars: "80.6k (per gh api, 2026-07-13)"
+  last_verified_note: "re-fetched live 2026-07-13 (`gh api repos/All-Hands-AI/OpenHands`); the GitHub org has been renamed from All-Hands-AI to OpenHands — `full_name` now resolves to `OpenHands/OpenHands` (old URL still redirects). Not archived, pushed as recently as the fetch date, so this is a rename, not a wind-down."
 provenance:
   - url: https://github.com/All-Hands-AI/OpenHands
     note: "fetched live 2026-07-05"
   - url: https://github.com/All-Hands-AI/OpenHands/blob/main/LICENSE
     note: "fetched live 2026-07-05 to confirm MIT text directly, not just a badge"
+  - url: https://github.com/OpenHands/OpenHands
+    fetched: "2026-07-13"
+    note: "re-verified via `gh api repos/All-Hands-AI/OpenHands`: org rename confirmed (full_name -> OpenHands/OpenHands, archived: false), refreshed star count"
 unverified:
   - "SWE-bench Verified \"53%+\" resolve-rate figure and the \"OpenHands Index\" (Jan 2026) are from a search-result summary, not independently re-fetched from a primary source — treat as [unverified — from secondary summary]"
 deep_dive: deep-dives/engines/openhands.md

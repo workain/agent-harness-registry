@@ -33,7 +33,8 @@ provenance:
   - url: "harness-eval issue #49 (workain/harness-eval)"
     fetched: "2026-07-06"
     note: "3-lens source pre-screen (claims-match/completeness/red-flags, all independently re-derived against primary source) plus a LIVE key-free run of crewai's current Memory class (a Claude-Code-subscription-backed LLM shim + local sentence-transformers embeddings, no paid API key) through persistbench_v1, bfcl_memory_v1, and niah_v1 vs a bare-model floor and a flat-file (file-wiki) baseline — see harness_eval_verdict below"
-unverified: []
+unverified:
+  - "tested at small scale (corpus fits in context); large-corpus / long-horizon performance untested — see harness-eval#53's operator directive, 2026-07-06"
 known_caveats: >
   See harness-eval issue #49 (reports/crewai_memory_prescreen.md, reports/crewai_memory_live.md).
   An open, unfixed, 4-month-old GitHub issue (#5057) documents unsanitized memory content being
@@ -56,7 +57,9 @@ harness_eval_verdict:
     wide margin on every bench tested, ties a flat-file baseline on exact-value needle
     retrieval, but trails it on both multi-fact recall benches — while carrying a live,
     open, maintainer-declined memory-poisoning gap and a registry entry that, until this
-    review, described an architecture the project replaced four months ago.
+    review, described an architecture the project replaced four months ago. Tested at
+    small scale (corpus fits in context); large-corpus/long-horizon performance untested
+    (harness-eval#53, operator directive 2026-07-06).
   what_to_steal: >
     The automatic write-time contradiction consolidation (compare new content against
     existing records above a similarity threshold, let an LLM decide keep/update/delete)
@@ -99,6 +102,11 @@ harness_eval_verdict:
     with, not a contradiction of. Finally: the registry entry itself, until this review,
     described CrewAI's OLD short-term/long-term/entity/ChromaDB/SQLite memory design,
     which the project fully replaced ~4 months before this eval with no migration guide
-    across that period — corrected above.
+    across that period — corrected above. SCALE CAVEAT (operator directive,
+    harness-eval#53, 2026-07-06): persistbench_v1's session1 corpus (~170 characters/task)
+    fits entirely in the model's context window, so this comparison cannot show whether
+    crewai-memory's consolidation/recall design would fare differently once the corpus
+    exceeds what fits in context. Tested at small scale only; large-corpus/long-horizon
+    performance is untested and not claimed here.
   raw_evidence: "https://github.com/workain/harness-eval/blob/main/reports/crewai_memory_prescreen.md, https://github.com/workain/harness-eval/blob/main/reports/crewai_memory_live.md, https://github.com/workain/harness-eval/tree/main/reports/crewai_memory_live"
 deep_dive: deep-dives/components/crewai-memory.md

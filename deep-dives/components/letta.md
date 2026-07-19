@@ -122,6 +122,12 @@ disclosed non-termination risk. Worth studying for the memory-block *design* and
 place in this registry's agent-edits-its-own-memory lineage; not a component to adopt today, for
 either currency or measured task performance.
 
+**Scale caveat (operator directive, harness-eval#53, 2026-07-06):** tested at small scale
+(persistbench_v1's corpus is ~170 characters/task — small enough to fit entirely in context);
+large-corpus/long-horizon performance is untested. This result does not show whether letta's
+self-editing memory-block design would fare differently once the corpus exceeds what fits in
+context.
+
 ## Sources
 
 - https://github.com/letta-ai/letta — fetched directly, 2026-07-05, including `AGENTS.md` and

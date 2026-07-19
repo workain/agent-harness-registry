@@ -57,6 +57,13 @@ provider is a separate optional package (llama-index-llms-*, llama-index-embeddi
   specifically (directly checked against `llama_index/core/memory/*`), but a materially larger CVE
   surface than most other components in this catalog.
 
+**Scale caveat (operator directive, harness-eval#53, 2026-07-06):** tested at small scale
+(bfcl_memory/persistbench/niah corpora are small enough to fit entirely in context); large-corpus/
+long-horizon performance is untested. This result does not show whether LlamaIndex Memory's
+extraction/consolidation pipeline would fare differently once the corpus exceeds what fits in
+context — the "matched file-wiki exactly" finding above should be read as tested-at-small-scale,
+not as a general claim about how this component behaves at scale.
+
 ## How it compares
 
 Narrower and more RAG-pipeline-integrated than Mem0/Cognee (standalone memory products usable from

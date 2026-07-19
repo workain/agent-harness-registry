@@ -1,0 +1,160 @@
+name: close-gate
+
+# Deployment-anchored close-gate (issue #107, generalizing the rule from CLAUDE.md
+# §3.8 / harness-control#261's anchor case, hc#239: closed 04:47Z citing a review
+# that had not run, reopened 05:22Z, closed for real 06:31Z, 2026-07-17).
+#
+# An issue may only close on MERGED evidence: either (a) a merged PR referenced it
+# with a real GitHub close-keyword (Closes/Fixes/Resolves #N — not just a passing
+# mention), or (b) one of its own comments names a commit SHA that actually exists
+# in this repo. An issue closed without either is reopened automatically with an
+# explanatory comment — mechanical, not advisory (CLAUDE.md §3 point 5: "a rule is
+# prose + gate, or it is advisory").
+#
+# This is intentionally a scan on the `closed` event, not a branch-protection rule —
+# GitHub issue closure is a server-side action with no local git hook surface to
+# intercept it, so a scheduled/event-driven Actions check is the correct mechanism
+# (matches the AC's own "hook/scan" wording).
+#
+# ROAST BLOCK fix (round 1): the original version had two false-OK paths —
+# (1) it accepted ANY merged PR that merely CROSS-REFERENCED the issue (GitHub fires
+#     a 'cross-referenced' timeline event for any mention, e.g. "see also #107" —
+#     no close-keyword required), so an issue could be closed by hand while some
+#     unrelated merged PR happened to mention its number.
+# (2) its SHA check was a bare regex (`/[0-9a-f]{7,40}/`) with no verification that
+#     the matched string is an ACTUAL commit in this repo — any random hex-looking
+#     token in a comment would satisfy it.
+# Both are fixed below: (1) uses GitHub's own `closedByPullRequestsReferences` field
+# — the authoritative "which merged PRs would auto-close this issue via a real close
+# keyword" signal — instead of a hand-rolled cross-reference heuristic; (2) verifies
+# each SHA candidate against the commits API before accepting it.
+
+# ROAST-style live-repro fix (found the hard way, self-caught by actually watching a
+# real close-and-reopen cycle, not assumed): `permissions: issues: write` alone does
+# NOT grant `contents: read`, which `repos.getCommit()` (the SHA-verification step)
+# needs. Without it, EVERY getCommit call 403'd, and the original broad
+# `catch (e) { /* not a real commit */ }` silently treated that permission failure
+# exactly like "not a real commit" -- meaning the entire SHA-verification backstop
+# had never actually worked in any deployment of this file. Added `contents: read`
+# below, AND narrowed the catch to only swallow a genuine 404 (not a real commit) --
+# any OTHER error (403, 5xx, network) now fails the job loudly instead of silently
+# masquerading as "no evidence found", so a future permissions/infra regression is
+# visible as a broken CI check, not a wrongly-reopened issue.
+#
+# ROAST BLOCK fix (independent review on agent-lab-manager#143): the fix above only
+# swallowed HTTP 404. Live-tested against the real commits API with 7 fake-SHA shapes
+# (all-zero, short hex, non-hex, etc.) -- GitHub's
+# `GET /repos/{owner}/{repo}/commits/{ref}` returns **422**, not 404, for a
+# syntactically-plausible-but-nonexistent ref; 404 is reserved for refs that don't
+# even parse as a possible commit-ish. Swallowing only 404 meant every real "not a
+# real commit" case (422) fell into the throw-loudly branch instead -- closing an
+# issue with a fake SHA CRASHED the job before it ever reached the reopen logic, so
+# the bad close silently survived: the exact failure this gate exists to prevent.
+# Now both 404 and 422 are treated as "not a real commit, try the next candidate";
+# anything else still throws loud.
+
+on:
+  issues:
+    types: [closed]
+
+permissions:
+  issues: write
+  contents: read
+
+jobs:
+  verify-merge-evidence:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check for merge evidence, reopen if absent
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const issue_number = context.payload.issue.number;
+
+            // 1) Real close-keyword linkage via GitHub's purpose-built GraphQL field —
+            //    NOT a generic "this PR mentions #N somewhere" cross-reference (that was
+            //    round-1's false-OK: any merged PR merely mentioning the issue number
+            //    satisfied the old check without ever using a close keyword).
+            const closeQuery = `
+              query($owner: String!, $repo: String!, $number: Int!) {
+                repository(owner: $owner, name: $repo) {
+                  issue(number: $number) {
+                    closedByPullRequestsReferences(first: 25, includeClosedPrs: true) {
+                      nodes { number merged mergedAt }
+                    }
+                  }
+                }
+              }`;
+            const closeResult = await github.graphql(closeQuery, { owner, repo, number: issue_number });
+            const closingRefs = closeResult.repository.issue.closedByPullRequestsReferences.nodes;
+            const closedByMergedPR = closingRefs.some(pr => pr.merged);
+            if (closedByMergedPR) {
+              console.log('Close-gate: real close-keyword linkage to a merged PR found. OK.');
+              return;
+            }
+
+            // 2) Or a comment names a commit SHA that is VERIFIED to actually exist in
+            //    this repo (round-1 ROAST finding #2: the old regex accepted any 7-40 char
+            //    hex string with no existence check). Checks ALL comments, not just the
+            //    most recent N (round-1 ROAST finding #3: a `.slice(-8)` cutoff is a
+            //    Type-II false-REOPEN risk — a real SHA citation made earlier in a long
+            //    comment thread, then pushed out of the tail window by later unrelated
+            //    comments, would make a properly-closed issue look unevidenced and get
+            //    wrongly reopened).
+            const comments = await github.paginate(
+              github.rest.issues.listComments,
+              { owner, repo, issue_number, per_page: 100 }
+            );
+            const shaPattern = /\b[0-9a-f]{7,40}\b/gi;
+            let shaVerified = false;
+            for (const c of comments) {
+              const candidates = (c.body || '').match(shaPattern) || [];
+              for (const candidate of candidates) {
+                try {
+                  await github.rest.repos.getCommit({ owner, repo, ref: candidate });
+                  shaVerified = true;
+                  break;
+                } catch (e) {
+                  // A genuine 404 means this candidate just isn't a real commit in this
+                  // repo -- keep trying the next one. Any OTHER status (403 permission
+                  // denied, 5xx, network) is NOT "not a real commit" -- it means we
+                  // couldn't actually check, and silently treating that as "no evidence"
+                  // is exactly the bug this comment exists to prevent (a permissions
+                  // regression masquerading as a real close-gate verdict). Fail the job
+                  // loudly instead.
+                  if (e.status !== 404 && e.status !== 422) {
+                    throw new Error(
+                      `close-gate: SHA verification failed with an unexpected error for `
+                      + `candidate "${candidate}" -- this is NOT the same as "not a real `
+                      + `commit" (404/422) and must not be silently treated that way (see `
+                      + `this workflow's own header comment). Underlying error: ${e.status} ${e.message}`
+                    );
+                  }
+                }
+              }
+              if (shaVerified) break;
+            }
+            if (shaVerified) {
+              console.log('Close-gate: a recent comment cites a verified, real commit SHA. OK.');
+              return;
+            }
+
+            // No evidence — reopen + explain. Never silently accept an unanchored close.
+            console.log('Close-gate: NO merge evidence found — reopening.');
+            await github.rest.issues.createComment({
+              owner, repo, issue_number,
+              body: [
+                '🔒 **Close-gate**: this issue was closed without merged evidence — no merged PR with ',
+                'a real close-keyword link (`Closes #' + issue_number + '` etc.), and no recent comment ',
+                'naming a commit SHA that actually exists in this repo.',
+                '',
+                'Reopening automatically per the deployment-anchored close-gate policy ',
+                '(workain/agent-lab-manager#107, CLAUDE.md §3 point 5/8).',
+                '',
+                'To close for real: merge a PR that references this issue with a close-keyword, or ',
+                'comment here naming the merged SHA / deployed artifact before closing again.'
+              ].join('\n')
+            });
+            await github.rest.issues.update({ owner, repo, issue_number, state: 'open' });

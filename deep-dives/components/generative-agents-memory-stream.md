@@ -40,7 +40,7 @@ public) — a prior "3,000+ agents built from real interview data" framing confl
 3,505-agent bank is NOT interview-derived. Treat the repo as an academic release (13 commits,
 zero commits in ~19.5 months as of 2026-07-05) rather than a maintained SDK.
 
-## Live-tested: the public API ships crippled, but the underlying mechanism is the best-performing memory component in this registry's series so far
+## Live-tested: the public API ships crippled, but the underlying mechanism is the best-performing memory component in this registry's series so far (on a small-N bench — competitive, not a decisive win)
 
 `workain/harness-eval` issue #45 ran this component live (key-free: a Claude-Code-subscription
 shim + local `sentence-transformers` embeddings, no paid API key) against `persistbench_v1`,
@@ -56,6 +56,8 @@ shipped demo agent (116 nodes) — and there is no search/query method on the pu
 **0.917 on persistbench — actually BEATING file-wiki (0.833)**, the first time any memory
 component in this registry's live-tested series has done that on a full bench (`#35` letta and
 `#36` graphiti-zep both lost to file-wiki on every fully-run bench, sometimes by 25-67 points).
+Given the small N here (12 persistbench tasks), read that 11/12-vs-10/12 margin as genuinely
+competitive with file-wiki, not reliably 8 points better — not a decisive win.
 The same fixed configuration scored 0.667 on bfcl_memory_v1 (vs. file-wiki 0.75) and 0.833 on
 niah_v1's short+medium tiers (vs. file-wiki 1.0, with the one miss an honest abstention rather
 than a wrong guess). Real cost overhead confirmed too: 1.9x-14.6x file-wiki's wall-clock across
@@ -90,7 +92,8 @@ read this first if you want to understand WHY those products score memories the 
 Unlike graphiti-zep (`#36`, extract-into-a-graph-then-search, loses to file-wiki even after a
 manual fix) and letta (`#35`, self-editing memory blocks, loses to BOTH bare model and
 file-wiki), genagents' underlying retrieval mechanism — once you bypass its broken public API —
-is the first in this series to actually beat the file-wiki honest baseline on a full bench.
+is the first in this series to actually edge out the file-wiki honest baseline on a full bench
+(small-N margin, competitive rather than decisive — see caveat above).
 
 ## Bottom line
 

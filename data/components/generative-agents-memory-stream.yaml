@@ -72,8 +72,10 @@ harness_eval_verdict:
     A historically important, cleanly-coded memory-stream reference architecture whose public
     API ships crippled (recency weight 0, a 120-node dump disguised as retrieval) — but once you
     bypass that API and call its retrieval internals directly, it produced the strongest
-    live-tested result of any memory component in this registry's series so far, actually
-    beating a flat-file baseline on one bench.
+    live-tested result of any memory component in this registry's series so far, edging out a
+    flat-file baseline on one small-N bench (given the small N — 12 persistbench tasks — read
+    the 11/12-vs-10/12 margin as genuinely competitive with file-wiki, not reliably 8 points
+    better).
   what_to_steal: >
     The importance+recency+relevance retrieval formula and the reflection step (periodic
     higher-level synthesis written back into the same retrievable stream) are the real,
@@ -93,7 +95,9 @@ harness_eval_verdict:
     0.833. Bypassing the public API to call `MemoryStream.retrieve()` directly with a genuine
     top-5 and non-zero recency weight recovered 0.917 on persistbench (BEATING file-wiki,
     0.833 — a first for any memory component tested in this series; `#35` letta and `#36`
-    graphiti-zep both lost to file-wiki on every fully-run bench, often by 25-67 points), 0.667
+    graphiti-zep both lost to file-wiki on every fully-run bench, often by 25-67 points; given
+    the small N here, 12 persistbench tasks, this specific 11/12-vs-10/12 margin should be read
+    as genuinely competitive with file-wiki, not reliably 8 points better), 0.667
     on bfcl_memory_v1 (vs. file-wiki 0.75), and 0.833 on niah_v1's short+medium tiers (vs.
     file-wiki 1.0, with the one miss an honest abstention, not a hallucinated code). Real cost
     overhead confirmed: 1.9x-14.6x file-wiki's wall-clock across the three benches, from

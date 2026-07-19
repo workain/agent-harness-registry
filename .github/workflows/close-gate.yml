@@ -40,6 +40,18 @@ name: close-gate
 # any OTHER error (403, 5xx, network) now fails the job loudly instead of silently
 # masquerading as "no evidence found", so a future permissions/infra regression is
 # visible as a broken CI check, not a wrongly-reopened issue.
+#
+# ROAST BLOCK fix (independent review on agent-lab-manager#143): the fix above only
+# swallowed HTTP 404. Live-tested against the real commits API with 7 fake-SHA shapes
+# (all-zero, short hex, non-hex, etc.) -- GitHub's
+# `GET /repos/{owner}/{repo}/commits/{ref}` returns **422**, not 404, for a
+# syntactically-plausible-but-nonexistent ref; 404 is reserved for refs that don't
+# even parse as a possible commit-ish. Swallowing only 404 meant every real "not a
+# real commit" case (422) fell into the throw-loudly branch instead -- closing an
+# issue with a fake SHA CRASHED the job before it ever reached the reopen logic, so
+# the bad close silently survived: the exact failure this gate exists to prevent.
+# Now both 404 and 422 are treated as "not a real commit, try the next candidate";
+# anything else still throws loud.
 
 on:
   issues:
@@ -112,12 +124,12 @@ jobs:
                   // is exactly the bug this comment exists to prevent (a permissions
                   // regression masquerading as a real close-gate verdict). Fail the job
                   // loudly instead.
-                  if (e.status !== 404) {
+                  if (e.status !== 404 && e.status !== 422) {
                     throw new Error(
-                      `close-gate: SHA verification failed with a non-404 error for `
+                      `close-gate: SHA verification failed with an unexpected error for `
                       + `candidate "${candidate}" -- this is NOT the same as "not a real `
-                      + `commit" and must not be silently treated that way (see this `
-                      + `workflow's own header comment). Underlying error: ${e.status} ${e.message}`
+                      + `commit" (404/422) and must not be silently treated that way (see `
+                      + `this workflow's own header comment). Underlying error: ${e.status} ${e.message}`
                     );
                   }
                 }

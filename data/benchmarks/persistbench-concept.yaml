@@ -26,7 +26,7 @@ our_adapter:
   suite: persistbench_v1
   repo: https://github.com/workain/harness-eval
   path: persistbench/
-  status: "NOT YET SHIPPED — built and through 6 rounds of independent review, but only on an open, UNMERGED pull request (workain/harness-eval#26, base main). Confirmed absent from origin/main via git ls-tree on 2026-07-05 — do not cite persistbench/ as present on harness-eval main until that PR merges."
+  status: "SHIPPED — merged to harness-eval main via workain/harness-eval#26 (merged 2026-07-05, after 6 rounds of independent review); persistbench/ confirmed present on harness-eval main via the GitHub contents API, re-verified 2026-07-20."
   notes: >
     Clean-room redesign, not a port — 10 wholly original synthetic tasks. Includes a
     sycophancy adversarial panel specifically closing the "resist everything" degenerate

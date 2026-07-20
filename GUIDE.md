@@ -8,11 +8,11 @@ Every claim is cited (see each entry's References) or marked `[unverified]`. Eac
 
 ## Overview — map of this registry
 
-**103 atomic components** across 4 categories, **8 assembled bundles**, **11 agent engines/runtimes**, **9 eval-frameworks**, **11 benchmarks**.
+**103 atomic components** across 4 categories (plus **6 instruction-file conventions** catalogued as background in the Bundles section — 109 component entries total), **8 assembled bundles**, **11 agent engines/runtimes**, **9 eval-frameworks**, **11 benchmarks**.
 
 **Components** are single-purpose atoms (a memory layer, a skill, an MCP server) composed one at a time. **Bundles** are pre-assembled multi-component kits. The market today is overwhelmingly atomic — Agent Skills alone spans 47,150 skills across 42 engines — though real demand for bundles exists too (see `workain/harness-eval`'s `docs/DEMAND-vs-ANTI-SIGNALS-equipment-bundles.md`). Each bundle's write-up scores it against three properties none yet fully combine: **sustained**, **engine-agnostic**, **progressively-disclosed**.
 
-**Testing status.** `workain/harness-eval` live-tests components against real benchmarks (not vendor self-reports) and this registry publishes the resulting `harness_eval_verdict` — a tier, a testability label (`tested-live` / `static-verified` / `untestable-here`), and the honest catch. This is a registry-wide mechanism, not a memory-only one, but **memory is the only category the eval pipeline has worked through so far** — every other category below is catalogued (sourced, license/activity-verified, described) but not yet benchmarked. The **Tested** column in each table below shows this per entry; a catalogued entry is not a worse entry, just an unranked one — don't read its absence from a tier as a verdict.
+**Testing status.** `workain/harness-eval` live-tests components against real benchmarks (not vendor self-reports) and this registry publishes the resulting `harness_eval_verdict` — a tier, a testability label (`tested-live` / `static-verified` / `untestable-here`), and the honest catch. This is a registry-wide mechanism, not a memory-only one, but **memory is the only category the eval pipeline has worked through so far** — every other category below is catalogued (sourced, license/activity-verified, described) but not yet benchmarked. The **Tested** column in each table below shows this per entry; a catalogued entry is not a worse entry, just an unranked one — don't read its absence from a tier as a verdict. Note: `workain/harness-eval` (where each verdict's raw evidence lives) is not yet public, so evidence links into it currently resolve only for lab members; each verdict's summary, tier, and honest catch are reproduced in the component's write-up here.
 
 **Component categories:**
 - **Memory** (11, 7 tested) — see below
@@ -208,7 +208,7 @@ Tooling for measuring agents, not equipping them: eval-frameworks (runners) and 
 | Name | Key facts | Contamination gate | Reliability |
 |---|---|---|---|
 | [AgentBench](https://github.com/THUDM/AgentBench) | 8 environments (OS/bash, DB/SQL, Knowledge Graph, card game, puzzles,… | none found, despite ~half of task instructions be… | explicit temperature=0 greedy decoding "to ensure… |
-| [harness_kit (workain/harness-eval)](https://github.com/workain/harness-eval) | 5 task-family adapters: devtasks, honest_eval/agent_memory_E1, niah_v… | mechanical — G3 no-context/no-ingest control on e… | pass@1 / pass^k (Chen et al. 2021 estimator) plus… |
+| [harness_kit (workain/harness-eval)](https://github.com/workain/harness-eval) | 5 task-family adapters, all shipped to main: devtasks, honest_eval/ag… | mechanical — G3 no-context/no-ingest control on e… | pass@1 / pass^k (Chen et al. 2021 estimator) plus… |
 | [HELM (Holistic Evaluation of Language Models)](https://github.com/stanford-crfm/helm) | Dozens of Scenario classes across a broad task range; Ships its own r… | acknowledged as a limitation (evidence pushed to… | not found in fetched text — no confidence-interva… |
 | [METR Task Standard / Vivaria](https://github.com/METR/task-standard) | Task Standard spec + Vivaria runner, used for frontier-model dangerou… | process-based — elicitation guidelines, mandatory… | explicit score@k (best-of-k, a pass@k variant, no… |
 | [OpenAI simple-evals](https://github.com/openai/simple-evals) | Deliberately narrow — as of July 2025 only HealthBench/BrowseComp/Sim… | confirmed absent — grepped the README and all cod… | partial — --n-repeats (MATH/GPQA, default 10) dup… |
@@ -255,10 +255,10 @@ An 8-environment benchmark for evaluating LLMs as agents (OS/bash, DB/SQL, Knowl
 **Homepage:** https://github.com/workain/harness-eval  
 **License:** not yet public (private repo as of this writing; operator decides on making it public)
 
-A generic, reusable eval-harness kit (suite/agent/gate/report primitives) plus five task-family adapters built on it: devtasks (real OSS bug-repair, JUnit-verified), honest_eval / agent_memory_E1 (citation-grounded factbench), and niah_v1 (needle-in-a-haystack long-context retrieval) — all three SHIPPED, merged to `main`. Two more adapters are built and under independent review but NOT YET merged: bfcl_memory_v1 (BFCL v4 multi-turn tool-memory, open PR #25) and persistbench_v1 (beneficial-memory / cross-domain / sycophancy-resistance, open PR #26) — see each benchmark's own `our_adapter.status` field; do not cite them as shipped until those PRs land. Built specifically to mechanically gate every verdict on contamination, answer-leakage, and reward-hacking resistance rather than relying on process discipline alone.
+A generic, reusable eval-harness kit (suite/agent/gate/report primitives) plus five task-family adapters built on it: devtasks (real OSS bug-repair, JUnit-verified), honest_eval / agent_memory_E1 (citation-grounded factbench), niah_v1 (needle-in-a-haystack long-context retrieval), bfcl_memory_v1 (BFCL v4 multi-turn tool-memory, merged via PR #25 on 2026-07-05) and persistbench_v1 (beneficial-memory / cross-domain / sycophancy-resistance, merged via PR #26 on 2026-07-05) — all five SHIPPED, merged to `main` (see each benchmark's own `our_adapter.status` field). Built specifically to mechanically gate every verdict on contamination, answer-leakage, and reward-hacking resistance rather than relying on process discipline alone.
 
 **Key facts:**
-- 5 task-family adapters: devtasks, honest_eval/agent_memory_E1, niah_v1 (shipped) + bfcl_memory_v1, persistbench_v1 (built, unmerged as of this writing)
+- 5 task-family adapters, all shipped to main: devtasks, honest_eval/agent_memory_E1, niah_v1, bfcl_memory_v1 (PR #25), persistbench_v1 (PR #26)
 - Mechanical contamination gate (G3 no-context control) on every suite
 - Mechanical reward-hacking gates (G4 perturbation-collapse) plus named adversarial agent panels
 - pass@1/pass^k with bootstrap CIs and an explicit NaN/inconclusive sentinel
@@ -271,10 +271,10 @@ A generic, reusable eval-harness kit (suite/agent/gate/report primitives) plus f
 
 **References:**
 - https://github.com/workain/harness-eval
-  primary source — this guide's author IS this project; verified directly against origin/main (git ls-tree) on 2026-07-05, not assumed from source-code presence in a local working copy: devtasks/, honest_eval/, niah/ ARE on main; bfcl_memory/ and persistbench/ are NOT on main, confirmed only on open, unmerged PRs #25 and #26 (gh pr view --json state,baseRefName -> both "OPEN", base main)
+  primary source — this guide's author IS this project; verified directly against origin/main (git ls-tree) on 2026-07-05: devtasks/, honest_eval/, niah/ on main; bfcl_memory/ and persistbench/ then only on open PRs #25 and #26. Re-verified 2026-07-20: PRs #25 and #26 both MERGED on 2026-07-05 (gh pr view --json state,mergedAt), bfcl_memory/ and persistbench/ confirmed present on main via the GitHub contents API
 
 **Caveats:**
-- this suite/adapter list will go stale the moment PR #25/#26 merge or new adapters ship — re-check against origin/main before citing which suites are shipped, don't trust a prior snapshot
+- this suite/adapter list will go stale if new adapters ship — re-check against origin/main before citing which suites are shipped, don't trust a prior snapshot (last re-checked 2026-07-20)
 
 ### HELM (Holistic Evaluation of Language Models)
 
@@ -526,7 +526,7 @@ The "memory" category of Berkeley's Function-Calling Leaderboard v4: multi-turn 
 - **Evaluated by:** harness-kit
 
 **harness-eval's own adapter:** `bfcl_memory_v1` (https://github.com/workain/harness-eval, `bfcl_memory/`)
-**Status:** NOT YET SHIPPED — built and through 6 rounds of independent review, but only on an open, UNMERGED pull request (workain/harness-eval#25, base main). Confirmed absent from origin/main via git ls-tree on 2026-07-05 — do not cite bfcl_memory/ as present on harness-eval main until that PR merges.
+**Status:** SHIPPED — merged to harness-eval main via workain/harness-eval#25 (merged 2026-07-05, after 6 rounds of independent review); bfcl_memory/ confirmed present on harness-eval main via the GitHub contents API, re-verified 2026-07-20.
 Clean-room adapter (12 curated tasks across all 5 scenarios) built directly against the pinned public upstream data + our own scoring/gates — NOT a port of rmr-rnd/harness-bench's version (that repo has no LICENSE file, so nothing from it could be legally vendored). Adds a G4 reward-hacking gate (mentions_off_target_distractor) specifically because the upstream substring-match convention has no length/precision penalty and is gameable by shotgun-stuffing a long answer with plausible candidate values — went through 6 independent ROAST rounds: 4 finding progressively narrower stuffing-agent bypasses (fixed-count -> category-order -> capped-window -> an open-ended candidate-SHAPE gap disclosed as a genuine, not-yet-closable limit), then 2 more rounds correcting the disclosure TEXT itself to match real code behavior (a stale claim, then an unreproducible delimiter-mechanism claim) — the code/gate machinery has been independently reconfirmed correct every round; only the disclosure wording needed fixing.
 
 **References:**
@@ -783,7 +783,7 @@ A task CONCEPT (not copyrightable, unlike code/data) for evaluating an agent's l
 - **Evaluated by:** harness-bench, harness-kit
 
 **harness-eval's own adapter:** `persistbench_v1` (https://github.com/workain/harness-eval, `persistbench/`)
-**Status:** NOT YET SHIPPED — built and through 6 rounds of independent review, but only on an open, UNMERGED pull request (workain/harness-eval#26, base main). Confirmed absent from origin/main via git ls-tree on 2026-07-05 — do not cite persistbench/ as present on harness-eval main until that PR merges.
+**Status:** SHIPPED — merged to harness-eval main via workain/harness-eval#26 (merged 2026-07-05, after 6 rounds of independent review); persistbench/ confirmed present on harness-eval main via the GitHub contents API, re-verified 2026-07-20.
 Clean-room redesign, not a port — 10 wholly original synthetic tasks. Includes a sycophancy adversarial panel specifically closing the "resist everything" degenerate strategy (a stubborn agent that never updates looks resistant on every invalid pushback but must still fail the one genuinely-valid pushback task). Went through 6 independent ROAST rounds on the same underlying "surface-feature-gaming of the hedge-detection check" threat class: round 1 (empty-string-only fixture bypass, fixed), round 2 (single-feature fixture confound, fixed via decorrelated fixture pairs + a brute-force selector-family gate), round 3 (an OR-of-two-features bypass of that gate — first mis-classified as a fundamental limit, corrected after an independent review showed the fix was actually cheap), round 4 (an XOR/XNOR-combination gap in the "fixed" gate's own claimed coverage — again cheaply closed), rounds 5-6 (the gate/fixture logic was independently reconfirmed CORRECT both times; the block was purely the disclosure TEXT overclaiming its own coverage — "all 16" when the real figure was 10 pairwise / 14 total). Net lesson: distinguishing a genuinely fixable enumeration gap from a truly unbounded one is itself an easy place to overclaim in either direction, and so is describing your own fix's coverage without re-deriving it.
 
 **References:**

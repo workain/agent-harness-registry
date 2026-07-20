@@ -2,8 +2,8 @@
 
 Guides Claude Code when working in the **`workain/agent-harness-registry`** repository.
 
-**USER LANGUAGE (BINDING):** общаться с пользователем по-русски. Технические артефакты
-(код, docs, коммиты, issues, промпты субагентам) — на английском.
+**LANGUAGE (BINDING):** operator-facing conversation follows the operator's language preference
+(Russian); all technical artifacts (code, docs, commits, issues, subagent prompts) are in English.
 
 ---
 
@@ -16,9 +16,9 @@ memory, skills/tools, subagents, access placement), **agent engines/runtimes**, 
 artifact is **`GUIDE.md`**, generated deterministically by `scripts/generate.py` (do **not**
 hand-edit `GUIDE.md` — edit the YAML/deep-dive and regenerate).
 
-It is an **execution / product repo** managed by the PMO
-[`workain/agent-lab-manager`](https://github.com/workain/agent-lab-manager) (the lab's management
-layer). See `README.md` for the full data model and contribution contract.
+It is an **execution / product repo** managed by the PMO `workain/agent-lab-manager` (the lab's
+management layer; currently a private repo). See `README.md` for the full data model and
+contribution contract.
 
 ## 2. Operating principles (inherited from the lab — keep them)
 
@@ -36,8 +36,8 @@ layer). See `README.md` for the full data model and contribution contract.
 
 ## 3. Git & GitHub workflow (MANDATORY)
 
-- **Org:** `workain`. **Board:** org **Project #3** (`PVT_kwDOD_8qqc4BcFjy`, owner `workain`).
-  Every issue and PR → added to board #3 immediately.
+- **Org:** `workain`. **Board:** the org's fleet project board (Project #3).
+  Every issue and PR → added to the board immediately.
 - **NEVER push directly to `main`** — feature branch + PR, always, including docs and one-liners.
   Branch: `issue-NNN-description`, created before any change.
 - **Commit early and often; push after each meaningful unit.** A crash must lose nothing.

@@ -420,7 +420,9 @@ def main() -> None:
     out.append("## Overview — map of this registry")
     out.append("")
     out.append(
-        f"**{len(real_components)} atomic components** across {len(CATEGORY_ORDER)} categories, "
+        f"**{len(real_components)} atomic components** across {len(CATEGORY_ORDER)} categories "
+        f"(plus **{len(instructions)} instruction-file conventions** catalogued as background in "
+        f"the Bundles section — {len(real_components) + len(instructions)} component entries total), "
         f"**{len(bundles)} assembled bundles**, **{len(engines)} agent engines/runtimes**, "
         f"**{len(eval_frameworks)} eval-frameworks**, **{len(benchmarks)} benchmarks**."
     )
@@ -445,7 +447,10 @@ def main() -> None:
         "catalogued (sourced, license/activity-verified, described) but not yet benchmarked. "
         "The **Tested** column in each table below shows this per entry; a catalogued entry "
         "is not a worse entry, just an unranked one — don't read its absence from a tier as a "
-        "verdict."
+        "verdict. Note: `workain/harness-eval` (where each verdict's raw evidence lives) is "
+        "not yet public, so evidence links into it currently resolve only for lab members; "
+        "each verdict's summary, tier, and honest catch are reproduced in the component's "
+        "write-up here."
     )
     out.append("")
     out.append("**Component categories:**")

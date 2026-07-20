@@ -76,6 +76,11 @@ rendering, and the contribution contract below are the same for every category, 
 testing pass over any category drops in without a structural change. Don't read a missing tier as
 a negative verdict — it means "not yet run," not "failed."
 
+Note: `workain/harness-eval` (the eval pipeline's own repo, where each verdict's raw evidence
+lives) is not yet public, so `raw_evidence` links into it currently resolve only for lab members.
+Each verdict's tier, testability label, and honest catch are reproduced in the component's
+deep-dive here; opening the evidence repo itself is on the publication roadmap.
+
 ## Provenance rule (binding)
 
 Every load-bearing claim in an entry is either reproduced/quoted from a source that was
@@ -114,3 +119,10 @@ python3 scripts/generate.py
 ```
 
 Only dependency is PyYAML (`pip install pyyaml`).
+
+## License & usage
+
+No license has been chosen for this repository yet, so the default applies: **all rights
+reserved** by the workain lab. You are welcome to read, link to, and cite this registry with
+attribution (a link back to this repo). If you want to reuse the data or write-ups beyond that,
+open an issue — a proper data license is under consideration.

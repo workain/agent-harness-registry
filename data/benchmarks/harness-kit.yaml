@@ -5,17 +5,16 @@ kind: eval-framework
 what_it_is: >
   A generic, reusable eval-harness kit (suite/agent/gate/report primitives) plus five
   task-family adapters built on it: devtasks (real OSS bug-repair, JUnit-verified),
-  honest_eval / agent_memory_E1 (citation-grounded factbench), and niah_v1
-  (needle-in-a-haystack long-context retrieval) — all three SHIPPED, merged to `main`.
-  Two more adapters are built and under independent review but NOT YET merged:
-  bfcl_memory_v1 (BFCL v4 multi-turn tool-memory, open PR #25) and persistbench_v1
-  (beneficial-memory / cross-domain / sycophancy-resistance, open PR #26) — see each
-  benchmark's own `our_adapter.status` field; do not cite them as shipped until those
-  PRs land. Built specifically to mechanically gate every verdict on contamination,
+  honest_eval / agent_memory_E1 (citation-grounded factbench), niah_v1
+  (needle-in-a-haystack long-context retrieval), bfcl_memory_v1 (BFCL v4 multi-turn
+  tool-memory, merged via PR #25 on 2026-07-05) and persistbench_v1 (beneficial-memory /
+  cross-domain / sycophancy-resistance, merged via PR #26 on 2026-07-05) — all five
+  SHIPPED, merged to `main` (see each benchmark's own `our_adapter.status` field).
+  Built specifically to mechanically gate every verdict on contamination,
   answer-leakage, and reward-hacking resistance rather than relying on process
   discipline alone.
 key_facts:
-  - "5 task-family adapters: devtasks, honest_eval/agent_memory_E1, niah_v1 (shipped) + bfcl_memory_v1, persistbench_v1 (built, unmerged as of this writing)"
+  - "5 task-family adapters, all shipped to main: devtasks, honest_eval/agent_memory_E1, niah_v1, bfcl_memory_v1 (PR #25), persistbench_v1 (PR #26)"
   - "Mechanical contamination gate (G3 no-context control) on every suite"
   - "Mechanical reward-hacking gates (G4 perturbation-collapse) plus named adversarial agent panels"
   - "pass@1/pass^k with bootstrap CIs and an explicit NaN/inconclusive sentinel"
@@ -30,6 +29,6 @@ activity:
   last_verified_note: "this is the guide author's own working repo — verified directly from source, not fetched externally"
 provenance:
   - url: https://github.com/workain/harness-eval
-    note: "primary source — this guide's author IS this project; verified directly against origin/main (git ls-tree) on 2026-07-05, not assumed from source-code presence in a local working copy: devtasks/, honest_eval/, niah/ ARE on main; bfcl_memory/ and persistbench/ are NOT on main, confirmed only on open, unmerged PRs #25 and #26 (gh pr view --json state,baseRefName -> both \"OPEN\", base main)"
+    note: "primary source — this guide's author IS this project; verified directly against origin/main (git ls-tree) on 2026-07-05: devtasks/, honest_eval/, niah/ on main; bfcl_memory/ and persistbench/ then only on open PRs #25 and #26. Re-verified 2026-07-20: PRs #25 and #26 both MERGED on 2026-07-05 (gh pr view --json state,mergedAt), bfcl_memory/ and persistbench/ confirmed present on main via the GitHub contents API"
 unverified:
-  - "this suite/adapter list will go stale the moment PR #25/#26 merge or new adapters ship — re-check against origin/main before citing which suites are shipped, don't trust a prior snapshot"
+  - "this suite/adapter list will go stale if new adapters ship — re-check against origin/main before citing which suites are shipped, don't trust a prior snapshot (last re-checked 2026-07-20)"

@@ -15,7 +15,7 @@ Every claim is cited (see each entry's References) or marked `[unverified]`. Eac
 **Testing status.** `workain/harness-eval` live-tests components against real benchmarks (not vendor self-reports) and this registry publishes the resulting `harness_eval_verdict` — a tier, a testability label (`tested-live` / `static-verified` / `untestable-here`), and the honest catch. This is a registry-wide mechanism, not a memory-only one, but **memory is the only category the eval pipeline has worked through so far** — every other category below is catalogued (sourced, license/activity-verified, described) but not yet benchmarked. The **Tested** column in each table below shows this per entry; a catalogued entry is not a worse entry, just an unranked one — don't read its absence from a tier as a verdict. Note: `workain/harness-eval` (where each verdict's raw evidence lives) is not yet public, so evidence links into it currently resolve only for lab members; each verdict's summary, tier, and honest catch are reproduced in the component's write-up here.
 
 **Component categories:**
-- **Memory** (11, 7 tested) — see below
+- **Memory** (11, 8 tested) — see below
 - **Skills / tools** (26, catalogued only, not yet tested) — see below
 - **Subagents** (32, catalogued only, not yet tested) — see below
 - **Access placement / MCP** (34, catalogued only, not yet tested) — see below
@@ -38,7 +38,7 @@ Single-purpose units composed onto an engine. Name links to the tool itself; wri
 | [Karpathy LLM Wiki pattern](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) | Catalogued | Pattern (not a package) | — | self-maintaining knowledge base, entity/semantic memory, re… | [write-up](deep-dives/components/karpathy-llm-wiki.md) |
 | [LangMem (LangChain / LangGraph memory)](https://github.com/langchain-ai/langmem) | Tier B-minus (tested-live) | MIT | 1.5k | LangGraph long-term memory, background memory consolidation… | [write-up](deep-dives/components/langmem.md) |
 | [Letta (formerly MemGPT)](https://github.com/letta-ai/letta) | Tier D (tested-live) | Apache-2.0 | 23.7k | self-editing agent memory, stateful agent hosting | [write-up](deep-dives/components/letta.md) |
-| [LlamaIndex Memory](https://developers.llamaindex.ai/python/framework/module_guides/deploying/agents/memory/) | Catalogued | MIT | 50.7k | chat memory buffers, fact-extraction memory blocks, RAG-age… | [write-up](deep-dives/components/llamaindex-memory.md) |
+| [LlamaIndex Memory](https://developers.llamaindex.ai/python/framework/module_guides/deploying/agents/memory/) | Tier B (tested-live) | MIT | 50.7k | chat memory buffers, fact-extraction memory blocks, RAG-age… | [write-up](deep-dives/components/llamaindex-memory.md) |
 | [Mem0](https://github.com/mem0ai/mem0) | Catalogued | Apache-2.0 | 60.1k | cross-session user memory, personalization, fact extraction… | [write-up](deep-dives/components/mem0.md) |
 | [OpenAI Conversations API](https://developers.openai.com/api/docs/guides/conversation-state) | Tier C (untestable-here (needs OpenAI account) — architectural, not just no-key) | Proprietary API (usable) | — | durable multi-session conversation state for OpenAI Respons… | [write-up](deep-dives/components/openai-conversations-api.md) |
 

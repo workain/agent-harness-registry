@@ -205,10 +205,8 @@ say than a file that's had time to prune, not a miss against the target.
   arm it (a Claude-Code-specific runtime fact, not a bug in the hook's shell logic).
 - Don't chain a branch switch and a commit in one Bash command against the `with-git` gate — run
   the switch as its own step first.
-- License status is an open gap (see the registry entry's `license` field) — this template
-  currently carries no formal permissive license of its own, which is an unusual default for
-  something whose entire purpose is to be copied into other projects. Flagged for the operator,
-  not resolved here.
+- Licensed MIT (resolved 2026-07-24, operator decision — see the registry entry's `license`
+  field and `templates/base-project-template/LICENSE`), scoped to the template's own files.
 - This is a v0, general-purpose template, not a per-vertical variant — a harness-engineering- or
   research-lab-specific version is a natural future extension once real demand for one exists.
 

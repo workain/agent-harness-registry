@@ -26,6 +26,9 @@ themselves are the *what*.
 - **[Design, growth, and usage](design-and-usage.md)** — the two-variant split and the commit
   gate, the growth ladder for deliberately outgrowing this template, what was and wasn't tested,
   getting started, and gotchas.
+- **[Results](results.md)** — the underlying numbers and comparisons behind the two write-ups
+  above, as standalone tables: study/source, method, finding, and effect size, each linkable on
+  its own.
 - **[References](references.md)** — every source cited above.
 
 ## See also

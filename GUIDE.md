@@ -8,14 +8,14 @@ Every claim is cited (see each entry's References) or marked `[unverified]`. Eac
 
 ## Overview — map of this registry
 
-**103 atomic components** across 4 categories (plus **6 instruction-file conventions** catalogued as background in the Bundles section — 109 component entries total), **8 assembled bundles**, **11 agent engines/runtimes**, **9 eval-frameworks**, **11 benchmarks**.
+**103 atomic components** across 4 categories (plus **7 instruction-file conventions** catalogued as background in the Bundles section — 110 component entries total), **8 assembled bundles**, **11 agent engines/runtimes**, **9 eval-frameworks**, **11 benchmarks**.
 
 **Components** are single-purpose atoms (a memory layer, a skill, an MCP server) composed one at a time. **Bundles** are pre-assembled multi-component kits. The market today is overwhelmingly atomic — Agent Skills alone spans 47,150 skills across 42 engines — though real demand for bundles exists too (see `workain/harness-eval`'s `docs/DEMAND-vs-ANTI-SIGNALS-equipment-bundles.md`). Each bundle's write-up scores it against three properties none yet fully combine: **sustained**, **engine-agnostic**, **progressively-disclosed**.
 
 **Testing status.** `workain/harness-eval` live-tests components against real benchmarks (not vendor self-reports) and this registry publishes the resulting `harness_eval_verdict` — a tier, a testability label (`tested-live` / `static-verified` / `untestable-here`), and the honest catch. This is a registry-wide mechanism, not a memory-only one, but **memory is the only category the eval pipeline has worked through so far** — every other category below is catalogued (sourced, license/activity-verified, described) but not yet benchmarked. The **Tested** column in each table below shows this per entry; a catalogued entry is not a worse entry, just an unranked one — don't read its absence from a tier as a verdict. Note: `workain/harness-eval` (where each verdict's raw evidence lives) is not yet public, so evidence links into it currently resolve only for lab members; each verdict's summary, tier, and honest catch are reproduced in the component's write-up here.
 
 **Component categories:**
-- **Memory** (11, 8 tested) — see below
+- **Memory** (11, 9 tested) — see below
 - **Skills / tools** (26, catalogued only, not yet tested) — see below
 - **Subagents** (32, catalogued only, not yet tested) — see below
 - **Access placement / MCP** (34, catalogued only, not yet tested) — see below
@@ -33,7 +33,7 @@ Single-purpose units composed onto an engine. Name links to the tool itself; wri
 | [Anthropic Memory Tool (Claude API)](https://platform.claude.com/docs/en/agents-and-tools/tool-use/memory-tool) | Tier B (tested-live) | Proprietary API (usable) | — | cross-session memory for Claude API agents, progress tracki… | [write-up](deep-dives/components/anthropic-memory-tool.md) |
 | [Cognee](https://github.com/topoteretes/cognee) | Tier B-minus (tested-live) | Apache-2.0 | 27k | knowledge-graph memory, ontology-linked retrieval, long-ter… | [write-up](deep-dives/components/cognee.md) |
 | [CrewAI Memory](https://github.com/crewAIInc/crewAI) | Tier C (tested-live) | MIT | 54,976 | production multi-agent memory, contradiction resolution, co… | [write-up](deep-dives/components/crewai-memory.md) |
-| [Generative Agents Memory Stream (Stanford)](https://github.com/StanfordHCI/genagents) | Catalogued | MIT | 566 | believable agent simulations, importance-weighted long-term… | [write-up](deep-dives/components/generative-agents-memory-stream.md) |
+| [Generative Agents Memory Stream (Stanford)](https://github.com/StanfordHCI/genagents) | Tier C (tested-live) | MIT | 566 | believable agent simulations, importance-weighted long-term… | [write-up](deep-dives/components/generative-agents-memory-stream.md) |
 | [Graphiti (open-source engine behind Zep)](https://github.com/getzep/graphiti) | Tier C (tested-live) | Apache-2.0 | 28.4k | temporal knowledge graphs, fact-validity tracking, provenan… | [write-up](deep-dives/components/graphiti-zep.md) |
 | [Karpathy LLM Wiki pattern](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) | Catalogued | Pattern (not a package) | — | self-maintaining knowledge base, entity/semantic memory, re… | [write-up](deep-dives/components/karpathy-llm-wiki.md) |
 | [LangMem (LangChain / LangGraph memory)](https://github.com/langchain-ai/langmem) | Tier B-minus (tested-live) | MIT | 1.5k | LangGraph long-term memory, background memory consolidation… | [write-up](deep-dives/components/langmem.md) |
@@ -172,6 +172,7 @@ Pre-assembled multi-component kits — rare relative to components. Each write-u
 |---|---|---|---|
 | [.goosehints (Goose)](https://github.com/block/goose) | Apache-2.0 | 50.7k | [write-up](deep-dives/components/goosehints.md) |
 | [AGENTS.md](https://github.com/agentsmd/agents.md) | MIT | 22.8k | [write-up](deep-dives/components/agents-md.md) |
+| [base-project-template](https://github.com/workain/agent-harness-registry/tree/main/templates/base-project-template) | No license chosen yet (flagged — see deep-dive) | — | [write-up](deep-dives/components/base-project-template.md) |
 | [Cursor Rules (.cursor/rules, formerly .cursorrules)](https://cursor.com/docs/context/rules) | Proprietary feature (usable) | — | [write-up](deep-dives/components/cursor-rules.md) |
 | [Devin Knowledge & Playbooks](https://docs.devin.ai/product-guides/knowledge) | Proprietary feature (usable) | — | [write-up](deep-dives/components/devin-knowledge-playbooks.md) |
 | [GEMINI.md (Gemini CLI)](https://github.com/google-gemini/gemini-cli/blob/main/docs/cli/gemini-md.md) | Apache-2.0 | 106k | [write-up](deep-dives/components/gemini-md.md) |

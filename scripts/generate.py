@@ -497,6 +497,12 @@ def main() -> None:
         fp_note = f", {fp_n} first-party" if fp_n else ""
         out.append(f"- **{CATEGORY_TITLES[cat]}** ({len(entries)}, {status}{fp_note}) — see below")
     out.append("")
+    out.append(
+        "Almost every entry above catalogues a third-party project. One is workain's own "
+        "first-party work, not a third-party catalog item — see the root README's "
+        "[\"Our own work\"](README.md#our-own-work) section."
+    )
+    out.append("")
 
     out.append("---")
     out.append("")

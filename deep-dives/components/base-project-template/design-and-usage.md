@@ -1,7 +1,8 @@
 # base-project-template — design, growth, and usage
 
 Part of the [base-project-template deep dive](README.md). See also
-[evidence](evidence.md) and [references](references.md).
+[evidence](evidence.md), [results](results.md) (the underlying numbers and tables), and
+[references](references.md).
 
 ## The two-variant split and the commit gate
 
@@ -9,9 +10,10 @@ The `with-git/` variant ships a `.claude/settings.json` `PreToolUse` hook that m
 a direct commit to `main`/`master` — git-tracked, so it's live automatically in every fresh clone
 or worktree, with no manual install step. That design choice is grounded in a specific,
 reproduced finding from the internal evidence stream: a comparable pre-commit hook requiring a
-manual `cp` into `.git/hooks/` sat **uninstalled for 13 days** after a real project's bootstrap,
-while a git-tracked settings file propagated with zero gap. The gate was then **proven live, not
-just read**, in a two-session dogfood pass: a fresh Claude Code session's real first commit on an
+manual `cp` into `.git/hooks/` sat uninstalled for a real, measured stretch after a real project's
+bootstrap, while a git-tracked settings file propagated with zero gap (exact figure in
+[results.md](results.md#internal-dogfood-results)). The gate was then **proven live, not just
+read**, in a two-session dogfood pass: a fresh Claude Code session's real first commit on an
 unborn `HEAD` was blocked with the exact intended message, and a same-session (non-fresh)
 `cd`-in to the same directory was **not** blocked — a genuine, non-obvious Claude-Code-specific
 finding (hooks resolve from the session's project root at launch, not per-command working
@@ -33,15 +35,17 @@ user should do instead — fixed by naming actual options (a fresh session/subag
 instruction to say so if none is available rather than mislabel a self-review as independent.
 
 The review-artifact requirement itself is stated more modestly than an early pass of the internal
-research claimed. The first cut reported 83% of a real fleet's `Tasks/` folders carried a
-review-type artifact; an independent check caught that this figure conflated two structurally
-different populations (a PMO's own substantive work vs. its cross-repo QC of *other* teams' PRs,
-which made up 74% of all folders sampled). Restricted to the population that actually generalizes
-to a solo developer or small team, the honest figure is **20/52, ≈38%** — real and worth requiring
-as policy, but not the near-universal habit the first-pass number implied. The one figure in the
-whole internal distillation that *does* hold up under that same population correction is the
-running log itself: **81% (160/198)**, unchanged whichever way the folders are sliced — the
-strongest single piece of internal evidence behind any part of this template.
+research claimed. The first cut reported a large majority of a real fleet's `Tasks/` folders
+carrying a review-type artifact; an independent check caught that this figure conflated two
+structurally different populations (a PMO's own substantive work vs. its cross-repo QC of *other*
+teams' PRs, which made up most of all folders sampled). Restricted to the population that
+actually generalizes to a solo developer or small team, the honest figure is real and worth
+requiring as policy, but well below the near-universal habit the first-pass number implied — see
+[results.md](results.md#internal-dogfood-results) for both the corrected figure and the original
+one it replaced. The one figure in the whole internal distillation that *does* hold up under that
+same population correction is the running log itself, unchanged whichever way the folders are
+sliced — the strongest single piece of internal evidence behind any part of this template (figure
+in the same table).
 
 ## Growth ladder — when to deliberately outgrow this template
 
@@ -72,10 +76,11 @@ review (the self-review honesty gap above is a direct symptom of this untested d
 long-horizon/multi-week drift (the maintenance-discipline section is asserted, not exercised),
 behavior in other agent engines (Cursor, Copilot, Gemini CLI — this template's own testing is
 Claude-Code-specific throughout), and how the `without-git/` variant holds up over time rather
-than in a single session. `CLAUDE.md` filled length in the dogfood landed at 597 and 614 words —
-above the 335–535 word empirical median the external research cites for real-world files, though
-well under the as-shipped skeleton's 1000+ words — a from-scratch project genuinely has more to
-say than a file that's had time to prune, not a miss against the target.
+than in a single session. `CLAUDE.md` filled length in the dogfood landed above the empirical
+median the external research cites for real-world files, though well under the as-shipped
+skeleton's own length — a from-scratch project genuinely has more to say than a file that's had
+time to prune, not a miss against the target (all three figures in
+[results.md](results.md#internal-dogfood-results)).
 
 ## Getting started
 

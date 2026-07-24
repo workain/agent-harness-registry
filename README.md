@@ -12,30 +12,63 @@ with practical guidance (when to use it, how to get started, gotchas, comparison
 
 ## How this repo is organized
 
-- `data/components/*.yaml` — **primary, work for volume**: one file per ATOMIC piece of harness
-  equipment, tagged with a `category:` (`memory`, `skills-tools`, `subagents`, `access-mcp`, or
-  `instructions-rules` — the last one renders inside the Bundles section as background context,
-  not its own component category; see `scripts/generate.py`'s comment on why). Breadth is the goal
-  — catalog broadly.
-- `data/bundles/*.yaml` — one file per ASSEMBLED multi-component kit (or bundling mechanism /
-  vendor-native "assembled" product). Rare relative to components by design (see the registry's own
-  atoms-vs-bundles demand research, linked from GUIDE.md's Overview).
-- `data/engines/*.yaml` — one file per agent engine/runtime (Claude Code, Codex CLI, OpenHands,
-  SWE-agent, Aider, Cline, ...) — the control loop an equipment component or bundle plugs into.
+This section is both a **map for a visitor** (where's the thing I'm looking for) and the
+**binding rule for a contributor** (where entry #110+ goes) — the two aren't allowed to drift
+apart, so if you change the layout, update this section in the same change.
+
+**As a visitor:** read [GUIDE.md](GUIDE.md) — it's the generated index, one table per category,
+each row linking to that entry's full write-up. Jump straight to the raw data/write-up instead
+via the category paths below.
+
+**As a contributor**, place new files exactly per this scheme (mechanically enforced —
+`scripts/generate.py` raises, it doesn't silently skip, on a taxonomy violation):
+
+- `data/components/<category>/*.yaml` — **primary, work for volume**: one file per ATOMIC piece
+  of harness equipment, in a subfolder for its own `category:` field: `memory`, `skills-tools`,
+  `subagents`, `access-mcp`, or `instructions-rules` (the last one renders inside the Bundles
+  section as background context, not its own component category; see `scripts/generate.py`'s
+  comment on why). The YAML's `category:` field and the subfolder it lives in must always match.
+  Breadth is the goal — catalog broadly.
+- `deep-dives/components/<category>/*.md` — the matching write-up, same subfolder scheme.
+  **Default: one flat `<slug>.md` file per entry.** A `<slug>/` folder (with its own `README.md`
+  entry point) is a **justified exception**, not a fallback — reach for it only when a write-up
+  is genuinely multi-file (research-depth content that splits naturally into e.g. evidence /
+  design-and-usage / references sections), not "for organization." Decided in issue #31: forcing
+  a folder wrapper on every entry when 100%+ of today's write-ups are one self-contained file is
+  pure indirection; a folder earns its keep only when there's real multi-file content, as with
+  the first-party `base-project-template` entry's `README.md` + `evidence.md` +
+  `design-and-usage.md` + `references.md` (landing at
+  `deep-dives/components/instructions-rules/base-project-template/` via PR #30 — not yet in this
+  branch as of the #31 restructure, see that PR for its current state). If you're tempted to
+  fold a normal cataloged entry into a folder just to look tidier, don't — that inconsistency is
+  exactly what this decision rules out.
+- `data/bundles/*.yaml` + `deep-dives/bundles/*.md` — one file per ASSEMBLED multi-component kit
+  (or bundling mechanism / vendor-native "assembled" product). **Flat, no category subfolder** —
+  rare relative to components by design (see the registry's own atoms-vs-bundles demand research,
+  linked from GUIDE.md's Overview), and there's no category-like field to key a split off of.
+- `data/engines/*.yaml` (+ optional `deep-dives/engines/*.md`) — one file per agent engine/runtime
+  (Claude Code, Codex CLI, OpenHands, SWE-agent, Aider, Cline, ...) — the control loop an
+  equipment component or bundle plugs into. Flat, same reason as bundles.
 - `data/benchmarks/*.yaml` — one file per benchmark OR eval-framework, distinguished by each
   entry's own `kind: benchmark` / `kind: eval-framework` field. Set `key_facts:` (a short list) for
-  the summary table and `methodology:` for the fuller inline write-up.
-- `deep-dives/{components,bundles,engines}/*.md` — **the full write-up for every entry lives
-  here, not in GUIDE.md.** `deep_dive:` is a **mandatory** field on every component and bundle
-  (the generator raises an error if it's missing); engines have it on a best-effort basis. Two
-  entries may share one file when the analysis is genuinely joint (e.g. `mcp-servers` +
-  `mcp-client-sdk` both point at `deep-dives/components/mcp.md`). Write these for practical value —
-  what it is, when to use it, how to actually get started, known gotchas/license caveats, and how
-  it compares to similar entries — not a restatement of the YAML's own facts.
-- `scripts/generate.py` — reads `data/`, writes `GUIDE.md`. Deterministic, no network access. Fails
-  loudly (raises) if a benchmark entry is missing `kind:`, a component is missing a valid
-  `category:`, or a component/bundle is missing its mandatory `deep_dive:` — the taxonomy and the
-  separate-file rule are both enforced mechanically, not by convention.
+  the summary table and `methodology:` for the fuller inline write-up. Flat — already splits two
+  ways via `kind:`, and rendered as inline `GUIDE.md` detail sections rather than separate
+  per-entry files, so there's no flat-pile problem the way there was for 109 components.
+  (Whether bundles/engines/benchmarks ever warrant the same subfolder treatment components got is
+  tracked as its own fast-follow: issue #32 — not silently left inconsistent, just not urgent at
+  today's scale.)
+- `deep_dive:` is a **mandatory** field on every component and bundle (the generator raises an
+  error if it's missing); engines have it on a best-effort basis. Two entries may share one file
+  when the analysis is genuinely joint (e.g. `mcp-servers` + `mcp-client-sdk` both point at
+  `deep-dives/components/access-mcp/mcp.md`). Write these for practical value — what it is, when
+  to use it, how to actually get started, known gotchas/license caveats, and how it compares to
+  similar entries — not a restatement of the YAML's own facts.
+- `scripts/generate.py` — reads `data/` (component YAML is discovered recursively, so category
+  subfolders need no generator change to add), writes `GUIDE.md`. Deterministic, no network
+  access. Fails loudly (raises) if a benchmark entry is missing `kind:`, a component is missing a
+  valid `category:` (or its subfolder doesn't match its `category:` field), or a component/bundle
+  is missing its mandatory `deep_dive:` — the taxonomy and the separate-file rule are both
+  enforced mechanically, not by convention.
 - `GUIDE.md` — generated output, committed. **Do not hand-edit** — edit the YAML/deep-dives and
   regenerate. Structured general -> specific: definition/caveat -> Overview (map + atoms-vs-bundles
   narrative) -> component index tables by category -> bundle index table (+ instruction-file
@@ -62,6 +95,14 @@ with practical guidance (when to use it, how to get started, gotchas, comparison
   component table (`Tier X (testability)` if set, `Catalogued` if not) — see "Testing status"
   below. Any category can carry this field; memory is just the first one the eval pipeline has
   worked through.
+- `first_party` — **optional boolean, registry-wide** (any `data/*.yaml` entry), default
+  absent/false. Set `true` only on entries **authored by this lab** (workain) — as opposed to
+  the overwhelming majority of entries here, which catalog a **third-party** project we didn't
+  build. `GUIDE.md` renders this as a `` `first-party` `` badge next to the entry's name in its
+  index-table row (see `_name_cell` in `scripts/generate.py`) and folds a first-party count into
+  each component category's Overview line — a real rendering distinction, not prose-only. Don't
+  set this to signal endorsement or heavy usage of a third-party tool; it means authorship,
+  nothing else.
 
 ## Testing status
 
@@ -90,10 +131,15 @@ framing is never passed through as fact.
 
 ## Adding or updating an entry
 
-1. **Component** (atomic): add a YAML file under `data/components/` with a `category:` field (one
-   of `memory`, `skills-tools`, `subagents`, `access-mcp`, `instructions-rules`). Copy an existing
-   entry in that category as a template. Set `license_tag`, `use_cases`, and a mandatory
-   `deep_dive:` pointing at a new file under `deep-dives/components/`.
+1. **Component** (atomic): pick its `category:` (one of `memory`, `skills-tools`, `subagents`,
+   `access-mcp`, `instructions-rules`) — the YAML goes in
+   `data/components/<category>/<slug>.yaml` and the subfolder **must match** the `category:`
+   field (`scripts/generate.py` raises if they disagree). Copy an existing entry in that category
+   as a template. Set `license_tag`, `use_cases`, and a mandatory `deep_dive:` pointing at a new
+   file at `deep-dives/components/<category>/<slug>.md` — flat, one file, by default (see "How
+   this repo is organized" above for when a `<slug>/` folder is justified instead). Only set
+   `first_party: true` if this lab authored the thing being cataloged, not for a third-party tool
+   you merely rate highly.
 2. **Bundle** (assembled): add a YAML file under `data/bundles/` with `components_bundled:` (list)
    and `engine_lock:` fields, plus a mandatory `deep_dive:` under `deep-dives/bundles/<slug>.md`
    including a scoring table against the three properties (sustained / engine-agnostic /

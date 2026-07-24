@@ -57,9 +57,27 @@ def _load_dir(name: str) -> list[dict]:
     for path in sorted((DATA / name).glob("**/*.yaml")):
         entry = yaml.safe_load(path.read_text(encoding="utf-8"))
         entry["_slug"] = path.stem
+        rel_parent = path.relative_to(DATA / name).parent
+        entry["_subfolder"] = str(rel_parent) if str(rel_parent) != "." else None
         entries.append(entry)
     entries.sort(key=lambda e: e["name"].lower())
     return entries
+
+
+ALL_COMPONENT_CATEGORIES = set(CATEGORY_ORDER) | {"instructions-rules"}
+
+
+def _check_component_subfolders(components: list[dict]) -> None:
+    # A component's directory placement is load-bearing (README.md's binding contribution
+    # rule) — catch drift mechanically rather than trusting the convention silently.
+    mismatched = [
+        e["_slug"]
+        for e in components
+        if e.get("category") in ALL_COMPONENT_CATEGORIES and e.get("_subfolder") != e.get("category")
+    ]
+    if mismatched:
+        raise SystemExit(
+            f"components whose folder doesn't match their category: field: {mismatched}")
 
 
 def _cell(text) -> str:
@@ -381,6 +399,7 @@ def render_benchmark_detail(e: dict) -> str:
 
 def main() -> None:
     components = _load_dir("components")
+    _check_component_subfolders(components)
     bundles = _load_dir("bundles")
     engines = _load_dir("engines")
     aux = _load_dir("benchmarks")

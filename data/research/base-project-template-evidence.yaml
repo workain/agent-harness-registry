@@ -1,0 +1,20 @@
+title: "base-project-template — research evidence"
+slug: base-project-template-evidence
+study_type: synthesis-digest
+source_urls:
+  - https://arxiv.org/abs/2602.11988
+  - https://arxiv.org/abs/2605.10039
+  - https://arxiv.org/abs/2511.12884
+  - https://arxiv.org/abs/2303.11366
+  - https://arxiv.org/abs/2509.25140
+  - https://arxiv.org/abs/2606.28434
+  - https://arxiv.org/abs/2602.16313
+  - https://arxiv.org/abs/2605.29463
+  - https://github.com/anthropics/claude-code/issues/51735
+  - https://www.anthropic.com/engineering/claude-code-best-practices
+  - https://docs.cursor.com/context/rules
+  - https://github.com/pytorch/pytorch
+related_components:
+  - base-project-template
+related_research: []
+deep_dive: research/base-project-template-evidence/README.md

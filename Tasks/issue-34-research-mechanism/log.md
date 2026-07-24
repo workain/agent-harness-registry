@@ -1,5 +1,33 @@
 # #34 — research/ mechanism — log
 
+## 2026-07-24 — rebase onto main (PR #33 merged)
+
+PR #33 (issue #31 restructure) was independently ROASTed PASS and squash-merged to `main` as
+`b5d1057`. Per the manager's instruction, rebased this branch directly onto `origin/main` rather
+than staying stacked on the now-stale `issue-31-registry-restructure` branch:
+
+- The branch history included a merge commit (`89a2d69`, merging in PR #30's branch +
+  executing the category-subfolder/first_party fold-in) that couldn't be replayed by a plain
+  `git rebase`. Used `git cherry-pick -m 1 89a2d69` (diff against its first parent — i.e. exactly
+  what the PR #30 merge + fold-in contributed, since PR #33's own contribution is already in
+  `main` via the squash) onto a fresh branch cut from `origin/main`, then
+  `git cherry-pick d721285` (the research-mechanism commit) on top. Both applied with **zero
+  conflicts**.
+- Reset `issue-34-research-mechanism` to the result, force-pushed
+  (`git push --force-with-lease`), retargeted the PR base to `main`
+  (`gh pr edit 35 --base main`).
+- Re-verified every mechanical gate from scratch post-rebase, not just trusted the clean
+  cherry-pick: `generate.py` exit 0 (identical counts: 103 components, 7 instruction-conventions,
+  1 research, 130 deep-dives); all 130 `deep_dive:` fields + 132 `GUIDE.md` link occurrences
+  resolve; full relative-link sweep across every touched file — zero broken; `study_type:` and
+  `related_research:` gates each re-triggered with a bad value, confirmed to raise, reverted;
+  `scripts/pre-commit-checks.sh` clean; `GUIDE.md`'s diff against `origin/main` read in full —
+  the only non-additive-looking line is the Overview's entry-count bump (109->110, since
+  `base-project-template` still isn't in `main` — PR #30 remains open, held for the operator's
+  own sign-off — so this PR's diff necessarily still carries that entry's full import until #30
+  merges independently; not a regression, just a byproduct of #30 not landing yet).
+- `gh pr view 35`: base `main`, 2 commits, `mergeStateStatus: CLEAN`.
+
 ## 2026-07-24 — start / reconciliation
 
 - Read issue #34 in full before touching anything.

@@ -1,0 +1,68 @@
+name: base-project-template
+slug: base-project-template
+homepage: https://github.com/workain/agent-harness-registry/tree/main/templates/base-project-template
+category: instructions-rules
+layer: "Instruction/identity layer (Block A) plus project-local seeds of memory, operational-storage, and gate blocks — a small project-bootstrap SCAFFOLD (several files + two variants), not a single convention file"
+what_it_is: >
+  An evidence-derived default CLAUDE.md/AGENTS.md-class project template, shipped as two
+  copy-ready variants (`with-git/`, `without-git/`) built from a shared `common/` + `fragments/`
+  source composed by a `render_templates.py --check` drift gate. Ships a short identity/instructions
+  file (safety boundaries near the top if any apply, build/test/verify commands, non-default
+  conventions, repository etiquette, pointers only to memory/knowledge/tasks/skills/subagents —
+  no inline restatement of any of those), a `Tasks/<date>_<slug>/` operational-tracking discipline
+  (`log.md` mandatory, a review artifact required by policy), a `LESSONS.md`/`DECISIONS.md` pair
+  for the deliberately-promoted subset of memory (pointing to the runtime's own auto-memory
+  feature for the fast/continuous layer), and empty-by-default `.claude/{skills,agents,
+  environment}/` slots. The `with-git/` variant additionally ships a git-tracked (not
+  manually-installed) `.claude/settings.json` PreToolUse hook blocking direct commits to
+  main/master, plus a PR template requiring a linked review artifact and a merged-reference
+  close; `without-git/` ships no such gate (a gate that can't reason about branches without a
+  repo would give false confidence by existing at all) and states the honest substitute instead
+  (back up before risky changes, lean on the review-artifact policy). Every content decision
+  traces to one of two research passes — see the deep-dive for the evidence and its honest
+  limits, not restated here.
+integration: >
+  Copy the ONE variant directory that fits your project (with-git/ if it is or will be a git
+  repo, without-git/ otherwise) into your project's root, fill in every <BRACKETED>
+  placeholder, delete what doesn't apply. If you edit anything in the source `common/` or
+  `fragments/` directories (e.g. to adapt the template for reuse), re-run
+  `python3 render_templates.py` and commit the result; `--check` mode verifies the two shipped
+  variants haven't drifted from their source.
+license: >
+  MIT. Resolved 2026-07-24 (operator decision: "не против раздавать и не вижу смысла
+  ограничивать" — not opposed to giving it away, sees no reason to restrict it, accepting the
+  manager's MIT recommendation). A `LICENSE` file ships at
+  `templates/base-project-template/LICENSE`, scoped to the template's own files.
+license_tag: "MIT"
+open_source: true
+use_cases: "default CLAUDE.md/AGENTS.md project bootstrap, new-repo instruction-file scaffolding, mechanical commit-gate + task-tracking discipline for a from-scratch project"
+activity:
+  stars: null
+  last_verified_note: "not an independently-starred public repo; imported into this registry as this template's first public home (2026-07-24) from a private research repo's reviewed-but-unmerged revision — see provenance"
+provenance:
+  - url: "workain/agent-lab-manager (private repo), PR #217, commit 3381fc8"
+    fetched: "2026-07-24"
+    note: >
+      Template files (README, both variants, common/, fragments/, render_templates.py) imported
+      verbatim at this pinned, twice-ROAST-cleared and live-dogfooded revision (source PR
+      unmerged as of this import; two AGENTS.md symlinks had to be recreated by hand after
+      GitHub's Contents API silently resolved them to plain file copies during fetch). The
+      template's own top-level README.md (meta-only, does not ship into adopting projects) was
+      rewritten for public consumption: private cross-references and an internal architecture-doc
+      pointer were replaced with a pointer to this registry's own deep-dive and a pinned
+      provenance note; one private cross-reference inside `with-git/.claude/settings.json`'s
+      shipped `$comment` was also removed, since that file ships into every adopting project.
+      Research content for the deep-dive (not pasted, rewritten fresh) draws on the same private
+      repo's own research docs (an external best-practice survey and an internal distillation of
+      what actually carries weight in a real agent fleet, plus a synthesis and a live dogfood
+      report) — all independently ROAST-cleared before this import, per the workain lab's own
+      contribution discipline.
+  - url: https://workain.ai/blog/posts/base-project-template.html
+    fetched: "2026-07-24"
+    note: "launch article for this template; not yet live as of this import (publishes around this PR's merge); backlinked from both this entry's deep-dive and the imported template's own README"
+unverified:
+  - "Presence-vs-outcome distinction: the one controlled presence-vs-absence RCT found (arXiv:2602.11988) shows NO significant task-success benefit from having an instructions file at all in its main setting — the one verified exception is a +2.7% average gain in repositories with NO other documentation, where a generated file substitutes for missing docs rather than duplicating existing ones. Do not read 'ship this template' as outcome-proven in general; read it as evidence-consistent with the one condition where presence measurably helps."
+  - "The Tasks/log.md running-log recommendation rests on adjacent evidence only (Reflexion/ReasoningBank/SWE-MeM-style same-task/same-episode memory ablations), not a direct study of human-authored, multi-day project journals — stated explicitly as a scope gap in the deep-dive, not glossed over."
+  - "Live-dogfooded: the with-git commit gate (blocking a fresh session's real first commit on unborn HEAD) and the without-git backup-guidance ordering bug. NOT tested: multi-contributor review, long-horizon/multi-week drift, other agent engines (Cursor/Copilot/Gemini CLI), or without-git behavior over time — named explicitly as scope limits of a single-session dogfood, not defects."
+deep_dive: deep-dives/components/instructions-rules/base-project-template/README.md
+first_party: true

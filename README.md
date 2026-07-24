@@ -102,7 +102,9 @@ via the category paths below.
   index-table row (see `_name_cell` in `scripts/generate.py`) and folds a first-party count into
   each component category's Overview line — a real rendering distinction, not prose-only. Don't
   set this to signal endorsement or heavy usage of a third-party tool; it means authorship,
-  nothing else.
+  nothing else. Looking for this lab's own work rather than a cataloged third party? Search
+  [GUIDE.md](GUIDE.md) for `` `first-party` `` — no need for a separate hand-maintained list here
+  that would just go stale as more first-party entries are added.
 
 ## Testing status
 

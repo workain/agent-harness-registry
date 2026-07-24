@@ -1,0 +1,20 @@
+<!--
+TEMPLATE FILE — copy this into a specific Tasks/<date>_<slug>/ folder as `review.md` when you
+do a review; delete this comment once you've read it. Keep it short — this is a skeleton, not a
+report format to fill out exhaustively.
+-->
+
+# Review — <what's being reviewed: a PR number, a design doc, a change>
+
+**Verdict:** PASS / BLOCK
+
+## What was checked
+
+<Concretely, not "reviewed the code": which files were read, which claims were re-run/verified,
+which commands were actually executed. A verdict backed by "I looked it over" is weaker than one
+backed by a short list of what was actually done.>
+
+## Findings
+
+<One entry per finding — what's wrong, where, why it matters. An empty list is a valid PASS; a
+BLOCK needs at least one concrete, fixable finding, not a vague concern.>

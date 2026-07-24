@@ -1,5 +1,24 @@
 # #34 — research/ mechanism — log
 
+## 2026-07-24 — independent ROAST: BLOCK (governance, not engineering)
+
+Independent ROAST on PR #35 came back **BLOCK, HIGH confidence** — see roast.md for the summary
+(canonical artifact: `Tasks/20260724_ahr34_pr35_research_mechanism_roast/roast.md` in
+`workain/agent-lab-manager` @ `63f8733`). All engineering fully reproduced clean (every
+mechanical gate live-triggered independently, both-directions cross-link rendering confirmed,
+migration byte-diffed against PR #30's source with zero content drift). The blocker: PR #35's
+first commit merges PR #30's branch directly in, so this diff ships `base-project-template`'s
+full public import as a byproduct — but the operator personally reserved the PR #30 merge action
+specifically (stronger than the routine delegated-merge tiers), and merging #35 first would ship
+that exact content through a different PR number without that reserved sign-off ever being
+exercised on #30 itself.
+
+**Action taken: none to the code.** Per the manager's explicit instruction, the default path is
+to wait for the operator to merge #30 on their own timeline, then rebase #35 down to its true
+net-new diff (drop the base-project-template-import commit, keep only the research/ mechanism +
+migration-of-already-merged-content) before requesting re-review. Not merging, not attempting to
+route around this. PR #35 left open and unchanged, waiting on external (operator) action on #30.
+
 ## 2026-07-24 — rebase onto main (PR #33 merged)
 
 PR #33 (issue #31 restructure) was independently ROASTed PASS and squash-merged to `main` as

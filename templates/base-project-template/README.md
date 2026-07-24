@@ -68,6 +68,12 @@ see the deep-dive's "What was and wasn't tested" section for exactly what that d
 didn't cover. This copy will be re-synced once the source PR merges; until then, treat this as a
 faithful snapshot of a reviewed-but-not-yet-merged revision, not a moving target.
 
+## License
+
+MIT — see the [`LICENSE`](LICENSE) file at this template's own root, scoped to the template's
+files. Resolved 2026-07-24 (operator decision); see the registry entry's `license` field and
+this template's deep-dive for the decision record.
+
 ## Launch article
 
 A companion write-up of the research behind this template: [Minimal CLAUDE.md, derived from

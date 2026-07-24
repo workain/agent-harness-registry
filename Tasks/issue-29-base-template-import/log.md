@@ -71,3 +71,26 @@ section-number cross-reference in `with-git/.claude/settings.json`'s shipped com
 a section-numbering scheme from the source repo's own internal CLAUDE.md, not this template's
 own file) reworded to stand on its own; added a "not yet live" qualifier to the launch-article
 link everywhere it appears, since it publishes around this PR's merge, not before.
+
+## License decision applied (2026-07-24)
+
+Operator resolved the flagged license gap: **MIT**, explicitly ("не против раздавать и не вижу
+смысла ограничивать" — not opposed to giving it away, sees no reason to restrict it; accepted the
+manager's MIT recommendation). Applied:
+
+- Added `templates/base-project-template/LICENSE` (standard MIT text, copyright holder
+  "workain", year 2026) at the template's own root — no existing in-repo precedent for a vendored
+  component's own LICENSE file placement (every other registry component is an external
+  reference, not a vendored source tree), so root-of-template was the natural fit per the
+  template's own "copy the LICENSE along with your variant" implication.
+- `data/components/base-project-template.yaml`: `license_tag` → `"MIT"`, `open_source` → `true`,
+  `license` prose field rewritten to state the resolution and point at the LICENSE file; removed
+  the now-stale "License status is an open gap" line from `unverified`.
+- `deep-dives/components/base-project-template.md`: replaced the "License status is an open gap
+  ... flagged for the operator" Gotchas bullet with a resolved-MIT statement.
+- `templates/base-project-template/README.md`: added a short "License" section pointing at the
+  LICENSE file.
+- Regenerated `GUIDE.md` via `python3 scripts/generate.py` — the component's index-table license
+  cell now reads `MIT`.
+- `python3 templates/base-project-template/render_templates.py --check` still PASSes (LICENSE/
+  README are outside the common/fragments-composed variant tree, no drift introduced).

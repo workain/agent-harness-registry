@@ -29,14 +29,12 @@ integration: >
   `python3 render_templates.py` and commit the result; `--check` mode verifies the two shipped
   variants haven't drifted from their source.
 license: >
-  No formal open-source license has been attached to this template as imported — it currently
-  inherits this registry's own default stance (all rights reserved absent a chosen license; see
-  this repo's README "License & usage"). This is a live gap, not a settled answer: a template
-  whose entire purpose is to be copied into other projects is an unusual candidate for an
-  all-rights-reserved default, and resolving it (e.g. a permissive license scoped to the
-  template's own files) is flagged as follow-up for the operator, not resolved unilaterally here.
-license_tag: "No license chosen yet (flagged — see deep-dive)"
-open_source: false
+  MIT. Resolved 2026-07-24 (operator decision: "не против раздавать и не вижу смысла
+  ограничивать" — not opposed to giving it away, sees no reason to restrict it, accepting the
+  manager's MIT recommendation). A `LICENSE` file ships at
+  `templates/base-project-template/LICENSE`, scoped to the template's own files.
+license_tag: "MIT"
+open_source: true
 use_cases: "default CLAUDE.md/AGENTS.md project bootstrap, new-repo instruction-file scaffolding, mechanical commit-gate + task-tracking discipline for a from-scratch project"
 activity:
   stars: null
@@ -66,5 +64,4 @@ unverified:
   - "Presence-vs-outcome distinction: the one controlled presence-vs-absence RCT found (arXiv:2602.11988) shows NO significant task-success benefit from having an instructions file at all in its main setting — the one verified exception is a +2.7% average gain in repositories with NO other documentation, where a generated file substitutes for missing docs rather than duplicating existing ones. Do not read 'ship this template' as outcome-proven in general; read it as evidence-consistent with the one condition where presence measurably helps."
   - "The Tasks/log.md running-log recommendation rests on adjacent evidence only (Reflexion/ReasoningBank/SWE-MeM-style same-task/same-episode memory ablations), not a direct study of human-authored, multi-day project journals — stated explicitly as a scope gap in the deep-dive, not glossed over."
   - "Live-dogfooded: the with-git commit gate (blocking a fresh session's real first commit on unborn HEAD) and the without-git backup-guidance ordering bug. NOT tested: multi-contributor review, long-horizon/multi-week drift, other agent engines (Cursor/Copilot/Gemini CLI), or without-git behavior over time — named explicitly as scope limits of a single-session dogfood, not defects."
-  - "License status (see `license` field above) is an open gap, not resolved by this import."
 deep_dive: deep-dives/components/base-project-template.md

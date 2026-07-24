@@ -172,7 +172,7 @@ Pre-assembled multi-component kits — rare relative to components. Each write-u
 |---|---|---|---|
 | [.goosehints (Goose)](https://github.com/block/goose) | Apache-2.0 | 50.7k | [write-up](deep-dives/components/goosehints.md) |
 | [AGENTS.md](https://github.com/agentsmd/agents.md) | MIT | 22.8k | [write-up](deep-dives/components/agents-md.md) |
-| [base-project-template](https://github.com/workain/agent-harness-registry/tree/main/templates/base-project-template) | No license chosen yet (flagged — see deep-dive) | — | [write-up](deep-dives/components/base-project-template.md) |
+| [base-project-template](https://github.com/workain/agent-harness-registry/tree/main/templates/base-project-template) | MIT | — | [write-up](deep-dives/components/base-project-template.md) |
 | [Cursor Rules (.cursor/rules, formerly .cursorrules)](https://cursor.com/docs/context/rules) | Proprietary feature (usable) | — | [write-up](deep-dives/components/cursor-rules.md) |
 | [Devin Knowledge & Playbooks](https://docs.devin.ai/product-guides/knowledge) | Proprietary feature (usable) | — | [write-up](deep-dives/components/devin-knowledge-playbooks.md) |
 | [GEMINI.md (Gemini CLI)](https://github.com/google-gemini/gemini-cli/blob/main/docs/cli/gemini-md.md) | Apache-2.0 | 106k | [write-up](deep-dives/components/gemini-md.md) |

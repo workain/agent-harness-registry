@@ -1,18 +1,18 @@
-# base-project-template — results
+# base-project-template-evidence — results
 
-Part of the [base-project-template deep dive](README.md). See also
-[evidence](evidence.md) (the narrative interpretation of these numbers),
-[design, growth, and usage](design-and-usage.md), and [references](references.md) (full
-citations).
+Part of the [base-project-template-evidence research study](README.md). See also
+[evidence](evidence.md) (the narrative interpretation of these numbers) and
+[references](references.md) (full citations).
 
-This page collects the concrete numbers behind the deep dive in one standalone, linkable place:
+This page collects the concrete numbers behind the study in one standalone, linkable place:
 external-study results (content taxonomy, the one presence-vs-absence RCT, length/decay effects,
-task-log/memory ablations) and the internal dogfood measurements that shaped the template's own
-design. Every figure below also appears, cited, in [evidence.md](evidence.md) or
-[design-and-usage.md](design-and-usage.md) — this file exists so a specific number can be linked
-to directly, without pointing at a paragraph buried in prose. Short names below (e.g. "Gloaguen et
-al.") are not full citations — see [references.md](references.md) for authors, venue, and arXiv
-ID.
+task-log/memory ablations) and the internal dogfood measurements that shaped
+`base-project-template`'s own design. Every figure below also appears, cited, in
+[evidence.md](evidence.md) or the [base-project-template component's design-and-usage
+notes](../../deep-dives/components/instructions-rules/base-project-template/design-and-usage.md)
+— this file exists so a specific number can be linked to directly, without pointing at a
+paragraph buried in prose. Short names below (e.g. "Gloaguen et al.") are not full citations —
+see [references.md](references.md) for authors, venue, and arXiv ID.
 
 ## What belongs in an instruction file — three converging sources
 

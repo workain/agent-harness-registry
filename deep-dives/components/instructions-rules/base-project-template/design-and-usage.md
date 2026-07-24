@@ -1,8 +1,12 @@
 # base-project-template — design, growth, and usage
 
-Part of the [base-project-template deep dive](README.md). See also
-[evidence](evidence.md), [results](results.md) (the underlying numbers and tables), and
-[references](references.md).
+Part of the [base-project-template deep dive](README.md). The evidence behind the decisions
+below lives in the
+[base-project-template-evidence research study](../../../../research/base-project-template-evidence/README.md)
+— [evidence](../../../../research/base-project-template-evidence/evidence.md),
+[results](../../../../research/base-project-template-evidence/results.md) (the underlying
+numbers and tables), and
+[references](../../../../research/base-project-template-evidence/references.md).
 
 ## The two-variant split and the commit gate
 
@@ -12,7 +16,7 @@ or worktree, with no manual install step. That design choice is grounded in a sp
 reproduced finding from the internal evidence stream: a comparable pre-commit hook requiring a
 manual `cp` into `.git/hooks/` sat uninstalled for a real, measured stretch after a real project's
 bootstrap, while a git-tracked settings file propagated with zero gap (exact figure in
-[results.md](results.md#internal-dogfood-results)). The gate was then **proven live, not just
+[results.md](../../../../research/base-project-template-evidence/results.md#internal-dogfood-results)). The gate was then **proven live, not just
 read**, in a two-session dogfood pass: a fresh Claude Code session's real first commit on an
 unborn `HEAD` was blocked with the exact intended message, and a same-session (non-fresh)
 `cd`-in to the same directory was **not** blocked — a genuine, non-obvious Claude-Code-specific
@@ -41,7 +45,7 @@ structurally different populations (a PMO's own substantive work vs. its cross-r
 teams' PRs, which made up most of all folders sampled). Restricted to the population that
 actually generalizes to a solo developer or small team, the honest figure is real and worth
 requiring as policy, but well below the near-universal habit the first-pass number implied — see
-[results.md](results.md#internal-dogfood-results) for both the corrected figure and the original
+[results.md](../../../../research/base-project-template-evidence/results.md#internal-dogfood-results) for both the corrected figure and the original
 one it replaced. The one figure in the whole internal distillation that *does* hold up under that
 same population correction is the running log itself, unchanged whichever way the folders are
 sliced — the strongest single piece of internal evidence behind any part of this template (figure
@@ -49,7 +53,7 @@ in the same table).
 
 ## Growth ladder — when to deliberately outgrow this template
 
-Everything above — plus the general [evidence](evidence.md) for keeping instruction files
+Everything above — plus the general [evidence](../../../../research/base-project-template-evidence/evidence.md) for keeping instruction files
 minimal — argues for a thin default. The template's own design doc is equally explicit about the
 other half of that argument: named, evidence-linked conditions under which a project should
 deliberately add complexity back, so "keep it thin" reads as a starting point with stated exits,
@@ -80,7 +84,7 @@ than in a single session. `CLAUDE.md` filled length in the dogfood landed above 
 median the external research cites for real-world files, though well under the as-shipped
 skeleton's own length — a from-scratch project genuinely has more to say than a file that's had
 time to prune, not a miss against the target (all three figures in
-[results.md](results.md#internal-dogfood-results)).
+[results.md](../../../../research/base-project-template-evidence/results.md#internal-dogfood-results)).
 
 ## Getting started
 

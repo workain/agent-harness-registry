@@ -1,8 +1,10 @@
-# base-project-template — evidence
+# base-project-template-evidence — evidence
 
-Part of the [base-project-template deep dive](README.md). See also
-[design, growth, and usage](design-and-usage.md), [results](results.md) (the underlying numbers
-and tables), and [references](references.md).
+Part of the [base-project-template-evidence research study](README.md). See also
+[results](results.md) (the underlying numbers and tables), [references](references.md), and the
+[base-project-template component's design-and-usage
+notes](../../deep-dives/components/instructions-rules/base-project-template/design-and-usage.md)
+(the practical decisions this evidence informed).
 
 ## What belongs in an instruction file, and why
 

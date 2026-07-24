@@ -18,21 +18,22 @@ heavily-instrumented agent fleet, and an external survey of vendor guidance, rea
 instruction files, and controlled studies. This write-up is the *why*; the template files
 themselves are the *what*.
 
+**Research:** [base-project-template-evidence](../../../../research/base-project-template-evidence/README.md)
+— the full evidence synthesis (content taxonomy, the presence-vs-absence RCT, task-log/memory
+ablations, internal dogfood measurements) lives there, not restated here; e.g. the presence RCT
+scored +2.7% on the no-other-documentation subgroup — see the study for the full picture and honest
+limits, not just that one number.
+
 ## In this deep dive
 
-- **[Evidence](evidence.md)** — what belongs in an instruction file and why (three converging
-  sources), the presence paradox (the one controlled presence-vs-absence RCT), and whether a
-  running task log actually helps.
 - **[Design, growth, and usage](design-and-usage.md)** — the two-variant split and the commit
   gate, the growth ladder for deliberately outgrowing this template, what was and wasn't tested,
-  getting started, and gotchas.
-- **[Results](results.md)** — the underlying numbers and comparisons behind the two write-ups
-  above, as standalone tables: study/source, method, finding, and effect size, each linkable on
-  its own.
-- **[References](references.md)** — every source cited above.
+  getting started, and gotchas. Cites the research study's figures rather than restating them.
 
 ## See also
 
+- [base-project-template-evidence](../../../../research/base-project-template-evidence/README.md)
+  — the research this template is built on.
 - [`templates/base-project-template/`](../../../../templates/base-project-template/) — the template
   itself; start with its own README's "Which variant do I want?" section.
 - [Registry root README](../../../../README.md) and [GUIDE.md](../../../../GUIDE.md) — the full

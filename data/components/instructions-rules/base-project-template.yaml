@@ -66,3 +66,5 @@ unverified:
   - "Live-dogfooded: the with-git commit gate (blocking a fresh session's real first commit on unborn HEAD) and the without-git backup-guidance ordering bug. NOT tested: multi-contributor review, long-horizon/multi-week drift, other agent engines (Cursor/Copilot/Gemini CLI), or without-git behavior over time — named explicitly as scope limits of a single-session dogfood, not defects."
 deep_dive: deep-dives/components/instructions-rules/base-project-template/README.md
 first_party: true
+related_research:
+  - base-project-template-evidence

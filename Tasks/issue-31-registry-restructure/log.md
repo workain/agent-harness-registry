@@ -31,3 +31,40 @@
   and are rendered inline in `GUIDE.md`, not as separate per-entry files, so there's no flat-pile
   problem there the way there was for components at 109. Filing a fast-follow issue with this
   rationale (see PR description) rather than silently leaving it unstated.
+
+## 2026-07-24 — execution
+
+- Migration commit (`783b97f`): `git mv` all 109 `data/components/*.yaml` + 108
+  `deep-dives/components/*.md` into `<category>/` subfolders (mcp.md shared file moved once,
+  both referencing entries repointed). `scripts/generate.py`'s `_load_dir()` glob widened
+  `*.yaml` -> `**/*.yaml` (matches nested and flat dirs alike, so bundles/engines/benchmarks
+  needed no change). Added `first_party:` rendering (name-cell badge + per-category Overview
+  count) ahead of any real entry using it — tested manually with a temporary uncommitted
+  `first_party: true` on `gemini-md.yaml`, confirmed the badge + count rendered, then reverted
+  before committing (diff came back byte-identical to baseline).
+- Filed issue #32 (fast-follow: bundles/engines/benchmarks subfolder scope) before writing the
+  README section that cross-links it.
+- Docs commit (`2b46aa1`): rewrote README's "How this repo is organized" for double duty
+  (navigation + binding placement rule), documented `first_party` under "Fields worth knowing
+  about", updated "Adding or updating an entry" step 1. Added `_check_component_subfolders()` to
+  `generate.py` — mechanically enforces a component's folder matches its own `category:` field;
+  verified it actually raises on a real mismatch (moved `mem0.yaml` into the wrong folder,
+  confirmed non-zero exit + correct error message, reverted, confirmed clean exit again) before
+  committing — a claim in README that isn't backed by a real check would violate this repo's own
+  provenance discipline.
+- Posted a coordination comment on PR #30 (still open) stating explicitly how the two are
+  reconciled: #31 doesn't touch/stub `base-project-template` (it isn't in this tree since #30 is
+  unmerged); folding it in once #30 merges is a documented, small follow-up.
+- Final mechanical verification (full runs, not spot-only): `generate.py` exit 0; all 128
+  `deep-dives/*.md` links in the regenerated `GUIDE.md` resolve; all 128 `deep_dive:` fields
+  across every migrated YAML resolve; 15-entry manual sample across all 5 categories confirmed
+  by hand; `scripts/pre-commit-checks.sh` clean; `git diff origin/main --stat -- Tasks/ reviews/`
+  shows only this task's own new `plan.md`/`log.md` — confirms both directories are otherwise
+  untouched by the reorg, as the issue requires stating explicitly, not leaving inferred.
+- GUIDE.md diff vs. origin/main, read in full: every changed line is either a path-prefix update
+  or the one disclosed pre-existing drift fix (Memory tested count 8->9,
+  `generative-agents-memory-stream`'s already-committed verdict not previously reflected — same
+  class of drift PR #30's commit message already flagged for a different entry). No other
+  content changed.
+- Not self-merged, not self-ROASTed — opening PR and requesting independent ROAST per this
+  repo's CREATE->ROAST->IMPROVE convention.

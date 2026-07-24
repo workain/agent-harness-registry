@@ -460,6 +460,12 @@ def main() -> None:
         status = f"{tested_n} tested" if tested_n else "catalogued only, not yet tested"
         out.append(f"- **{CATEGORY_TITLES[cat]}** ({len(entries)}, {status}) — see below")
     out.append("")
+    out.append(
+        "Almost every entry above catalogues a third-party project. One is workain's own "
+        "first-party work, not a third-party catalog item — see the root README's "
+        "[\"Our own work\"](README.md#our-own-work) section."
+    )
+    out.append("")
 
     out.append("---")
     out.append("")

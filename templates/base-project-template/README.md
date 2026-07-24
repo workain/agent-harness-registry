@@ -14,7 +14,7 @@ decisions on top of them. The full research write-up — what belongs in an inst
 why, the "presence paradox" (having a file at all doesn't reliably move task-success outcomes
 except when it fills a genuine documentation gap), the growth ladder, and the honest limits of
 what was and wasn't tested — lives in this registry's own
-[deep-dive](../../deep-dives/components/base-project-template.md); read that for *why*, not
+[deep-dive](../../deep-dives/components/base-project-template/); read that for *why*, not
 just *what*.
 
 ## Which variant do I want?
@@ -55,7 +55,7 @@ two-variant project template.
 See `with-git/README.md`'s own "What's deliberately NOT here" section for the shipping wording
 (no multi-document process bundle, no formal ontology/KB layer, no epic-register/board wiring, no
 delegated-merge-tier machinery — applies equally to `without-git/`, which just doesn't restate
-it); the [deep-dive](../../deep-dives/components/base-project-template.md) carries the evidence
+it); the [deep-dive](../../deep-dives/components/base-project-template/) carries the evidence
 each exclusion is based on.
 
 ## Provenance and status

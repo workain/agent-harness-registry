@@ -10,6 +10,14 @@ placement — what you compose onto an engine, or what someone else pre-composed
 entry with license, popularity (stars), and use cases at a glance, each linking to a full write-up
 with practical guidance (when to use it, how to get started, gotchas, comparisons).
 
+## Our own work
+
+Almost everything catalogued here is a third-party project. One entry is not: **[base-project-template](deep-dives/components/base-project-template/)**
+is a workain-authored, evidence-derived default `CLAUDE.md`/`AGENTS.md` project template (with a
+git-tracked commit-block gate and task-tracking scaffolding), built and dogfooded by this lab —
+see its [deep dive](deep-dives/components/base-project-template/) for what it is and why, or go
+straight to the [template files](templates/base-project-template/).
+
 ## How this repo is organized
 
 - `data/components/*.yaml` — **primary, work for volume**: one file per ATOMIC piece of harness

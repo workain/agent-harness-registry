@@ -94,3 +94,51 @@ manager's MIT recommendation). Applied:
   cell now reads `MIT`.
 - `python3 templates/base-project-template/render_templates.py --check` still PASSes (LICENSE/
   README are outside the common/fragments-composed variant tree, no drift introduced).
+
+## Discoverability restructure (2026-07-24)
+
+Third, narrower ROAST-style ask from the operator, after being handed the raw GitHub link to the
+deep-dive: a single 242-line file sitting anonymously inside the flat 109-entry
+`deep-dives/components/` directory (this registry's own established, repo-wide convention — not
+changed here, and not changed for the other 108 entries) gave a cold visitor zero reason to look
+inside, and zero signal on the way in that it's this lab's own work rather than a third-party
+catalog entry. Scoped strictly to this ONE entry:
+
+- Split `deep-dives/components/base-project-template.md` (242 lines, one file) into
+  `deep-dives/components/base-project-template/` (a dedicated folder, first of its kind in this
+  registry — `scripts/generate.py`'s `_deep_dive_link()` reads `deep_dive:` as a plain string, so
+  no generator change was needed to repoint it):
+  - `README.md` — entry point: opens with an explicit "Our own work" statement (first-party,
+    not third-party), intro, links to the 3 sibling files, and links out to
+    `templates/base-project-template/` + the registry root.
+  - `evidence.md` — "What belongs in an instruction file, and why" + "The presence paradox" +
+    "Does a running task log actually help?" (the research/evidence sections).
+  - `design-and-usage.md` — "The two-variant split and the commit gate" + "Growth ladder" +
+    "What was and wasn't tested" + "Getting started" + "Gotchas" (design decisions + practical
+    usage). One transition sentence reworded for the split ("Everything above argues for a thin
+    default" → added an explicit cross-link to `evidence.md`, since "above" no longer spans the
+    whole original doc) — no fact, number, or citation altered anywhere in the split.
+  - `references.md` — the citation list, with 2 inline mentions turned into cross-links back to
+    `evidence.md` instead of bare prose.
+- `data/components/base-project-template.yaml`: `deep_dive:` repointed to
+  `deep-dives/components/base-project-template/README.md`.
+- `templates/base-project-template/README.md`: both existing deep-dive links (`Which variant`
+  section + `Provenance` section) repointed from the old flat-file path to the new folder path.
+- Added an "Our own work" section to the registry root `README.md` (right before "How this repo
+  is organized" — a short, plain factual statement, no marketing language, per this org's own GTM
+  tone standard) linking straight to the new deep-dive folder and the template files.
+- `scripts/generate.py`: added one static, generic line to the generated Overview section
+  pointing at the root README's "Our own work" section (not hardcoded per-category, so it doesn't
+  need touching again if a second first-party entry appears later).
+- Regenerated `GUIDE.md` — confirmed the `base-project-template` row's "write-up" link now
+  resolves to `deep-dives/components/base-project-template/README.md`, and the new Overview
+  pointer line renders.
+- Verification: `python3 templates/base-project-template/render_templates.py --check` → PASS;
+  `python3 scripts/generate.py` → exit 0; a small script walked every markdown link in the 4 new
+  files + `README.md` + the template's `README.md` + `GUIDE.md` and confirmed every relative
+  target exists on disk (0 broken links); pre-commit hook run clean before push.
+
+Out of scope, deliberately not touched: the other 108 `deep-dives/components/*.md` entries and
+the shared flat-directory convention itself (stated explicitly in the root README's "How this
+repo is organized" section) — restructuring those is a bigger, disruptive decision affecting
+content this task doesn't own, and wasn't what was asked.

@@ -1,0 +1,32 @@
+name: Windsurf Rules & Memories (Cascade)
+slug: windsurf-rules
+homepage: https://docs.devin.ai/desktop/cascade/memories
+category: instructions-rules
+layer: "Instruction / identity layer (equivalent to Block A) — a product FEATURE/convention, not standalone open-source software"
+what_it_is: >
+  Windsurf's (now under Cognition/Devin, per the docs' own redirect from
+  docs.windsurf.com to docs.devin.ai) two-part context-persistence system: auto-generated
+  **Memories** (Cascade writes contextual notes locally to
+  `~/.codeium/windsurf/memories/`, machine-local and NOT team-shared by default) versus
+  manually-authored **Rules** (durable, shareable, four activation modes: always_on,
+  model_decision, glob, manual). Rules are scoped at three levels: Global (single
+  `global_rules.md`, 6,000-char limit, always active), Workspace (multiple `.md` files
+  under `.devin/rules/` or `.windsurf/rules/`, 12,000 chars each), and System/Enterprise
+  (IT-deployed, org-wide). The legacy single `.windsurfrules` file at the workspace root
+  is still recognized but superseded by the modular `.devin/rules/` directory approach —
+  the same legacy-single-file -> modular-directory evolution AGENTS.md/Cursor Rules/
+  this registry's other rules entries all independently converged on.
+integration: "Author Markdown files under `.devin/rules/` (or the legacy `.windsurfrules` at the workspace root); global rules go in `~/.codeium/windsurf/memories/global_rules.md`; enterprise rules are IT-deployed via OS-specific directories"
+license: "Documents a feature of Windsurf/Cascade (proprietary, under Cognition/Devin) — the rules FILES a team authors are their own content, not licensed software"
+license_tag: "Proprietary feature (usable)"
+open_source: false
+use_cases: "project + global instruction scoping for Windsurf/Cascade"
+activity:
+  stars: null
+  last_verified_note: "fetched live 2026-07-05 from docs.devin.ai (redirected from the legacy docs.windsurf.com URL, confirming the Cognition/Devin acquisition is reflected in current documentation infrastructure, not just announcements)"
+provenance:
+  - url: https://docs.devin.ai/desktop/cascade/memories
+    fetched: "2026-07-05"
+    note: "fetched directly (redirected live from docs.windsurf.com/windsurf/cascade/memories): Memories vs. Rules distinction, three scoping levels, legacy .windsurfrules status, character limits"
+unverified: []
+deep_dive: deep-dives/components/instructions-rules/windsurf-rules.md

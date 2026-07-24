@@ -1,0 +1,19 @@
+name: alirezarezvani/claude-skills
+slug: skill-alirezarezvani-collection
+category: skills-tools
+homepage: https://github.com/alirezarezvani/claude-skills
+license: "MIT"
+license_tag: "MIT"
+open_source: true
+use_cases: "337 skills/agents/commands spanning engineering, marketing, product, compliance, finance"
+what_it_is: >
+  337 total skills/agents/commands spanning engineering, marketing, product, compliance, C-level advisory, business ops, and finance — the broadest single-repo DOMAIN spread found in this research.
+activity:
+  stars: "20.3k"
+  last_verified_note: "2,778 forks"
+provenance:
+  - url: https://github.com/alirezarezvani/claude-skills
+    fetched: "2026-07-05"
+    note: "verified directly via gh api (stars/forks/license) where a repo exists; some entries flagged unverified per search-only sourcing"
+unverified: []
+deep_dive: deep-dives/components/skills-tools/skill-alirezarezvani-collection.md

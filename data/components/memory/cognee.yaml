@@ -1,0 +1,115 @@
+name: Cognee
+slug: cognee
+homepage: https://github.com/topoteretes/cognee
+category: memory
+layer: "Memory / data layer (equivalent to Block F) — knowledge-graph + vector, dual-layer shape"
+what_it_is: >
+  An open-source AI memory platform: ingests data in any format and continuously builds
+  a self-hosted knowledge graph combining vector embeddings, graph-based reasoning, and
+  "cognitive-science-grounded ontology generation" so content is both semantically
+  searchable and relationally connected. Exposes remember / recall / forget / improve
+  as its core operations — a similar shape to our own agent-memory's remember/forget
+  pump, but knowledge-graph-first rather than tiered-access-band-first. LIVE-TESTED
+  (harness-eval #37): the only memory component in this registry's series so far to
+  BEAT a flat-file baseline on a live head-to-head (0.833-1.0 vs. file-wiki's 0.667) —
+  but ships a verified, currently-exploitable unauthenticated privilege-escalation bug
+  in its REST API (self-registration to global LLM-config takeover), and its own
+  answer-generation step is non-deterministic enough that no single accuracy number
+  should be read as exact. TESTED AT SMALL SCALE (corpus fits in context); large-corpus
+  / long-horizon performance untested (operator directive, harness-eval#53, 2026-07-06)
+  — at the ~170-character/task scale persistbench_v1 actually exercises, the entire
+  corpus fits in the model's context window, so this "beats file-wiki" result does not
+  yet show whether cognee's retrieval/consolidation earns its keep once the corpus
+  exceeds what fits in context.
+integration: "Python SDK, REST API (localhost:8000 default), CLI (cognee-cli), Docker images, a TypeScript client (@cognee/cognee-ts), a Rust library (cognee-rs), and a Claude Code plugin integration"
+license: Apache-2.0
+license_tag: "Apache-2.0"
+open_source: true
+use_cases: "knowledge-graph memory, ontology-linked retrieval, long-term agent memory"
+activity:
+  stars: "27k (per GitHub page fetch, 2026-07-05)"
+  last_verified_note: "fetched live 2026-07-05; latest release v1.2.2 (2026-06-26), 8,429 commits, 237 open issues, 345 open PRs — actively maintained; the project has 'graduated' GitHub's Secure Open Source program per its own README"
+provenance:
+  - url: https://github.com/topoteretes/cognee
+    fetched: "2026-07-05"
+    note: "fetched directly (repo page): description, license, star count, architecture, integration surface, activity signal"
+  - url: https://github.com/workain/harness-eval (issue #37)
+    fetched: "2026-07-05"
+    note: "3-lens source pre-screen (claims/completeness/red-flags, all independently re-derived) plus a LIVE key-free run of cognee 1.2.2 (fastembed local embeddings + a Claude-Code-subscription-backed LLM shim, no paid API key) through this repo's persistbench_v1 bench vs. a bare-model floor and a flat-file (file-wiki) baseline, and a direct re-check of the actual installed 1.2.2 package's REST API code — see harness_eval_verdict below and https://github.com/workain/harness-eval/blob/main/reports/cognee_live_run.md (PR#42 merged 2026-07-18, commit 5bd59b6 — citation re-pinned from the prior branch-tip SHA now that it's on main). Verdict independently ROASTed once (harness-eval#42): the original security catch (CVE-2026-31231) was retracted as not reproducing in 1.2.2 and replaced with a directly-reproduced finding (cognee#3084); eval-core numbers unchanged."
+unverified:
+  - "tested at small scale (corpus fits in context); large-corpus / long-horizon performance untested — see harness-eval#53's operator directive, 2026-07-06"
+harness_eval_verdict:
+  reviewed: "2026-07-05"
+  tier: "B-minus"
+  testability: "tested-live"
+  one_liner: >
+    A real knowledge-graph+vector memory engine that live-tested BETTER than a flat-file
+    baseline — the opposite of this cycle's graphiti-zep finding — but ships a verified,
+    currently-exploitable unauthenticated privilege-escalation bug (self-registration to
+    global LLM-config takeover), and its own answer-generation step is non-deterministic
+    enough that no single accuracy number should be taken as exact. Tested at small scale
+    (corpus fits in context); large-corpus/long-horizon performance untested — this result
+    does not yet show whether cognee's retrieval earns its keep once the corpus exceeds
+    what fits in context (harness-eval#53, operator directive 2026-07-06).
+  what_to_steal: >
+    The ECL (extract-cognify-load) shape — remember/recall/forget/improve as a second,
+    more ergonomic API layered on top of a lower-level add/cognify/search/prune pipeline,
+    so simple callers get simple verbs without losing the pipeline's composability. The
+    fully-embedded default stack (SQLite + LanceDB + KuzuDB) is genuinely zero external
+    services for the single-user case. Local-model support is real, not vaporware:
+    fastembed for embeddings and an OpenAI-compatible custom-provider slot for the LLM
+    step both work today, key-free — this eval used both to run it.
+  the_catch: >
+    topoteretes/cognee#3084 (verified, currently exploitable in the actual installed
+    1.2.2 package): unrestricted self-registration escalates to global LLM-config
+    takeover. Any self-registered user (registration is open, unverified, by default) can
+    call POST /api/v1/settings — gated only on Depends(get_authenticated_user), no
+    admin/superuser check — to overwrite the global, process-wide LLM endpoint/API key,
+    silently routing every subsequent user's prompts, documents, and extracted entities
+    to an attacker-controlled server. GET /settings also leaks the first 10 characters of
+    the LLM/vector-db API key. GitHub-side fix commits closing this (superuser check +
+    full key masking) merged 2026-06-20/21, but a direct re-check against the actual `pip
+    install cognee==1.2.2` package (released 2026-06-26, after those commits) found the
+    fix NOT present: get_settings_router.py still gates both endpoints on plain
+    authentication, get_settings.py still returns the 10-character key prefix verbatim —
+    the fix exists on GitHub main but never shipped in the PyPI release most users
+    actually install. The SDK-only path this eval tested (no REST server running)
+    sidesteps this entirely, but anyone running cognee's REST API/Docker
+    image — this entry's own documented integration surface — is exposed today, not
+    hypothetically. (An earlier pass of this eval cited CVE-2026-31231, a notebook-exec
+    RCE, as the headline security catch; that CVE is real per the official NVD API but
+    scoped to "thru v0.4.0," and the vulnerable code path does not exist in 1.2.2 — no
+    notebook cell-execution router, no unsafe exec() anywhere in the API code, checked
+    directly. Retracted as a current finding per independent ROAST on harness-eval#42.)
+    Separately: real run-to-run variance, measured not just caveated — across 3
+    independent full-suite persistbench passes on byte-identical content (same
+    cache-reused graph, fresh LLM search/completion call each time), cognee scored
+    11/12, 12/12, then 10/12 — an ~17-point swing from the search-time completion step
+    alone. The suite's G1_determinism gate (byte-identical repeat scores) fails for
+    cognee by construction, as it would for any live-LLM-backed memory system — disclosed
+    as a property of real-LLM-backed SUTs generally, not cognee-specific, but it means no
+    single accuracy number here should be quoted as exact. Custom/local LLM-provider
+    wiring has real, open rough edges (hanging on non-standard key formats, provider
+    misdetection per cognee#2119). Cognee's own comparative benchmarks (vs
+    mem0/Graphiti/LightRAG) are self-published with an acknowledged tuning asymmetry —
+    treat as marketing, not evidence. bfcl_memory_v1 and niah_v1 were not run live this
+    pass (rig proven and directly reusable; deferred for wall-clock cost under
+    shared-host contention, not a technical blocker) — disclosed scope gap, not a
+    silent omission. SCALE CAVEAT (operator directive, harness-eval#53, 2026-07-06):
+    persistbench_v1's session1 corpus is ~170 characters/task — small enough that the
+    entire corpus fits in the model's context window, so a flat-file baseline is simply
+    read in full. Retrieval/consolidation (the whole point of a knowledge-graph memory
+    system) cannot show its real advantage by construction at this scale. This verdict's
+    headline ("beats file-wiki") is tested at small scale only; large-corpus/long-horizon
+    performance (corpus exceeding context, thousands of facts, multi-session accumulation)
+    is untested and not claimed here.
+  live_numbers: >
+    persistbench_v1, against LLM-backed apples-to-apples baselines sharing the same
+    underlying shim/model as cognee_agent itself: cognee_agent (real cognee) 0.833-1.0
+    (3-sample range: 10, 11, 12 of 12) vs. file_wiki_llm (honest baseline: raw session
+    text pasted into context, no retrieval smarts) 0.667 vs. bare_model_llm (zero-memory
+    floor) 0.167. Cognee beat every baseline (mechanical and LLM-backed) on every sampled
+    pass, showed zero contamination, and resisted a hedged-rumor distractor perturbation
+    every time it was tested.
+  raw_evidence: https://github.com/workain/harness-eval/tree/main/reports/cognee_live_run.md
+deep_dive: deep-dives/components/memory/cognee.md

@@ -1,0 +1,19 @@
+name: Notion MCP Server
+slug: mcp-notion
+category: access-mcp
+homepage: https://github.com/makenotion/notion-mcp-server
+license: "MIT"
+license_tag: "MIT"
+open_source: true
+use_cases: "search/read/create/update Notion pages and databases from an agent"
+what_it_is: >
+  Notion's official MCP server: search, read, create, and update pages/databases/workspace content.
+activity:
+  stars: "4.5k"
+  last_verified_note: "590 forks, pushed 2026-06-22"
+provenance:
+  - url: https://github.com/makenotion/notion-mcp-server
+    fetched: "2026-07-05"
+    note: "verified directly via gh api (stars/forks/license/push date) or the vendor's own site for hosted-only entries"
+unverified: []
+deep_dive: deep-dives/components/access-mcp/mcp-notion.md

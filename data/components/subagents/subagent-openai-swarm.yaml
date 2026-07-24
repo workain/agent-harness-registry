@@ -1,0 +1,20 @@
+name: openai/swarm (educational, archived)
+slug: subagent-openai-swarm
+category: subagents
+homepage: https://github.com/openai/swarm
+license: "MIT"
+license_tag: "MIT"
+open_source: true
+use_cases: "historical reference for the 'handoff' multi-agent primitive"
+what_it_is: >
+  Introduced the "handoff" primitive as a multi-agent mental model — explicitly educational-only per OpenAI's own README, superseded once the production SDK shipped. Swarm is a full (if deliberately minimal, educational) multi-agent framework with its own execution runtime driving the handoff loop — the framework itself is broader than equipment, and that runtime is engine territory per this registry's harness=equipment-vs-engine split. Swarm is NOT catalogued in this registry's `engines/` category; treat this entry as documenting a historical handoff-primitive pattern, not a recommendation to adopt the whole framework as equipment (it is explicitly not for production use regardless).
+activity:
+  stars: "21.8k"
+  last_verified_note: "ARCHIVED/EDUCATIONAL, pushed 2026-04-15"
+provenance:
+  - url: https://github.com/openai/swarm
+    fetched: "2026-07-05"
+    note: "verified directly via gh api (stars/forks/license/push date)"
+unverified:
+  - "this entry scopes to Swarm's handoff primitive/mental model specifically — its own execution runtime is out of scope and is NOT catalogued as an engine elsewhere in this registry"
+deep_dive: deep-dives/components/subagents/subagent-openai-swarm.md

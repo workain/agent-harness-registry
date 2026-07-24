@@ -1,0 +1,20 @@
+name: snyk/agent-scan
+slug: skill-snyk-agent-scan
+category: skills-tools
+homepage: https://github.com/snyk/agent-scan
+license: "Apache-2.0"
+license_tag: "Apache-2.0"
+open_source: true
+use_cases: "scanning skills/MCP servers/agent components for prompt injection and malicious payloads"
+what_it_is: >
+  Not a skill itself — a SECURITY SCANNER for skills/MCP servers/agent components, detecting prompt injection, tool poisoning, and malicious payloads. Snyk's own "ToxicSkills" study reportedly found prompt injection in 36% and 1,467 malicious payloads across a marketplace supply-chain audit [unverified — study specifics not independently re-fetched, found via search summary only].
+activity:
+  stars: "2.7k"
+  last_verified_note: "242 forks"
+provenance:
+  - url: https://github.com/snyk/agent-scan
+    fetched: "2026-07-05"
+    note: "verified directly via gh api (stars/forks/license) where a repo exists; some entries flagged unverified per search-only sourcing"
+unverified:
+  - "the 'ToxicSkills' study's specific figures (36% prompt injection, 1,467 malicious payloads) are from a search-result summary, not independently re-fetched from the study itself"
+deep_dive: deep-dives/components/skills-tools/skill-snyk-agent-scan.md

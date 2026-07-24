@@ -1,0 +1,96 @@
+name: LlamaIndex Memory
+slug: llamaindex-memory
+homepage: https://developers.llamaindex.ai/python/framework/module_guides/deploying/agents/memory/
+category: memory
+layer: "Memory / data layer (equivalent to Block F) — one module within a larger RAG/document-agent framework"
+what_it_is: >
+  The memory module of LlamaIndex (a document-agent/RAG/OCR platform — the framework
+  itself is broader than equipment, this entry scopes to its memory piece
+  specifically). `ChatMemoryBuffer`/`ChatSummaryMemoryBuffer` are DEPRECATED per their
+  own source docstrings ("Please use llama_index.core.memory.Memory instead"), though
+  `ChatMemoryBuffer` remains the framework's own documented default as of this review.
+  The current/recommended entry point is the unified `Memory` class: a short-term FIFO
+  chat buffer (SQL-backed) that "waterfalls" evicted messages into pluggable long-term
+  `Memory Block` objects — three predefined blocks ship: `StaticMemoryBlock`,
+  `FactExtractionMemoryBlock` (LLM-extracted facts, exact-string dedup only),
+  `VectorMemoryBlock` (embed-and-store flushed batches, one un-chunked blob per flush).
+  An agent calls `memory.put()`/`memory.get()`; short-term and long-term memory merge at
+  retrieval time. CAUTION (live-tested, harness-eval #46): `Memory`'s long-term blocks
+  only receive content once the short-term FIFO exceeds `token_limit *
+  chat_history_token_ratio` (21,000 tokens by default) — a short conversation may never
+  cross that threshold, so the long-term blocks silently never populate at all under
+  defaults. CAUTION 2: `VectorMemoryBlock` cannot actually retrieve anything when backed
+  by `SimpleVectorStore` — llama-index-core's own only in-process/zero-service vector
+  store — because `SimpleVectorStore.query()` never populates the `.nodes` field
+  `VectorMemoryBlock` reads (only ids+similarities), and its `add()` unconditionally
+  strips node text regardless of `stores_text`. A custom `BasePydanticVectorStore` is
+  required to use this block key-free at all.
+integration: "Part of the `llama_index` Python package (`llama-index-core`, zero hard dependency on the broader indexing/retrieval stack — its only llama-index-* dependency is the lightweight llama-index-workflows package); use an existing `BaseMemory` subclass or author a custom one. `FactExtractionMemoryBlock`/`VectorMemoryBlock` take typed `LLM`/`BaseEmbedding` fields (provider-agnostic), but llama-index-core itself ships ZERO concrete LLM or embedding providers (verified: llama_index.core.llms has only CustomLLM/MockLLM; BaseEmbedding is an ABC only) — every real provider is a separate optional package, and no local/offline default exists for either role. No extras/optional-dependencies split: `pip install llama-index-core` always pulls 27 hard dependencies (SQLAlchemy, NLTK, networkx, tiktoken, pillow, banks, aiosqlite, ...) and an 11.9MB wheel regardless of what you use."
+license: MIT
+license_tag: "MIT"
+open_source: true
+use_cases: "chat memory buffers, fact-extraction memory blocks, RAG-agent memory"
+activity:
+  stars: "50.7k (per GitHub page fetch, 2026-07-05, for the whole llama_index repo — memory is one module within it)"
+  last_verified_note: "fetched live 2026-07-05; latest release v0.14.23 (2026-06-24), 7,855 commits, 24.4k dependent projects — actively maintained. Release count: REST API reproduces 432 (double-checked at two per_page values), NOT 495 — the higher figure is the GitHub web UI's rendered count only; flag which source is authoritative for reproducibility."
+provenance:
+  - url: https://developers.llamaindex.ai/python/framework/module_guides/deploying/agents/memory/
+    note: "fetched via search summary for the memory-class API surface (ChatMemoryBuffer, Memory Block types) — not independently re-fetched in full for this entry"
+  - url: https://github.com/run-llama/llama_index
+    fetched: "2026-07-05"
+    note: "fetched directly (repo page) for license, star count, activity signal; did not surface memory-specific implementation details in the fetched content"
+  - url: https://github.com/workain/harness-eval (issue #46)
+    fetched: "2026-07-05/2026-07-06"
+    note: "3-lens source pre-screen (claims/completeness/red-flags, all independently re-derived against primary source, i.e. reading llama-index-core's own source) plus a LIVE key-free run (local sentence-transformers embeddings + a Claude-Code-subscription-backed LLM shim, no paid API key) through this repo's persistbench_v1, bfcl_memory_v1, and niah_v1 benches vs. a bare-model floor and a flat-file (file-wiki) baseline — see harness_eval_verdict below and https://github.com/workain/harness-eval/blob/main/reports/llamaindex_memory_live.md"
+unverified:
+  - "tested at small scale (corpus fits in context); large-corpus / long-horizon performance untested — see harness-eval#53's operator directive, 2026-07-06"
+harness_eval_verdict:
+  reviewed: "2026-07-06"
+  tier: "B"
+  testability: "tested-live"
+  one_liner: >
+    Live-tested the ONE memory component in this catalog whose fact/vector extraction
+    pipeline matched a flat-file baseline exactly (task-for-task on bfcl_memory) rather
+    than trailing it — but only by bypassing a real default-config footgun that would
+    otherwise silently disable the feature entirely, and only after fixing a vector-store
+    bug in llama-index-core's own only zero-service backend.
+  what_to_steal: >
+    The pluggable Memory Block architecture (Static/Fact/Vector, each a small typed ABC)
+    is a clean, genuinely reusable design for composing multiple long-term memory
+    strategies behind one short-term buffer — and the blocks themselves are portable,
+    vendorable Python you could lift independently of the rest of the framework.
+  the_catch: >
+    Live-tested (harness-eval #46, key-free: local sentence-transformers embeddings + a
+    Claude-Code-subscription LLM shim, no paid API key) through persistbench_v1 (12
+    tasks), bfcl_memory_v1 (12 tasks), and niah_v1 (short+medium tiers, 6 tasks).
+    llamaindex-memory (FactExtractionMemoryBlock + VectorMemoryBlock) matched the
+    flat-file file-wiki baseline EXACTLY on all three benches (1.000 vs 1.000 on
+    persistbench, 0.750 vs 0.750 on bfcl_memory — task-for-task identical, the same 9/12
+    right and the same 3/12 wrong — and 1.000 vs 1.000 on niah) — the first memory
+    component in this eval series (after mem0, graphiti-zep, letta,
+    openai-conversations-api) to clear that bar rather than trail it by a wide margin.
+    But two real bugs had to be found and worked around to get there, both reproduced
+    live: (1) `Memory`'s long-term blocks only receive content once the short-term FIFO
+    waterfalls past ~21,000 tokens by default — a short conversation would never cross
+    that, so the advertised feature would silently never activate; this eval's agents
+    bypass the waterfall entirely and drive the blocks directly. (2) `SimpleVectorStore` —
+    llama-index-core's own only in-process/zero-service vector store — cannot actually
+    back `VectorMemoryBlock` at all: its `query()` never populates `.nodes` (only
+    ids+similarities) and its `add()` unconditionally strips node text, so retrieval is
+    silently empty regardless of ingested data, on every query; a custom vector store had
+    to be written to close this gap. A third finding is relevant beyond this component:
+    using `claude -p` (the Claude Code CLI, not a bare LLM API) as a key-free LLM
+    stand-in leaked the operator's own ambient session context (their email) into
+    extracted "facts" that were never in the processed text — an eval-integrity risk in
+    the shim methodology this whole series reuses (mem0/graphiti-zep/llamaindex-memory),
+    not specific to llama-index; mitigated with an explicit anti-leakage instruction, not
+    silently absorbed. Scope caveat: the match may partly reflect these benches' small
+    per-task context size, where thin (exact-string, no-chunking) consolidation and no
+    consolidation converge — the harder niah `long` tier and turn-by-turn bfcl ingestion
+    were both skipped live for wall-clock reasons on a shared host, so whether the match
+    holds at larger scale is untested. Also carries the framework's own 9 GitHub Security
+    Advisories (2 SQL-injection, 2 command-injection, 2 arbitrary-code-execution, 1
+    prompt-injection-to-RCE CVE) — none reachable through the memory module specifically,
+    directly checked.
+  raw_evidence: "https://github.com/workain/harness-eval/blob/main/reports/llamaindex_memory_prescreen.md, https://github.com/workain/harness-eval/blob/main/reports/llamaindex_memory_live.md, https://github.com/workain/harness-eval/tree/main/reports/llamaindex_memory_live"
+deep_dive: deep-dives/components/memory/llamaindex-memory.md

@@ -1,0 +1,19 @@
+name: Docker MCP Gateway
+slug: mcp-docker-gateway
+category: access-mcp
+homepage: https://github.com/docker/mcp-gateway
+license: "MIT"
+license_tag: "MIT"
+open_source: true
+use_cases: "centrally managing/launching many MCP servers at once, secrets/OAuth handling across a team's MCP setup"
+what_it_is: >
+  A containerized GATEWAY that orchestrates MANY MCP servers at once — 200+ verified images in the Docker MCP Catalog, including partner servers from Stripe/Elastic/New Relic/Grafana.
+activity:
+  stars: "1.5k"
+  last_verified_note: "248 forks, pushed 2026-06-30"
+provenance:
+  - url: https://github.com/docker/mcp-gateway
+    fetched: "2026-07-05"
+    note: "verified directly via gh api (stars/forks/license/push date) or the vendor's own site for hosted-only entries"
+unverified: []
+deep_dive: deep-dives/components/access-mcp/mcp-docker-gateway.md

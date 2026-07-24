@@ -1,0 +1,29 @@
+name: Mem0
+slug: mem0
+homepage: https://github.com/mem0ai/mem0
+category: memory
+layer: "Memory / data layer (equivalent to Block F)"
+what_it_is: >
+  A "universal memory layer for AI agents" — LLM-based fact extraction from
+  conversations, embedded into a vector store (text-embedding-3-small by default),
+  retrieved via hybrid search (semantic + BM25 keyword + entity linking) with temporal
+  reasoning for ranking. Tracks user/session/agent-scoped memories. Latest algorithm
+  (April 2026, per fetch) shifted to "single-pass ADD-only extraction" over the prior
+  update/delete cycle, claimed by the project's own benchmarking to improve LoCoMo/
+  LongMemEval scores — that specific improvement claim is the project's own
+  self-benchmark, not independently re-verified here.
+integration: "SDK: `pip install mem0ai` (Python) or `npm install mem0ai` (Node.js); also a CLI (`mem0 init --agent ...`) and IDE-loadable skill packs"
+license: Apache-2.0
+license_tag: "Apache-2.0"
+open_source: true
+use_cases: "cross-session user memory, personalization, fact extraction from conversations"
+activity:
+  stars: "60.1k (per GitHub page fetch, 2026-07-05)"
+  last_verified_note: "fetched live 2026-07-05; Node SDK v3.0.13 (2026-07-01), 2,433 commits, 356 releases — actively maintained; the project also open-sources its own eval framework at mem0ai/memory-benchmarks"
+provenance:
+  - url: https://github.com/mem0ai/mem0
+    fetched: "2026-07-05"
+    note: "fetched directly (repo page): description, license, star count, architecture, integration surface, activity signal"
+unverified:
+  - "the project's own claimed +20/+27 point improvements on LoCoMo/LongMemEval (April 2026 algorithm change) are the project's own self-benchmark, not independently re-derived here"
+deep_dive: deep-dives/components/memory/mem0.md

@@ -1,0 +1,20 @@
+name: OpenBMB/AgentVerse (unmaintained)
+slug: subagent-agentverse
+category: subagents
+homepage: https://github.com/OpenBMB/AgentVerse
+license: "Apache-2.0"
+license_tag: "Apache-2.0"
+open_source: true
+use_cases: "historical reference for task-solving and simulation multi-agent frameworks"
+what_it_is: >
+  Two frameworks (task-solving, simulation) with an "Expert Recruitment -> Collaborative Decision-Making -> Action Execution" pipeline (arXiv:2308.10848). AgentVerse is a full framework with its own execution runtime (the Expert-Recruitment -> Collaborative-Decision-Making -> Action-Execution pipeline) — the framework itself is broader than equipment, and that runtime is engine territory per this registry's harness=equipment-vs-engine split. AgentVerse is NOT catalogued in this registry's `engines/` category; treat this entry as historical/research reference for its pipeline design, not a recommendation to adopt the whole (genuinely unmaintained) framework as equipment.
+activity:
+  stars: "5.1k"
+  last_verified_note: "STALE, last push 2024-09-09"
+provenance:
+  - url: https://github.com/OpenBMB/AgentVerse
+    fetched: "2026-07-05"
+    note: "verified directly via gh api (stars/forks/license/push date)"
+unverified:
+  - "this entry scopes to AgentVerse's pipeline design specifically — its own execution runtime is out of scope and is NOT catalogued as an engine elsewhere in this registry; the project is also genuinely unmaintained, compounding the not-for-adoption caveat"
+deep_dive: deep-dives/components/subagents/subagent-agentverse.md

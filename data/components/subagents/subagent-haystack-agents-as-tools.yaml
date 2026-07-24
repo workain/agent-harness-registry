@@ -1,0 +1,20 @@
+name: deepset-ai/haystack (agents-as-tools)
+slug: subagent-haystack-agents-as-tools
+category: subagents
+homepage: https://github.com/deepset-ai/haystack
+license: "Apache-2.0"
+license_tag: "Apache-2.0"
+open_source: true
+use_cases: "wrapping a specialized agent as a callable tool for a coordinator agent"
+what_it_is: >
+  A distinct compositional pattern: wrap a specialized Agent using `ComponentTool` so it becomes a callable TOOL for a coordinator agent — tools-not-handoffs as the multi-agent primitive. Haystack is a full pipeline framework with its own execution runtime (a `Pipeline.run()` call drives the whole flow) — the framework itself is broader than equipment, and that runtime is engine territory per this registry's harness=equipment-vs-engine split. Haystack is NOT catalogued in this registry's `engines/` category; treat this entry as documenting a compositional pattern (agents-as-tools) worth knowing about, not a recommendation to adopt the whole framework as equipment.
+activity:
+  stars: "25.8k"
+  last_verified_note: "pushed 2026-07-05"
+provenance:
+  - url: https://github.com/deepset-ai/haystack
+    fetched: "2026-07-05"
+    note: "verified directly via gh api (stars/forks/license/push date)"
+unverified:
+  - "this entry scopes to Haystack's agents-as-tools compositional pattern specifically — its own pipeline execution runtime is out of scope and is NOT catalogued as an engine elsewhere in this registry"
+deep_dive: deep-dives/components/subagents/subagent-haystack-agents-as-tools.md

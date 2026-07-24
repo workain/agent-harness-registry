@@ -1,0 +1,19 @@
+name: AWS MCP Servers
+slug: mcp-aws
+category: access-mcp
+homepage: https://github.com/awslabs/mcp
+license: "Apache-2.0"
+license_tag: "Apache-2.0"
+open_source: true
+use_cases: "AWS API access, documentation lookup, knowledge/data-processing tasks for agents operating AWS infrastructure"
+what_it_is: >
+  A SUITE of specialized AWS-focused MCP servers in one monorepo (AWS API, Documentation, Knowledge, Data Processing, and more) — not a single server.
+activity:
+  stars: "9.4k"
+  last_verified_note: "1,621 forks, pushed 2026-07-03"
+provenance:
+  - url: https://github.com/awslabs/mcp
+    fetched: "2026-07-05"
+    note: "verified directly via gh api (stars/forks/license/push date) or the vendor's own site for hosted-only entries"
+unverified: []
+deep_dive: deep-dives/components/access-mcp/mcp-aws.md

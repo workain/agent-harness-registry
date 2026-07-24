@@ -1,0 +1,20 @@
+name: kostja94/marketing-skills
+slug: skill-kostja94-marketing
+category: skills-tools
+homepage: https://github.com/kostja94/marketing-skills
+license: "Not independently verified — found via search only"
+license_tag: "Unclear (unverified)"
+open_source: true
+use_cases: "160+ SEO/content skills across 40+ page types"
+what_it_is: >
+  "160+ open-source skills for SEO, content, 40+ page types" per its own description. Found via search, not independently star-verified in this pass.
+activity:
+  stars: null
+  last_verified_note: null
+provenance:
+  - url: https://github.com/kostja94/marketing-skills
+    fetched: "2026-07-05"
+    note: "verified directly via gh api (stars/forks/license) where a repo exists; some entries flagged unverified per search-only sourcing"
+unverified:
+  - "entire entry sourced via search only, not independently fetched/verified"
+deep_dive: deep-dives/components/skills-tools/skill-kostja94-marketing.md

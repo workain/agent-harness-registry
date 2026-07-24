@@ -1,0 +1,19 @@
+name: Cloudflare MCP Server
+slug: mcp-cloudflare
+category: access-mcp
+homepage: https://github.com/cloudflare/mcp-server-cloudflare
+license: "Apache-2.0"
+license_tag: "Apache-2.0"
+open_source: true
+use_cases: "managing Cloudflare Workers/DNS/security/performance via natural language"
+what_it_is: >
+  Cloudflare's official MCP server for managing account resources (Workers, DNS, security, performance settings) through an agent.
+activity:
+  stars: "3.9k"
+  last_verified_note: "436 forks, pushed 2026-07-01"
+provenance:
+  - url: https://github.com/cloudflare/mcp-server-cloudflare
+    fetched: "2026-07-05"
+    note: "verified directly via gh api (stars/forks/license/push date) or the vendor's own site for hosted-only entries"
+unverified: []
+deep_dive: deep-dives/components/access-mcp/mcp-cloudflare.md

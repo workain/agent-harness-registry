@@ -1,0 +1,20 @@
+name: rohitg00/awesome-claude-code-toolkit
+slug: skill-rohitg00-toolkit
+category: skills-tools
+homepage: https://github.com/rohitg00/awesome-claude-code-toolkit
+license: "Apache-2.0"
+license_tag: "Apache-2.0 (see caveat)"
+open_source: true
+use_cases: "self-reported 135 agents/35 skills/176+ plugins/52 ecosystem entries"
+what_it_is: >
+  Self-reports 135 agents/35 skills/176+ plugins/52 ecosystem entries. IMPORTANT PRECEDENT: this exact repo's vendored skill copies were previously REJECTED during this lab's own `harness-skills` review, and a separate `agent-lab-manager` research pass reportedly found this repo's self-reported counts internally inconsistent by 3-4x versus a file-by-file recount.
+activity:
+  stars: "2.3k"
+  last_verified_note: "766 forks"
+provenance:
+  - url: https://github.com/rohitg00/awesome-claude-code-toolkit
+    fetched: "2026-07-05"
+    note: "verified directly via gh api (stars/forks/license) where a repo exists; some entries flagged unverified per search-only sourcing"
+unverified:
+  - "self-reported counts (135 agents/35 skills/176+ plugins/52 ecosystem entries) not independently recounted in this pass — prior research flagged a 3-4x inconsistency versus a file-by-file recount"
+deep_dive: deep-dives/components/skills-tools/skill-rohitg00-toolkit.md

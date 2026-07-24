@@ -1,0 +1,19 @@
+name: Pipedream
+slug: mcp-pipedream
+category: access-mcp
+homepage: https://github.com/PipedreamHQ/pipedream
+license: "NOASSERTION (verify)"
+license_tag: "Unclear (verify)"
+open_source: true
+use_cases: "connecting agents to 2,500+ APIs / 8,000+ prebuilt tools, self-hostable"
+what_it_is: >
+  A Composio/Zapier-MCP-adjacent aggregation platform — 2,500+ APIs, 8,000+ prebuilt tools — but crucially SELF-HOSTABLE, unlike Zapier MCP's hosted-only model.
+activity:
+  stars: "11.5k"
+  last_verified_note: "5,715 forks, pushed 2026-07-04"
+provenance:
+  - url: https://github.com/PipedreamHQ/pipedream
+    fetched: "2026-07-05"
+    note: "verified directly via gh api (stars/forks/license/push date) or the vendor's own site for hosted-only entries"
+unverified: []
+deep_dive: deep-dives/components/access-mcp/mcp-pipedream.md

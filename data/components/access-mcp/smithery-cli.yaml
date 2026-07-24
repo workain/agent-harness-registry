@@ -1,0 +1,28 @@
+name: Smithery CLI
+slug: smithery-cli
+category: access-mcp
+homepage: https://github.com/smithery-ai/cli
+layer: "Access placement / tool-access protocol layer (equivalent to Block B) — a REGISTRY/discovery layer on top of MCP, complementing this registry's mcp-servers and mcp-client-sdk entries"
+what_it_is: >
+  A command-line tool for discovering, installing, and managing MCP servers AND skills from a
+  centralized registry — Smithery's own combined "MCP + Skills Registry." Where this registry's
+  `mcp-servers` entry catalogs the official REFERENCE server implementations and `mcp-client-sdk`
+  catalogs the official per-language CLIENT libraries, Smithery CLI sits one layer up: it's the
+  discovery/installation tool an end user runs (`smithery mcp search [term]`, `smithery mcp add
+  <url>`) to find and connect to servers from a broader third-party registry, and can also
+  publish a custom MCP server or bundle back to that registry. Functions as a package-manager
+  analogue for the MCP + Agent Skills ecosystem specifically.
+integration: "CLI tool; `smithery mcp search`/`smithery mcp add` for MCP servers, plus skills installation/browsing from the same registry"
+license: "AGPL-3.0 — a copyleft license, notably different from the mostly-permissive (MIT/Apache-2.0) licensing elsewhere in this registry's access-mcp category; worth flagging before embedding this CLI in a proprietary distribution"
+license_tag: "AGPL-3.0"
+open_source: true
+use_cases: "discovering/installing MCP servers and skills from a central registry"
+activity:
+  stars: "785 (per GitHub page fetch, 2026-07-05)"
+  last_verified_note: "fetched live 2026-07-05; 6 releases, latest v1.2.0 (May 2026), 610 commits, 94 forks, 22 open issues — a much smaller install base than the official MCP repos (mcp-servers: 88.1k stars), consistent with being a third-party discovery layer rather than the protocol's own reference implementation"
+provenance:
+  - url: https://github.com/smithery-ai/cli
+    fetched: "2026-07-05"
+    note: "fetched directly (repo page): description, license, star count, MCP-server + skills registry mechanism, activity signal"
+unverified: []
+deep_dive: deep-dives/components/access-mcp/smithery-cli.md

@@ -1,0 +1,19 @@
+name: mylee04/claude-code-subagents
+slug: subagent-mylee04-assembler
+category: subagents
+homepage: https://github.com/mylee04/claude-code-subagents
+license: "MIT"
+license_tag: "MIT"
+open_source: true
+use_cases: "dynamically-generated, tech-stack-personalized subagent team (not static files)"
+what_it_is: >
+  Smallest by stars in this batch, but structurally distinct: ships an "agent-assembler" that DYNAMICALLY GENERATES a personalized subagent team from your detected tech stack, rather than shipping static files to copy.
+activity:
+  stars: "35"
+  last_verified_note: "pushed 2025-08-01"
+provenance:
+  - url: https://github.com/mylee04/claude-code-subagents
+    fetched: "2026-07-05"
+    note: "verified directly via gh api (stars/forks/license/push date)"
+unverified: []
+deep_dive: deep-dives/components/subagents/subagent-mylee04-assembler.md

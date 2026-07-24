@@ -1,0 +1,19 @@
+name: Postgres MCP Pro
+slug: mcp-postgres-pro
+category: access-mcp
+homepage: https://github.com/crystaldba/postgres-mcp
+license: "MIT"
+license_tag: "MIT"
+open_source: true
+use_cases: "configurable read/write Postgres access plus performance analysis"
+what_it_is: >
+  A Postgres server spanning the whole dev lifecycle — configurable read/write access plus performance analysis, not just querying.
+activity:
+  stars: "3.0k"
+  last_verified_note: "331 forks, pushed 2026-01-22"
+provenance:
+  - url: https://github.com/crystaldba/postgres-mcp
+    fetched: "2026-07-05"
+    note: "verified directly via gh api (stars/forks/license/push date) or the vendor's own site for hosted-only entries"
+unverified: []
+deep_dive: deep-dives/components/access-mcp/mcp-postgres-pro.md

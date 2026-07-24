@@ -1,0 +1,20 @@
+name: FoundationAgents/MetaGPT
+slug: subagent-metagpt
+category: subagents
+homepage: https://github.com/FoundationAgents/MetaGPT
+license: "MIT"
+license_tag: "MIT"
+open_source: true
+use_cases: "SOP-bound multi-agent software-company simulation (PM/architect/PM/engineer/QA)"
+what_it_is: >
+  Five fixed, SOP-bound roles (product manager, architect, project manager, engineer, QA) simulating a software company, communicating via a shared global message pool — "Code = SOP(Team)" philosophy. MetaGPT is a full multi-agent framework with its own execution runtime (a shared global message pool agents run against) — the framework itself is broader than equipment, and that runtime is engine territory per this registry's harness=equipment-vs-engine split, the same narrowing this registry applies to `autogen`. MetaGPT is NOT catalogued in this registry's `engines/` category; treat this entry as documenting a role/SOP-design pattern worth knowing about, not a recommendation to adopt the whole framework as equipment.
+activity:
+  stars: "69.2k"
+  last_verified_note: "pushed 2026-01-21"
+provenance:
+  - url: https://github.com/FoundationAgents/MetaGPT
+    fetched: "2026-07-05"
+    note: "verified directly via gh api (stars/forks/license/push date)"
+unverified:
+  - "this entry scopes to MetaGPT's role/SOP design specifically — its own message-pool execution runtime is out of scope and is NOT catalogued as an engine elsewhere in this registry"
+deep_dive: deep-dives/components/subagents/subagent-metagpt.md

@@ -1,0 +1,19 @@
+name: supatest-ai/awesome-claude-code-sub-agents
+slug: subagent-supatest-experts
+category: subagents
+homepage: https://github.com/supatest-ai/awesome-claude-code-sub-agents
+license: "MIT"
+license_tag: "MIT"
+open_source: true
+use_cases: "architectural/decision-framework 'expert consultant' subagents rather than task-executors"
+what_it_is: >
+  Frames its subagents as "expert consultants" providing architectural guidance/decision frameworks, rather than task-executing agents — a distinct persona philosophy from most collections in this registry.
+activity:
+  stars: "165"
+  last_verified_note: "pushed 2025-09-19"
+provenance:
+  - url: https://github.com/supatest-ai/awesome-claude-code-sub-agents
+    fetched: "2026-07-05"
+    note: "verified directly via gh api (stars/forks/license/push date)"
+unverified: []
+deep_dive: deep-dives/components/subagents/subagent-supatest-experts.md

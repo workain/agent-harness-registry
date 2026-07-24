@@ -1,0 +1,19 @@
+name: coreyhaines31/marketingskills
+slug: skill-marketing-skills
+category: skills-tools
+homepage: https://github.com/coreyhaines31/marketingskills
+license: "MIT"
+license_tag: "MIT"
+open_source: true
+use_cases: "CRO/copywriting/SEO/analytics/growth-engineering skills"
+what_it_is: >
+  CRO/copywriting/SEO/analytics/growth-engineering skills — surprisingly high traction (36.2k stars) for a non-coding domain, good evidence skills aren't just for developers.
+activity:
+  stars: "36.2k"
+  last_verified_note: "5,883 forks"
+provenance:
+  - url: https://github.com/coreyhaines31/marketingskills
+    fetched: "2026-07-05"
+    note: "verified directly via gh api (stars/forks/license) where a repo exists; some entries flagged unverified per search-only sourcing"
+unverified: []
+deep_dive: deep-dives/components/skills-tools/skill-marketing-skills.md

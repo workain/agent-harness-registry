@@ -1,0 +1,112 @@
+name: CrewAI Memory
+slug: crewai-memory
+homepage: https://github.com/crewAIInc/crewAI
+category: memory
+layer: "Memory / data layer (equivalent to Block F) — one subsystem of a larger multi-agent framework"
+what_it_is: >
+  The memory subsystem of CrewAI (a multi-agent orchestration framework — the framework
+  itself is broader than equipment, this entry scopes to its memory piece specifically).
+  As of ~v1.10.x (2026-03), a full rewrite ("Cognitive Memory") replaced the older
+  short-term/long-term/entity/ChromaDB/SQLite design with a single `crewai.Memory` class:
+  every write runs an LLM-based "EncodingFlow" that infers scope/categories/importance and
+  automatically detects and consolidates (updates/deletes) contradicting prior records
+  above a similarity threshold; every deep recall runs an LLM-driven "RecallFlow" that
+  distills the query, does confidence-based iterative-deepening search, and reports
+  explicit "evidence gaps" when confidence stays low. Default storage is on-disk LanceDB
+  (Qdrant-edge as a Windows fallback), default embedder is OpenAI `text-embedding-3-large`,
+  default LLM is `gpt-5.4-mini` for the analysis calls. Live-tested (harness-eval #49):
+  the underlying mechanisms are real and not oversold, but "cognitive layer" is CrewAI's
+  own marketing term for a well-engineered LLM-analyzed RAG pipeline, not a categorically
+  different architecture.
+integration: "The current `Memory` class is standalone-usable — `Memory().remember(...)`/`.recall(...)` work with no Agent/Crew/Task/kickoff() required (docs.crewai.com confirms 'no agents or crews required'); it is also usable as a Crew/Agent capability alongside tools, knowledge, and checkpointing. Not separately installable — `pip install crewai` pulls the whole framework. Outside a Crew's own lifecycle, callers must invoke `drain_writes()`/`close()` themselves to flush the background save thread pool."
+license: MIT
+license_tag: "MIT"
+open_source: true
+use_cases: "production multi-agent memory, contradiction resolution, context-aware recall"
+activity:
+  stars: "54,976 (gh api repos/crewAIInc/crewAI, fetched 2026-07-06)"
+  last_verified_note: "fetched live 2026-07-06; latest release 1.15.1 (2026-06-27), 212 releases, ~298-301 contributors (gh api pagination; registry's prior '320' appears to be a differently-sourced snapshot), pushed 2026-07-05 — actively maintained"
+provenance:
+  - url: https://github.com/crewAIInc/crewAI
+    fetched: "2026-07-06"
+    note: "gh api + WebFetch against lib/crewai/src/crewai/memory/{unified_memory.py,encoding_flow.py,recall_flow.py,analyze.py,types.py} and docs.crewai.com/en/concepts/memory — the architecture description above is derived directly from this source, not the project's marketing copy"
+  - url: "harness-eval issue #49 (workain/harness-eval)"
+    fetched: "2026-07-06"
+    note: "3-lens source pre-screen (claims-match/completeness/red-flags, all independently re-derived against primary source) plus a LIVE key-free run of crewai's current Memory class (a Claude-Code-subscription-backed LLM shim + local sentence-transformers embeddings, no paid API key) through persistbench_v1, bfcl_memory_v1, and niah_v1 vs a bare-model floor and a flat-file (file-wiki) baseline — see harness_eval_verdict below"
+unverified:
+  - "tested at small scale (corpus fits in context); large-corpus / long-horizon performance untested — see harness-eval#53's operator directive, 2026-07-06"
+known_caveats: >
+  See harness-eval issue #49 (reports/crewai_memory_prescreen.md, reports/crewai_memory_live.md).
+  An open, unfixed, 4-month-old GitHub issue (#5057) documents unsanitized memory content being
+  concatenated into the agent's system prompt (indirect prompt-injection risk, OWASP ASI-01);
+  maintainers have closed three separate requests for native memory-poisoning defenses as
+  `not_planned` (#5988, #6021, #5825), with two more still open and unaddressed (#6043, #6016).
+  Separately, crewAI absorbed a CERT/CC-coordinated batch of critical CVEs in the same release
+  window as the memory rewrite (CVE-2026-2286, CVSS 9.8, SSRF in RAG search tools; two more
+  CVSS 9.6/9.8 RCE-class findings in `CodeInterpreterTool`) — all prompt-injection-triggered,
+  competently remediated by the vendor. An open, unrebutted third-party benchmark (issue #5800)
+  ran CrewAI Memory through LongMemEval v1.0 and scored 46.0% vs a 57.6% no-memory baseline on
+  the same benchmark — memory ON scored worse than memory OFF on that independent bench.
+harness_eval_verdict:
+  reviewed: "2026-07-06"
+  tier: "C"
+  testability: "tested-live"
+  one_liner: >
+    A genuinely real LLM-analyzed memory design (automatic contradiction consolidation,
+    evidence-gap signaling on low-confidence recall) that beats a memoryless floor by a
+    wide margin on every bench tested, ties a flat-file baseline on exact-value needle
+    retrieval, but trails it on both multi-fact recall benches — while carrying a live,
+    open, maintainer-declined memory-poisoning gap and a registry entry that, until this
+    review, described an architecture the project replaced four months ago. Tested at
+    small scale (corpus fits in context); large-corpus/long-horizon performance untested
+    (harness-eval#53, operator directive 2026-07-06).
+  what_to_steal: >
+    The automatic write-time contradiction consolidation (compare new content against
+    existing records above a similarity threshold, let an LLM decide keep/update/delete)
+    and the recall-time "evidence_gaps" signal (an explicit LLM-generated "here's what's
+    missing" note attached to low-confidence results, not just an empty list) are both
+    genuinely real, verified-against-source mechanisms worth reimplementing regardless of
+    this specific package — most memory components in this registry only do the retrieval
+    half of this, not the consolidation half.
+  the_catch: >
+    Live-tested (harness-eval #49, key-free: a Claude-Code-subscription-backed LLM shim +
+    local sentence-transformers embeddings, no paid API key) through persistbench_v1 (12
+    tasks, 3 epochs), bfcl_memory_v1 (12 tasks), and niah_v1 (short+medium tiers, 6/9
+    tasks, `long` skipped for wall-clock reasons, disclosed). niah_v1: crewai_memory
+    1.000, ties file-wiki's 1.000, beats bare model's 0.000 — a clean win on exact-value
+    needle retrieval. bfcl_memory_v1: crewai_memory 0.667 vs file-wiki 0.750 vs bare
+    0.000 — beats the floor widely, trails the honest baseline by 0.083, driven by a mix
+    of genuine retrieval misses/wrong-item-retrieval and one verbosity/non-compliance
+    finding, partly offset by a deliberate per-turn `remember_many()` ingestion design
+    that avoided the "memory dump" failure mode LangMem hit on this same suite (LangMem:
+    0.0/83%-hacked). persistbench_v1: crewai_memory 0.667-0.75 across 2 clean post-fix
+    epochs vs file-wiki's 0.917 ceiling vs bare's 0.083-0.167 — a real but inconsistent
+    edge over the floor; manual per-task audit found the sycophancy probes show genuine
+    hedged/unconfirmed-correction discrimination in one epoch but repeated capitulation to
+    an unsupported correction in two others (a real reliability gap, not noise), entangled
+    with two independent, opposite-direction scoring-artifacts in the bench's own keyword
+    scorer that happen to cancel in the aggregate number both times — see
+    reports/crewai_memory_live.md for the full per-task trace. A real engineering bug in
+    this eval's OWN harness code (not crewAI's) was found via raw log evidence mid-run,
+    fixed, and the affected bench re-run for a clean comparison — disclosed rather than
+    silently patched. Independent of the live numbers: an open, 4-month-unfixed GitHub
+    issue (#5057) documents memory content being concatenated unsanitized into the agent's
+    system prompt (indirect prompt-injection, OWASP ASI-01); maintainers have closed three
+    separate requests for native memory-poisoning defenses `not_planned` in the two months
+    before this review, with two more still open. crewAI also absorbed a CERT/CC-
+    coordinated critical-CVE batch (CVE-2026-2286, CVSS 9.8 SSRF in RAG search tools,
+    among others) in the same release window as the memory rewrite — all four
+    prompt-injection-triggered, competently remediated. A separate, unrebutted third-party
+    LongMemEval run (issue #5800) found CrewAI Memory scoring below a no-memory baseline
+    (46.0% vs 57.6%) — a prior this live run's own mixed result is broadly consistent
+    with, not a contradiction of. Finally: the registry entry itself, until this review,
+    described CrewAI's OLD short-term/long-term/entity/ChromaDB/SQLite memory design,
+    which the project fully replaced ~4 months before this eval with no migration guide
+    across that period — corrected above. SCALE CAVEAT (operator directive,
+    harness-eval#53, 2026-07-06): persistbench_v1's session1 corpus (~170 characters/task)
+    fits entirely in the model's context window, so this comparison cannot show whether
+    crewai-memory's consolidation/recall design would fare differently once the corpus
+    exceeds what fits in context. Tested at small scale only; large-corpus/long-horizon
+    performance is untested and not claimed here.
+  raw_evidence: "https://github.com/workain/harness-eval/blob/main/reports/crewai_memory_prescreen.md, https://github.com/workain/harness-eval/blob/main/reports/crewai_memory_live.md, https://github.com/workain/harness-eval/tree/main/reports/crewai_memory_live"
+deep_dive: deep-dives/components/memory/crewai-memory.md

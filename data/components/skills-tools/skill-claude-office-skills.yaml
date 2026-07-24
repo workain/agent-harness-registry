@@ -1,0 +1,19 @@
+name: tfriedel/claude-office-skills
+slug: skill-claude-office-skills
+category: skills-tools
+homepage: https://github.com/tfriedel/claude-office-skills
+license: "No license file found — verify before redistributing"
+license_tag: "Unclear (verify)"
+open_source: true
+use_cases: "PPTX/DOCX/XLSX/PDF workflows, independent alternative to first-party document skills"
+what_it_is: >
+  PPTX/DOCX/XLSX/PDF workflows — overlaps functionally with Anthropic's own official document skills (this registry's `anthropic-skills` entry).
+activity:
+  stars: "777"
+  last_verified_note: "114 forks"
+provenance:
+  - url: https://github.com/tfriedel/claude-office-skills
+    fetched: "2026-07-05"
+    note: "verified directly via gh api (stars/forks/license) where a repo exists; some entries flagged unverified per search-only sourcing"
+unverified: []
+deep_dive: deep-dives/components/skills-tools/skill-claude-office-skills.md

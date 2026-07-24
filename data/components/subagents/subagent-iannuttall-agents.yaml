@@ -1,0 +1,19 @@
+name: iannuttall/claude-agents
+slug: subagent-iannuttall-agents
+category: subagents
+homepage: https://github.com/iannuttall/claude-agents
+license: "MIT"
+license_tag: "MIT"
+open_source: true
+use_cases: "early minimal subagent collection, copy-paste reference material"
+what_it_is: >
+  A popular early, minimal subagent collection — now archived.
+activity:
+  stars: "2.1k"
+  last_verified_note: "ARCHIVED, last push 2025-07-25"
+provenance:
+  - url: https://github.com/iannuttall/claude-agents
+    fetched: "2026-07-05"
+    note: "verified directly via gh api (stars/forks/license/push date)"
+unverified: []
+deep_dive: deep-dives/components/subagents/subagent-iannuttall-agents.md

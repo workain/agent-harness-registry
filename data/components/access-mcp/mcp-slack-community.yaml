@@ -1,0 +1,19 @@
+name: slack-mcp-server (community)
+slug: mcp-slack-community
+category: access-mcp
+homepage: https://github.com/korotovsky/slack-mcp-server
+license: "MIT"
+license_tag: "MIT"
+open_source: true
+use_cases: "Slack messaging/search/DM automation without admin permission-request friction"
+what_it_is: >
+  A community Slack server billed as the 'most powerful' available — no permission-request friction, supports GovSlack, DMs, and group DMs.
+activity:
+  stars: "1.7k"
+  last_verified_note: "336 forks, pushed 2026-06-18"
+provenance:
+  - url: https://github.com/korotovsky/slack-mcp-server
+    fetched: "2026-07-05"
+    note: "verified directly via gh api (stars/forks/license/push date) or the vendor's own site for hosted-only entries"
+unverified: []
+deep_dive: deep-dives/components/access-mcp/mcp-slack-community.md

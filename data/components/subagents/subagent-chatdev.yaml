@@ -1,0 +1,20 @@
+name: openbmb/ChatDev
+slug: subagent-chatdev
+category: subagents
+homepage: https://github.com/openbmb/ChatDev
+license: "Apache-2.0"
+license_tag: "Apache-2.0"
+open_source: true
+use_cases: "CEO/CTO/programmer/reviewer/tester/designer role collaboration via 'seminars'"
+what_it_is: >
+  CEO/CTO/programmer/reviewer/tester/designer roles collaborating via "seminars"; rewritten as "ChatDev 2.0 (DevAll)" in Jan 2026, broadening scope beyond just software. ChatDev is a full multi-agent framework with its own execution runtime (the "seminar"/ChatChain communication mechanism it runs internally) — the framework itself is broader than equipment, and that runtime is engine territory per this registry's harness=equipment-vs-engine split. ChatDev is NOT catalogued in this registry's `engines/` category; treat this entry as documenting a role/communication-pattern worth knowing about, not a recommendation to adopt the whole framework as equipment.
+activity:
+  stars: "33.7k"
+  last_verified_note: "pushed 2026-06-29"
+provenance:
+  - url: https://github.com/openbmb/ChatDev
+    fetched: "2026-07-05"
+    note: "verified directly via gh api (stars/forks/license/push date)"
+unverified:
+  - "this entry scopes to ChatDev's role/communication design specifically — its own seminar/ChatChain execution runtime is out of scope and is NOT catalogued as an engine elsewhere in this registry"
+deep_dive: deep-dives/components/subagents/subagent-chatdev.md

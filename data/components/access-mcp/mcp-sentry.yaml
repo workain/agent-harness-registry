@@ -1,0 +1,19 @@
+name: Sentry MCP
+slug: mcp-sentry
+category: access-mcp
+homepage: https://github.com/getsentry/sentry-mcp
+license: "NOASSERTION (verify before redistributing)"
+license_tag: "Unclear (verify)"
+open_source: true
+use_cases: "pulling error/issue context into a coding-assistant workflow for debugging"
+what_it_is: >
+  Sentry's server for querying errors/issues and surfacing debugging context, positioned as middleware to Sentry's own API specifically for coding-assistant workflows (Cursor, Claude Code), not general dashboarding.
+activity:
+  stars: "753"
+  last_verified_note: "121 forks, pushed 2026-07-03"
+provenance:
+  - url: https://github.com/getsentry/sentry-mcp
+    fetched: "2026-07-05"
+    note: "verified directly via gh api (stars/forks/license/push date) or the vendor's own site for hosted-only entries"
+unverified: []
+deep_dive: deep-dives/components/access-mcp/mcp-sentry.md

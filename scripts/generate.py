@@ -1,18 +1,28 @@
 #!/usr/bin/env python3
 """Generate GUIDE.md from data/{components,bundles,engines,benchmarks}/*.yaml.
 
-Registry v3 structure (operator spec, 2026-07 — see GUIDE.md's own overview section):
-  - data/components/  -- ATOMIC equipment (PRIMARY, work-for-volume): memory, skills-tools,
-    subagents, access-mcp. Grouped by each entry's own `category:` field. Full description,
-    practical guidance, and references live ONLY in each entry's mandatory deep-dive file
-    under deep-dives/components/ — GUIDE.md shows an index table only (name, license, stars,
-    use cases, link to the file).
+Registry v4 structure (2026-07 restructure, issue #31 — see GUIDE.md's own overview section):
+  - data/components/<category>/*.yaml -- ATOMIC equipment (PRIMARY, work-for-volume), split into
+    per-category subfolders keyed to each entry's own `category:` field: memory, skills-tools,
+    subagents, access-mcp, instructions-rules. Full description, practical guidance, and
+    references live ONLY in each entry's mandatory deep-dive file under
+    deep-dives/components/<category>/ (flat `<slug>.md` per entry by default; a `<slug>/` folder
+    is a justified exception for a genuinely multi-file write-up, not the universal rule — see
+    README.md) — GUIDE.md shows an index table only (name, license, stars, use cases, link to
+    the file). `_load_dir()`'s "**/*.yaml" glob matches both this nested layout and a flat one,
+    so this same loader also serves the three dirs below unchanged.
   - data/bundles/      -- ASSEMBLED equipment: multi-component kits (or bundling mechanisms/
-    vendor-native products). Every bundle has a mandatory deep-dive file, same pattern.
+    vendor-native products). Every bundle has a mandatory deep-dive file, same pattern. Left
+    flat (not split into subfolders) — too few entries for a natural axis to pay off; see
+    README.md for the stated rationale.
   - data/engines/      -- agent engines/runtimes (the substrate an equipment component or
-    bundle plugs into). Same index-table + mandatory-deep-dive pattern.
+    bundle plugs into). Same index-table + mandatory-deep-dive pattern. Left flat, same reason.
   - data/benchmarks/   -- benchmarks + eval-frameworks (auxiliary), split by `kind:` field.
     Kept as richer inline entries (methodology detail matters more than a separate file here).
+    Left flat, same reason.
+  - `first_party:` (bool, any data/*.yaml entry, default absent/false) marks workain-authored
+    entries (vs. cataloged third-party) — rendered as a `first-party` badge next to the name
+    (see `_name_cell`) and folded into each category's Overview count.
 
 This is a public reference guide, not internal strategy documentation — keep section framing
 neutral/descriptive (what something is), not editorializing about build-vs-buy decisions.
@@ -40,8 +50,11 @@ CATEGORY_ORDER = ["memory", "skills-tools", "subagents", "access-mcp"]
 
 
 def _load_dir(name: str) -> list[dict]:
+    # "**/*.yaml" also matches files directly under DATA/name (zero-depth match), so this
+    # works unchanged whether entries sit flat (bundles/engines/benchmarks) or in
+    # category subfolders (components) — no per-dir branching needed.
     entries = []
-    for path in sorted((DATA / name).glob("*.yaml")):
+    for path in sorted((DATA / name).glob("**/*.yaml")):
         entry = yaml.safe_load(path.read_text(encoding="utf-8"))
         entry["_slug"] = path.stem
         entries.append(entry)
@@ -112,7 +125,10 @@ def _deep_dive_link(e: dict, required: bool = True) -> str:
 
 def _name_cell(e: dict) -> str:
     homepage = e.get("homepage")
-    return f"[{e['name']}]({homepage})" if homepage else e["name"]
+    name = f"[{e['name']}]({homepage})" if homepage else e["name"]
+    if e.get("first_party"):
+        name += " **`first-party`**"
+    return name
 
 
 def render_component_table(entries: list[dict]) -> str:
@@ -458,7 +474,9 @@ def main() -> None:
         entries = by_category[cat]
         tested_n = sum(1 for e in entries if e.get("harness_eval_verdict"))
         status = f"{tested_n} tested" if tested_n else "catalogued only, not yet tested"
-        out.append(f"- **{CATEGORY_TITLES[cat]}** ({len(entries)}, {status}) — see below")
+        fp_n = sum(1 for e in entries if e.get("first_party"))
+        fp_note = f", {fp_n} first-party" if fp_n else ""
+        out.append(f"- **{CATEGORY_TITLES[cat]}** ({len(entries)}, {status}{fp_note}) — see below")
     out.append("")
 
     out.append("---")

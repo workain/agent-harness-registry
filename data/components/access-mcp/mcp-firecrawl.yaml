@@ -1,0 +1,19 @@
+name: Firecrawl MCP Server
+slug: mcp-firecrawl
+category: access-mcp
+homepage: https://github.com/firecrawl/firecrawl-mcp-server
+license: "MIT"
+license_tag: "MIT"
+open_source: true
+use_cases: "web scraping/crawling, structured extraction, autonomous multi-source research"
+what_it_is: >
+  A thin MCP wrapper over the much larger Firecrawl scraping-as-a-service platform (120k+ stars on its own) — web scraping/crawling/search/structured extraction, autonomous multi-source research, cloud browser sessions.
+activity:
+  stars: "6.8k"
+  last_verified_note: "798 forks, pushed 2026-07-04"
+provenance:
+  - url: https://github.com/firecrawl/firecrawl-mcp-server
+    fetched: "2026-07-05"
+    note: "verified directly via gh api (stars/forks/license/push date) or the vendor's own site for hosted-only entries"
+unverified: []
+deep_dive: deep-dives/components/access-mcp/mcp-firecrawl.md

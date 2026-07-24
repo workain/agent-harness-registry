@@ -1,0 +1,19 @@
+name: VoltAgent/awesome-agent-skills
+slug: skill-voltagent-awesome-skills
+category: skills-tools
+homepage: https://github.com/VoltAgent/awesome-agent-skills
+license: "MIT"
+license_tag: "MIT"
+open_source: true
+use_cases: "1000+ agent skills from official dev teams and the community, cross-engine"
+what_it_is: >
+  "1000+ agent skills from official dev teams and the community," cross-engine (Claude Code, Codex, Gemini CLI, Cursor).
+activity:
+  stars: "27.4k"
+  last_verified_note: "2,927 forks"
+provenance:
+  - url: https://github.com/VoltAgent/awesome-agent-skills
+    fetched: "2026-07-05"
+    note: "verified directly via gh api (stars/forks/license) where a repo exists; some entries flagged unverified per search-only sourcing"
+unverified: []
+deep_dive: deep-dives/components/skills-tools/skill-voltagent-awesome-skills.md

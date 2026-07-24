@@ -1,0 +1,33 @@
+name: Karpathy LLM Wiki pattern
+slug: karpathy-llm-wiki
+category: memory
+homepage: https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f
+license: "Not licensed software — a design pattern/gist, not a redistributable package"
+license_tag: "Pattern (not a package)"
+open_source: true
+use_cases: "self-maintaining knowledge base, entity/semantic memory, research note-taking, personal second brain"
+what_it_is: >
+  Andrej Karpathy's design pattern for agent memory as a self-maintaining wiki of interlinked
+  markdown files, rather than a database or vector store. Three layers: (1) raw sources — the
+  immutable input material (documents, transcripts, notes) an agent reads and summarizes but never
+  edits; (2) the wiki itself — structured markdown pages the LLM writes and maintains, plus two
+  special navigation files, `index.md` (a catalog) and `log.md` (an append-only timeline); (3) a
+  schema file (typically `AGENTS.md`) that encodes the conventions for how knowledge gets merged,
+  updated, corrected, and retired. The operational loop is ingest -> query -> periodic lint passes
+  that catch contradictions, gaps, or stale claims. Maps cleanly onto several memory TYPES at once
+  (semantic, entity, episodic via `log.md`, summary, and procedural via the schema file) — the
+  spread this registry's `agent-memory`-style three-tier designs formalize more heavily, done here
+  with almost no infrastructure beyond a folder of markdown files and disciplined prompting.
+integration: "No SDK — implement directly: a folder of markdown files, an AGENTS.md schema describing maintenance rules, and an agent loop that periodically re-reads and lints the wiki. Framework-agnostic by construction (works with any engine that can read/write files and follow an AGENTS.md)."
+activity:
+  stars: null
+  last_verified_note: "this is a design pattern shared via a gist and blog commentary, not a versioned software project — no stars/releases/commits to report"
+provenance:
+  - url: https://aaif.io/blog/karpathys-llm-wiki-as-agent-memory/
+    fetched: "2026-07-05"
+    note: "fetched directly: three-layer architecture, operational loop, navigation files, memory-type mapping"
+  - url: https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f
+    note: "the original gist cited as the source pattern — not independently re-fetched in full for this entry, cited via the AAIF blog's direct reference to it"
+unverified:
+  - "the original Karpathy gist itself was not independently re-fetched in full for this entry — this entry relies on the AAIF blog post's direct treatment of it"
+deep_dive: deep-dives/components/memory/karpathy-llm-wiki.md

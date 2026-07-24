@@ -1,0 +1,31 @@
+name: Claude Code Subagents
+slug: claude-code-subagents
+homepage: https://code.claude.com/docs/en/sub-agents
+category: subagents
+layer: "Capability / subagents layer (equivalent to Block B) — the vendor-provided PATTERN, not a standalone product"
+what_it_is: >
+  A first-party Claude Code mechanism for delegating a task to a specialized assistant
+  that runs in its OWN context window, with its own system prompt, tool access, and
+  permissions — the delegating conversation only receives the subagent's final summary,
+  not its intermediate search results/logs/file contents, which keeps the main
+  conversation's context clean. Delegation can be automatic (Claude matches a task
+  against a subagent's own `description` field, which functions as the trigger, not mere
+  documentation) or explicit (named). Multiple subagents can run concurrently (e.g.
+  style-checker + security-scanner + test-coverage in parallel during a review).
+  Subagents are plain Markdown files with YAML frontmatter (name/description/tools/
+  model) plus a system-prompt body — project-level ones live under `.claude/agents/`
+  and are checked into version control for team sharing.
+integration: "Author a Markdown file under `.claude/agents/` with YAML frontmatter (name, description, tools, model) + a system-prompt body; Claude Code auto-discovers and either auto-delegates or accepts explicit by-name invocation"
+license: "Documents a feature of Claude Code, which is itself proprietary (see this registry's `engines/claude-code` entry) — the subagent files a team authors are their own content, not licensed software from Anthropic"
+license_tag: "Proprietary feature (usable)"
+open_source: false
+use_cases: "task delegation with isolated context, parallel specialist review"
+activity:
+  stars: null
+  last_verified_note: "fetched live 2026-07-05 from the official code.claude.com docs — describes a current, actively documented feature"
+provenance:
+  - url: https://code.claude.com/docs/en/sub-agents
+    note: "found via search summary of the official docs page (delegation mechanism, frontmatter format, project-level storage) — not independently fetched in full for this entry"
+unverified:
+  - "this entry's content is drawn from a WebSearch synthesis of the official docs page, not an independent full WebFetch of that page — the mechanism description should be treated as reliable (multiple independent sources converge on the same details) but not as a direct primary-source quote"
+deep_dive: deep-dives/components/subagents/claude-code-subagents.md

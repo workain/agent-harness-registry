@@ -8,7 +8,7 @@ Every claim is cited (see each entry's References) or marked `[unverified]`. Eac
 
 ## Overview — map of this registry
 
-**103 atomic components** across 4 categories (plus **6 instruction-file conventions** catalogued as background in the Bundles section — 109 component entries total), **8 assembled bundles**, **11 agent engines/runtimes**, **9 eval-frameworks**, **11 benchmarks**.
+**103 atomic components** across 4 categories (plus **7 instruction-file conventions** catalogued as background in the Bundles section — 110 component entries total), **8 assembled bundles**, **11 agent engines/runtimes**, **9 eval-frameworks**, **11 benchmarks**.
 
 **Components** are single-purpose atoms (a memory layer, a skill, an MCP server) composed one at a time. **Bundles** are pre-assembled multi-component kits. The market today is overwhelmingly atomic — Agent Skills alone spans 47,150 skills across 42 engines — though real demand for bundles exists too (see `workain/harness-eval`'s `docs/DEMAND-vs-ANTI-SIGNALS-equipment-bundles.md`). Each bundle's write-up scores it against three properties none yet fully combine: **sustained**, **engine-agnostic**, **progressively-disclosed**.
 
@@ -172,6 +172,7 @@ Pre-assembled multi-component kits — rare relative to components. Each write-u
 |---|---|---|---|
 | [.goosehints (Goose)](https://github.com/block/goose) | Apache-2.0 | 50.7k | [write-up](deep-dives/components/instructions-rules/goosehints.md) |
 | [AGENTS.md](https://github.com/agentsmd/agents.md) | MIT | 22.8k | [write-up](deep-dives/components/instructions-rules/agents-md.md) |
+| [base-project-template](https://github.com/workain/agent-harness-registry/tree/main/templates/base-project-template) **`first-party`** | MIT | — | [write-up](deep-dives/components/instructions-rules/base-project-template/README.md) |
 | [Cursor Rules (.cursor/rules, formerly .cursorrules)](https://cursor.com/docs/context/rules) | Proprietary feature (usable) | — | [write-up](deep-dives/components/instructions-rules/cursor-rules.md) |
 | [Devin Knowledge & Playbooks](https://docs.devin.ai/product-guides/knowledge) | Proprietary feature (usable) | — | [write-up](deep-dives/components/instructions-rules/devin-knowledge-playbooks.md) |
 | [GEMINI.md (Gemini CLI)](https://github.com/google-gemini/gemini-cli/blob/main/docs/cli/gemini-md.md) | Apache-2.0 | 106k | [write-up](deep-dives/components/instructions-rules/gemini-md.md) |

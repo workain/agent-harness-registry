@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate GUIDE.md from data/{components,bundles,engines,benchmarks}/*.yaml.
+"""Generate GUIDE.md from data/{components,bundles,engines,benchmarks,research}/*.yaml.
 
 Registry v4 structure (2026-07 restructure, issue #31 — see GUIDE.md's own overview section):
   - data/components/<category>/*.yaml -- ATOMIC equipment (PRIMARY, work-for-volume), split into
@@ -23,6 +23,15 @@ Registry v4 structure (2026-07 restructure, issue #31 — see GUIDE.md's own ove
   - `first_party:` (bool, any data/*.yaml entry, default absent/false) marks workain-authored
     entries (vs. cataloged third-party) — rendered as a `first-party` badge next to the name
     (see `_name_cell`) and folded into each category's Overview count.
+  - data/research/*.yaml -- one entry per research study, metadata mirroring the components
+    pattern (`title`, `study_type: primary-source|synthesis-digest`, `source_urls:`, mandatory
+    `deep_dive:` into top-level `research/<study-slug>/README.md`, parallel to `data/`/
+    `deep-dives/`/`templates/` — issue #34). Registry-wide bidirectional cross-links:
+    `related_research:` (on components/bundles -> research studies, or on a research entry ->
+    other research studies) and `related_components:` (on a research entry -> components/
+    bundles it informs) — both rendered as real links (`_research_cell`,
+    `_relevant_components_cell`) and mechanically checked (`_check_cross_links` raises on any
+    slug that doesn't resolve), same "raise, don't skip" standard as `category:`/`deep_dive:`.
 
 This is a public reference guide, not internal strategy documentation — keep section framing
 neutral/descriptive (what something is), not editorializing about build-vs-buy decisions.
@@ -60,7 +69,8 @@ def _load_dir(name: str) -> list[dict]:
         rel_parent = path.relative_to(DATA / name).parent
         entry["_subfolder"] = str(rel_parent) if str(rel_parent) != "." else None
         entries.append(entry)
-    entries.sort(key=lambda e: e["name"].lower())
+    # research entries use `title` instead of `name` (no single canonical "name" for a study)
+    entries.sort(key=lambda e: (e.get("name") or e["title"]).lower())
     return entries
 
 
@@ -130,6 +140,52 @@ def _tested_status(e: dict) -> str:
     return f"{label} ({testability})" if testability else label
 
 
+STUDY_TYPES = {"primary-source", "synthesis-digest"}
+
+
+def _build_link_index(*groups: list[dict]) -> dict[str, dict]:
+    # slug -> {"title", "link"} for whichever entries are being cross-linked to — shared by
+    # the component/bundle -> research direction and the research -> component/bundle one.
+    index = {}
+    for group in groups:
+        for e in group:
+            index[e["_slug"]] = {"title": e.get("name") or e.get("title"), "link": e.get("deep_dive")}
+    return index
+
+
+def _check_cross_links(
+    entries: list[dict], field: str, index: dict[str, dict], index_label: str
+) -> None:
+    # related_research: / related_components: are only useful if they can't silently rot —
+    # same "raise, don't skip" standard as category:/deep_dive:/kind:.
+    bad = []
+    for e in entries:
+        for slug in e.get(field) or []:
+            if slug not in index:
+                bad.append(f"{e['_slug']}.{field}={slug!r}")
+    if bad:
+        raise SystemExit(
+            f"entries with a {field}: slug not found among {index_label}: {bad}")
+
+
+def _links_list(slugs: list, index: dict[str, dict]) -> str:
+    parts = []
+    for slug in slugs or []:
+        info = index[slug]  # presence already guaranteed by _check_cross_links
+        parts.append(f"[{info['title']}]({info['link']})" if info["link"] else info["title"])
+    return ", ".join(parts)
+
+
+def _research_cell(e: dict, research_index: dict[str, dict]) -> str:
+    related = e.get("related_research") or []
+    return f" · Research: {_links_list(related, research_index)}" if related else ""
+
+
+def _relevant_components_cell(e: dict, component_bundle_index: dict[str, dict]) -> str:
+    related = e.get("related_components") or []
+    return _links_list(related, component_bundle_index) if related else "—"
+
+
 def _deep_dive_link(e: dict, required: bool = True) -> str:
     dd = e.get("deep_dive")
     if not dd:
@@ -149,7 +205,7 @@ def _name_cell(e: dict) -> str:
     return name
 
 
-def render_component_table(entries: list[dict]) -> str:
+def render_component_table(entries: list[dict], research_index: dict[str, dict]) -> str:
     lines = [
         "| Name | Tested | License | Stars | Use cases | Details |",
         "|---|---|---|---|---|---|",
@@ -157,13 +213,14 @@ def render_component_table(entries: list[dict]) -> str:
     for e in entries:
         dd = _deep_dive_link(e)
         lines.append(
-            "| {name} | {tested} | {lic} | {stars} | {use} | [write-up]({dd}) |".format(
+            "| {name} | {tested} | {lic} | {stars} | {use} | [write-up]({dd}){research} |".format(
                 name=_name_cell(e),
                 tested=_tested_status(e),
                 lic=_license_tag(e),
                 stars=_stars(e),
                 use=_truncate(_use_cases(e), 60),
                 dd=dd,
+                research=_research_cell(e, research_index),
             )
         )
     return "\n".join(lines)
@@ -177,7 +234,7 @@ def render_component_table(entries: list[dict]) -> str:
 # a skill is; it's the substrate bundles are built on top of (VibeReady on AGENTS.md,
 # gtm-starter-kit on CLAUDE.md, etc.), so it reads better as context for this section.
 
-def render_instructions_table(entries: list[dict]) -> str:
+def render_instructions_table(entries: list[dict], research_index: dict[str, dict]) -> str:
     lines = [
         "| Name | License | Stars | Details |",
         "|---|---|---|---|",
@@ -185,17 +242,18 @@ def render_instructions_table(entries: list[dict]) -> str:
     for e in entries:
         dd = _deep_dive_link(e)
         lines.append(
-            "| {name} | {lic} | {stars} | [write-up]({dd}) |".format(
+            "| {name} | {lic} | {stars} | [write-up]({dd}){research} |".format(
                 name=_name_cell(e),
                 lic=_license_tag(e),
                 stars=_stars(e),
                 dd=dd,
+                research=_research_cell(e, research_index),
             )
         )
     return "\n".join(lines)
 
 
-def render_bundle_table(entries: list[dict]) -> str:
+def render_bundle_table(entries: list[dict], research_index: dict[str, dict]) -> str:
     lines = [
         "| Name | Engine lock-in | License | Stars | Details |",
         "|---|---|---|---|---|",
@@ -203,11 +261,36 @@ def render_bundle_table(entries: list[dict]) -> str:
     for e in entries:
         dd = _deep_dive_link(e)
         lines.append(
-            "| {name} | {lock} | {lic} | {stars} | [write-up]({dd}) |".format(
+            "| {name} | {lock} | {lic} | {stars} | [write-up]({dd}){research} |".format(
                 name=_name_cell(e),
                 lock=_truncate(e.get("engine_lock"), 45),
                 lic=_license_tag(e),
                 stars=_stars(e),
+                dd=dd,
+                research=_research_cell(e, research_index),
+            )
+        )
+    return "\n".join(lines)
+
+
+# ── Research — per-study folders, cross-linked both ways with components/bundles ──────
+
+def render_research_table(
+    entries: list[dict], component_bundle_index: dict[str, dict], research_index: dict[str, dict]
+) -> str:
+    lines = [
+        "| Title | Study type | Relevant components | Related studies | Write-up |",
+        "|---|---|---|---|---|",
+    ]
+    for e in entries:
+        dd = _deep_dive_link(e)
+        related_studies = e.get("related_research") or []
+        lines.append(
+            "| {title} | {study_type} | {components} | {studies} | [write-up]({dd}) |".format(
+                title=e.get("title") or e["_slug"],
+                study_type=e.get("study_type") or "—",
+                components=_relevant_components_cell(e, component_bundle_index),
+                studies=_links_list(related_studies, research_index) if related_studies else "—",
                 dd=dd,
             )
         )
@@ -403,12 +486,17 @@ def main() -> None:
     bundles = _load_dir("bundles")
     engines = _load_dir("engines")
     aux = _load_dir("benchmarks")
+    research = _load_dir("research")
     eval_frameworks = [e for e in aux if e.get("kind") == "eval-framework"]
     benchmarks = [e for e in aux if e.get("kind") == "benchmark"]
     unclassified = [e for e in aux if e.get("kind") not in ("eval-framework", "benchmark")]
     if unclassified:
         raise SystemExit(
             f"entries missing a kind: field: {[e['_slug'] for e in unclassified]}")
+
+    bad_study_type = [e["_slug"] for e in research if e.get("study_type") not in STUDY_TYPES]
+    if bad_study_type:
+        raise SystemExit(f"research entries missing a valid study_type: field: {bad_study_type}")
 
     # instruction-file conventions render inside the Bundles section as background
     # context, not as their own components/ category — see the comment above
@@ -423,6 +511,14 @@ def main() -> None:
         raise SystemExit(
             f"components missing a valid category: field: {[e['_slug'] for e in missing_category]}")
 
+    # Cross-link integrity — related_research:/related_components: are only useful if a
+    # dangling slug fails loudly rather than silently rendering "—" or being skipped.
+    component_bundle_index = _build_link_index(components, bundles)
+    research_index = _build_link_index(research)
+    _check_cross_links(components + bundles, "related_research", research_index, "research/")
+    _check_cross_links(research, "related_components", component_bundle_index, "data/components or data/bundles")
+    _check_cross_links(research, "related_research", research_index, "research/")
+
     by_category = {cat: [] for cat in CATEGORY_ORDER}
     for e in real_components:
         by_category[e["category"]].append(e)
@@ -433,6 +529,7 @@ def main() -> None:
     deep_dive_count = sum(1 for e in components if e.get("deep_dive"))
     deep_dive_count += sum(1 for e in bundles if e.get("deep_dive"))
     deep_dive_count += sum(1 for e in engines if e.get("deep_dive"))
+    deep_dive_count += sum(1 for e in research if e.get("deep_dive"))
 
     out = []
     out.append("# Agent Harness + Equipment Registry")
@@ -459,7 +556,8 @@ def main() -> None:
         f"(plus **{len(instructions)} instruction-file conventions** catalogued as background in "
         f"the Bundles section — {len(real_components) + len(instructions)} component entries total), "
         f"**{len(bundles)} assembled bundles**, **{len(engines)} agent engines/runtimes**, "
-        f"**{len(eval_frameworks)} eval-frameworks**, **{len(benchmarks)} benchmarks**."
+        f"**{len(eval_frameworks)} eval-frameworks**, **{len(benchmarks)} benchmarks**, "
+        f"**{len(research)} research {'study' if len(research) == 1 else 'studies'}**."
     )
     out.append("")
     out.append(
@@ -513,7 +611,7 @@ def main() -> None:
             continue
         out.append(f"### 1.{CATEGORY_ORDER.index(cat) + 1} {CATEGORY_TITLES[cat]}")
         out.append("")
-        out.append(render_component_table(entries))
+        out.append(render_component_table(entries, research_index))
         out.append("")
 
     out.append("---")
@@ -525,7 +623,7 @@ def main() -> None:
         "write-up scores it against the three properties no bundle here yet combines."
     )
     out.append("")
-    out.append(render_bundle_table(bundles))
+    out.append(render_bundle_table(bundles, research_index))
     out.append("")
     if instructions:
         out.append(
@@ -533,7 +631,7 @@ def main() -> None:
             "CLAUDE.md, `.cursor/rules/`, etc.) — background, not their own category:"
         )
         out.append("")
-        out.append(render_instructions_table(instructions))
+        out.append(render_instructions_table(instructions, research_index))
         out.append("")
 
     out.append("---")
@@ -573,11 +671,28 @@ def main() -> None:
         out.append(render_benchmark_detail(e))
         out.append("")
 
+    if research:
+        out.append("---")
+        out.append("")
+        out.append("## 5. Research")
+        out.append("")
+        out.append(
+            "Per-study research materials — a stable, citable home distinct from any one "
+            "component's write-up, since a study can inform several entries (or none yet). "
+            "`primary-source` = one external paper/study; `synthesis-digest` = an internal "
+            "write-up combining multiple external sources. \"Relevant components\" links out "
+            "to what the study informs; a component/bundle's own table row above links back "
+            "in via its \"Research:\" note when it carries a `related_research:` field."
+        )
+        out.append("")
+        out.append(render_research_table(research, component_bundle_index, research_index))
+        out.append("")
+
     OUT.write_text("\n".join(out).rstrip() + "\n", encoding="utf-8")
     print(
         f"wrote {OUT} ({len(real_components)} components, {len(instructions)} instruction-conventions, {len(bundles)} bundles, "
         f"{len(engines)} engines, {len(eval_frameworks)} eval-frameworks, "
-        f"{len(benchmarks)} benchmarks, {deep_dive_count} deep-dives)"
+        f"{len(benchmarks)} benchmarks, {len(research)} research, {deep_dive_count} deep-dives)"
     )
 
 

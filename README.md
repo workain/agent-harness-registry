@@ -3,8 +3,10 @@
 Structured, community-maintainable reference registry for AI agents — **harness equipment**
 (atomic **components** + assembled **bundles**: memory, skills/tools, subagents, access
 placement — what you compose onto an engine, or what someone else pre-composed for you),
-**agent engines/runtimes** (the substrate an equipment component or bundle plugs into), and
-**benchmarks + eval-frameworks** (auxiliary, for measuring agents).
+**agent engines/runtimes** (the substrate an equipment component or bundle plugs into),
+**benchmarks + eval-frameworks** (auxiliary, for measuring agents), and **research** (per-study
+evidence that informs one or more of the above, kept in its own citable home rather than
+scattered across write-ups).
 
 **The guide itself is [GUIDE.md](GUIDE.md).** That's the thing to read/share — an index of every
 entry with license, popularity (stars), and use cases at a glance, each linking to a full write-up
@@ -57,18 +59,50 @@ via the category paths below.
   (Whether bundles/engines/benchmarks ever warrant the same subfolder treatment components got is
   tracked as its own fast-follow: issue #32 — not silently left inconsistent, just not urgent at
   today's scale.)
-- `deep_dive:` is a **mandatory** field on every component and bundle (the generator raises an
-  error if it's missing); engines have it on a best-effort basis. Two entries may share one file
-  when the analysis is genuinely joint (e.g. `mcp-servers` + `mcp-client-sdk` both point at
-  `deep-dives/components/access-mcp/mcp.md`). Write these for practical value — what it is, when
-  to use it, how to actually get started, known gotchas/license caveats, and how it compares to
-  similar entries — not a restatement of the YAML's own facts.
+- `data/research/*.yaml` + top-level **`research/<study-slug>/`** — one entry per research
+  study, distinct from any single component's write-up (issue #34). `research/` sits at
+  **top level**, parallel to `data/`, `deep-dives/`, `templates/` — **not** nested under
+  `deep-dives/`, because a study isn't owned by one component: it can inform several components
+  or bundles (or none yet), and needs a stable URL an external article (`workain/gtm`) can cite
+  independent of any one entry's deep-dive path. Each study's YAML sets `title`, `study_type`
+  (`primary-source` — one external paper/study — or `synthesis-digest` — an internal write-up
+  combining multiple external sources), `source_urls:` (the external sources), and a mandatory
+  `deep_dive:` into `research/<study-slug>/README.md`. Same flat-vs-folder rule as component
+  deep-dives: **default one flat file is not even the floor here** — a study folder always has at
+  least a `README.md` entry point, and splits into more files (`evidence.md`, `results.md`,
+  `references.md`, ...) only when the content genuinely needs it (the first entry,
+  `base-project-template-evidence`, is a `synthesis-digest` and does split; a `primary-source`
+  entry summarizing one paper may not need to).
+  - **Bidirectional cross-links, registry-wide, mechanically checked:** `related_research:` (an
+    optional list field on `data/components/**/*.yaml`, `data/bundles/*.yaml`, AND on
+    `data/research/*.yaml` itself for study-to-study links) and `related_components:` (an
+    optional list field on `data/research/*.yaml`, pointing at component/bundle slugs). Rendered
+    as real links both directions — a component/bundle's `GUIDE.md` row gets a "Research:" note,
+    a research entry's row gets a "Relevant components:" note (see `_research_cell`/
+    `_relevant_components_cell` in `scripts/generate.py`) — and `generate.py` raises if any slug
+    in either field doesn't resolve to a real entry (`_check_cross_links`), the same "raise, don't
+    skip" standard as every other taxonomy field here.
+  - **Citation contract:** `research/<study-slug>/README.md` (its GitHub blob URL) is the
+    canonical, stable link target for anything outside this repo — an external article — pointing
+    at a study. Cite that path, not a specific commit or an internal cross-reference; it's
+    expected to outlive any one component's own deep-dive restructuring.
+- `deep_dive:` is a **mandatory** field on every component, bundle, and research study (the
+  generator raises an error if it's missing); engines have it on a best-effort basis. Two entries
+  may share one file when the analysis is genuinely joint (e.g. `mcp-servers` + `mcp-client-sdk`
+  both point at `deep-dives/components/access-mcp/mcp.md`). Write these for practical value —
+  what it is, when to use it, how to actually get started, known gotchas/license caveats, and how
+  it compares to similar entries — not a restatement of the YAML's own facts. A component's own
+  deep-dive should **cite** its research study's findings (a figure, a one-line takeaway) and
+  link out for the full picture, not restate the study inline — see
+  `base-project-template`'s deep-dive for the pattern this mechanism is built to support.
 - `scripts/generate.py` — reads `data/` (component YAML is discovered recursively, so category
   subfolders need no generator change to add), writes `GUIDE.md`. Deterministic, no network
-  access. Fails loudly (raises) if a benchmark entry is missing `kind:`, a component is missing a
-  valid `category:` (or its subfolder doesn't match its `category:` field), or a component/bundle
-  is missing its mandatory `deep_dive:` — the taxonomy and the separate-file rule are both
-  enforced mechanically, not by convention.
+  access. Fails loudly (raises) if a benchmark entry is missing `kind:`, a research entry is
+  missing a valid `study_type:`, a component is missing a valid `category:` (or its subfolder
+  doesn't match its `category:` field), a component/bundle/research entry is missing its
+  mandatory `deep_dive:`, or a `related_research:`/`related_components:` slug doesn't resolve —
+  the taxonomy, the separate-file rule, and the cross-link integrity are all enforced
+  mechanically, not by convention.
 - `GUIDE.md` — generated output, committed. **Do not hand-edit** — edit the YAML/deep-dives and
   regenerate. Structured general -> specific: definition/caveat -> Overview (map + atoms-vs-bundles
   narrative) -> component index tables by category -> bundle index table (+ instruction-file
@@ -149,13 +183,22 @@ framing is never passed through as fact.
 3. **Engine or benchmark**: add under `data/engines/` or `data/benchmarks/` (set
    `kind: benchmark` or `kind: eval-framework` for the latter; add `key_facts:` and
    `methodology:` for benchmarks/eval-frameworks).
-4. Every claim needs either a `provenance` entry (URL + what was fetched) or an `unverified`
+4. **Research study**: add `data/research/<study-slug>.yaml` with `title`, `study_type`
+   (`primary-source` / `synthesis-digest`), `source_urls:`, and a mandatory `deep_dive:` pointing
+   at a new top-level `research/<study-slug>/README.md` (plus whatever supporting files the study
+   genuinely needs — see "How this repo is organized" above). If it informs an existing
+   component/bundle, add `related_components:` on the research YAML **and** `related_research:`
+   on that component/bundle's own YAML — both directions, not just one (`generate.py` raises if
+   either side points at a slug that doesn't exist, but it can't catch a link you simply never
+   added on the other side). If a component's deep-dive currently restates a study's findings
+   inline, rewrite it to cite the finding and link to the study instead once the study exists.
+5. Every claim needs either a `provenance` entry (URL + what was fetched) or an `unverified`
    caveat.
-5. If the component has been independently live-tested (any category — see "Testing status"
+6. If the component has been independently live-tested (any category — see "Testing status"
    above), add its `harness_eval_verdict:` block, citing the `workain/harness-eval` issue/PR it
    came from in `provenance`. Never author a verdict from a self-report or vendor benchmark —
    only from an eval this lab actually ran.
-6. Run `python3 scripts/generate.py` and commit the resulting `GUIDE.md` diff alongside your
+7. Run `python3 scripts/generate.py` and commit the resulting `GUIDE.md` diff alongside your
    YAML/deep-dive change. The generator raises an error (not a silent skip) if a required field is
    missing or invalid — a growing catalog (including future weekly-cron additions) can't silently
    drift out of taxonomy or lose its separate-file discipline.

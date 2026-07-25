@@ -1,7 +1,8 @@
-# base-project-template — references
+# base-project-template-evidence — references
 
-Part of the [base-project-template deep dive](README.md). See also
-[evidence](evidence.md) and [design, growth, and usage](design-and-usage.md).
+Part of the [base-project-template-evidence research study](README.md). See also
+[evidence](evidence.md) and the [base-project-template component's design-and-usage
+notes](../../deep-dives/components/instructions-rules/base-project-template/design-and-usage.md).
 
 ## References
 

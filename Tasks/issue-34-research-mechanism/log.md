@@ -1,5 +1,45 @@
 # #34 — research/ mechanism — log
 
+## 2026-07-25 — final rebase onto main after PR #30 merged (clean, non-stacked diff)
+
+- Independent ROAST on the previous version of this PR (based on commit `0864225`, stacked via
+  a `git cherry-pick -m 1` of the PR #30 merge+fold-in) came back **BLOCK, HIGH confidence** —
+  engineering fully verified clean, but the operator had personally reserved the PR #30 merge
+  action specifically, and merging this PR first would have shipped that content through a
+  different PR number without that reserved sign-off ever being exercised. See the previous
+  log entry below (2026-07-24) and the earlier `roast.md` revision for the full verdict; not
+  re-litigated here since the remediation was mechanical, not a design change.
+- PR #30 merged to `main` as `eed695b` (operator's own explicit sign-off exercised). Checked:
+  `main`'s `base-project-template.yaml`/deep-dive/`README.md`/`generate.py` are **byte-identical**
+  to what this branch's own prior fold-in commit (`9f53e84`) had already produced — confirmed via
+  `git diff 9f53e84 origin/main -- <every touched path>` returning empty. This meant the
+  fold-in commit could simply be dropped rather than re-done.
+- Rebase: branched fresh from `origin/main` (`eed695b`), cherry-picked only the research-mechanism
+  commit (`0864225`'s content — `data/research/` loader, `GUIDE.md` "## 5. Research" section,
+  bidirectional cross-link fields/rendering, the `base-project-template-evidence` migration).
+  Applied with **zero conflicts** (expected, given the byte-identical base above). The
+  PR #30-merge-and-fold-in commit is gone entirely — that content is now `main`'s own history via
+  #30's real merge, not duplicated through this PR.
+- Result: `git diff origin/main --stat` now shows **only** this PR's true net-new work — 13 files,
+  458 insertions / 64 deletions, entirely `research/`-mechanism + the one migration. No
+  `templates/base-project-template/` or other #30-owned paths appear in the diff at all.
+- Re-verified everything from scratch (not trusted from the clean cherry-pick):
+  - `generate.py` exit 0, identical counts (103/7/8/11/9/11/1 research/130 deep-dives).
+  - All 130 `deep_dive:` fields + 132 `GUIDE.md` link occurrences resolve.
+  - Full relative-link sweep across every touched file (research folder's 4 files, the
+    component's 2 remaining deep-dive files, `templates/base-project-template/README.md`) —
+    zero broken.
+  - All 5 mechanical gates re-triggered with a bad value and confirmed to raise, then reverted:
+    bad `study_type:`, dangling `related_research:` (on the component), dangling
+    `related_components:` (on the research entry), missing `deep_dive:` (on the research entry —
+    the gate the independent reviewer tried on their own initiative last round), and a
+    component/category subfolder mismatch (`_check_component_subfolders`).
+  - `GUIDE.md`'s diff against `origin/main` read in full: 14 lines, purely additive (the research
+    count in Overview, the component row's new inline "Research:" note, the new Research
+    section) — no regression to any existing table.
+  - `scripts/pre-commit-checks.sh` clean.
+- Not self-merged, not self-ROASTed — requesting re-review on this now-clean, non-stacked diff.
+
 ## 2026-07-24 — start / reconciliation
 
 - Read issue #34 in full before touching anything.

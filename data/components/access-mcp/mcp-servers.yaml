@@ -33,3 +33,5 @@ provenance:
 unverified:
   - "the broader community MCP-server ecosystem (hundreds of third-party servers indexed by \"awesome-mcp-servers\"-style lists) was found via search but not individually verified — this entry catalogs only the official reference-implementation repo"
 deep_dive: deep-dives/components/access-mcp/mcp.md
+related_research:
+  - mcp-server-design-2026-07

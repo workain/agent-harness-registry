@@ -34,3 +34,5 @@ unverified:
   - "the other 6 language SDKs (Python, Go, Java, C#, Kotlin, Ruby, PHP) were confirmed to exist via search, not individually fetched for license/activity detail — this entry's activity numbers are TypeScript-SDK-specific"
   - "whether the spec's own steering group will actually ratify a revision dated '2026-07-28', or a different date, or defer further — the SDK's docs assert this date but the spec repo itself has not published it as of this fetch"
 deep_dive: deep-dives/components/access-mcp/mcp.md
+related_research:
+  - mcp-server-design-2026-07

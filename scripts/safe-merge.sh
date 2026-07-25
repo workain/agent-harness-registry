@@ -65,6 +65,26 @@ if [ ! -x "$CHECK_SCRIPT" ]; then
   exit 1
 fi
 
+# Independent ROAST BLOCK, reproduced live twice on this identical commit
+# (Tasks/20260722_agent-harness-registry-pr28-safe-merge-roast/ and
+# Tasks/20260725_ahr28_safe_merge_roast/ in agent-lab-manager): this script's own documented
+# passthrough-args usage (the Example above) let a caller supply their own `-R`/`--repo`, which
+# used to land AFTER the hardcoded `--repo "$THIS_REPO"` below and silently win via `gh`'s own
+# last-flag-wins CLI semantics -- the gate would report "check passed" for $THIS_REPO/$PR_NUMBER
+# while the actual merge targeted a different, unverified repo. Fail closed instead of relying on
+# flag order alone: reject any `-R`/`--repo` (bare, `=value`, or glued short form) in the
+# passthrough args outright. There is no legitimate reason a caller of THIS repo's own
+# safe-merge.sh needs to override THIS_REPO -- that would defeat the entire point of pinning it
+# per-repo.
+for arg in "$@"; do
+  case "$arg" in
+    --repo|--repo=*|-R|-R*)
+      echo "safe-merge: ERROR -- passthrough args must not include a --repo/-R override (found: '$arg'). This script is pinned to $THIS_REPO; a caller-supplied repo override would let the actual merge target diverge from what the ROAST-artifact check just verified. Not merging." >&2
+      exit 1
+      ;;
+  esac
+done
+
 echo "safe-merge: checking for a PASSing independent-ROAST artifact for $THIS_REPO#$PR_NUMBER..."
 if ! "$CHECK_SCRIPT" "$THIS_REPO" "$PR_NUMBER"; then
   echo "safe-merge: BLOCKED -- no PASSing independent-ROAST artifact found for $THIS_REPO#$PR_NUMBER (agent-lab-manager#183 gate)." >&2
@@ -73,4 +93,9 @@ if ! "$CHECK_SCRIPT" "$THIS_REPO" "$PR_NUMBER"; then
 fi
 
 echo "safe-merge: ROAST artifact check passed. Proceeding with merge."
-exec gh pr merge "$PR_NUMBER" --repo "$THIS_REPO" "$@"
+# Defense in depth: the loop above already rejects any -R/--repo in "$@", but keep
+# --repo "$THIS_REPO" as the LAST flag here too, so it always wins per gh's own last-flag-wins
+# semantics even if some future passthrough form the loop above doesn't yet recognize slips
+# through -- verified empirically that gh accepts flags positioned after the PR number and that
+# the last --repo flag wins (gh pr merge 999999 --repo a/b --repo c/d resolves against c/d).
+exec gh pr merge "$PR_NUMBER" "$@" --repo "$THIS_REPO"

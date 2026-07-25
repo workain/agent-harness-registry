@@ -142,3 +142,58 @@ Out of scope, deliberately not touched: the other 108 `deep-dives/components/*.m
 the shared flat-directory convention itself (stated explicitly in the root README's "How this
 repo is organized" section) — restructuring those is a bigger, disruptive decision affecting
 content this task doesn't own, and wasn't what was asked.
+
+## 2026-07-25 — rebase onto main + fold into #33's category-subfolder / first_party scheme
+
+`main` moved forward while this PR sat open/ROAST-passed: PR #33 (issue #31) landed a full
+registry restructuring — all 109 pre-existing components moved from the old flat
+`data/components/*.yaml` + `deep-dives/components/*.md` layout into per-category subfolders
+(`data/components/<category>/*.yaml`, `deep-dives/components/<category>/*.md`), plus a
+registry-wide `first_party:` YAML field with real `GUIDE.md` rendering (a badge + per-category
+count in the Overview). #33's own author left a coordination comment on this PR
+(https://github.com/workain/agent-harness-registry/pull/30#issuecomment-5072462629) spelling out
+the exact follow-up, and had already executed the identical fold-in once before as a
+reconciliation commit (`9f53e84`, on branch `issue-34-research-mechanism`, stacked on top of
+#33) — used here as a byte-for-byte reference for the resolution, not merged in wholesale (that
+branch also carries issue #34's own further `research/` migration, which is out of scope here).
+
+- `git rebase origin/main` — only conflict was the generated `GUIDE.md` (as `git merge-tree` had
+  already predicted); resolved by taking `main`'s version through the rebase and regenerating for
+  real afterward. The other 3 commits on this branch (license fix, deep-dive folder split,
+  results.md extraction) applied cleanly with no conflicts.
+- `git mv data/components/base-project-template.yaml
+  data/components/instructions-rules/base-project-template.yaml` (category `instructions-rules`,
+  confirmed from the entry's own `category:` field).
+- `git mv deep-dives/components/base-project-template/
+  deep-dives/components/instructions-rules/base-project-template/` (kept as the folder-per-entry
+  pattern — #33 explicitly documented this PR's split as the justified exception to the new
+  flat-file-per-entry default, not silently generalized).
+- Set `first_party: true` on the moved `.yaml` and repointed its `deep_dive:` field one directory
+  deeper.
+- Removed this PR's prose `## Our own work` section from the root `README.md` and
+  `scripts/generate.py`'s static Overview line pointing at it — both superseded by #33's
+  field-driven `first-party` badge + per-category count. Added one generic, non-stale pointer to
+  the `first_party` field's own README documentation instead ("search GUIDE.md for
+  `` `first-party` ``") so first-party discoverability doesn't regress without hardcoding to one
+  entry's name.
+- Fixed every relative link broken by the added `instructions-rules/` path segment: the 4
+  root-level links inside the deep-dive folder's own `README.md` (`../../../` → `../../../../`),
+  its `**Registry entry:**` path string, and the template's own `README.md`'s two links to the
+  deep-dive (`../../deep-dives/components/base-project-template/` →
+  `../../deep-dives/components/instructions-rules/base-project-template/`). No fact, number, or
+  citation touched in `evidence.md` / `design-and-usage.md` / `references.md` / `results.md` —
+  none of the four had a relative link to begin with, confirmed by grep.
+- Regenerated `GUIDE.md` (`python3 scripts/generate.py` → 103 components, 7
+  instruction-conventions [was 6], 129 deep-dives [was 128]) and diffed against
+  `origin/main`'s `GUIDE.md`: the only changes are the Overview count bump (6→7
+  instruction-conventions, 109→110 total) and one new `base-project-template` row with its
+  `first-party` badge — nothing else moved.
+- Verification: every touched/moved file (`base-project-template.yaml`, the 5 deep-dive files,
+  the template's own `README.md`, root `README.md`, `scripts/generate.py`) diffed byte-for-byte
+  identical against reference commit `9f53e84`'s versions, confirming this rebase reproduces the
+  same resolution independently rather than diverging from it.
+  `python3 templates/base-project-template/render_templates.py --check` → PASS; pre-commit hook
+  clean.
+
+No fact/number/citation altered — structural rebase + reconciliation only, per this task's own
+scope.

@@ -10,14 +10,6 @@ placement — what you compose onto an engine, or what someone else pre-composed
 entry with license, popularity (stars), and use cases at a glance, each linking to a full write-up
 with practical guidance (when to use it, how to get started, gotchas, comparisons).
 
-## Our own work
-
-Almost everything catalogued here is a third-party project. One entry is not: **[base-project-template](deep-dives/components/base-project-template/)**
-is a workain-authored, evidence-derived default `CLAUDE.md`/`AGENTS.md` project template (with a
-git-tracked commit-block gate and task-tracking scaffolding), built and dogfooded by this lab —
-see its [deep dive](deep-dives/components/base-project-template/) for what it is and why, or go
-straight to the [template files](templates/base-project-template/).
-
 ## How this repo is organized
 
 This section is both a **map for a visitor** (where's the thing I'm looking for) and the
@@ -110,7 +102,9 @@ via the category paths below.
   index-table row (see `_name_cell` in `scripts/generate.py`) and folds a first-party count into
   each component category's Overview line — a real rendering distinction, not prose-only. Don't
   set this to signal endorsement or heavy usage of a third-party tool; it means authorship,
-  nothing else.
+  nothing else. Looking for this lab's own work rather than a cataloged third party? Search
+  [GUIDE.md](GUIDE.md) for `` `first-party` `` — no need for a separate hand-maintained list here
+  that would just go stale as more first-party entries are added.
 
 ## Testing status
 

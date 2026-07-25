@@ -2,11 +2,11 @@
 
 **Our own work.** Unlike most of this registry — which catalogues other people's projects —
 `base-project-template` is a workain-authored template: built, dogfooded, and shipped from this
-repo's own [`templates/base-project-template/`](../../../templates/base-project-template/), not
+repo's own [`templates/base-project-template/`](../../../../templates/base-project-template/), not
 imported from an unrelated third party.
 
-**Registry entry:** `data/components/base-project-template.yaml` · **Category:**
-instructions-rules · **Files:** [`templates/base-project-template/`](../../../templates/base-project-template/)
+**Registry entry:** `data/components/instructions-rules/base-project-template.yaml` · **Category:**
+instructions-rules · **Files:** [`templates/base-project-template/`](../../../../templates/base-project-template/)
 · **Launch article:** [Minimal CLAUDE.md, derived from measurement](https://workain.ai/blog/posts/base-project-template.html)
 (not yet live as of this import; publishes around this PR's merge)
 
@@ -33,7 +33,7 @@ themselves are the *what*.
 
 ## See also
 
-- [`templates/base-project-template/`](../../../templates/base-project-template/) — the template
+- [`templates/base-project-template/`](../../../../templates/base-project-template/) — the template
   itself; start with its own README's "Which variant do I want?" section.
-- [Registry root README](../../../README.md) and [GUIDE.md](../../../GUIDE.md) — the full
+- [Registry root README](../../../../README.md) and [GUIDE.md](../../../../GUIDE.md) — the full
   registry index this entry is part of.

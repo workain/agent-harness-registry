@@ -25,3 +25,5 @@ One of the few entries in this registry's access-mcp category that ALSO ships no
 ## References
 
 - https://github.com/stripe/agent-toolkit — verified via `gh api`/direct fetch, 2026-07-05
+- https://github.com/stripe/ai — re-checked via `gh api`, 2026-07-27: repo renamed
+  stripe/agent-toolkit -> stripe/ai (confirmed 301 redirect, not archived)

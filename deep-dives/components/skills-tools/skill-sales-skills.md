@@ -16,7 +16,7 @@ Low-traction but worth noting if specifically looking for a GTM-scoped skills ex
 
 ## Gotchas
 
-- Very low traction (62 stars) — a niche/early example, not a vetted default choice.
+- Very low traction (91 stars as of 2026-07-27) — a niche/early example, not a vetted default choice.
 
 ## How it compares
 

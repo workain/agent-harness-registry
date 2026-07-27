@@ -9,11 +9,14 @@ use_cases: "GTM/CRM-focused skills, npx-installable"
 what_it_is: >
   A small, GTM/CRM-focused skill set, npx-installable.
 activity:
-  stars: "62"
-  last_verified_note: "8 forks"
+  stars: "91"
+  last_verified_note: "11 forks"
 provenance:
   - url: https://github.com/sales-skills/sales
     fetched: "2026-07-05"
     note: "verified directly via gh api (stars/forks/license) where a repo exists; some entries flagged unverified per search-only sourcing"
+  - url: https://github.com/sales-skills/sales
+    fetched: "2026-07-27"
+    note: "weekly refresh re-check via gh api: stars 62 -> 91 (+47%), forks 8 -> 11"
 unverified: []
 deep_dive: deep-dives/components/skills-tools/skill-sales-skills.md

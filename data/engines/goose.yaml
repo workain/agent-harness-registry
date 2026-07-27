@@ -1,21 +1,25 @@
 name: Goose
 slug: goose
-homepage: https://github.com/block/goose
+homepage: https://github.com/aaif-goose/goose
 interface: "Native desktop app (macOS/Linux/Windows), CLI, API"
 what_it_is: >
-  An open-source, general-purpose AI agent (Block/Square) — install, execute, edit,
-  and test with any LLM. Supports 15+ LLM providers, integrates with 70+ extensions via
-  MCP. Recently transitioned from `block/goose` to the Agentic AI Foundation (AAIF)
-  under the Linux Foundation.
+  An open-source, general-purpose AI agent (originally Block/Square) — install, execute,
+  edit, and test with any LLM. Supports 15+ LLM providers, integrates with 70+ extensions
+  via MCP. Transition from `block/goose` to the Agentic AI Foundation (AAIF) under the
+  Linux Foundation is now complete: the repo is `aaif-goose/goose` (old URL 301-redirects,
+  not archived).
 license: Apache-2.0
 open_source: true
 sandboxing: "n/a documented at the engine level — extension-mediated tool access via MCP is the primary access-control surface"
 activity:
-  stars: "50.7k (per GitHub page fetch, 2026-07-05)"
-  last_verified_note: "141 releases, latest v1.41.0 (2026-07-03), 4,966 commits, 5.5k forks — actively maintained; repo mid-transition from block/goose to aaif-goose/goose"
+  stars: "51.8k (per gh api, re-checked 2026-07-27)"
+  last_verified_note: "141 releases, latest v1.41.0 (2026-07-03), 4,966 commits, 5.5k forks as of 2026-07-05; AAIF transition (block/goose -> aaif-goose/goose) confirmed complete on 2026-07-27 (5,750 forks, actively maintained, pushed same day)"
 provenance:
   - url: https://github.com/block/goose
     fetched: "2026-07-05"
     note: "fetched directly — same source as this registry's goosehints component entry"
+  - url: https://github.com/aaif-goose/goose
+    fetched: "2026-07-27"
+    note: "weekly refresh re-check via gh api: AAIF rename confirmed complete (full_name -> aaif-goose/goose, archived: false), stars 50.7k -> 51.8k"
 unverified: []
 deep_dive: deep-dives/engines/goose.md

@@ -4,7 +4,7 @@
 
 ## What it is
 
-133+ subagents — a larger count than several higher-starred collections, but with very low adoption (79 stars).
+133+ subagents — a larger count than several higher-starred collections, but with very low adoption (97 stars as of 2026-07-27).
 
 ## When to use it
 
@@ -24,4 +24,4 @@ A cautionary data point next to VoltAgent's much smaller-by-percentage but far m
 
 ## References
 
-- https://github.com/rshah515/claude-code-subagents — verified via `gh api`/direct fetch, 2026-07-05
+- https://github.com/rshah515/claude-code-subagents — verified via `gh api`/direct fetch, 2026-07-05; re-checked 2026-07-27

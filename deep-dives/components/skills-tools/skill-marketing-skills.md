@@ -4,7 +4,7 @@
 
 ## What it is
 
-CRO/copywriting/SEO/analytics/growth-engineering skills — surprisingly high traction (36.2k stars) for a non-coding domain, good evidence skills aren't just for developers.
+CRO/copywriting/SEO/analytics/growth-engineering skills — surprisingly high traction (42.0k stars as of 2026-07-27) for a non-coding domain, good evidence skills aren't just for developers.
 
 ## When to use it
 
@@ -20,4 +20,4 @@ One of the highest-starred non-engineering skill collections found — alongside
 
 ## References
 
-- https://github.com/coreyhaines31/marketingskills — verified via `gh api`/direct fetch where possible, 2026-07-05
+- https://github.com/coreyhaines31/marketingskills — verified via `gh api`/direct fetch where possible, 2026-07-05; re-checked 2026-07-27

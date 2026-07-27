@@ -1,0 +1,40 @@
+name: Buzz (Block)
+slug: buzz-block
+category: access-mcp
+homepage: https://github.com/block/buzz
+license: "Apache-2.0"
+license_tag: "Apache-2.0"
+open_source: true
+use_cases: "self-hosted team workspace (chat + git hosting + YAML workflows) where AI agents and humans share the same rooms/repos, each agent with its own cryptographic identity"
+what_it_is: >
+  A self-hostable workspace platform from Block (the same org behind this registry's `goose`
+  engine) built as a Nostr relay: "one relay where humans, agents, workflows, git events, and
+  project memory cooperate" (its own README's framing), replacing fragmented chat/forge/CI-
+  dashboard tooling with a single signed-event log. AI agents are first-class workspace members
+  — each gets its own Nostr keypair plus a second signature tying it back to its human owner
+  (a verifiable audit trail), and can join channels, search discussions, submit patches, review
+  code, and run YAML-defined workflows the same way a human teammate would. The
+  agent-facing surface this registry cares about is `buzz-acp`, an ACP<->MCP translation harness
+  that bridges coding agents — currently Goose, Codex, and Claude Code — into workspace channels;
+  a JSON-in/JSON-out `buzz-cli` is explicitly designed for LLM tool calls. Rust-based
+  microservices (`buzz-relay` on Axum, Postgres for events/search, Redis for pub/sub/presence,
+  S3/MinIO via the Blossom protocol for media). Publicly announced 2026-07-21 by Jack Dorsey
+  (Block's CEO) as a Slack/GitHub alternative, but the repo itself dates to 2026-03-06 and has
+  real independent traction (14.5k stars, 1,228 forks, actively pushed as of this fetch) — not a
+  brand-new, unproven launch despite the same-week press cycle.
+integration: "Self-host via Docker Compose (`deploy/compose/`) or local dev (`just setup && just dev`, relay on `ws://localhost:3000`); packaged binaries for macOS/Linux/Windows from GitHub releases; agents connect through the `buzz-acp` ACP<->MCP bridge or the JSON-first `buzz-cli`"
+activity:
+  stars: "14.5k (per gh api, 2026-07-27)"
+  last_verified_note: "1,228 forks, 786 open issues, pushed as recently as 2026-07-27 — actively developed, not a dormant press-cycle launch. Repo created 2026-03-06, predating the 2026-07-21 public announcement by over 4 months"
+provenance:
+  - url: https://github.com/block/buzz
+    fetched: "2026-07-27"
+    note: "weekly refresh discovery: verified directly via gh api (stars/forks/license/push date/creation date) — confirms genuine pre-existing traction, not just launch-week hype"
+  - url: https://github.com/block/buzz/blob/main/README.md
+    fetched: "2026-07-27"
+    note: "fetched directly: architecture (Nostr-based relay, Rust microservices), agent integration surface (buzz-acp, buzz-cli, supported agents Goose/Codex/Claude Code), install/self-host instructions, license, and explicit maturity markers (README's own \"Strong opinions, pending code\" framing for unreleased features)"
+unverified:
+  - "web-of-trust reputation and the git-hosting backend are explicitly marked as not-yet-built (\"💭\") in the README, not just incomplete — treat any git-hosting claim as forward-looking, not current"
+  - "mobile clients (iOS/Android), the Tauri desktop app, workflow-approval resumption, and push notifications are explicitly marked in-progress (\"🚧\") in the README as of this fetch"
+  - "no independent live-testing of the buzz-acp bridge performed by this registry — cataloged from README claims, not hands-on verification of the ACP<->MCP translation actually working end-to-end"
+deep_dive: deep-dives/components/access-mcp/buzz-block.md

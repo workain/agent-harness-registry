@@ -1,0 +1,55 @@
+name: Grok Build
+slug: grok-build
+homepage: https://github.com/xai-org/grok-build
+interface: "Full-screen, mouse-interactive TUI; also runs headless for scripting/CI; embeddable via the Agent Client Protocol (ACP)"
+what_it_is: >
+  xAI's (branded "SpaceXAI" in the repo's own README, which states it "is synced periodically
+  from the SpaceXAI monorepo") terminal-based coding agent — a direct category peer to this
+  registry's Claude Code / Codex CLI / Gemini CLI entries. Understands a codebase, edits files,
+  executes shell commands, searches the web, and manages long-running tasks; extensible via MCP
+  servers, skills, plugins, and hooks. Originally a proprietary, paid feature for SuperGrok
+  subscribers (~$30/mo per secondary reporting, not independently re-verified against a primary
+  pricing page for this entry); open-sourced under Apache-2.0 on GitHub on 2026-07-15/16 (exact
+  date disputed between secondary sources — see provenance) in the same week a serious data-
+  exposure incident broke publicly (see the security note below), which multiple outlets
+  characterized as the proximate trigger for open-sourcing it. GENUINELY NEW since this
+  registry's last refresh: repo created 2026-07-14, already at 23.0k stars / 4.3k forks by this
+  fetch — real, fast independent adoption, not just launch-week noise.
+license: "Apache License 2.0 for first-party code, per the repo's own README; third-party dependencies retain their original licenses"
+open_source: true
+sandboxing: >
+  Documents a permissions-and-sandbox model (docs.x.ai/build/settings): tool-policy rules gate
+  which actions the agent may REQUEST, separately from OS-level sandbox profiles that gate what
+  an approved process may actually REACH; several credential directories (SSH, GnuPG,
+  cloud-provider, and Grok's own auth paths) are described as write-protected across profiles.
+  IMPORTANT CAVEAT, disclosed prominently because it is load-bearing: this documented model
+  governs LOCAL filesystem/process access. The security incident below involved a SEPARATE,
+  undocumented NETWORK upload channel that these controls did not gate and that operated even
+  with the model-training opt-out enabled — a different control surface than "sandboxing" as
+  usually scoped in this registry, and worth reading as a distinct risk, not something the
+  sandbox/permissions model above would have caught.
+activity:
+  stars: "23.0k (per gh api, 2026-07-27)"
+  last_verified_note: "4,336 forks, pushed as recently as 2026-07-27 (same day as this fetch) — actively developed. Repo created 2026-07-14"
+provenance:
+  - url: https://github.com/xai-org/grok-build
+    fetched: "2026-07-27"
+    note: "weekly refresh discovery: verified directly via gh api (stars/forks/license/created/pushed dates)"
+  - url: https://github.com/xai-org/grok-build
+    fetched: "2026-07-27"
+    note: "README fetched directly: product description, creator (SpaceXAI monorepo sync), interface (TUI/headless/ACP), install channels (x.ai/cli/install.sh), extensibility (MCP/skills), license"
+  - url: https://docs.x.ai/build/settings
+    fetched: "2026-07-27"
+    note: "fetched directly: settings-scope hierarchy (Environment/User/Project/Managed/Requirements) and a permissions-vs-sandbox distinction; full sandbox-profile/credential-path detail was not present in the fetched excerpt and is sourced secondarily below"
+  - url: https://devops.com/xai-open-sources-grok-build-coding-agent-after-cloud-upload-exposes-ssh-keys-repos/
+    fetched: "2026-07-27"
+    note: "security incident, one of two independent secondary reports (see next entry for the other): researcher \"Cereblab\" using mitmproxy found CLI v0.2.93 uploading repo contents (5.1GB/73 chunks from a 12GB test repo, ~27,800x task-needed volume) to a Google Cloud bucket (grok-code-session-traces), including plaintext SSH keys and .env credentials, regardless of the \"Improve the model\" toggle; reports xAI disabled the channel server-side 2026-07-13 with no security advisory, open-sourced the repo 2026-07-15"
+  - url: https://en.wikipedia.org/wiki/Grok_Build
+    fetched: "2026-07-27"
+    note: "security incident, second independent secondary report, DATES/RESEARCHER-NAME CONFLICT WITH THE ABOVE (disclosed, not resolved): attributes discovery to researcher \"Tinh Dang\" on 2026-07-14, disable date 2026-07-14, open-source date 2026-07-16 — same underlying incident (full repo histories/API keys/shared secrets uploaded to SpaceXAI's GCS despite the training opt-out, ~27,800x overupload figure matches), but a full day off on both the disable and open-source dates versus the DevOps.com report and a different researcher credited; treat the exact day and discoverer as [unverified — conflicting secondary sources, no primary xAI security advisory found]"
+unverified:
+  - "no primary-source xAI security advisory/postmortem was found for the data-exposure incident — both citations here are secondary press/wiki summaries, and they conflict with each other on the exact disable/open-source dates and the discovering researcher's identity"
+  - "whether previously-uploaded user data was actually deleted: reporting cites an Elon Musk public statement pledging deletion, with no independently verifiable specifics (affected-user count, retention duration, verification method) found in either source"
+  - "SuperGrok pricing (~$30/mo) for the tool's pre-open-source paid tier is from secondary reporting (Wikipedia), not independently re-verified against a primary xAI pricing page"
+  - "full sandbox-profile/credential-path detail beyond what docs.x.ai/build/settings' fetched excerpt showed — the settings page references Enterprise-only sections not covered in this fetch"
+deep_dive: deep-dives/engines/grok-build.md

@@ -1,0 +1,17 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '.tool_input.command' | { read -r cmd; if echo \"$cmd\" | grep -qE '\\bgh\\b[^|;&]*\\bpr[[:space:]]+merge([[:space:]]|$)' || echo \"$cmd\" | grep -qE '\\bgh\\b[^|;&]*\\bapi\\b[^|;&]*/pulls/[0-9]+/merge\\b'; then echo '{\"hookSpecificOutput\":{\"hookEventName\":\"PreToolUse\",\"permissionDecision\":\"deny\",\"permissionDecisionReason\":\"BLOCKED: raw gh pr merge / gh api .../merge is not allowed in this repo -- use scripts/safe-merge.sh <PR_NUMBER> instead (agent-lab-manager#183 ROAST-artifact gate, CLAUDE.md \\u00a73). It checks for a PASSing independent-ROAST artifact before merging, then merges for you.\"}}'; fi; }",
+            "timeout": 10,
+            "statusMessage": "Checking for a raw gh pr merge (must go through scripts/safe-merge.sh)..."
+          }
+        ]
+      }
+    ]
+  }
+}

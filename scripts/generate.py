@@ -233,6 +233,13 @@ def render_component_table(entries: list[dict], research_index: dict[str, dict])
 # a lone rules-file convention isn't itself swappable equipment the way a memory tool or
 # a skill is; it's the substrate bundles are built on top of (VibeReady on AGENTS.md,
 # gtm-starter-kit on CLAUDE.md, etc.), so it reads better as context for this section.
+#
+# No Tested/Catalogued column here, unlike render_component_table() — decided in issue #23.
+# A harness_eval_verdict tier ranks swappable alternatives against each other on a shared
+# benchmark; these entries aren't alternatives a user picks between, they're the filename/
+# format one engine already expects (AGENTS.md vs. .goosehints isn't a head-to-head choice
+# the way two memory backends are). See README's "Testing status" section for the full
+# reasoning — this is a deliberate scoping decision, not an oversight to fix later.
 
 def render_instructions_table(entries: list[dict], research_index: dict[str, dict]) -> str:
     lines = [

@@ -1,0 +1,65 @@
+# #23 + #32 — instructions-rules Tested column decision + subfolder-split decision
+
+WS-5 charter, sprint 2026-W32. Two independent 2pt/3pt issues, bundled into one PR since both
+are documentation-only decisions with no code/data changes.
+
+## #23 — instructions-rules category has no Tested/Catalogued column
+
+### Decision: No — document the exclusion, don't port the column
+
+Re-verified before deciding: no `instructions-rules` entry (7 total: agents-md, cursor-rules,
+goosehints, devin-knowledge-playbooks, windsurf-rules, base-project-template, gemini-md) carries
+a `harness_eval_verdict` today; only the `memory` category has been through the eval pipeline.
+
+The actual question per the issue: can an instruction-file *convention* meaningfully carry a
+`harness_eval_verdict` tier the way a swappable memory/skill/subagent component can?
+
+**Reasoning:** a `harness_eval_verdict` tier ranks alternatives a user actually chooses between
+on a shared benchmark (e.g. which memory backend). AGENTS.md, CLAUDE.md, Cursor Rules, GEMINI.md,
+`.goosehints`, and Devin Knowledge/Playbooks aren't alternatives in that sense — each is the
+filename/format one specific engine already expects its instructions file in. There's no
+head-to-head swap to benchmark: running the same instructions content through the AGENTS.md vs.
+CLAUDE.md convention would measure whether the target engine recognizes its own file, not which
+convention is "better." What would be genuinely testable (instructions content vs. no
+instructions, or content A vs. content B) is a different question than the one a
+`harness_eval_verdict` tier answers here. This is consistent with the existing design rationale
+already in `scripts/generate.py` for why instructions-rules isn't its own component category
+(substrate, not swappable equipment) — extending that same reasoning to the Tested column is the
+coherent call, not a new one invented for this issue.
+
+### What was done
+- `README.md` "Testing status" section: added a paragraph stating the exclusion explicitly and
+  why, so it reads as a deliberate scoping decision (issue #23) rather than an oversight.
+- `scripts/generate.py`: extended the existing comment above `render_instructions_table()` with
+  the same reasoning, so a future reader hits the rationale in the code, not just the doc.
+- No functional/data change — `GUIDE.md` regenerated, diff is empty (confirms nothing else was
+  touched).
+
+## #32 — category-subfolder split for data/bundles, data/engines, data/benchmarks
+
+### Re-verified counts against current `main` (8a3ac7e)
+
+- `data/bundles/*.yaml`: **8** — no `category:`-like field.
+- `data/engines/*.yaml`: **11** — no `category:`-like field.
+- `data/benchmarks/*.yaml`: **20** total, splitting via `kind:` — **11** `kind: benchmark` +
+  **9** `kind: eval-framework`. Rendered as inline `GUIDE.md` detail sections, not one file per
+  entry pointing at a separate deep-dive, so no flat-pile problem the way there was for the 109
+  components pre-#31.
+
+All three counts match what issue #32's own comments already stated and re-verified twice
+before. The decision itself was already made and re-confirmed in-thread; what was missing was
+recording it in the repo's own documented convention location (`README.md`'s "How this repo is
+organized"), the same place issue #31's component-subfolder decision lives, instead of only in
+issue comments.
+
+### What was done
+- `README.md` "How this repo is organized": replaced the "tracked as its own fast-follow: issue
+  #32" placeholder with a short paragraph recording the decision (flat, for now — no
+  category-like field for bundles/engines, no flat-pile problem for benchmarks), with a revisit
+  condition (either directory grows enough, or a categorical field appears).
+- Closing #32 citing this README section + the re-verified counts above.
+
+## Provenance
+
+No new component/entry claims — this is structural/documentation work. All counts are computed
+directly from current `data/` (see commands in PR description); no external sources fetched.

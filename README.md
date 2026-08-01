@@ -56,9 +56,17 @@ via the category paths below.
   the summary table and `methodology:` for the fuller inline write-up. Flat — already splits two
   ways via `kind:`, and rendered as inline `GUIDE.md` detail sections rather than separate
   per-entry files, so there's no flat-pile problem the way there was for 109 components.
-  (Whether bundles/engines/benchmarks ever warrant the same subfolder treatment components got is
-  tracked as its own fast-follow: issue #32 — not silently left inconsistent, just not urgent at
-  today's scale.)
+
+**Decided in issue #32: bundles/engines/benchmarks stay flat, not silently left inconsistent
+with components' subfolder split.** Checked each directory against the same two conditions that
+drove the components split (issue #31): a natural category-like field to key a subfolder off of,
+and a flat-pile size that hurts navigation. Neither bundles (8 entries) nor engines (11 entries)
+has a category-like field — there's no axis to split on. Benchmarks (20 entries) already splits
+two ways via `kind:` and is rendered as inline `GUIDE.md` detail sections rather than one file
+per entry pointing at a separate deep-dive, so it never had components' flat-pile problem in the
+first place. Revisit if any of the three grows enough to need it, or a natural categorical field
+gets added to bundles/engines — apply the same `git mv`-only, link-integrity-verified approach
+used for the components split if/when that happens.
 - `data/research/*.yaml` + top-level **`research/<study-slug>/`** — one entry per research
   study, distinct from any single component's write-up (issue #34). `research/` sits at
   **top level**, parallel to `data/`, `deep-dives/`, `templates/` — **not** nested under
@@ -157,6 +165,19 @@ Note: `workain/harness-eval` (the eval pipeline's own repo, where each verdict's
 lives) is not yet public, so `raw_evidence` links into it currently resolve only for lab members.
 Each verdict's tier, testability label, and honest catch are reproduced in the component's
 deep-dive here; opening the evidence repo itself is on the publication roadmap.
+
+**Instructions-rules is deliberately out of scope for `harness_eval_verdict` (issue #23).** The
+other four categories are swappable equipment — a user picks one memory backend, one skills/tools
+setup, and a tier ranks it against its actual alternatives on a shared benchmark. AGENTS.md,
+CLAUDE.md, Cursor Rules, GEMINI.md, `.goosehints`, and Devin Knowledge/Playbooks aren't
+alternatives being chosen between in that sense: each is the filename/format one engine expects
+its instructions file in, so there's no head-to-head swap to benchmark — running the same
+instructions content through AGENTS.md vs. CLAUDE.md's convention measures whether the target
+engine recognizes its own file, not which convention is "better." What *would* be testable
+(instructions content vs. no instructions, or content A vs. content B) is a different question
+than the one a `harness_eval_verdict` tier answers here, so `render_instructions_table()`
+intentionally has no Tested/Catalogued column — this is a scoping decision, not a gap to fill
+later the way the memory-only coverage above is.
 
 ## Provenance rule (binding)
 

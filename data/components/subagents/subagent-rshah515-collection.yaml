@@ -7,13 +7,16 @@ license_tag: "MIT"
 open_source: true
 use_cases: "133+ subagents, low-adoption example"
 what_it_is: >
-  133+ subagents — a larger count than several higher-starred collections, but with very low adoption (79 stars).
+  133+ subagents — a larger count than several higher-starred collections, but with very low adoption (99 stars).
 activity:
-  stars: "79"
+  stars: "99"
   last_verified_note: "pushed 2025-08-08"
 provenance:
   - url: https://github.com/rshah515/claude-code-subagents
     fetched: "2026-07-05"
     note: "verified directly via gh api (stars/forks/license/push date)"
+  - url: https://github.com/rshah515/claude-code-subagents
+    fetched: "2026-08-03"
+    note: "weekly refresh re-check via gh api: star count refreshed (79 -> 99, +25%); repo itself hasn't pushed since 2025-08-08, so the growth is external interest, not new activity"
 unverified: []
 deep_dive: deep-dives/components/subagents/subagent-rshah515-collection.md

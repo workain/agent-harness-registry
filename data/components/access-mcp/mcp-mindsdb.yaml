@@ -1,7 +1,7 @@
 name: MindsDB
 slug: mcp-mindsdb
 category: access-mcp
-homepage: https://github.com/mindsdb/mindsdb
+homepage: https://github.com/mindsdb/mindshub
 license: "MIT"
 license_tag: "MIT"
 open_source: true
@@ -9,11 +9,14 @@ use_cases: "unifying queries across many databases/platforms behind one MCP serv
 what_it_is: >
   Unifies data access across many platforms/databases behind one MCP server — a very broad-scope community project, not single-purpose.
 activity:
-  stars: "39.4k"
-  last_verified_note: "6,216 forks, pushed 2026-07-01"
+  stars: "39.5k"
+  last_verified_note: "6,227 forks, pushed 2026-07-10 — repo renamed mindsdb/mindsdb -> mindsdb/mindshub"
 provenance:
   - url: https://github.com/mindsdb/mindsdb
     fetched: "2026-07-05"
     note: "verified directly via gh api (stars/forks/license/push date) or the vendor's own site for hosted-only entries"
+  - url: https://github.com/mindsdb/mindshub
+    fetched: "2026-08-03"
+    note: "weekly refresh re-check via gh api: repo renamed mindsdb -> mindshub within the same org (confirmed live 301 redirect, not archived), star count refreshed"
 unverified: []
 deep_dive: deep-dives/components/access-mcp/mcp-mindsdb.md

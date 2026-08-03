@@ -1,23 +1,33 @@
-name: Windsurf (Cascade)
+name: Windsurf (Cascade) — SUPERSEDED, see `devin`
 slug: windsurf
 homepage: https://windsurf.com
-interface: "Desktop IDE (VS Code fork), Cascade agent panel"
+interface: "Desktop IDE (VS Code fork), Cascade agent panel — now shipped under the Devin Desktop name"
 what_it_is: >
-  An AI-native IDE (formerly Codeium) built around the Cascade agent — multi-file
-  understanding via a proprietary "Fast Context" indexing system, terminal command
-  execution, and cross-session project memory. Acquired by Cognition (maker of Devin)
-  in December 2025 for ~$250M; Windsurf 2.0 (April 2026) embedded Devin's autonomous
-  agent directly into the IDE, letting a user plan locally with Cascade then hand off
-  to a cloud VM. No public source repository — proprietary, closed-source product.
+  SUPERSEDED ENTRY, kept for historical continuity only. Windsurf (formerly Codeium) was
+  an AI-native IDE built around the Cascade agent — multi-file understanding via a
+  proprietary "Fast Context" indexing system, terminal command execution, and
+  cross-session project memory. Acquired by Cognition (maker of Devin) in December 2025.
+  As of this refresh, Windsurf has been fully rebranded as **Devin Desktop**: windsurf.com
+  now returns a live HTTP 308 redirect straight to devin.ai/desktop, and Cognition
+  describes this in its own FAQ as a rebrand (toward agent-fleet management), not a
+  discontinuation — existing settings/extensions/workflows migrate automatically. This is
+  NOT a separate later Devin release layered on top of Windsurf; Devin Desktop IS the
+  renamed Windsurf. For the current, actively-fetched product description, see this
+  registry's `devin` entry — this `windsurf` entry is retained so existing citations/links
+  to "Windsurf" in this registry keep resolving, not as an independent product going
+  forward. No public source repository — proprietary, closed-source product.
 license: "Proprietary — no public source repository found; closed-source commercial product"
 open_source: false
-sandboxing: "Cloud VM hand-off for Devin-driven autonomous work (post Windsurf 2.0); local Cascade work runs with the invoking user's own filesystem/process permissions"
+sandboxing: "Cloud VM hand-off for Devin-driven autonomous work; local Cascade work ran with the invoking user's own filesystem/process permissions. See `devin` for the current sandboxing description."
 activity:
   stars: null
-  last_verified_note: "Windsurf 2.0 shipped April 2026 embedding Devin directly; pricing free tier / Pro $20/mo / Teams $40/user/mo per official site as of this research"
+  last_verified_note: "SUPERSEDED as of 2026-08-03 (independently re-verified: windsurf.com -> live 308 redirect -> devin.ai/desktop). Historical note retained: Windsurf 2.0 shipped April 2026 embedding Devin directly; pricing was free tier / Pro $20/mo / Teams $40/user/mo per the official site at that time."
 provenance:
   - url: https://windsurf.com/cascade
     note: "found via search summary of official product pages and independent reviews — not independently re-fetched in full for this entry"
+  - url: https://windsurf.com
+    fetched: "2026-08-03"
+    note: "weekly refresh re-check via curl -I: confirmed live HTTP 308 redirect to https://devin.ai/desktop — Windsurf is now Devin Desktop, not a separate product. See the devin entry's own provenance for the independent fetch of devin.ai/desktop content."
 unverified:
-  - "product details (Fast Context mechanics, exact Devin hand-off flow) are drawn from a WebSearch synthesis, not an independent full fetch of windsurf.com or its docs"
+  - "product details (Fast Context mechanics, exact Devin hand-off flow) as they existed pre-rebrand are drawn from a WebSearch synthesis, not an independent full fetch of windsurf.com or its docs at the time"
 deep_dive: deep-dives/engines/windsurf.md

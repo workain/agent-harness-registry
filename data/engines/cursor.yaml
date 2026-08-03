@@ -14,10 +14,13 @@ open_source: false
 sandboxing: "Background Agents run in a sandboxed cloud environment Cursor provisions; local Agent Mode runs with the invoking user's own filesystem/process permissions, gated by an approval/guardrail loop"
 activity:
   stars: null
-  last_verified_note: "Cursor 3.0 launched 2026-04-02 with a dedicated Agents Window; version/release cadence not independently tracked since there is no public repo"
+  last_verified_note: "Cursor 3.0 launched 2026-04-02 with a dedicated Agents Window. Independently re-fetched cursor.com directly 2026-08-03: recent additions per the homepage are Cursor Start (a launch/onboarding product), Cursor Router (routes a task to whichever model fits it), iPad availability, and continued Slack-integration work; model roster now includes Grok 4.5, GPT-5.6 Sol, Opus 5, and Gemini 3.1 Pro alongside Cursor's own models. Parent company is Anysphere, Inc., described as 'an applied research team.' Version/release cadence still not independently trackable since there is no public repo."
 provenance:
   - url: https://cursor.com/product
     note: "found via search summary of official product pages and independent reviews — not independently re-fetched in full for this entry"
+  - url: https://cursor.com
+    fetched: "2026-08-03"
+    note: "independently fetched in full: current feature set (autonomous agents, multi-platform including new iPad availability, model roster), recent announcements (Cursor Start, Cursor Router), parent company. Supersedes the prior WebSearch-synthesis-only citation for the homepage; Composer/Background Agents/browser-tool internals below still trace to the original WebSearch synthesis."
 unverified:
-  - "product details (Composer model specifics, exact agent-loop mechanics) are drawn from a WebSearch synthesis of official pages and third-party reviews, not an independent full fetch of cursor.com or its docs"
+  - "Composer model internals and exact agent-loop mechanics (the original entry's claims) still trace to a WebSearch synthesis of official pages and third-party reviews, not an independent full fetch of cursor.com/docs at that level of detail"
 deep_dive: deep-dives/engines/cursor.md

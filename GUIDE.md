@@ -8,7 +8,7 @@ Every claim is cited (see each entry's References) or marked `[unverified]`. Eac
 
 ## Overview — map of this registry
 
-**103 atomic components** across 4 categories (plus **7 instruction-file conventions** catalogued as background in the Bundles section — 110 component entries total), **8 assembled bundles**, **11 agent engines/runtimes**, **9 eval-frameworks**, **11 benchmarks**, **1 research study**.
+**102 atomic components** across 4 categories (plus **7 instruction-file conventions** catalogued as background in the Bundles section — 109 component entries total), **8 assembled bundles**, **13 agent engines/runtimes**, **9 eval-frameworks**, **11 benchmarks**, **1 research study**.
 
 **Components** are single-purpose atoms (a memory layer, a skill, an MCP server) composed one at a time. **Bundles** are pre-assembled multi-component kits. The market today is overwhelmingly atomic — Agent Skills alone spans 47,150 skills across 42 engines — though real demand for bundles exists too (see `workain/harness-eval`'s `docs/DEMAND-vs-ANTI-SIGNALS-equipment-bundles.md`). Each bundle's write-up scores it against three properties none yet fully combine: **sustained**, **engine-agnostic**, **progressively-disclosed**.
 
@@ -16,7 +16,7 @@ Every claim is cited (see each entry's References) or marked `[unverified]`. Eac
 
 **Component categories:**
 - **Memory** (11, 9 tested) — see below
-- **Skills / tools** (26, catalogued only, not yet tested) — see below
+- **Skills / tools** (25, catalogued only, not yet tested) — see below
 - **Subagents** (32, catalogued only, not yet tested) — see below
 - **Access placement / MCP** (34, catalogued only, not yet tested) — see below
 
@@ -31,7 +31,7 @@ Single-purpose units composed onto an engine. Name links to the tool itself; wri
 | Name | Tested | License | Stars | Use cases | Details |
 |---|---|---|---|---|---|
 | [Anthropic Memory Tool (Claude API)](https://platform.claude.com/docs/en/agents-and-tools/tool-use/memory-tool) | Tier B (tested-live) | Proprietary API (usable) | — | cross-session memory for Claude API agents, progress tracki… | [write-up](deep-dives/components/memory/anthropic-memory-tool.md) |
-| [Cognee](https://github.com/topoteretes/cognee) | Tier B-minus (tested-live) | Apache-2.0 | 27k | knowledge-graph memory, ontology-linked retrieval, long-ter… | [write-up](deep-dives/components/memory/cognee.md) |
+| [Cognee](https://github.com/topoteretes/cognee) | Tier B-minus (tested-live) | Apache-2.0 | 29.7k | knowledge-graph memory, ontology-linked retrieval, long-ter… | [write-up](deep-dives/components/memory/cognee.md) |
 | [CrewAI Memory](https://github.com/crewAIInc/crewAI) | Tier C (tested-live) | MIT | 54,976 | production multi-agent memory, contradiction resolution, co… | [write-up](deep-dives/components/memory/crewai-memory.md) |
 | [Generative Agents Memory Stream (Stanford)](https://github.com/StanfordHCI/genagents) | Tier C (tested-live) | MIT | 566 | believable agent simulations, importance-weighted long-term… | [write-up](deep-dives/components/memory/generative-agents-memory-stream.md) |
 | [Graphiti (open-source engine behind Zep)](https://github.com/getzep/graphiti) | Tier C (tested-live) | Apache-2.0 | 28.4k | temporal knowledge graphs, fact-validity tracking, provenan… | [write-up](deep-dives/components/memory/graphiti-zep.md) |
@@ -46,12 +46,12 @@ Single-purpose units composed onto an engine. Name links to the tool itself; wri
 
 | Name | Tested | License | Stars | Use cases | Details |
 |---|---|---|---|---|---|
-| [alirezarezvani/claude-skills](https://github.com/alirezarezvani/claude-skills) | Catalogued | MIT | 20.3k | 337 skills/agents/commands spanning engineering, marketing,… | [write-up](deep-dives/components/skills-tools/skill-alirezarezvani-collection.md) |
+| [alirezarezvani/claude-skills](https://github.com/alirezarezvani/claude-skills) | Catalogued | MIT | 23.7k | 337 skills/agents/commands spanning engineering, marketing,… | [write-up](deep-dives/components/skills-tools/skill-alirezarezvani-collection.md) |
 | [Anthropic Agent Skills (agentskills.io)](https://github.com/anthropics/skills) | Catalogued | Mixed (see write-up) | 158k | reusable task procedures, document creation, cross-engine c… | [write-up](deep-dives/components/skills-tools/anthropic-skills.md) |
 | [browser-use](https://github.com/browser-use/browser-use) | Catalogued | MIT | 103k | browser automation, web form-filling, research/shopping age… | [write-up](deep-dives/components/skills-tools/browser-use.md) |
 | [Composio](https://github.com/ComposioHQ/composio) | Catalogued | MIT | 29.1k | connecting agents to 1000+ SaaS tools, auth management, san… | [write-up](deep-dives/components/skills-tools/composio.md) |
-| [coreyhaines31/marketingskills](https://github.com/coreyhaines31/marketingskills) | Catalogued | MIT | 36.2k | CRO/copywriting/SEO/analytics/growth-engineering skills | [write-up](deep-dives/components/skills-tools/skill-marketing-skills.md) |
-| [derisk-ai/awesome-devops-skills](https://github.com/derisk-ai/awesome-devops-skills) | Catalogued | MIT | 10 | auto-discovery of new DevOps skills/MCP servers via hourly… | [write-up](deep-dives/components/skills-tools/skill-devops-scanner.md) |
+| [coreyhaines31/marketingskills](https://github.com/coreyhaines31/marketingskills) | Catalogued | MIT | 42.8k | CRO/copywriting/SEO/analytics/growth-engineering skills | [write-up](deep-dives/components/skills-tools/skill-marketing-skills.md) |
+| [derisk-ai/awesome-devops-skills](https://github.com/derisk-ai/awesome-devops-skills) | Catalogued | MIT | 16 | auto-discovery of new DevOps skills/MCP servers via hourly… | [write-up](deep-dives/components/skills-tools/skill-devops-scanner.md) |
 | [E2B](https://github.com/e2b-dev/E2B) | Catalogued | Apache-2.0 | 12.8k | sandboxed code execution, safe running of agent-generated c… | [write-up](deep-dives/components/skills-tools/e2b.md) |
 | [ericosiu/ai-marketing-skills](https://github.com/ericosiu/ai-marketing-skills) | Catalogued | Unclear (unverified) | — | growth/sales-pipeline/content-ops/outbound/SEO/finance-ops… | [write-up](deep-dives/components/skills-tools/skill-ai-marketing-skills.md) |
 | [hesreallyhim/awesome-claude-code (skills view)](https://github.com/hesreallyhim/awesome-claude-code) | Catalogued | Unclear (verify) | 48.1k | broadest general Claude Code ecosystem resource hub | [write-up](deep-dives/components/skills-tools/skill-awesome-claude-code.md) |
@@ -62,16 +62,15 @@ Single-purpose units composed onto an engine. Name links to the tool itself; wri
 | [numman-ali/openskills](https://github.com/numman-ali/openskills) | Catalogued | Unclear (verify) | 10.5k | universal SKILL.md loader for any AGENTS.md-reading agent,… | [write-up](deep-dives/components/skills-tools/skill-openskills.md) |
 | [obra/superpowers](https://github.com/obra/superpowers) | Catalogued | MIT | 246.6k | composable skills framework chaining brainstorming through… | [write-up](deep-dives/components/skills-tools/skill-superpowers.md) |
 | [rohitg00/awesome-claude-code-toolkit](https://github.com/rohitg00/awesome-claude-code-toolkit) | Catalogued | Apache-2.0 (see caveat) | 2.3k | self-reported 135 agents/35 skills/176+ plugins/52 ecosyste… | [write-up](deep-dives/components/skills-tools/skill-rohitg00-toolkit.md) |
-| [sales-skills/sales](https://github.com/sales-skills/sales) | Catalogued | Unclear (verify) | 62 | GTM/CRM-focused skills, npx-installable | [write-up](deep-dives/components/skills-tools/skill-sales-skills.md) |
 | [snyk/agent-scan](https://github.com/snyk/agent-scan) | Catalogued | Apache-2.0 | 2.7k | scanning skills/MCP servers/agent components for prompt inj… | [write-up](deep-dives/components/skills-tools/skill-snyk-agent-scan.md) |
 | [tfriedel/claude-office-skills](https://github.com/tfriedel/claude-office-skills) | Catalogued | Unclear (verify) | 777 | PPTX/DOCX/XLSX/PDF workflows, independent alternative to fi… | [write-up](deep-dives/components/skills-tools/skill-claude-office-skills.md) |
 | [trailofbits/skills](https://github.com/trailofbits/skills) | Catalogued | CC-BY-SA-4.0 (share-alike) | 6.0k | security research, vulnerability detection, audit workflows… | [write-up](deep-dives/components/skills-tools/skill-trailofbits.md) |
 | [travisvn/awesome-claude-skills](https://github.com/travisvn/awesome-claude-skills) | Catalogued | Unclear (verify) | 13.9k | curated Claude-specific skills index | [write-up](deep-dives/components/skills-tools/skill-travisvn-awesome.md) |
 | [vercel-labs/agent-browser](https://github.com/vercel-labs/agent-browser) | Catalogued | Apache-2.0 | 37.9k | browser automation CLI for AI agents (Vercel's own) | [write-up](deep-dives/components/skills-tools/skill-vercel-agent-browser.md) |
 | [vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills) | Catalogued | Unclear (verify) | 28.7k | UI/web-interface-guideline compliance auditing skill | [write-up](deep-dives/components/skills-tools/skill-vercel-agent-skills.md) |
-| [vercel-labs/skills](https://github.com/vercel-labs/skills) | Catalogued | Unclear (verify) | 25.1k | universal skill installer CLI (`npx skills`) | [write-up](deep-dives/components/skills-tools/skill-vercel-skills-cli.md) |
+| [vercel-labs/skills](https://github.com/vercel-labs/skills) | Catalogued | Unclear (verify) | 27.9k | universal skill installer CLI (`npx skills`) | [write-up](deep-dives/components/skills-tools/skill-vercel-skills-cli.md) |
 | [VoltAgent/awesome-agent-skills](https://github.com/VoltAgent/awesome-agent-skills) | Catalogued | MIT | 27.4k | 1000+ agent skills from official dev teams and the communit… | [write-up](deep-dives/components/skills-tools/skill-voltagent-awesome-skills.md) |
-| [WorldFlowAI/everything-claude-code](https://github.com/WorldFlowAI/everything-claude-code) | Catalogued | Unclear (verify) | 362 | agents/commands/skills/rules/hooks toolkit including a nota… | [write-up](deep-dives/components/skills-tools/skill-worldflowai-toolkit.md) |
+| [WorldFlowAI/everything-claude-code](https://github.com/WorldFlowAI/everything-claude-code) | Catalogued | Unclear (verify) | 914 | agents/commands/skills/rules/hooks toolkit including a nota… | [write-up](deep-dives/components/skills-tools/skill-worldflowai-toolkit.md) |
 
 ### 1.3 Subagents
 
@@ -84,7 +83,7 @@ Single-purpose units composed onto an engine. Name links to the tool itself; wri
 | [Claude Code Subagents](https://code.claude.com/docs/en/sub-agents) | Catalogued | Proprietary feature (usable) | — | task delegation with isolated context, parallel specialist… | [write-up](deep-dives/components/subagents/claude-code-subagents.md) |
 | [contains-studio/agents](https://github.com/contains-studio/agents) | Catalogued | Unclear (verify) | 12.4k | non-engineering subagent roles (marketing, product, design)… | [write-up](deep-dives/components/subagents/subagent-contains-studio.md) |
 | [CrewAI Agents & Crews (role/task composition)](https://github.com/crewAIInc/crewAI) | Catalogued | MIT | 54.9k | Agent/Crew/Task role-composition API, YAML or code-based | [write-up](deep-dives/components/subagents/subagent-crewai-agents.md) |
-| [davepoon/claude-code-subagents-collection](https://github.com/davepoon/claude-code-subagents-collection) | Catalogued | MIT | 3.1k | one hub spanning skills+agents+commands+hooks+plugins acros… | [write-up](deep-dives/components/subagents/subagent-davepoon-collection.md) |
+| [davepoon/buildwithclaude](https://github.com/davepoon/buildwithclaude) | Catalogued | MIT | 3.2k | one hub spanning skills+agents+commands+hooks+plugins acros… | [write-up](deep-dives/components/subagents/subagent-davepoon-collection.md) |
 | [davila7/claude-code-templates](https://github.com/davila7/claude-code-templates) | Catalogued | MIT | 28.5k | browsing/installing 100+ agents/commands/MCPs/hooks via a u… | [write-up](deep-dives/components/subagents/subagent-claude-code-templates.md) |
 | [deepset-ai/haystack (agents-as-tools)](https://github.com/deepset-ai/haystack) | Catalogued | Apache-2.0 | 25.8k | wrapping a specialized agent as a callable tool for a coord… | [write-up](deep-dives/components/subagents/subagent-haystack-agents-as-tools.md) |
 | [dl-ezo/claude-code-sub-agents](https://github.com/dl-ezo/claude-code-sub-agents) | Catalogued | Unclear (verify) | 185 | 35 subagents for end-to-end SDLC automation | [write-up](deep-dives/components/subagents/subagent-dl-ezo-sdlc.md) |
@@ -102,7 +101,7 @@ Single-purpose units composed onto an engine. Name links to the tool itself; wri
 | [OpenBMB/AgentVerse (unmaintained)](https://github.com/OpenBMB/AgentVerse) | Catalogued | Apache-2.0 | 5.1k | historical reference for task-solving and simulation multi-… | [write-up](deep-dives/components/subagents/subagent-agentverse.md) |
 | [openbmb/ChatDev](https://github.com/openbmb/ChatDev) | Catalogued | Apache-2.0 | 33.7k | CEO/CTO/programmer/reviewer/tester/designer role collaborat… | [write-up](deep-dives/components/subagents/subagent-chatdev.md) |
 | [rahulvrane/awesome-claude-agents](https://github.com/rahulvrane/awesome-claude-agents) | Catalogued | Unclear (verify) | 359 | community-contributed subagents plus orchestration recipes | [write-up](deep-dives/components/subagents/subagent-rahulvrane-collection.md) |
-| [rshah515/claude-code-subagents](https://github.com/rshah515/claude-code-subagents) | Catalogued | MIT | 79 | 133+ subagents, low-adoption example | [write-up](deep-dives/components/subagents/subagent-rshah515-collection.md) |
+| [rshah515/claude-code-subagents](https://github.com/rshah515/claude-code-subagents) | Catalogued | MIT | 99 | 133+ subagents, low-adoption example | [write-up](deep-dives/components/subagents/subagent-rshah515-collection.md) |
 | [run-llama/llama-agents](https://github.com/run-llama/llama-agents) | Catalogued | MIT | 418 | event-driven, async, step-based multi-agent workflow contro… | [write-up](deep-dives/components/subagents/subagent-llama-agents.md) |
 | [supatest-ai/awesome-claude-code-sub-agents](https://github.com/supatest-ai/awesome-claude-code-sub-agents) | Catalogued | MIT | 165 | architectural/decision-framework 'expert consultant' subage… | [write-up](deep-dives/components/subagents/subagent-supatest-experts.md) |
 | [vijaythecoder/awesome-claude-agents](https://github.com/vijaythecoder/awesome-claude-agents) | Catalogued | MIT | 4.3k | pre-wired orchestrated multi-agent dev-team topology, not j… | [write-up](deep-dives/components/subagents/subagent-vijaythecoder-dev-team.md) |
@@ -129,11 +128,11 @@ Single-purpose units composed onto an engine. Name links to the tool itself; wri
 | [Grafana MCP](https://github.com/grafana/mcp-grafana) | Catalogued | Apache-2.0 | 3.2k | dashboards, alerts, incident response, cross-backend observ… | [write-up](deep-dives/components/access-mcp/mcp-grafana.md) |
 | [Hugging Face MCP Server](https://github.com/huggingface/hf-mcp-server) | Catalogued | MIT | 257 | searching Hub models/datasets/Spaces/papers, running Gradio… | [write-up](deep-dives/components/access-mcp/mcp-huggingface.md) |
 | [Linear MCP](https://mcp.linear.app) | Catalogued | Proprietary (likely) | — | managing Linear issues/projects/teams/comments/workflow sta… | [write-up](deep-dives/components/access-mcp/mcp-linear.md) |
-| [MindsDB](https://github.com/mindsdb/mindsdb) | Catalogued | MIT | 39.4k | unifying queries across many databases/platforms behind one… | [write-up](deep-dives/components/access-mcp/mcp-mindsdb.md) |
+| [MindsDB](https://github.com/mindsdb/mindshub) | Catalogued | MIT | 39.5k | unifying queries across many databases/platforms behind one… | [write-up](deep-dives/components/access-mcp/mcp-mindsdb.md) |
 | [Model Context Protocol — official SDKs (client + server)](https://github.com/modelcontextprotocol/typescript-sdk) | Catalogued | Apache-2.0 / MIT | 12.8k | building MCP clients and servers across 8 languages | [write-up](deep-dives/components/access-mcp/mcp.md) |
 | [Model Context Protocol — reference servers](https://github.com/modelcontextprotocol/servers) | Catalogued | Apache-2.0 / MIT | 88.1k | reference implementations for filesystem/git/fetch/memory/t… | [write-up](deep-dives/components/access-mcp/mcp.md) |
 | [MongoDB MCP Server](https://github.com/mongodb-js/mongodb-mcp-server) | Catalogued | Apache-2.0 | 1.1k | querying/managing MongoDB data from an agent | [write-up](deep-dives/components/access-mcp/mcp-mongodb.md) |
-| [Netlify MCP](https://github.com/netlify/netlify-mcp) | Catalogued | Unclear (verify) | 47 | managing Netlify sites/deploys from an agent | [write-up](deep-dives/components/access-mcp/mcp-netlify.md) |
+| [Netlify MCP](https://github.com/netlify/netlify-mcp) | Catalogued | Unclear (verify) | 52 | managing Netlify sites/deploys from an agent | [write-up](deep-dives/components/access-mcp/mcp-netlify.md) |
 | [Notion MCP Server](https://github.com/makenotion/notion-mcp-server) | Catalogued | MIT | 4.5k | search/read/create/update Notion pages and databases from a… | [write-up](deep-dives/components/access-mcp/mcp-notion.md) |
 | [Official MCP Registry](https://github.com/modelcontextprotocol/registry) | Catalogued | Unclear (verify) | 7.0k | canonical, community-driven registry service for discoverin… | [write-up](deep-dives/components/access-mcp/mcp-official-registry.md) |
 | [Pipedream](https://github.com/PipedreamHQ/pipedream) | Catalogued | Unclear (verify) | 11.5k | connecting agents to 2,500+ APIs / 8,000+ prebuilt tools, s… | [write-up](deep-dives/components/access-mcp/mcp-pipedream.md) |
@@ -143,10 +142,10 @@ Single-purpose units composed onto an engine. Name links to the tool itself; wri
 | [Redis MCP Server](https://github.com/redis/mcp-redis) | Catalogued | MIT | 539 | natural-language interface for Redis data management and se… | [write-up](deep-dives/components/access-mcp/mcp-redis.md) |
 | [Sentry MCP](https://github.com/getsentry/sentry-mcp) | Catalogued | Unclear (verify) | 753 | pulling error/issue context into a coding-assistant workflo… | [write-up](deep-dives/components/access-mcp/mcp-sentry.md) |
 | [slack-mcp-server (community)](https://github.com/korotovsky/slack-mcp-server) | Catalogued | MIT | 1.7k | Slack messaging/search/DM automation without admin permissi… | [write-up](deep-dives/components/access-mcp/mcp-slack-community.md) |
-| [Smithery CLI](https://github.com/smithery-ai/cli) | Catalogued | AGPL-3.0 | 785 | discovering/installing MCP servers and skills from a centra… | [write-up](deep-dives/components/access-mcp/smithery-cli.md) |
-| [Stripe Agent Toolkit](https://github.com/stripe/agent-toolkit) | Catalogued | MIT | 1.6k | payments, subscriptions, refunds, invoices, billing automat… | [write-up](deep-dives/components/access-mcp/mcp-stripe.md) |
-| [Supabase MCP](https://github.com/supabase-community/supabase-mcp) | Catalogued | Apache-2.0 | 2.8k | managing Supabase projects/database/auth/storage from an ag… | [write-up](deep-dives/components/access-mcp/mcp-supabase.md) |
-| [Vercel MCP Adapter](https://github.com/vercel/mcp-adapter) | Catalogued | Unclear (verify) | 620 | spinning up an MCP server directly on a Next.js/Nuxt/Svelte… | [write-up](deep-dives/components/access-mcp/mcp-vercel-adapter.md) |
+| [Smithery CLI](https://github.com/arcadeai-labs/smithery-cli) | Catalogued | AGPL-3.0 | 813 | discovering/installing MCP servers and skills from a centra… | [write-up](deep-dives/components/access-mcp/smithery-cli.md) |
+| [Stripe Agent Toolkit](https://github.com/stripe/ai) | Catalogued | MIT | 1.7k | payments, subscriptions, refunds, invoices, billing automat… | [write-up](deep-dives/components/access-mcp/mcp-stripe.md) |
+| [Supabase MCP](https://github.com/supabase/mcp) | Catalogued | Apache-2.0 | 2.9k | managing Supabase projects/database/auth/storage from an ag… | [write-up](deep-dives/components/access-mcp/mcp-supabase.md) |
+| [Vercel MCP Adapter](https://github.com/vercel/mcp-handler) | Catalogued | Unclear (verify) | 637 | spinning up an MCP server directly on a Next.js/Nuxt/Svelte… | [write-up](deep-dives/components/access-mcp/mcp-vercel-adapter.md) |
 | [Zapier MCP](https://github.com/zapier/zapier-mcp) | Catalogued | MIT client (hosted service) | 341 | connecting agents to 9,000+ SaaS apps without custom integr… | [write-up](deep-dives/components/access-mcp/zapier-mcp.md) |
 
 ---
@@ -170,7 +169,7 @@ Pre-assembled multi-component kits — rare relative to components. Each write-u
 
 | Name | License | Stars | Details |
 |---|---|---|---|
-| [.goosehints (Goose)](https://github.com/block/goose) | Apache-2.0 | 50.7k | [write-up](deep-dives/components/instructions-rules/goosehints.md) |
+| [.goosehints (Goose)](https://github.com/aaif-goose/goose) | Apache-2.0 | 52.2k | [write-up](deep-dives/components/instructions-rules/goosehints.md) |
 | [AGENTS.md](https://github.com/agentsmd/agents.md) | MIT | 22.8k | [write-up](deep-dives/components/instructions-rules/agents-md.md) |
 | [base-project-template](https://github.com/workain/agent-harness-registry/tree/main/templates/base-project-template) **`first-party`** | MIT | — | [write-up](deep-dives/components/instructions-rules/base-project-template/README.md) · Research: [base-project-template — research evidence](research/base-project-template-evidence/README.md) |
 | [Cursor Rules (.cursor/rules, formerly .cursorrules)](https://cursor.com/docs/context/rules) | Proprietary feature (usable) | — | [write-up](deep-dives/components/instructions-rules/cursor-rules.md) |
@@ -190,13 +189,15 @@ The control loop that drives a model turn-by-turn — what a component or bundle
 | [Claude Code](https://github.com/anthropics/claude-code) | CLI, IDE extensions (VS Code/JetBrains), des… | No (proprietary) | 136k | [write-up](deep-dives/engines/claude-code.md) |
 | [Cline](https://github.com/cline/cline) | VS Code extension, JetBrains plugin, CLI, SDK | Yes | 64.3k | [write-up](deep-dives/engines/cline.md) |
 | [Cursor](https://cursor.com) | Desktop IDE (VS Code fork), CLI, Agents Wind… | No (proprietary) | — | [write-up](deep-dives/engines/cursor.md) |
-| [Devin](https://devin.ai) | Web app, Slack integration, Linear integrati… | No (proprietary) | — | [write-up](deep-dives/engines/devin.md) |
+| [Devin](https://devin.ai) | Web app (app.devin.ai), Devin Desktop (IDE +… | No (proprietary) | — | [write-up](deep-dives/engines/devin.md) |
 | [Gemini CLI](https://github.com/google-gemini/gemini-cli) | CLI | Yes | 106k | [write-up](deep-dives/engines/gemini-cli.md) |
-| [Goose](https://github.com/block/goose) | Native desktop app (macOS/Linux/Windows), CL… | Yes | 50.7k | [write-up](deep-dives/engines/goose.md) |
+| [Goose](https://github.com/aaif-goose/goose) | Native desktop app (macOS/Linux/Windows), CL… | Yes | 52.2k | [write-up](deep-dives/engines/goose.md) |
 | [OpenAI Codex CLI](https://github.com/openai/codex) | CLI (single Rust binary) | Yes | 95.6k | [write-up](deep-dives/engines/codex-cli.md) |
+| [OpenCode](https://github.com/anomalyco/opencode) | Terminal TUI, CLI, npm/standalone-binary ins… | Yes | 192.6k | [write-up](deep-dives/engines/opencode.md) |
 | [OpenHands](https://github.com/OpenHands/OpenHands) | self-hosted platform (local / Docker / cloud… | Yes | 80.6k | [write-up](deep-dives/engines/openhands.md) |
+| [Pi](https://github.com/earendil-works/pi) | Terminal UI (pi-tui, differential rendering)… | Yes | 82.7k | [write-up](deep-dives/engines/pi.md) |
 | [SWE-agent](https://github.com/SWE-agent/SWE-agent) | CLI / library (agent scaffold you embed, not… | Yes | 19.7k | [write-up](deep-dives/engines/swe-agent.md) |
-| [Windsurf (Cascade)](https://windsurf.com) | Desktop IDE (VS Code fork), Cascade agent pa… | No (proprietary) | — | [write-up](deep-dives/engines/windsurf.md) |
+| [Windsurf (Cascade) — SUPERSEDED, see `devin`](https://windsurf.com) | Desktop IDE (VS Code fork), Cascade agent pa… | No (proprietary) | — | [write-up](deep-dives/engines/windsurf.md) |
 
 ---
 
@@ -213,7 +214,7 @@ Tooling for measuring agents, not equipping them: eval-frameworks (runners) and 
 | [HELM (Holistic Evaluation of Language Models)](https://github.com/stanford-crfm/helm) | Dozens of Scenario classes across a broad task range; Ships its own r… | acknowledged as a limitation (evidence pushed to… | not found in fetched text — no confidence-interva… |
 | [METR Task Standard / Vivaria](https://github.com/METR/task-standard) | Task Standard spec + Vivaria runner, used for frontier-model dangerou… | process-based — elicitation guidelines, mandatory… | explicit score@k (best-of-k, a pass@k variant, no… |
 | [OpenAI simple-evals](https://github.com/openai/simple-evals) | Deliberately narrow — as of July 2025 only HealthBench/BrowseComp/Sim… | confirmed absent — grepped the README and all cod… | partial — --n-repeats (MATH/GPQA, default 10) dup… |
-| [rmr-rnd/harness-bench](https://github.com/rmr-rnd/harness-bench) | Ports 3 benchmarks: bfcl_memory, persistbench, niah; No LICENSE file… | none found (grepped for contamination/leakage/can… | epochs=3 is SET for 2 of 3 task types but never c… |
+| [redmadrobot-rnd/harness-bench](https://github.com/redmadrobot-rnd/harness-bench) | Ports 3 benchmarks: bfcl_memory, persistbench, niah; No LICENSE file… | none found (grepped for contamination/leakage/can… | epochs=3 is SET for 2 of 3 task types but never c… |
 | [tau-bench / tau2-bench (τ²-bench)](https://github.com/sierra-research/tau2-bench) | 5 domains: mock, airline, retail, telecom, banking_knowledge; τ²-benc… | none found in fetched content | not detailed in fetched content — evaluates actio… |
 | [Terminal-Bench](https://github.com/harbor-framework/terminal-bench) | 89 tasks as of v2.0: compiling code, training models, setting up serv… | none discussed in the paper or repo content fetch… | not addressed in fetched content [unverified — pa… |
 | [UK AISI Inspect AI](https://github.com/UKGovernmentBEIS/inspect_ai) | 6 extension points (models/solvers/scorers/sandboxes/approvers/hooks)… | confirmed absent — no canary, no contamination de… | Epochs(count, reducer) with mean/median/mode/max/… |
@@ -367,11 +368,11 @@ A deliberately narrow, mostly-deprecated set of eval scripts OpenAI built for it
 **Caveats:**
 - stars/last-commit activity not independently re-checked for this registry entry
 
-### rmr-rnd/harness-bench
+### redmadrobot-rnd/harness-bench
 
 <a id="harness-bench"></a>
 
-**Homepage:** https://github.com/rmr-rnd/harness-bench  
+**Homepage:** https://github.com/redmadrobot-rnd/harness-bench  
 **License:** none found — no LICENSE file anywhere in the repo, no SPDX headers, no copyright notices (checked directly)
 
 A plugin-based multi-benchmark harness shipping three benchmark ports: bfcl_memory (real Berkeley BFCL v4 data, exact-match scoring), persistbench (30 JSON tasks, 3 task types, entirely LLM-judge scored via regex-extracted JSON), and niah (40 of 225 grid cells of a needle-in-a-haystack port, LLM-judge on a 1/3/5/7/10 rubric scale). Auto-discovery via a register_benchmark() decorator + pkgutil-based package walk.
@@ -391,6 +392,8 @@ A plugin-based multi-benchmark harness shipping three benchmark ports: bfcl_memo
 **References:**
 - https://github.com/rmr-rnd/harness-bench (fetched 2026-07-01)
   cloned at commit 5d10678ef831c69ee875996b6ebaa010f6fcf1e6; full grep audit performed directly against the clone, not inferred from README claims
+- https://github.com/redmadrobot-rnd/harness-bench (fetched 2026-08-03)
+  weekly refresh re-check via gh api: org renamed rmr-rnd -> redmadrobot-rnd (confirmed live 301 redirect, not archived); no new commits since prior clone (still 2 commits, last push 2026-06-30) so the grep audit remains current
 
 
 ### tau-bench / tau2-bench (τ²-bench)
@@ -406,18 +409,20 @@ Sierra Research's simulation framework for evaluating tool-using dialogue agents
 - 5 domains: mock, airline, retail, telecom, banking_knowledge
 - τ²-bench/1.0.0 added multimodal, knowledge-aware, and full-duplex voice evaluation over the original text-only tau-bench
 - No contamination gate or reward-hacking detection found in fetched content
-- 1.5k stars (fetched 2026-07-05)
+- 1.7k stars (fetched 2026-08-03)
 
 - **Contamination gate:** none found in fetched content
 - **Reward-hacking detection:** none found in fetched content
 - **Reliability methodology:** not detailed in fetched content — evaluates action correctness against evaluation_criteria.actions, but specific metrics (pass@k, success-rate variance) not located [unverified]
 - **Sandboxing:** n/a — dialogue/tool-call simulation, not code execution
-- **Activity:** 1.5k (per GitHub page fetch, tau2-bench repo)
-- **Activity notes:** fetched live 2026-07-05; latest release noted was tau2-bench (aka "tau3-bench" per repo notes) 1.0.0 (2026-03-18), with "75+ task fixes" mentioned across airline/retail/banking domains
+- **Activity:** 1.7k (per gh api, 2026-08-03)
+- **Activity notes:** fetched live 2026-07-05; latest release noted was tau2-bench (aka "tau3-bench" per repo notes) 1.0.0 (2026-03-18), with "75+ task fixes" mentioned across airline/retail/banking domains; star count re-checked 2026-08-03 (428 forks, pushed 2026-07-30)
 
 **References:**
 - https://github.com/sierra-research/tau2-bench
   fetched live 2026-07-05
+- https://github.com/sierra-research/tau2-bench (fetched 2026-08-03)
+  weekly refresh re-check via gh api: star count refreshed (1.5k -> 1.7k, +14%), not archived, no rename
 - https://arxiv.org/pdf/2406.12045
   original tau-bench paper, found via search but not independently re-fetched for this entry [unverified beyond search summary]
 

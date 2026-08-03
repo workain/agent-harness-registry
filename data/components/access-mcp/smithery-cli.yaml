@@ -1,7 +1,7 @@
 name: Smithery CLI
 slug: smithery-cli
 category: access-mcp
-homepage: https://github.com/smithery-ai/cli
+homepage: https://github.com/arcadeai-labs/smithery-cli
 layer: "Access placement / tool-access protocol layer (equivalent to Block B) — a REGISTRY/discovery layer on top of MCP, complementing this registry's mcp-servers and mcp-client-sdk entries"
 what_it_is: >
   A command-line tool for discovering, installing, and managing MCP servers AND skills from a
@@ -18,11 +18,14 @@ license_tag: "AGPL-3.0"
 open_source: true
 use_cases: "discovering/installing MCP servers and skills from a central registry"
 activity:
-  stars: "785 (per GitHub page fetch, 2026-07-05)"
-  last_verified_note: "fetched live 2026-07-05; 6 releases, latest v1.2.0 (May 2026), 610 commits, 94 forks, 22 open issues — a much smaller install base than the official MCP repos (mcp-servers: 88.1k stars), consistent with being a third-party discovery layer rather than the protocol's own reference implementation"
+  stars: "813 (per gh api, 2026-08-03)"
+  last_verified_note: "fetched live 2026-08-03; 95 forks — org renamed from smithery-ai to arcadeai-labs (confirmed live 301 redirect, not archived, repo also renamed cli -> smithery-cli); a much smaller install base than the official MCP repos (mcp-servers: 89.2k stars), consistent with being a third-party discovery layer rather than the protocol's own reference implementation"
 provenance:
   - url: https://github.com/smithery-ai/cli
     fetched: "2026-07-05"
     note: "fetched directly (repo page): description, license, star count, MCP-server + skills registry mechanism, activity signal"
+  - url: https://github.com/arcadeai-labs/smithery-cli
+    fetched: "2026-08-03"
+    note: "weekly refresh re-check via gh api: org+repo rename confirmed (smithery-ai/cli -> arcadeai-labs/smithery-cli, live 301 redirect, not archived), star count refreshed"
 unverified: []
 deep_dive: deep-dives/components/access-mcp/smithery-cli.md

@@ -39,3 +39,4 @@ registry and directories like Glama/PulseMCP surfaced in this registry's other M
 ## References
 
 - https://github.com/smithery-ai/cli — fetched directly, 2026-07-05
+- https://github.com/arcadeai-labs/smithery-cli — weekly refresh re-check, 2026-08-03: org+repo renamed smithery-ai/cli -> arcadeai-labs/smithery-cli

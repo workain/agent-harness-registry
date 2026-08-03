@@ -1,0 +1,33 @@
+name: Pi
+slug: pi
+homepage: https://github.com/earendil-works/pi
+interface: "Terminal UI (pi-tui, differential rendering), CLI (pi-coding-agent), npm install or standalone binaries from GitHub releases"
+what_it_is: >
+  A minimal, extensible AI agent toolkit from Armin Ronacher (Flask/Jinja2) and Mario
+  Zechner, built as a deliberate rebuttal to the "bloated harness" trend — the argument
+  that current models are already capable enough that the harness should mostly get out
+  of the way rather than pile on scaffolding. Ships as separate composable packages:
+  `pi-ai` (unified multi-provider LLM abstraction — OpenAI, Anthropic, Google, and others),
+  `pi-agent-core` (the agent runtime — tool calling, state management), `pi-coding-agent`
+  (the interactive CLI for coding tasks), and `pi-tui` (a terminal UI library). No built-in
+  permission system by default — security is explicitly delegated to containerization
+  (Docker, Gondolin VM extensions, OpenShell sandboxing) rather than an in-process
+  approval gate. Notable supply-chain hardening practice: direct dependencies pinned to
+  exact versions, lockfiles version-controlled, pre-commit hooks preventing accidental
+  dependency changes.
+license: MIT
+open_source: true
+sandboxing: "No built-in permission/approval system by default — the project explicitly delegates sandboxing to external containerization (Docker, Gondolin VM extensions, OpenShell), a materially different security posture than engines like Cline that gate every action on human approval in-process"
+activity:
+  stars: "82.7k (per gh api, 2026-08-03)"
+  last_verified_note: "10,242 forks, pushed 2026-08-03 (actively maintained, not archived); created 2025-08-09. Open-sourced per the author's own blog post (lucumr.pocoo.org/2026/5/24/pi-oss/); found via this cycle's real-traction discovery sweep, already well past initial-launch noise."
+provenance:
+  - url: https://github.com/earendil-works/pi
+    fetched: "2026-08-03"
+    note: "independently fetched in full: description, stars/forks/license/archived status, package architecture (pi-ai/pi-agent-core/pi-coding-agent/pi-tui), sandboxing model, supply-chain hardening practices, contribution model"
+  - url: https://lucumr.pocoo.org/2026/5/24/pi-oss/
+    fetched: "2026-08-03"
+    note: "independently fetched: confirms open-sourcing, author attribution (Armin Ronacher), repo URL"
+unverified:
+  - "the widely-repeated 'sub-1,000-token system prompt' and 'lazy skills' claims from secondary coverage were not independently confirmed against the actual prompt/source — not included as fact in this entry pending a direct check"
+deep_dive: deep-dives/engines/pi.md

@@ -27,12 +27,15 @@ license_tag: "Apache-2.0"
 open_source: true
 use_cases: "knowledge-graph memory, ontology-linked retrieval, long-term agent memory"
 activity:
-  stars: "27k (per GitHub page fetch, 2026-07-05)"
-  last_verified_note: "fetched live 2026-07-05; latest release v1.2.2 (2026-06-26), 8,429 commits, 237 open issues, 345 open PRs — actively maintained; the project has 'graduated' GitHub's Secure Open Source program per its own README"
+  stars: "29.7k (per gh api, 2026-08-03)"
+  last_verified_note: "fetched live 2026-07-05; latest release v1.2.2 (2026-06-26), 8,429 commits, 237 open issues, 345 open PRs — actively maintained; the project has 'graduated' GitHub's Secure Open Source program per its own README; star count re-checked 2026-08-03 (27k -> 29.7k, +10%, 2,872 forks, pushed 2026-08-03)"
 provenance:
   - url: https://github.com/topoteretes/cognee
     fetched: "2026-07-05"
     note: "fetched directly (repo page): description, license, star count, architecture, integration surface, activity signal"
+  - url: https://github.com/topoteretes/cognee
+    fetched: "2026-08-03"
+    note: "weekly refresh re-check via gh api: star count refreshed only (27k -> 29.7k); harness_eval_verdict below untouched — no new eval this cycle"
   - url: https://github.com/workain/harness-eval (issue #37)
     fetched: "2026-07-05"
     note: "3-lens source pre-screen (claims/completeness/red-flags, all independently re-derived) plus a LIVE key-free run of cognee 1.2.2 (fastembed local embeddings + a Claude-Code-subscription-backed LLM shim, no paid API key) through this repo's persistbench_v1 bench vs. a bare-model floor and a flat-file (file-wiki) baseline, and a direct re-check of the actual installed 1.2.2 package's REST API code — see harness_eval_verdict below and https://github.com/workain/harness-eval/blob/main/reports/cognee_live_run.md (PR#42 merged 2026-07-18, commit 5bd59b6 — citation re-pinned from the prior branch-tip SHA now that it's on main). Verdict independently ROASTed once (harness-eval#42): the original security catch (CVE-2026-31231) was retracted as not reproducing in 1.2.2 and replaced with a directly-reproduced finding (cognee#3084); eval-core numbers unchanged."

@@ -25,3 +25,4 @@ The only 'build your own MCP server on your own app' entry among this batch of 3
 ## References
 
 - https://github.com/vercel/mcp-adapter — verified via `gh api`/direct fetch, 2026-07-05
+- https://github.com/vercel/mcp-handler — weekly refresh re-check, 2026-08-03: repo renamed mcp-adapter -> mcp-handler

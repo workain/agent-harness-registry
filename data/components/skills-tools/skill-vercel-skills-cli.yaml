@@ -9,11 +9,14 @@ use_cases: "universal skill installer CLI (`npx skills`)"
 what_it_is: >
   Vercel's own open agent-skills INSTALLER tool (`npx skills`) — not a skill itself, the CLI other Vercel skill entries in this registry install through. Includes a `find-skills` meta-skill for discovery.
 activity:
-  stars: "25.1k"
-  last_verified_note: "2,087 forks"
+  stars: "27.9k"
+  last_verified_note: "2,348 forks"
 provenance:
   - url: https://github.com/vercel-labs/skills
     fetched: "2026-07-05"
     note: "verified directly via gh api (stars/forks/license) where a repo exists; some entries flagged unverified per search-only sourcing"
+  - url: https://github.com/vercel-labs/skills
+    fetched: "2026-08-03"
+    note: "weekly refresh re-check via gh api: star count refreshed (25.1k -> 27.9k, +11%), not archived, no rename"
 unverified: []
 deep_dive: deep-dives/components/skills-tools/skill-vercel-skills-cli.md

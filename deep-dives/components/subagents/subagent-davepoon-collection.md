@@ -21,3 +21,4 @@ A broader single-hub alternative to VoltAgent's subagent-only focus.
 ## References
 
 - https://github.com/davepoon/claude-code-subagents-collection — verified via `gh api`/direct fetch, 2026-07-05
+- https://github.com/davepoon/buildwithclaude — weekly refresh re-check, 2026-08-03: repo renamed claude-code-subagents-collection -> buildwithclaude

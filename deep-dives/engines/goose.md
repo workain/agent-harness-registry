@@ -26,3 +26,4 @@ forks — actively maintained.
 ## References
 
 - https://github.com/block/goose — fetched directly, 2026-07-05
+- https://github.com/aaif-goose/goose — weekly refresh re-check, 2026-08-03: AAIF org-transition confirmed complete

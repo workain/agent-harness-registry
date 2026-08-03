@@ -1,23 +1,36 @@
 name: Devin
 slug: devin
 homepage: https://devin.ai
-interface: "Web app, Slack integration, Linear integration, API, Devin Desktop (IDE + agent dashboard)"
+interface: "Web app (app.devin.ai), Devin Desktop (IDE + agent command center, the renamed Windsurf), Devin for Terminal (CLI, with a /handoff command to escalate to cloud Devin), Slack integration, Linear/Jira integration, API"
 what_it_is: >
-  Cognition's autonomous AI software engineer: a tool-using agent with a persistent
-  workspace (terminal, code editor, browser) plus planning/reflection loops supporting
-  long-running tasks. Sessions can be started from Slack (tag Devin in a thread), Linear
-  (assign a ticket), the web app, or the API. Devin Desktop (a later release) combines an
-  IDE with a dashboard for coordinating agents across projects/codebases/environments.
-  No public source repository — proprietary, closed-source product.
+  Cognition's autonomous AI software engineer product family. Cloud Devin is a tool-using
+  agent with a persistent per-session workspace (terminal, code editor, browser) plus
+  planning/reflection loops for long-running tasks (built to handle backlog items that take
+  up to ~3 hours); sessions start from Slack (tag Devin in a thread), Linear/Jira (assign a
+  ticket), the web app, or the API. Devin Desktop is a full IDE plus an "Agent Command
+  Center" (Kanban-style task tracking, Spaces for sharing context/Git worktrees across
+  agents) for orchestrating fleets of local and cloud agents, with Supercomplete
+  (next-thought-prediction autocomplete) and Fast Context codebase navigation. Devin
+  Desktop IS Windsurf, rebranded — not a separate later product: windsurf.com now 308-redirects
+  to devin.ai/desktop, and Cognition's own FAQ describes this as a rebrand toward agent
+  management, not a discontinuation (existing settings/extensions/workflows migrate
+  automatically; JetBrains support for Windsurf continues separately). No public source
+  repository — proprietary, closed-source product.
 license: "Proprietary — no public source repository found; closed-source commercial product"
 open_source: false
-sandboxing: "Runs in a persistent, Cognition-managed workspace per session — not self-hosted or user-controlled infrastructure"
+sandboxing: "Cloud Devin runs in a persistent, Cognition-managed workspace per session — not self-hosted or user-controlled infrastructure. Devin Desktop's local editing runs with the invoking user's own filesystem/process permissions; cloud hand-off (Devin for Terminal's /handoff, or Desktop's cloud agents) moves work into the same managed cloud workspace."
 activity:
   stars: null
-  last_verified_note: "Devin 1.2 added improved in-context reasoning and Slack voice-message support; Devin Desktop is a more recent addition per official/press sources"
+  last_verified_note: "re-verified live 2026-08-03 by fetching devin.ai/desktop and docs.devin.ai/get-started/devin-intro directly (not a WebSearch synthesis). Pricing per devin.ai/desktop: Free $0, Pro $20/mo, Max $200/mo (newly launched), Teams $80/mo + $40/user/mo, Enterprise custom — no changes for existing legacy Windsurf Enterprise customers. Notable: docs.devin.ai's general product docs (devin-intro) still describe only the web app + CLI and make no mention of Devin Desktop, so the Desktop rebrand is reflected on the marketing site but not yet fully propagated into the core docs."
 provenance:
   - url: https://docs.devin.ai/get-started/devin-intro
-    note: "found via search summary of official docs and press coverage — not independently re-fetched in full for this entry"
-unverified:
-  - "product details (exact reflection-loop mechanics, Devin Desktop feature set) are drawn from a WebSearch synthesis of official docs/press, not an independent full fetch"
+    fetched: "2026-08-03"
+    note: "independently fetched in full: core Devin description, terminal/code-editor/browser tool surface, session-start channels (Slack/Linear-Jira/web/API), Devin for Terminal + /handoff. Supersedes the prior WebSearch-synthesis-only citation for this URL."
+  - url: https://devin.ai/desktop
+    fetched: "2026-08-03"
+    note: "independently fetched in full: Devin Desktop feature set (Agent Command Center, Spaces, Supercomplete, Fast Context, ACP), pricing tiers, explicit FAQ confirmation that Devin Desktop is a Windsurf rebrand not a new product"
+  - url: https://windsurf.com
+    fetched: "2026-08-03"
+    note: "independently verified via curl -I: live HTTP 308 redirect to https://devin.ai/desktop, confirming the rebrand at the infrastructure level, not just marketing copy"
+unverified: []
 deep_dive: deep-dives/engines/devin.md

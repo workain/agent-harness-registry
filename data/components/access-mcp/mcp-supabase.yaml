@@ -1,19 +1,26 @@
 name: Supabase MCP
 slug: mcp-supabase
 category: access-mcp
-homepage: https://github.com/supabase-community/supabase-mcp
+homepage: https://github.com/supabase/mcp
 license: "Apache-2.0"
 license_tag: "Apache-2.0"
 open_source: true
 use_cases: "managing Supabase projects/database/auth/storage from an agent"
 what_it_is: >
-  Community-maintained (under the `supabase-community` org) MCP server for managing Supabase resources.
+  MCP server for managing Supabase resources — moved from the `supabase-community` org to
+  the official `supabase` org (repo renamed `supabase-community/supabase-mcp` ->
+  `supabase/mcp`, old URL redirects, 301; description now reads "Connect Supabase to your
+  AI assistants" and the project has its own subdomain at supabase.com/mcp), i.e. this is
+  now first-party, not merely community-maintained.
 activity:
   stars: "2.8k"
-  last_verified_note: "376 forks, pushed 2026-06-30"
+  last_verified_note: "390 forks, pushed 2026-07-27"
 provenance:
   - url: https://github.com/supabase-community/supabase-mcp
     fetched: "2026-07-05"
     note: "verified directly via gh api (stars/forks/license/push date) or the vendor's own site for hosted-only entries"
+  - url: https://github.com/supabase/mcp
+    fetched: "2026-07-27"
+    note: "weekly refresh re-check via gh api: repo moved from supabase-community org to the official supabase org (confirmed owner.login=supabase, not archived, 301 redirect from old URL); stars 2.8k -> 2.83k, forks 376 -> 390"
 unverified: []
 deep_dive: deep-dives/components/access-mcp/mcp-supabase.md

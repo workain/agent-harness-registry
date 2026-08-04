@@ -9,11 +9,14 @@ use_cases: "337 skills/agents/commands spanning engineering, marketing, product,
 what_it_is: >
   337 total skills/agents/commands spanning engineering, marketing, product, compliance, C-level advisory, business ops, and finance — the broadest single-repo DOMAIN spread found in this research.
 activity:
-  stars: "20.3k"
-  last_verified_note: "2,778 forks"
+  stars: "23.3k"
+  last_verified_note: "3,207 forks"
 provenance:
   - url: https://github.com/alirezarezvani/claude-skills
     fetched: "2026-07-05"
     note: "verified directly via gh api (stars/forks/license) where a repo exists; some entries flagged unverified per search-only sourcing"
+  - url: https://github.com/alirezarezvani/claude-skills
+    fetched: "2026-07-27"
+    note: "weekly refresh re-check via gh api: stars 20.3k -> 23.3k (+15%), forks 2,778 -> 3,207"
 unverified: []
 deep_dive: deep-dives/components/skills-tools/skill-alirezarezvani-collection.md

@@ -19,9 +19,9 @@ automatically — no configuration step needed beyond creating the file.
 
 ## Gotchas
 
-- Goose recently transitioned from `block/goose` to the Agentic AI Foundation
-  (`aaif-goose/goose`) under the Linux Foundation — some links/docs may still reference the old
-  org name during the transition; if a link 404s, try the new org.
+- Goose's transition from `block/goose` to the Agentic AI Foundation (`aaif-goose/goose`) under
+  the Linux Foundation is now complete (confirmed 2026-07-27); the old `block/goose` URL
+  301-redirects to the new org, so old links still resolve.
 
 ## How it compares
 
@@ -33,3 +33,5 @@ governance.
 ## References
 
 - https://github.com/block/goose — fetched directly, 2026-07-05
+- https://github.com/aaif-goose/goose — re-checked via `gh api`, 2026-07-27: AAIF rename confirmed
+  complete (not archived)

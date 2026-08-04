@@ -1,23 +1,50 @@
 name: Devin
 slug: devin
 homepage: https://devin.ai
-interface: "Web app, Slack integration, Linear integration, API, Devin Desktop (IDE + agent dashboard)"
+interface: "Devin Cloud (web app), Devin Desktop (local IDE — the rebranded Windsurf, see below), Devin CLI, Slack/Teams integration, Linear integration, Devin Review (PR/visual QA), Devin Windows VM, API (v3)"
 what_it_is: >
-  Cognition's autonomous AI software engineer: a tool-using agent with a persistent
-  workspace (terminal, code editor, browser) plus planning/reflection loops supporting
-  long-running tasks. Sessions can be started from Slack (tag Devin in a thread), Linear
-  (assign a ticket), the web app, or the API. Devin Desktop (a later release) combines an
-  IDE with a dashboard for coordinating agents across projects/codebases/environments.
-  No public source repository — proprietary, closed-source product.
+  Cognition's AI-software-engineer product family, not a single tool. Devin Cloud is the
+  original autonomous web-based agent: a tool-using agent with a persistent, Cognition-managed
+  workspace (terminal, code editor, browser) that can be started from Slack (tag Devin in a
+  thread), Linear (assign a ticket), the web app, the CLI's `/handoff`, or the API, and can run
+  fleets of agents in parallel (e.g. migrating multiple repos at once). CORRECTION (this cycle's
+  re-fetch): Devin Desktop is NOT merely a later Devin release — as of 2026-06-02 it is the
+  rebranded Windsurf (Cognition's acquired IDE; see this registry's separate `windsurf` entry,
+  now largely superseded by this one). Per Cognition's own announcement, "Devin Desktop is a
+  new look for the product you already love" — existing Windsurf plans/pricing/extensions
+  carried over unchanged. Devin Desktop now positions itself as "the home for every agent you
+  run": an Agent Command Center that manages local and cloud agents (via the Agent Client
+  Protocol, ACP) including Codex, Claude Agent, OpenCode, and Cognition's own SWE-1.6, with
+  "Spaces" grouping related agent sessions/PRs/files. Devin Local (replacing Cascade as the
+  primary local agent, claimed "30% more token efficient") is the default local agent inside
+  Devin Desktop. Integrates with GitHub, Datadog, Confluence, Stripe, AWS, and 30+ other
+  platforms beyond Slack/Linear/Teams. No public source repository — proprietary, closed-source
+  product.
 license: "Proprietary — no public source repository found; closed-source commercial product"
 open_source: false
-sandboxing: "Runs in a persistent, Cognition-managed workspace per session — not self-hosted or user-controlled infrastructure"
+sandboxing: "Devin Cloud sessions run in a persistent, Cognition-managed workspace; Devin Desktop's local agent(s) run with the invoking user's own filesystem/process permissions (same model Windsurf used), with one-click hand-off to a Cognition-managed cloud VM for heavier/parallel work; a separate Devin Windows VM offering exists for Windows-specific work"
 activity:
   stars: null
-  last_verified_note: "Devin 1.2 added improved in-context reasoning and Slack voice-message support; Devin Desktop is a more recent addition per official/press sources"
+  last_verified_note: "fetched live 2026-07-27 (docs.devin.ai release notes): recent shipped features include a redesigned model picker (2026-07-24), Devin Outposts for running Devin workloads in the user's own environment (2026-07-22), centralized skill management via Plugins (2026-07-17), Devin 2.2 with 3x faster startup + full desktop QA/computer-use testing (2026-02-24), Devin v3 API as primary API with v1/v2 deprecating on 30 days' notice (2026-02-20), and Fast Mode (~2x faster responses, 4x ACU/session) (2026-02-13)"
 provenance:
   - url: https://docs.devin.ai/get-started/devin-intro
     note: "found via search summary of official docs and press coverage — not independently re-fetched in full for this entry"
+  - url: https://docs.devin.ai/get-started/devin-intro
+    fetched: "2026-07-27"
+    note: "weekly refresh: fetched directly (first independent full fetch of this entry). Confirms web app (app.devin.ai), a Devin CLI (`curl -fsSL https://cli.devin.ai/install.sh | bash`) not previously catalogued, Slack/Teams tagging, API access, and the Shell/IDE/Browser workspace-tool trio"
+  - url: https://docs.devin.ai/release-notes/overview
+    fetched: "2026-07-27"
+    note: "weekly refresh: fetched directly for a real changelog instead of a stale WebSearch synthesis — see last_verified_note above for specifics"
+  - url: https://devin.ai
+    fetched: "2026-07-27"
+    note: "weekly refresh: fetched directly — confirms current product lineup (Devin Cloud, Devin Desktop, Devin CLI, Devin Review, Devin Windows VM) and 30+ platform integrations"
+  - url: https://devin.ai/pricing
+    fetched: "2026-07-27"
+    note: "weekly refresh: fetched directly — Free $0 (light quota), Pro $20/mo (POPULAR, frontier model access), Max $200/mo (NEW), Teams $80/mo + $40/mo per seat, Enterprise custom (\"Let's talk\"); usage-based, not flat ACU pricing per the page's own framing"
+  - url: https://devin.ai/blog/windsurf-is-now-devin-desktop
+    fetched: "2026-07-27"
+    note: "weekly refresh: fetched directly — primary source for the Windsurf -> Devin Desktop rebrand (dated 2026-06-02): reasoning (\"consolidating Windsurf and Devin into a single platform\"), what changed (Agent Command Center UI, ACP multi-agent support, Spaces, Devin Local replacing Cascade), and what didn't (\"Your plan, pricing, extensions, and other features remain the same\")"
 unverified:
-  - "product details (exact reflection-loop mechanics, Devin Desktop feature set) are drawn from a WebSearch synthesis of official docs/press, not an independent full fetch"
+  - "exact reflection-loop/planning mechanics for Devin Cloud sessions not detailed in the fetched docs — the docs themselves note documentation may lag actual behavior"
+  - "SWE-1.6 model specifics (Cognition's own frontier model, mentioned in the Devin Desktop product description) not independently verified beyond the marketing mention on devin.ai"
 deep_dive: deep-dives/engines/devin.md

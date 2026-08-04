@@ -20,8 +20,10 @@ Follow the repo's setup for connecting your specific data sources.
 
 ## How it compares
 
-The broadest-scope community MCP entry in this registry by a wide margin (39.4k stars, far above single-purpose servers).
+The broadest-scope community MCP entry in this registry by a wide margin (39.5k stars, far above single-purpose servers).
 
 ## References
 
 - https://github.com/mindsdb/mindsdb — verified via `gh api`/direct fetch, 2026-07-05
+- https://github.com/mindsdb/mindshub — re-checked via `gh api`, 2026-07-27: repo renamed
+  mindsdb/mindsdb -> mindsdb/mindshub (same org, confirmed 301 redirect, not archived)

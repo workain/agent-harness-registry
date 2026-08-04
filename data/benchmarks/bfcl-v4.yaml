@@ -32,7 +32,8 @@ our_adapter:
   notes: >
     Clean-room adapter (12 curated tasks across all 5 scenarios) built directly against
     the pinned public upstream data + our own scoring/gates — NOT a port of
-    rmr-rnd/harness-bench's version (that repo has no LICENSE file, so nothing from it
+    redmadrobot-rnd/harness-bench's version (formerly rmr-rnd/harness-bench, org renamed
+    as of 2026-07-27; that repo has no LICENSE file, so nothing from it
     could be legally vendored). Adds a G4 reward-hacking gate
     (mentions_off_target_distractor) specifically because the upstream substring-match
     convention has no length/precision penalty and is gameable by shotgun-stuffing a

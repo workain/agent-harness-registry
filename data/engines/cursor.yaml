@@ -1,23 +1,35 @@
 name: Cursor
 slug: cursor
 homepage: https://cursor.com
-interface: "Desktop IDE (VS Code fork), CLI, Agents Window (Cursor 3.0)"
+interface: "Desktop IDE (VS Code fork), CLI, web/mobile cloud agents (browser + iOS app), Agents Window (since Cursor 3.0), JetBrains IDE integration"
 what_it_is: >
   An AI-native code editor — a VS Code fork rebuilt so AI is a first-class part of the
-  editor rather than a plugin. Ships Composer (a proprietary mixture-of-experts coding
-  model), an Agent Mode that reads the codebase/edits files/runs terminal commands in a
-  loop, Background Agents (sandboxed cloud execution, hands back a PR), and a browser
-  tool for testing web apps directly inside the editor. No public source repository —
-  proprietary, closed-source product.
+  editor rather than a plugin. Ships Composer (Cursor's own proprietary coding model,
+  still current per the site's own nav as of this cycle's re-fetch), an Agent Mode that
+  reads the codebase/edits files/runs terminal commands in a loop (subagents run in
+  parallel per-task, each routed to "the best model for the task"), Background Agents
+  (sandboxed cloud execution, hands back a PR), a visual/browser design mode ("point,
+  draw, or narrate UI changes... while agents edit the code underneath"), and Git
+  checkpoints/rollback. Grok 4.5 (xAI's model, not Cursor's own) is available as a
+  price-efficient routing option alongside frontier models. Integrates with GitHub,
+  Slack, Linear, and JetBrains IDEs. No public source repository — proprietary,
+  closed-source product.
 license: "Proprietary — no public source repository found; closed-source commercial product"
 open_source: false
 sandboxing: "Background Agents run in a sandboxed cloud environment Cursor provisions; local Agent Mode runs with the invoking user's own filesystem/process permissions, gated by an approval/guardrail loop"
 activity:
   stars: null
-  last_verified_note: "Cursor 3.0 launched 2026-04-02 with a dedicated Agents Window; version/release cadence not independently tracked since there is no public repo"
+  last_verified_note: "fetched live 2026-07-27 (cursor.com/changelog): current version 3.11 (2026-07-10, \"Side Chats and Conversation Search\"), preceded by 3.10 (2026-06-30, MCPs/Organizations in Team Marketplaces) and 3.9 (2026-06-29, iOS mobile app); Cursor Router shipped 2026-07-22, Slack improvements 2026-07-17. Cursor 3.0 (Agents Window) launch date not re-confirmed this cycle (prior note: 2026-04-02) but the version line has clearly continued past it"
 provenance:
   - url: https://cursor.com/product
     note: "found via search summary of official product pages and independent reviews — not independently re-fetched in full for this entry"
+  - url: https://cursor.com/product
+    fetched: "2026-07-27"
+    note: "weekly refresh: fetched directly (first independent full fetch of this entry) — confirmed current feature set (Composer nav link still present, Agent Mode/subagents, Background Agents, visual design mode, MCP/plugins/skills extensibility) and that Grok 4.5 is an available model option, not a Cursor-built model"
+  - url: https://cursor.com/changelog
+    fetched: "2026-07-27"
+    note: "weekly refresh: fetched directly for real version history instead of a stale WebSearch synthesis — see last_verified_note above"
 unverified:
-  - "product details (Composer model specifics, exact agent-loop mechanics) are drawn from a WebSearch synthesis of official pages and third-party reviews, not an independent full fetch of cursor.com or its docs"
+  - "exact agent-loop internals (planning/reflection mechanics) not detailed in the fetched marketing pages"
+  - "Cursor 3.0's original Agents Window launch date (2026-04-02) is carried over from the prior WebSearch-sourced entry, not independently re-confirmed this cycle"
 deep_dive: deep-dives/engines/cursor.md

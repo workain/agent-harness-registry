@@ -1,23 +1,39 @@
-name: Windsurf (Cascade)
+name: Windsurf (Cascade) — renamed Devin Desktop
 slug: windsurf
-homepage: https://windsurf.com
-interface: "Desktop IDE (VS Code fork), Cascade agent panel"
+homepage: https://devin.ai/desktop
+interface: "SUPERSEDED — see this registry's `devin` entry. Formerly: Desktop IDE (VS Code fork), Cascade agent panel"
 what_it_is: >
-  An AI-native IDE (formerly Codeium) built around the Cascade agent — multi-file
-  understanding via a proprietary "Fast Context" indexing system, terminal command
-  execution, and cross-session project memory. Acquired by Cognition (maker of Devin)
-  in December 2025 for ~$250M; Windsurf 2.0 (April 2026) embedded Devin's autonomous
-  agent directly into the IDE, letting a user plan locally with Cascade then hand off
-  to a cloud VM. No public source repository — proprietary, closed-source product.
+  RENAMED, NOT DISCONTINUED (this cycle's re-fetch, confirmed via primary source): as of
+  2026-06-02, Cognition rebranded Windsurf as "Devin Desktop" — the old homepage
+  (windsurf.com) now 308-redirects to devin.ai/desktop, and Cognition's own announcement
+  states "Devin Desktop is a new look for the product you already love," with existing
+  users' "plan, pricing, extensions, and other features remain[ing] the same." Devin Local
+  now replaces Cascade as the primary local agent (Cognition claims "30% more token
+  efficient"). This entry is kept for historical continuity (the product this registry's
+  `windsurf-rules` component was built against) but the CURRENT, actively-maintained
+  product identity lives under this registry's `devin` engine entry — treat that entry as
+  authoritative for anything post-2026-06-02. Historically: an AI-native IDE (formerly
+  Codeium) built around the Cascade agent — multi-file understanding via a proprietary
+  "Fast Context" indexing system, terminal command execution, and cross-session project
+  memory. Acquired by Cognition (maker of Devin) in December 2025 for ~$250M; Windsurf 2.0
+  (April 2026) embedded Devin's autonomous agent directly into the IDE ahead of the full
+  rebrand two months later. No public source repository — proprietary, closed-source
+  product.
 license: "Proprietary — no public source repository found; closed-source commercial product"
 open_source: false
-sandboxing: "Cloud VM hand-off for Devin-driven autonomous work (post Windsurf 2.0); local Cascade work runs with the invoking user's own filesystem/process permissions"
+sandboxing: "Cloud VM hand-off for Devin-driven autonomous work (post Windsurf 2.0); local Cascade/Devin Local work runs with the invoking user's own filesystem/process permissions"
 activity:
   stars: null
-  last_verified_note: "Windsurf 2.0 shipped April 2026 embedding Devin directly; pricing free tier / Pro $20/mo / Teams $40/user/mo per official site as of this research"
+  last_verified_note: "SUPERSEDED 2026-06-02 by the Devin Desktop rebrand (see `devin` entry) — Windsurf as a standalone product name is no longer current. Historical note retained: Windsurf 2.0 shipped April 2026 embedding Devin directly; pricing carried over unchanged into Devin Desktop (Free/Pro $20mo/Max $200mo/Teams $80mo+$40mo-seat/Enterprise)"
 provenance:
   - url: https://windsurf.com/cascade
     note: "found via search summary of official product pages and independent reviews — not independently re-fetched in full for this entry"
+  - url: https://windsurf.com
+    fetched: "2026-07-27"
+    note: "weekly refresh: fetched directly, received a 308 Permanent Redirect to https://devin.ai/desktop — first independent confirmation of the rebrand"
+  - url: https://devin.ai/blog/windsurf-is-now-devin-desktop
+    fetched: "2026-07-27"
+    note: "weekly refresh: primary-source announcement, dated 2026-06-02 — see this registry's `devin` entry provenance for the full quote"
 unverified:
-  - "product details (Fast Context mechanics, exact Devin hand-off flow) are drawn from a WebSearch synthesis, not an independent full fetch of windsurf.com or its docs"
+  - "exact current status of the Cascade brand name (still used internally for the Rules/Memories docs path per this registry's `windsurf-rules` component, last independently fetched 2026-07-05) vs. Devin Local's user-facing takeover — not fully reconciled between sources"
 deep_dive: deep-dives/engines/windsurf.md

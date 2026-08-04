@@ -1,7 +1,7 @@
 name: .goosehints (Goose)
 slug: goosehints
 category: instructions-rules
-homepage: https://github.com/block/goose
+homepage: https://github.com/aaif-goose/goose
 layer: "Instruction / identity layer (equivalent to Block A) — a file-based convention shipped by an open-source engine"
 what_it_is: >
   Goose's project-instruction file: a `.goosehints` file lets a team document coding
@@ -10,21 +10,24 @@ what_it_is: >
   AGENTS.md/CLAUDE.md/GEMINI.md/Cursor Rules/Windsurf Rules in this registry's
   instructions-rules category — six vendors/projects having independently converged on
   "a committed instruction file the agent reads at session start" is itself a notable pattern
-  this registry's breadth surfaces. Goose itself (the engine this file belongs to) recently
-  moved from Block's own `block/goose` org to the Agentic AI Foundation (AAIF) under the Linux
-  Foundation — a real, citable instance of an agent engine being donated to neutral foundation
-  governance, not just an internal reorg.
+  this registry's breadth surfaces. Goose itself (the engine this file belongs to) has now
+  completed its move from Block's own `block/goose` org to the Agentic AI Foundation (AAIF)
+  under the Linux Foundation — a real, citable instance of an agent engine being donated to
+  neutral foundation governance, not just an internal reorg.
 integration: "Drop a `.goosehints` file at a project's root; Goose's built-in developer extension reads it automatically"
 license: Apache-2.0
 license_tag: "Apache-2.0"
 open_source: true
 use_cases: "project conventions for Goose, README-for-AI pattern"
 activity:
-  stars: "50.7k (per GitHub page fetch, 2026-07-05, for the Goose repo overall — `.goosehints` itself is a convention within it, not separately versioned)"
-  last_verified_note: "fetched live 2026-07-05; 141 releases, latest v1.41.0 (2026-07-03), 4,966 commits, 5.5k forks — actively maintained; repo currently mid-transition from block/goose to aaif-goose/goose, per the fetched page's own note that 'some links and references are still being updated'"
+  stars: "51.8k (per gh api, re-checked 2026-07-27, for the Goose repo overall — `.goosehints` itself is a convention within it, not separately versioned)"
+  last_verified_note: "fetched live 2026-07-05; 141 releases, latest v1.41.0 (2026-07-03), 4,966 commits, 5.5k forks as of 2026-07-05; AAIF transition (block/goose -> aaif-goose/goose) confirmed complete 2026-07-27"
 provenance:
   - url: https://github.com/block/goose
     fetched: "2026-07-05"
     note: "fetched directly (repo page): .goosehints purpose/positioning, license, star count, AAIF/Linux Foundation transition, activity signal"
+  - url: https://github.com/aaif-goose/goose
+    fetched: "2026-07-27"
+    note: "weekly refresh re-check via gh api: AAIF rename confirmed complete (full_name -> aaif-goose/goose, archived: false), stars 50.7k -> 51.8k — same source as this registry's goose engine entry"
 unverified: []
 deep_dive: deep-dives/components/instructions-rules/goosehints.md

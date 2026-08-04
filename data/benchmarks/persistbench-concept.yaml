@@ -10,8 +10,9 @@ what_it_is: >
   without bleeding (cross-domain)? does the agent resist being talked out of a correct,
   memory-grounded answer by a confident but unsupported user pushback, while still
   updating on a GENUINELY evidenced correction (sycophancy-resistance)? Originated in
-  rmr-rnd/harness-bench's persistbench module (30 JSON tasks, 100% LLM-judge via
-  regex-extracted JSON scoring).
+  redmadrobot-rnd/harness-bench's (formerly rmr-rnd/harness-bench, org renamed as of
+  2026-07-27) persistbench module (30 JSON tasks, 100% LLM-judge via regex-extracted
+  JSON scoring).
 key_facts:
   - "3 axes: beneficial-memory, cross-domain transfer, sycophancy-resistance"
   - "A task CONCEPT, not copyrightable — upstream harness-bench's implementation has no LICENSE file"

@@ -4,7 +4,7 @@
 
 ## What it is
 
-An auto-scanning aggregator that scans GitHub every hour for new DevOps skills/MCP servers — an interesting discovery MECHANISM, though negligible traction (10 stars).
+An auto-scanning aggregator that scans GitHub every hour for new DevOps skills/MCP servers — an interesting discovery MECHANISM, though negligible traction (14 stars as of 2026-07-27).
 
 ## When to use it
 
@@ -16,7 +16,7 @@ Not recommended for production reliance given its scale; review the mechanism if
 
 ## Gotchas
 
-- Negligible traction (10 stars) — a curiosity, not a vetted recommendation.
+- Negligible traction (14 stars as of 2026-07-27) — a curiosity, not a vetted recommendation.
 
 ## How it compares
 
@@ -24,4 +24,4 @@ A mechanism-interesting but low-traction counterpart to the manually-curated 'aw
 
 ## References
 
-- https://github.com/derisk-ai/awesome-devops-skills — verified via `gh api`/direct fetch where possible, 2026-07-05
+- https://github.com/derisk-ai/awesome-devops-skills — verified via `gh api`/direct fetch where possible, 2026-07-05; re-checked 2026-07-27

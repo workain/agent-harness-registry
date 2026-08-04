@@ -26,13 +26,22 @@ convention, four application modes).
 ## Activity
 
 No public repo to track stars/commits against. Cursor 3.0 launched 2026-04-02 with a dedicated
-Agents Window for managing background coding tasks.
+Agents Window for managing background coding tasks. Per a direct fetch of cursor.com (2026-08-03),
+recent additions include **Cursor Start** (a launch/onboarding product), **Cursor Router** (routes
+a task to whichever model fits it rather than a fixed default), iPad availability, and continued
+Slack-integration work. The model roster now spans Grok 4.5, GPT-5.6 Sol, Opus 5, and Gemini 3.1
+Pro alongside Cursor's own proprietary models — multi-vendor model choice, not Composer-only.
+Parent company is Anysphere, Inc.
 
 ## Caveats
 
-Product details here are drawn from a WebSearch synthesis of official pages and third-party
-reviews, not an independent full fetch of cursor.com or its docs. [unverified]
+Composer's model internals and the exact Agent Mode/Background Agents loop mechanics are drawn
+from a WebSearch synthesis of official pages and third-party reviews, not an independent full
+fetch at that level of detail. [unverified] The homepage-level product surface (feature list,
+recent announcements, model roster) was independently fetched directly, superseding the prior
+search-summary-only citation for that layer.
 
 ## References
 
 - https://cursor.com/product — found via search summary, not independently re-fetched in full
+- https://cursor.com — independently fetched in full, 2026-08-03: current feature set, recent announcements (Cursor Start, Cursor Router), model roster, parent company

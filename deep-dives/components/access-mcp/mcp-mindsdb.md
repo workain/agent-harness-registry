@@ -25,3 +25,4 @@ The broadest-scope community MCP entry in this registry by a wide margin (39.4k 
 ## References
 
 - https://github.com/mindsdb/mindsdb — verified via `gh api`/direct fetch, 2026-07-05
+- https://github.com/mindsdb/mindshub — weekly refresh re-check, 2026-08-03: repo renamed mindsdb -> mindshub within the same org

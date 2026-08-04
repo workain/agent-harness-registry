@@ -1,0 +1,32 @@
+name: OpenCode
+slug: opencode
+homepage: https://github.com/anomalyco/opencode
+interface: "Terminal TUI, CLI, npm/standalone-binary install"
+what_it_is: >
+  A terminal-first, open-source AI coding agent: give it a goal in natural language and it
+  breaks the goal into steps, reads the file structure, creates/edits files, installs
+  packages, and runs terminal commands in a loop, interpreting output to fix its own
+  mistakes. Provider-agnostic — supports 75+ LLM endpoints out of the box (Anthropic,
+  OpenAI, Google, AWS Bedrock, Azure OpenAI, OpenRouter, and anything OpenAI-compatible
+  including local Ollama servers), so it isn't locked to one vendor's models the way
+  Claude Code/Codex CLI/Gemini CLI are. Originally built by the SST team at `sst/opencode`;
+  the team rebranded to Anomaly and the canonical repo is now `anomalyco/opencode`
+  (`sst/opencode` still resolves via a live 301 redirect). By star count this is the
+  single largest engine in this registry — larger than Claude Code (140k) — making its
+  prior absence from this catalog a real gap this cycle closes.
+license: MIT
+open_source: true
+sandboxing: "n/a documented at the engine level — no built-in sandbox beyond normal filesystem/process access; safety is whatever approval flow the operator layers on top"
+activity:
+  stars: "192.6k (per gh api, 2026-08-03)"
+  last_verified_note: "24,602 forks, pushed 2026-08-03 (actively maintained, not archived); created 2025-04-30. Found via this cycle's real-traction discovery sweep — not brand-new this week, but a significant pre-existing catalog gap given its size (largest engine here by stars)."
+provenance:
+  - url: https://github.com/anomalyco/opencode
+    fetched: "2026-08-03"
+    note: "independently fetched in full: description, stars/forks/license/archived status, feature set (multi-provider support, agent loop, terminal-first design)"
+  - url: https://github.com/sst/opencode
+    fetched: "2026-08-03"
+    note: "independently verified via curl -I: live HTTP 301 redirect to anomalyco/opencode, confirming the SST -> Anomaly rebrand at the infrastructure level"
+unverified:
+  - "note: a separate, smaller, now-archived project also called 'OpenCode' exists at opencode-ai/opencode (13.6k stars, archived, last pushed 2025-09-18) — a distinct, unrelated project sharing only the name; this entry documents anomalyco/opencode (formerly sst/opencode) specifically, the actively-maintained one"
+deep_dive: deep-dives/engines/opencode.md

@@ -9,12 +9,15 @@ use_cases: "managing Netlify sites/deploys from an agent"
 what_it_is: >
   Netlify's own-described 'Official MCP server' for managing Netlify sites and deploys.
 activity:
-  stars: "47"
-  last_verified_note: "30 forks, pushed 2026-06-17"
+  stars: "52"
+  last_verified_note: "36 forks, pushed 2026-07-30"
 provenance:
   - url: https://github.com/netlify/netlify-mcp
     fetched: "2026-07-05"
     note: "verified directly via gh api (stars/forks/license/push date) or the vendor's own site for hosted-only entries"
+  - url: https://github.com/netlify/netlify-mcp
+    fetched: "2026-08-03"
+    note: "weekly refresh re-check via gh api: star count refreshed (47 -> 52); low base count so % swing is noisy"
 unverified:
   - "license status not fully confirmed — no LICENSE file found in the fetched repo"
 deep_dive: deep-dives/components/access-mcp/mcp-netlify.md

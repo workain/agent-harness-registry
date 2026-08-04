@@ -1,6 +1,6 @@
-name: rmr-rnd/harness-bench
+name: redmadrobot-rnd/harness-bench
 slug: harness-bench
-homepage: https://github.com/rmr-rnd/harness-bench
+homepage: https://github.com/redmadrobot-rnd/harness-bench
 kind: eval-framework
 what_it_is: >
   A plugin-based multi-benchmark harness shipping three benchmark ports: bfcl_memory (real
@@ -26,4 +26,7 @@ provenance:
   - url: https://github.com/rmr-rnd/harness-bench
     fetched: "2026-07-01"
     note: "cloned at commit 5d10678ef831c69ee875996b6ebaa010f6fcf1e6; full grep audit performed directly against the clone, not inferred from README claims"
+  - url: https://github.com/redmadrobot-rnd/harness-bench
+    fetched: "2026-08-03"
+    note: "weekly refresh re-check via gh api: org renamed rmr-rnd -> redmadrobot-rnd (confirmed live 301 redirect, not archived); no new commits since prior clone (still 2 commits, last push 2026-06-30) so the grep audit remains current"
 unverified: []

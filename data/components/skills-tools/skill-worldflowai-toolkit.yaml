@@ -9,11 +9,14 @@ use_cases: "agents/commands/skills/rules/hooks toolkit including a notable secur
 what_it_is: >
   A smaller multi-component toolkit (agents/commands/skills/rules/hooks) containing a notable `security-review` SKILL.md.
 activity:
-  stars: "362"
-  last_verified_note: "72 forks"
+  stars: "914"
+  last_verified_note: "170 forks"
 provenance:
   - url: https://github.com/WorldFlowAI/everything-claude-code
     fetched: "2026-07-05"
     note: "verified directly via gh api (stars/forks/license) where a repo exists; some entries flagged unverified per search-only sourcing"
+  - url: https://github.com/WorldFlowAI/everything-claude-code
+    fetched: "2026-08-03"
+    note: "weekly refresh re-check via gh api: star count refreshed (362 -> 914, +153% — large jump but repo not archived, no rename, no signs of anomalous star-farming detected in a spot-check), not archived"
 unverified: []
 deep_dive: deep-dives/components/skills-tools/skill-worldflowai-toolkit.md

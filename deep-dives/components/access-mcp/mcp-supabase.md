@@ -25,3 +25,4 @@ Same database-backend-server pattern as MongoDB/Redis/Elasticsearch/Postgres MCP
 ## References
 
 - https://github.com/supabase-community/supabase-mcp — verified via `gh api`/direct fetch, 2026-07-05
+- https://github.com/supabase/mcp — weekly refresh re-check, 2026-08-03: repo moved to Supabase's own official org and renamed supabase-mcp -> mcp

@@ -22,6 +22,8 @@ Follow the repo's quickstart for defining agents and handoff rules.
 
 The production-ready evolution of `openai/swarm` (this registry's companion entry) — always prefer this for anything beyond a learning exercise.
 
+**Ops-supervision note (issue #41 re-scan, 2026-08-04):** the SDK's first-class OTLP-exportable tracing is real execution-pipeline observability, relevant to the `ops-supervision` category's self-testing/synthetic-monitoring sub-area — but it's passive trace export, not active/scheduled probing, and this entry's primary identity remains the handoff/guardrail design pattern (the `Runner.run()` execution runtime is explicitly out of scope above). Stays catalogued here, not moved.
+
 ## References
 
 - https://github.com/openai/openai-agents-python — verified via `gh api`/direct fetch, 2026-07-05

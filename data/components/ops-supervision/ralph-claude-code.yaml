@@ -1,0 +1,30 @@
+name: ralph-claude-code
+slug: ralph-claude-code
+category: ops-supervision
+homepage: https://github.com/frankbria/ralph-claude-code
+license: "MIT"
+license_tag: "MIT"
+open_source: true
+use_cases: "supervising an unattended Claude Code loop-until-done run, crash/rate-limit-aware auto-relaunch, stuck-progress circuit breaking"
+what_it_is: >
+  A standalone CLI implementing Geoffrey Huntley's "Ralph" technique: a supervising outer loop
+  that repeatedly relaunches the Claude Code CLI (read instructions -> execute -> track progress
+  -> evaluate completion -> repeat) until a dual-condition exit gate fires (>=2 completion
+  indicators AND an explicit EXIT_SIGNAL). Adds a circuit breaker (halts after 3 no-progress
+  iterations or 5 repeats of the same error), configurable rate limiting (calls/hour and
+  MAX_TOKENS_PER_HOUR), session continuity across iterations, and three-layer detection/handling
+  of Claude's own API rate-limit window. This is a supervision policy layered above Claude Code's
+  agent loop, not a replacement for it — squarely block-J equipment (the harness choosing/
+  enforcing a policy) over an engine's own mechanism.
+activity:
+  stars: "9.6k (per gh api repos/frankbria/ralph-claude-code, 2026-08-04; 726 forks)"
+  last_verified_note: "pushed 2026-07-18; created 2025-08-27"
+provenance:
+  - url: https://github.com/frankbria/ralph-claude-code
+    fetched: "2026-08-04"
+    note: "verified directly via gh api (stars/forks/license/push date) and README"
+  - url: https://raw.githubusercontent.com/anthropics/claude-code/main/plugins/ralph-wiggum/README.md
+    fetched: "2026-08-04"
+    note: "Anthropic's own claude-code repo ships an official 'ralph-wiggum' plugin implementing the same pattern, crediting Geoffrey Huntley -- corroborates this is a recognized technique, not a fringe one; it is a separate implementation from this entry's tool, not the same codebase"
+unverified: []
+deep_dive: deep-dives/components/ops-supervision/ralph-claude-code.md

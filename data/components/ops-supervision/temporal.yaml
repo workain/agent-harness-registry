@@ -1,0 +1,42 @@
+name: Temporal
+slug: temporal
+category: ops-supervision
+homepage: https://github.com/temporalio/temporal
+license: "MIT (self-hosted server); Temporal Cloud is a separate commercial hosted offering"
+license_tag: "MIT (OSS server) / Temporal Cloud (hosted)"
+open_source: true
+use_cases: "durable execution/checkpoint-and-resume for an agent loop -- a crashed worker is replaced and replays from the last journaled step, not agent-native but genuinely composed onto agent orchestration"
+what_it_is: >
+  A general-purpose, cloud-native durable-execution/workflow-orchestration engine (spun out of
+  Uber's Cadence) -- NOT AI-specific, catalogued here because it is genuinely, concretely
+  composed onto agent loops for crash-resume. The Temporal Service persists workflow execution
+  history as an event log; every step (an "Activity") is retried and recovered automatically
+  from that log. Applied to agents: the agent loop is expressed as a Temporal Workflow, LLM
+  calls/tool invocations as Activities -- a crashed worker process is simply replaced by another
+  worker replaying the event history, so the agent resumes its reasoning without losing its
+  place. Concrete evidence, not abstract applicability: Temporal's own published case study
+  describes Grid Dynamics migrating a LangGraph+Redis+Kafka deep-research agent (which was
+  hitting race conditions, stale state, and stuck agents) onto Temporal's state/retry/
+  exactly-once logic, eliminating "thousands of lines of retry code"; Temporal has also shipped
+  an official integration with the OpenAI Agents SDK positioning it directly as agent-loop
+  crash-survival infrastructure. Evidence found skews toward the LangGraph/OpenAI-Agents-SDK
+  ecosystem, not Claude-native use specifically.
+integration: >
+  Self-host the Temporal Server (Docker Compose/Kubernetes) or use Temporal Cloud; the agent
+  process connects as a Worker via a language SDK (Python/TS/Go/Java). Heavier infrastructure
+  than a library import -- closer to standing up a dedicated service than adding a dependency.
+activity:
+  stars: "22.1k (per gh api repos/temporalio/temporal, 2026-08-04; 1,791 forks)"
+  last_verified_note: "pushed 2026-08-04 (same day as this fetch)"
+provenance:
+  - url: https://github.com/temporalio/temporal
+    fetched: "2026-08-04"
+    note: "verified directly via gh api (stars/forks/license/push date)"
+  - url: https://temporal.io/blog/prototype-to-prod-ready-agentic-ai-grid-dynamics
+    fetched: "2026-08-04"
+    note: "named production case study -- Grid Dynamics' LangGraph deep-research agent migrated onto Temporal for state/retry reliability"
+  - url: https://learn.temporal.io/tutorials/ai/durable-ai-agent/
+    fetched: "2026-08-04"
+    note: "worked tutorial for building a durable AI agent on Temporal"
+unverified: []
+deep_dive: deep-dives/components/ops-supervision/temporal.md

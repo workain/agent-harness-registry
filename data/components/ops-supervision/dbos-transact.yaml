@@ -1,0 +1,39 @@
+name: DBOS Transact
+slug: dbos-transact
+category: ops-supervision
+homepage: https://github.com/dbos-inc/dbos-transact-py
+license: "MIT"
+license_tag: "MIT"
+open_source: true
+use_cases: "lightest-weight durable-execution option -- decorate workflow functions in your own code, checkpoints land in Postgres, no separate broker/sidecar service"
+what_it_is: >
+  A durable-execution library built directly on Postgres -- no separate broker, orchestrator, or
+  control-plane service, which is the real differentiator from Temporal and Restate (both of
+  which require standing up a sidecar server). You annotate workflow functions and steps in your
+  own code (decorator-based, closer to a library than a platform); DBOS automatically checkpoints
+  progress into Postgres after each completed step. On crash/restart/redeploy, execution resumes
+  from the last completed step rather than the start. Also ships durable, database-backed queues
+  (an alternative to Celery/BullMQ) with concurrency limits, rate limits, retries, and
+  prioritization built in. For agents specifically: first-party integrations with Pydantic AI, the
+  OpenAI Agents SDK, and LlamaIndex, and it can sit underneath LangGraph's own PostgresSaver to
+  checkpoint at a finer grain than LangGraph does alone.
+integration: >
+  `pip install dbos` (or `npm install @dbos-inc/dbos-sdk` for the TypeScript sibling,
+  dbos-inc/dbos-transact-ts, 1.3k stars, MIT, pushed 2026-07-30) -- decorate functions, run the
+  app as normal, requires only a Postgres connection. The lightest-weight integration of the
+  durable-execution options catalogued in this category.
+activity:
+  stars: "1.5k (per gh api repos/dbos-inc/dbos-transact-py, 2026-08-04; 85 forks)"
+  last_verified_note: "pushed 2026-08-04 (same day as this fetch); created 2024-07-19"
+provenance:
+  - url: https://github.com/dbos-inc/dbos-transact-py
+    fetched: "2026-08-04"
+    note: "verified directly via gh api (stars/forks/license/push date)"
+  - url: https://www.dbos.dev/blog/durable-execution-crashproof-ai-agents
+    fetched: "2026-08-04"
+    note: "vendor writeup on applying DBOS's durable-execution model specifically to crash-proofing AI agents"
+  - url: https://pydantic.dev/articles/pydantic-ai-dbos
+    fetched: "2026-08-04"
+    note: "independent (Pydantic team's own) writeup of the Pydantic AI + DBOS integration -- corroborates real agent-framework adoption, not just vendor marketing"
+unverified: []
+deep_dive: deep-dives/components/ops-supervision/dbos-transact.md

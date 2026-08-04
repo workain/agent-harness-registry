@@ -8,7 +8,7 @@ Every claim is cited (see each entry's References) or marked `[unverified]`. Eac
 
 ## Overview — map of this registry
 
-**103 atomic components** across 4 categories (plus **7 instruction-file conventions** catalogued as background in the Bundles section — 110 component entries total), **8 assembled bundles**, **11 agent engines/runtimes**, **9 eval-frameworks**, **11 benchmarks**, **2 research studies**.
+**114 atomic components** across 5 categories (plus **7 instruction-file conventions** catalogued as background in the Bundles section — 121 component entries total), **8 assembled bundles**, **11 agent engines/runtimes**, **9 eval-frameworks**, **11 benchmarks**, **2 research studies**.
 
 **Components** are single-purpose atoms (a memory layer, a skill, an MCP server) composed one at a time. **Bundles** are pre-assembled multi-component kits. The market today is overwhelmingly atomic — Agent Skills alone spans 47,150 skills across 42 engines — though real demand for bundles exists too (see `workain/harness-eval`'s `docs/DEMAND-vs-ANTI-SIGNALS-equipment-bundles.md`). Each bundle's write-up scores it against three properties none yet fully combine: **sustained**, **engine-agnostic**, **progressively-disclosed**.
 
@@ -19,6 +19,7 @@ Every claim is cited (see each entry's References) or marked `[unverified]`. Eac
 - **Skills / tools** (26, catalogued only, not yet tested) — see below
 - **Subagents** (32, catalogued only, not yet tested) — see below
 - **Access placement / MCP** (34, catalogued only, not yet tested) — see below
+- **Operations / supervision** (11, catalogued only, not yet tested) — see below
 
 ---
 
@@ -148,6 +149,24 @@ Single-purpose units composed onto an engine. Name links to the tool itself; wri
 | [Supabase MCP](https://github.com/supabase-community/supabase-mcp) | Catalogued | Apache-2.0 | 2.8k | managing Supabase projects/database/auth/storage from an ag… | [write-up](deep-dives/components/access-mcp/mcp-supabase.md) |
 | [Vercel MCP Adapter](https://github.com/vercel/mcp-adapter) | Catalogued | Unclear (verify) | 620 | spinning up an MCP server directly on a Next.js/Nuxt/Svelte… | [write-up](deep-dives/components/access-mcp/mcp-vercel-adapter.md) |
 | [Zapier MCP](https://github.com/zapier/zapier-mcp) | Catalogued | MIT client (hosted service) | 341 | connecting agents to 9,000+ SaaS apps without custom integr… | [write-up](deep-dives/components/access-mcp/zapier-mcp.md) |
+
+### 1.5 Operations / supervision
+
+**Block J** (operator-ratified 2026-08-04, `agent-lab-manager` PR #402) — the engine supplies the runtime mechanism (a process running, a model's own autocompact); this category is the equipment that turns that into a supervised operation: agent/process supervisors, liveness/heartbeat + dead-man's-switch tooling, context-budget/compaction layered on top of or independent of engine-native autocompact, self-testing/synthetic monitoring for deployed agent pipelines, and session-state/crash-resume tooling. A 2026-08-04 survey for this category found the space genuinely thin in two sub-areas, not just under-catalogued here: **agent-native dead-man's-switch tooling** is close to empty (one four-month-old, zero-star project found — see `deadmanssnitch`'s write-up) and **active synthetic/canary monitoring for agent pipelines specifically** (as opposed to passive LLM-observability tracing, which is well served) has exactly one small dedicated product (`promptcanary`). Both gaps are reported as found, not papered over with a stretched entry.
+
+| Name | Tested | License | Stars | Use cases | Details |
+|---|---|---|---|---|---|
+| [amux](https://github.com/mixpeek/amux) | Catalogued | MIT+Commons Clause (source-available) | 332 | self-healing watchdog for parallel Claude Code / Codex CLI… | [write-up](deep-dives/components/ops-supervision/amux.md) |
+| [DBOS Transact](https://github.com/dbos-inc/dbos-transact-py) | Catalogued | MIT | 1.5k | lightest-weight durable-execution option -- decorate workfl… | [write-up](deep-dives/components/ops-supervision/dbos-transact.md) |
+| [Dead Man's Snitch](https://deadmanssnitch.com/) | Catalogued | Proprietary SaaS (usable via free tier) | — | minimalist dead-man's-switch for an agent loop -- append on… | [write-up](deep-dives/components/ops-supervision/deadmanssnitch.md) |
+| [healthchecks.io](https://healthchecks.io/) | Catalogued | BSD-3-Clause (OSS, self-hostable) / hosted free tier | 10.2k | dead-man's-switch for a long-running agent loop or its cron… | [write-up](deep-dives/components/ops-supervision/healthchecks-io.md) |
+| [LLMLingua](https://github.com/microsoft/LLMLingua) | Catalogued | MIT | 6.5k | prompt/context compression before a call reaches the model… | [write-up](deep-dives/components/ops-supervision/llmlingua.md) |
+| [OpenCode Dynamic Context Pruning (DCP)](https://github.com/Opencode-DCP/opencode-dynamic-context-pruning) | Catalogued | AGPL-3.0-or-later | 3.9k | model-directed context compaction for the OpenCode CLI, dis… | [write-up](deep-dives/components/ops-supervision/opencode-dcp.md) |
+| [PM2](https://github.com/Unitech/pm2) | Catalogued | AGPL-3.0 | 43.3k | general-purpose process supervisor genuinely composed onto… | [write-up](deep-dives/components/ops-supervision/pm2.md) |
+| [PromptCanary](https://www.promptcanary.dev/) | Catalogued | Proprietary SaaS (usable via free tier) | — | scheduled synthetic/canary probing of a deployed LLM/agent… | [write-up](deep-dives/components/ops-supervision/promptcanary.md) |
+| [ralph-claude-code](https://github.com/frankbria/ralph-claude-code) | Catalogued | MIT | 9.6k | supervising an unattended Claude Code loop-until-done run,… | [write-up](deep-dives/components/ops-supervision/ralph-claude-code.md) |
+| [Restate](https://github.com/restatedev/restate) | Catalogued | BSL 1.1 (source-available, not OSI OSS) | 4.2k | durable execution for dynamically-composed agent flows (no… | [write-up](deep-dives/components/ops-supervision/restate.md) |
+| [Temporal](https://github.com/temporalio/temporal) | Catalogued | MIT (OSS server) / Temporal Cloud (hosted) | 22.1k | durable execution/checkpoint-and-resume for an agent loop -… | [write-up](deep-dives/components/ops-supervision/temporal.md) |
 
 ---
 

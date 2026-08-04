@@ -1,0 +1,36 @@
+name: PM2
+slug: pm2
+category: ops-supervision
+homepage: https://github.com/Unitech/pm2
+license: "AGPL-3.0 (core process manager); Keymetrics/PM2 Plus hosted monitoring dashboard is a separate commercial product"
+license_tag: "AGPL-3.0"
+open_source: true
+use_cases: "general-purpose process supervisor genuinely composed onto agent-SDK processes for crash-restart + log management, not agent-native"
+what_it_is: >
+  A Node.js process manager with built-in crash-restart, log management, and a declarative
+  ecosystem-file config model -- NOT agent-native, catalogued here because it is concretely,
+  documentedly used to supervise AI agent processes in production, matching this registry's
+  "non-agent-native tools genuinely used for this" scope note. A published account
+  (kjetilfuras.com, "Run a Claude Code Agent in Production Without Losing Your Mind") describes
+  a real deployment: "A pm2 process wraps the Claude Agent SDK, loads the soul file on boot, and
+  listens for cron triggers"; on crash, "pm2 catches the crash, restarts the process, and the
+  next cron tick picks up where the last one left off." `systemd` (Restart=on-failure) is the
+  other commonly-cited tier for this same pattern -- see "How it compares" in the write-up.
+integration: >
+  `npm install -g pm2`; wrap the agent process in a `pm2 start` invocation or an ecosystem.config
+  file with a restart policy. No code changes to the agent process itself required.
+activity:
+  stars: "43.3k (per gh api repos/Unitech/pm2, 2026-08-04; 2,716 forks)"
+  last_verified_note: "pushed 2026-07-02; GitHub's license-detector API reports NOASSERTION for this repo (LICENSE file is named GNU-AGPL-3.0.txt, not a name its detector recognizes) -- license_tag verified by fetching that file's contents directly, not from the API's summary field"
+provenance:
+  - url: https://github.com/Unitech/pm2
+    fetched: "2026-08-04"
+    note: "verified directly via gh api (stars/forks/push date)"
+  - url: https://raw.githubusercontent.com/Unitech/pm2/master/LICENSE
+    fetched: "2026-08-04"
+    note: "fetched the actual LICENSE file (GNU-AGPL-3.0.txt) to confirm AGPL-3.0, since the GitHub API's license field reported NOASSERTION"
+  - url: https://kjetilfuras.com/claude-code-agents-production/
+    fetched: "2026-08-04"
+    note: "independent blog account of pm2 wrapping the Claude Agent SDK in production, with restart-and-resume behavior described -- the concrete agent-composition evidence this entry is catalogued on"
+unverified: []
+deep_dive: deep-dives/components/ops-supervision/pm2.md

@@ -73,7 +73,7 @@ CATEGORY_INTROS = {
         "monitoring for deployed agent pipelines, and session-state/crash-resume tooling. A "
         "2026-08-04 survey for this category found the space genuinely thin in two sub-areas, "
         "not just under-catalogued here: **agent-native dead-man's-switch tooling** is close to "
-        "empty (one four-month-old, zero-star project found — see `deadmanssnitch`'s write-up) "
+        "empty (one four-month-old, zero-star project found — see `healthchecks-io`'s write-up) "
         "and **active synthetic/canary monitoring for agent pipelines specifically** (as opposed "
         "to passive LLM-observability tracing, which is well served) has exactly one small "
         "dedicated product (`promptcanary`). Both gaps are reported as found, not papered over "

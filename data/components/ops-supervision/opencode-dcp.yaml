@@ -31,6 +31,9 @@ provenance:
   - url: https://github.com/Opencode-DCP/opencode-dynamic-context-pruning
     fetched: "2026-08-04"
     note: "verified directly via gh api (stars/forks/license/push date) and README"
+  - url: https://github.com/ranxianglei/opencode-acp
+    fetched: "2026-08-04"
+    note: "verified directly via gh api (107 stars, license reported NOASSERTION, pushed 2026-08-03) -- the sibling/competitor project this entry's what_it_is mentions in passing"
 unverified:
   - "OpenCode-specific -- only usable if the harness's engine is OpenCode, not a general-purpose tool"
 deep_dive: deep-dives/components/ops-supervision/opencode-dcp.md

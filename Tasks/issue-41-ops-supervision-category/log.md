@@ -56,9 +56,43 @@ incidental/false-positive, 80 with no ops/supervision signal at all.**
 - **REJECTED (borderline, inspected and dismissed)** — 27 entries, mostly a recurring
   false-positive shape: "supervisor"/"orchestrat*" hits that are actually the multi-agent
   **orchestration-routing** design pattern (`subagent-langgraph-supervisor`, `autogen`,
-  `subagent-crewai-agents`, `subagent-llama-agents`, etc.), not process supervision. Full list
-  with individual one-line reasons is in the dispatched agent's own report (reproduced in this
-  PR's description); not re-copied here to avoid duplication drift.
+  `subagent-crewai-agents`, `subagent-llama-agents`, etc.), not process supervision. Full list,
+  landed here per the independent ROAST's finding that the PR description only named 2 of 27 and
+  the rest existed only in an ephemeral dispatched-agent report, not the repo itself:
+
+  | slug | category | one-line reason |
+  |---|---|---|
+  | `mcp-sentry` | access-mcp | Error/issue-tracking positioned for coding-assistant debugging workflows ("not general dashboarding"), narrower than Grafana; no alerting/incident/liveness capability of its own, no watchdog/crash/resume language at all. |
+  | `mcp-docker-gateway` | access-mcp | "Orchestrates" here means aggregating/launching many MCP *servers* centrally (secrets/OAuth mgmt) — an MCP-access gateway, not process supervision. |
+  | `mcp-cloudflare` | access-mcp | Single "dashboard" mention refers to Cloudflare's own web console vs. agent-driven API access — no ops/supervision content. |
+  | `anthropic-memory-tool` | memory | "Compaction"/"context editing" named only as a *sibling* Anthropic feature this tool pairs with; the tool itself doesn't do compaction or supervise anything — it's a `/memories` file-read/write contract. |
+  | `crewai-memory` | memory | "Checkpointing" named only as a sibling Crew capability alongside memory/tools/knowledge — not implemented by this entry's subject. |
+  | `graphiti-zep` | memory | "Crash" hits are live-tested engineering bugs (KuzuDriver crash, CVE) found *in* the component, not a supervision capability it offers. |
+  | `openai-conversations-api` | memory | "Compaction" appears only in a cited SDK-wrapper bug report (missing compaction tooling) — a gap, not a capability; "session state" here is ordinary conversation-history persistence, not process/crash supervision. |
+  | `langmem` | memory | No genuine ops signal — "restart"/"process" style hits are generic reliability caveats (stale releases, unfixed bugs), not supervision tooling. |
+  | `letta` | memory | Its `request_heartbeat=false` flag is an internal tool-calling-loop continuation control, not a liveness heartbeat; the eval's own need for a wall-clock timeout to stop Letta's non-terminating tool-call chains is a *liability the eval harness worked around*, not a capability Letta offers. |
+  | `llamaindex-memory` | memory | No ops/supervision signal at all; pure RAG/document-agent memory module. |
+  | `cognee` | memory | "Hanging on non-standard key formats" is a cited provider-wiring bug, not supervision tooling; no watchdog/liveness/self-test capability. |
+  | `cursor-rules` | instructions-rules | "Dashboard" refers to Cursor's paid-plan Team Rules admin UI — unrelated to ops/monitoring. |
+  | `base-project-template` | instructions-rules | "Orchestration"/"session register" hits refer to human multi-agent-*workflow* scaffolding (when to add subagents, a work-session/epic register) — project-management convention, not process supervision. |
+  | `subagent-langgraph-supervisor` | subagents | Confirmed: this is the hub-and-spoke multi-agent **orchestration-routing** "supervisor" pattern, explicitly not process supervision — the textbook false-positive shape for this survey. |
+  | `autogen` | subagents | Peer-to-peer multi-agent **role-composition** framework; "orchestrat*"/"daemon" hits are generic framework/test-harness language, no supervision capability. |
+  | `subagent-haystack-agents-as-tools` | subagents | Agents-as-callable-tools compositional pattern; no ops content beyond a passing "supervisor-routing" comparison to other entries. |
+  | `subagent-metagpt` | subagents | SOP-bound role/message-pool multi-agent design; no ops/supervision content. |
+  | `subagent-contains-studio` | subagents | Sole hit is "restart Claude Code" in install instructions — trivial, unrelated to process supervision. |
+  | `subagent-claude-code-templates` | subagents | "Dashboard" = a marketplace/discovery UI for browsing agents (aitmpl.com), not an ops dashboard. |
+  | `subagent-crewai-agents` | subagents | "Orchestrat*" hits describe CrewAI's `kickoff()` multi-agent execution loop, explicitly scoped out as engine territory — role/task-composition API only. |
+  | `subagent-llama-agents` | subagents | Same pattern — "orchestration"/"execution runtime" describes an event-driven workflow engine, not process supervision. |
+  | `subagent-rahulvrane-collection` | subagents | "Orchestration recipes" = multi-agent workflow recipes in a persona collection, not supervision tooling. |
+  | `subagent-vijaythecoder-dev-team` | subagents | "Orchestrated... dev team" = a pre-wired multi-agent topology, same false-positive shape. |
+  | `subagent-voltagent-collection` | subagents | "Meta-orchestration" is one of ten *persona category names* in a subagent taxonomy — no supervision content. |
+  | `skill-tdd-guard` | skills-tools | Mechanically enforces TDD workflow discipline (blocks premature/over-implementation) via a Claude Code hook — a coding-discipline gate, not liveness/process supervision. |
+  | `skill-devops-scanner` | skills-tools | Despite the name, it's a content-discovery crawler that scans GitHub hourly for new skills/MCP listings — not an operations tool itself. |
+  | `skill-snyk-agent-scan` | skills-tools | Static security scanner for prompt-injection/malicious payloads in skills/MCP components — supply-chain security, not health/liveness monitoring. |
+
+  30 entries were read in full to reach this table (27 rejected + the 3 cross-reference entries
+  above); the remaining 80 of 110 threw no keyword signal at all across two grep passes (a narrow
+  signal-word list, then a broader ops/infra vocabulary) and were not read individually.
 
 ## 3. External field survey
 
@@ -160,7 +194,25 @@ for the same repo's persistence layer would be double-counting one project, not 
   2026-08-04 in each entry's `provenance:` list.
 - Not self-ROASTed. Independent ROAST dispatched separately — see `roast.md` once posted.
 
+## 6. Independent ROAST
+
+Dispatched (separate agent, isolated worktree, told to re-derive facts itself rather than trust
+this session's summary) after PR #43 was opened. **Verdict: PASS WITH NITS** — see
+`roast.md`. No blocking factual error found (all 11 star counts, licenses, and archived-status
+checks independently re-verified and matched; generator output byte-identical to a fresh
+regeneration; taxonomy discipline held). Three findings, all addressed same-session before merge:
+
+1. **[should-fix]** The "27 rejected" re-scan list existed only in the dispatching agent's
+   ephemeral report, not the repo — the PR description named only 2 of 27, unfalsifiable as
+   shipped. **Fixed:** the full 27-row table is now in §2 above.
+2. **[nit]** `GUIDE.md`'s category intro pointed readers to `deadmanssnitch`'s write-up for the
+   RedSwitch honesty note; that detail actually lives in `healthchecks-io.md`. **Fixed:**
+   corrected the `CATEGORY_INTROS` string in `scripts/generate.py`, regenerated.
+3. **[nit]** `opencode-dcp.yaml`'s mention of its sibling project (`ranxianglei/opencode-acp`)
+   had no corresponding `provenance:` entry, despite being independently confirmed accurate.
+   **Fixed:** added the citation.
+
 ## Status
 
-Committed on branch `ops-supervision-category`, PR opened against `main`, not merged by this
-session.
+Committed on branch `ops-supervision-category`, PR #43 opened against `main`, independent ROAST
+complete (PASS WITH NITS, all 3 findings fixed same-session), not merged by this session.

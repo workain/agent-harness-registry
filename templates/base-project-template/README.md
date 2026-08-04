@@ -28,6 +28,29 @@ just *what*.
 Copy the ONE variant directory that fits (not this whole `base-project-template/` tree) into
 your new project's root. Each variant is a complete, self-contained, copy-ready set of files.
 
+## The second axis: profile overlays
+
+The `with-git`/`without-git` choice above is about **infrastructure**. A second, independent
+choice is about **what kind of work the project does** — and it is deliberately *not* a third and
+fourth variant directory (that way lies a 2xN matrix of near-identical trees, the exact drift the
+`common/`+`fragments/` mechanism exists to prevent).
+
+Instead both variants ship `profiles/`, holding optional overlays a project keeps or deletes:
+
+| Overlay | For |
+|---|---|
+| `profiles/orchestration.md` | Harnesses that spawn and supervise other sessions |
+| `profiles/development.md` | Harnesses that produce code in a reviewed repository |
+
+`CLAUDE.md` itself carries only what is **universal, cheap, and infrastructure-free** — that is
+the test applied when splitting them. Everything needing a supervisor, a scheduler, CI or an
+issue tracker lives in an overlay, so a project never carries rules it cannot apply.
+
+Both overlays come from a 2026-08 operating audit of the agent fleet this template came from.
+Every rule in them is a measured failure with its cost attached, not a precaution — including the
+one that matters most and is easiest to skip: **a monitor that writes to a log on the machine it
+monitors cannot report that the machine is gone.**
+
 ## How the two variants stay in sync (no verbatim duplication)
 
 The two variants share almost everything and differ in exactly one place that matters

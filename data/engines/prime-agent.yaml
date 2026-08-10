@@ -1,0 +1,25 @@
+name: Prime Agent
+slug: prime-agent
+homepage: https://github.com/PrimeIntellect-ai/prime-agent
+interface: "CLI (install via curl | sh), library"
+what_it_is: >
+  Prime Intellect's coding agent, built on their `pi` project framework, centered on a
+  "Recursive Language Model" / Continual Harness design (per the repo's own README) —
+  the harness recursively re-invokes the model over long-running tasks rather than
+  relying on a single flat context window. New entry this cycle: repo created
+  2026-05-08, actively pushed as of 2026-08-10. Explicitly documented by the project
+  itself as "not a security sandbox" — it does not isolate or contain executed commands.
+license: MIT
+open_source: true
+sandboxing: "None — the project's own README explicitly states Prime Agent is \"not a security sandbox\"; commands run with the invoking user's own permissions"
+activity:
+  stars: "12.2k (12,213 per gh api, 2026-08-10)"
+  last_verified_note: "fetched live 2026-08-10 via gh api; repo created 2026-05-08, pushed_at 2026-08-10 (actively developed, same-day push)"
+provenance:
+  - url: https://github.com/PrimeIntellect-ai/prime-agent
+    fetched: "2026-08-10"
+    note: "gh api repos/PrimeIntellect-ai/prime-agent — stars, license, created_at, pushed_at; README fetched directly for architecture description, install command, and the explicit \"not a security sandbox\" statement"
+unverified:
+  - "the widely-reported \"95.5% on ARC-AGI-3 with Claude Opus 5\" benchmark claim comes only from secondary/press coverage, not the project's own README or a fetched primary source — omitted from this entry pending independent confirmation [unverified — press-only claim, not found in primary source]"
+  - "exact mechanics of the \"Recursive Language Model / Continual Harness\" design are summarized from the README's own description, not independently verified against the source code"
+deep_dive: deep-dives/engines/prime-agent.md

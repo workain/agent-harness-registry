@@ -1,21 +1,25 @@
 name: Goose
 slug: goose
-homepage: https://github.com/block/goose
+homepage: https://github.com/aaif-goose/goose
 interface: "Native desktop app (macOS/Linux/Windows), CLI, API"
 what_it_is: >
-  An open-source, general-purpose AI agent (Block/Square) — install, execute, edit,
-  and test with any LLM. Supports 15+ LLM providers, integrates with 70+ extensions via
-  MCP. Recently transitioned from `block/goose` to the Agentic AI Foundation (AAIF)
-  under the Linux Foundation.
+  An open-source, general-purpose AI agent (originally Block/Square, now under the
+  Agentic AI Foundation) — install, execute, edit, and test with any LLM. Supports 15+
+  LLM providers, integrates with 70+ extensions via MCP. The `block/goose` -> AAIF
+  transition (Linux Foundation governance) that was mid-flight at the last check is now
+  complete: `gh api` resolves the repo straight to `aaif-goose/goose`.
 license: Apache-2.0
 open_source: true
 sandboxing: "n/a documented at the engine level — extension-mediated tool access via MCP is the primary access-control surface"
 activity:
-  stars: "50.7k (per GitHub page fetch, 2026-07-05)"
-  last_verified_note: "141 releases, latest v1.41.0 (2026-07-03), 4,966 commits, 5.5k forks — actively maintained; repo mid-transition from block/goose to aaif-goose/goose"
+  stars: "52.6k (per gh api, 2026-08-10)"
+  last_verified_note: "re-fetched live 2026-08-10 via `gh api repos/block/goose`: org transition to AAIF now complete (`full_name` resolves to `aaif-goose/goose`, archived: false, 313 open issues, 5,973 forks); 50.7k stars at the prior 2026-07-05 fetch"
 provenance:
   - url: https://github.com/block/goose
     fetched: "2026-07-05"
     note: "fetched directly — same source as this registry's goosehints component entry"
+  - url: https://github.com/aaif-goose/goose
+    fetched: "2026-08-10"
+    note: "re-verified via `gh api repos/block/goose`: AAIF org transition confirmed complete (previously reported as mid-transition), star count refreshed"
 unverified: []
 deep_dive: deep-dives/engines/goose.md

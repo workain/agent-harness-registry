@@ -9,11 +9,14 @@ use_cases: "auto-discovery of new DevOps skills/MCP servers via hourly GitHub sc
 what_it_is: >
   An auto-scanning aggregator that scans GitHub every hour for new DevOps skills/MCP servers — an interesting discovery MECHANISM, though negligible traction (10 stars).
 activity:
-  stars: "10"
-  last_verified_note: "5 forks"
+  stars: "17 (per gh api, 2026-08-10)"
+  last_verified_note: "re-fetched live 2026-08-10 via gh api; 10 stars/5 forks at the prior 2026-07-05 fetch — still negligible traction, not archived"
 provenance:
   - url: https://github.com/derisk-ai/awesome-devops-skills
     fetched: "2026-07-05"
     note: "verified directly via gh api (stars/forks/license) where a repo exists; some entries flagged unverified per search-only sourcing"
+  - url: https://github.com/derisk-ai/awesome-devops-skills
+    fetched: "2026-08-10"
+    note: "re-verified via gh api: star count refreshed (10 -> 17)"
 unverified: []
 deep_dive: deep-dives/components/skills-tools/skill-devops-scanner.md

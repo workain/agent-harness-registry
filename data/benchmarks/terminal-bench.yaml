@@ -20,13 +20,16 @@ capabilities:
   sandboxing: "Docker-based sandboxed terminal environment per task"
 license: Apache-2.0
 activity:
-  stars: "2.4k (per GitHub page fetch)"
-  last_verified_note: "fetched live 2026-07-05; leaderboard dataset in active use is terminal-bench-core v0.1.1; frontier models/agents score under 65% on the v2.0 (89-task) set per the paper's own abstract"
+  stars: "462 (per gh api, 2026-08-10, for the harbor-framework/terminal-bench repo specifically)"
+  last_verified_note: "re-fetched live 2026-08-10 via gh api and https://www.tbench.ai — resolves the prior fetch's open question about repo versioning: the harbor-framework org has split into several repos (terminal-bench: 462 stars, described as 'a collection of harbor-native benchmarks'; terminal-bench-1: 2,534 stars, the original v1.0/v2.0 benchmark this entry's task-count facts describe — likely what the prior '2.4k' figure actually measured; terminal-bench-2: 368 stars; terminal-bench-2-1: 71 stars; the umbrella harbor-framework/harbor framework repo: 4,058 stars). Per tbench.ai, Terminal-Bench 2.1 is the active leaderboard version and Terminal-Bench 3 has already shipped — this entry's v2.0/89-task description is now stale and needs a fuller content re-fetch beyond this week's scope"
 provenance:
   - url: https://github.com/harbor-framework/terminal-bench
     note: "fetched live 2026-07-05"
   - url: https://arxiv.org/abs/2601.11868
     note: "fetched live 2026-07-05 — \"Terminal-Bench: Benchmarking Agents on Hard, Realistic Tasks in Command Line Interfaces\", 85 authors incl. Mike A. Merrill, Alexander G. Shaw, Nicholas Carlini"
+  - url: https://www.tbench.ai
+    fetched: "2026-08-10"
+    note: "re-fetched to resolve prior fetch's repo-versioning question; confirmed Terminal-Bench 2.1 is now the active leaderboard version and Terminal-Bench 3 has shipped, with harbor-framework/harbor as the underlying framework repo"
 unverified:
-  - "exact last-commit date and contributor count not extracted from the fetched page content"
-  - "note: the project has iterated through terminal-bench-2 and terminal-bench-3 org repos (harbor-framework org) — this entry reflects the harbor-framework/terminal-bench repo and the v2.0/89-task paper; verify which version is current before citing task counts"
+  - "task counts/methodology (89 tasks, v2.0) below are as of the 2026-07-05 fetch and are now superseded by 2.1/3.0 per tbench.ai — a full content re-fetch against the current version is needed, out of scope for this pass [unverified — version currency]"
+  - "which harbor-framework repo the 462-star count best represents (a 'collection' hub vs. the actual current benchmark code) is not fully disambiguated from this fetch"

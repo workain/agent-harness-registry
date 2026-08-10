@@ -1,7 +1,7 @@
 name: Stripe Agent Toolkit
 slug: mcp-stripe
 category: access-mcp
-homepage: https://github.com/stripe/agent-toolkit
+homepage: https://github.com/stripe/ai
 license: "MIT"
 license_tag: "MIT"
 open_source: true
@@ -9,11 +9,14 @@ use_cases: "payments, subscriptions, refunds, invoices, billing automation via a
 what_it_is: >
   Stripe's official toolkit for payments/subscriptions/refunds/invoices/billing — also wraps into OpenAI Agent SDK, LangChain, CrewAI, Vercel AI SDK, not MCP-only.
 activity:
-  stars: "1.6k"
-  last_verified_note: "289 forks, pushed 2026-07-03"
+  stars: "1.7k (per gh api, 2026-08-10)"
+  last_verified_note: "re-fetched live 2026-08-10 via `gh api repos/stripe/agent-toolkit`: repo renamed stripe/agent-toolkit -> stripe/ai (not archived, MIT unchanged); 322 forks, pushed 2026-08-08; 1.6k stars/289 forks at the prior 2026-07-05 fetch"
 provenance:
   - url: https://github.com/stripe/agent-toolkit
     fetched: "2026-07-05"
     note: "verified directly via gh api (stars/forks/license/push date) or the vendor's own site for hosted-only entries"
+  - url: https://github.com/stripe/ai
+    fetched: "2026-08-10"
+    note: "re-verified via `gh api repos/stripe/agent-toolkit`: repo rename confirmed (agent-toolkit -> ai), star count refreshed"
 unverified: []
 deep_dive: deep-dives/components/access-mcp/mcp-stripe.md

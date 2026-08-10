@@ -12,12 +12,14 @@ license: MIT
 open_source: true
 sandboxing: "Docker/Podman container backends via SWE-ReX, a remote execution framework that maintains terminal sessions on local machines or containers — all commands execute inside a container, host filesystem never directly exposed"
 activity:
-  stars: "19.7k (per GitHub page fetch)"
-  last_verified_note: "fetched live 2026-07-05; latest release noted was v1.1.0 (2025-05-22) on the fetched page — may be stale, re-check before citing as \"latest\""
+  stars: "20.0k (per gh api, 2026-08-10)"
+  last_verified_note: "re-fetched live 2026-08-10 via gh api: resolves the prior fetch's stale-release flag — v1.1.0 (2025-05-22) is still the latest tagged release, but the repo itself was pushed as recently as 2026-08-03, so this is untagged ongoing development rather than a dormant project (contrast with this registry's aider entry, which is genuinely dormant on both fronts). 19.7k stars at the prior 2026-07-05 fetch"
 provenance:
   - url: https://github.com/SWE-agent/SWE-agent
     note: "fetched live 2026-07-05 (org moved from princeton-nlp/SWE-agent to SWE-agent/SWE-agent)"
+  - url: https://github.com/SWE-agent/SWE-agent
+    fetched: "2026-08-10"
+    note: "re-verified via gh api: star count refreshed (19.7k -> 20.0k), confirmed still-active push history despite the stale v1.1.0 release tag"
 unverified:
-  - "exact current release/last-commit date not confirmed beyond the v1.1.0 note found on the fetched page — the repo has likely moved further since; re-verify before citing a specific version"
   - "contributor count not extracted from fetched content"
 deep_dive: deep-dives/engines/swe-agent.md

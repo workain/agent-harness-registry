@@ -1,0 +1,25 @@
+name: Muse Code
+slug: muse-code
+homepage: https://research.meta.ai/blog/introducing-muse-code-and-muse-spark-1-2
+interface: "CLI (install via curl | bash)"
+what_it_is: >
+  Meta's coding-agent CLI, announced alongside Muse Spark 1.2 on Meta's own research
+  blog. Runs asynchronous background agents that work in isolated Git worktrees —
+  per Meta's own framing, "your working copy is never touched" while an agent runs.
+  Maintains a local event log for crash recovery, and ships bundled `/plan`, `/grill`,
+  and `/goal` skills as first-class commands. New entry this cycle.
+license: "Not stated in primary source — treated as proprietary pending confirmation [unverified]"
+open_source: false
+sandboxing: "Isolated Git worktrees per background agent — the invoking user's own working copy is not touched while an agent runs, per Meta's own framing; underlying process/filesystem sandboxing beyond worktree isolation not documented in the fetched source"
+activity:
+  stars: null
+  last_verified_note: "no public source repository found — cannot track via gh api/stars; assessed via Meta's own research blog post fetched directly 2026-08-10, plus corroborating press (TechCrunch) for the parallel sub-agent / isolated worktree behavior"
+provenance:
+  - url: https://research.meta.ai/blog/introducing-muse-code-and-muse-spark-1-2
+    fetched: "2026-08-10"
+    note: "fetched directly (primary source): async background agents, local event log for crash recovery, bundled /plan /grill /goal skills, install command, benchmark results (Terminal-Bench 2.1, DeepSWE 1.1, Meta Internal Coding Bench, 1,000+ tool-call kernel-optimization test over 24 hours)"
+unverified:
+  - "license/open-source status not stated in the primary blog post — marked closed/proprietary by default pending confirmation; do not treat as OSS without a direct source"
+  - "pricing (press reports ~$1.25/M input, $4.25/M output tokens) comes only from secondary coverage, not Meta's own blog post — omitted from this entry [unverified — from press, not confirmed via primary source]"
+  - "exact reflection-loop/sub-agent orchestration mechanics beyond the worktree-isolation claim are drawn from TechCrunch coverage, not the primary source"
+deep_dive: deep-dives/engines/muse-code.md

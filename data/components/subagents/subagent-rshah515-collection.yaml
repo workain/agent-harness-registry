@@ -9,11 +9,14 @@ use_cases: "133+ subagents, low-adoption example"
 what_it_is: >
   133+ subagents — a larger count than several higher-starred collections, but with very low adoption (79 stars).
 activity:
-  stars: "79"
-  last_verified_note: "pushed 2025-08-08"
+  stars: "100 (per gh api, 2026-08-10)"
+  last_verified_note: "re-fetched live 2026-08-10 via gh api; still pushed 2025-08-08 (no new commits in a year); 79 stars at the prior 2026-07-05 fetch — star growth without any renewed development activity"
 provenance:
   - url: https://github.com/rshah515/claude-code-subagents
     fetched: "2026-07-05"
     note: "verified directly via gh api (stars/forks/license/push date)"
+  - url: https://github.com/rshah515/claude-code-subagents
+    fetched: "2026-08-10"
+    note: "re-verified via gh api: star count refreshed (79 -> 100), push date unchanged since 2025-08-08"
 unverified: []
 deep_dive: deep-dives/components/subagents/subagent-rshah515-collection.md

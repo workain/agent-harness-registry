@@ -1,0 +1,17 @@
+title: "MCP server design: progressive disclosure, primitive choice, and authorization"
+slug: mcp-server-design-2026-07
+study_type: synthesis-digest
+source_urls:
+  - https://modelcontextprotocol.io/specification/2025-06-18/server/tools
+  - https://modelcontextprotocol.io/specification/2025-06-18/server/resources
+  - https://modelcontextprotocol.io/specification/2025-06-18/server/prompts
+  - https://modelcontextprotocol.io/specification/2025-06-18/basic/authorization
+  - https://code.claude.com/docs/en/mcp
+  - https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-search-tool
+  - https://www.arcade.dev/blog/mcp-tool-patterns/
+  - https://www.digitalapplied.com/blog/mcp-server-anti-patterns-design-mistakes-2026-developer-guide
+related_components:
+  - mcp-servers
+  - mcp-client-sdk
+related_research: []
+deep_dive: research/mcp-server-design-2026-07/README.md

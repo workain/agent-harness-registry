@@ -8,7 +8,7 @@ Every claim is cited (see each entry's References) or marked `[unverified]`. Eac
 
 ## Overview — map of this registry
 
-**103 atomic components** across 4 categories (plus **7 instruction-file conventions** catalogued as background in the Bundles section — 110 component entries total), **8 assembled bundles**, **11 agent engines/runtimes**, **9 eval-frameworks**, **11 benchmarks**, **1 research study**.
+**103 atomic components** across 4 categories (plus **7 instruction-file conventions** catalogued as background in the Bundles section — 110 component entries total), **8 assembled bundles**, **11 agent engines/runtimes**, **9 eval-frameworks**, **11 benchmarks**, **2 research studies**.
 
 **Components** are single-purpose atoms (a memory layer, a skill, an MCP server) composed one at a time. **Bundles** are pre-assembled multi-component kits. The market today is overwhelmingly atomic — Agent Skills alone spans 47,150 skills across 42 engines — though real demand for bundles exists too (see `workain/harness-eval`'s `docs/DEMAND-vs-ANTI-SIGNALS-equipment-bundles.md`). Each bundle's write-up scores it against three properties none yet fully combine: **sustained**, **engine-agnostic**, **progressively-disclosed**.
 
@@ -130,8 +130,8 @@ Single-purpose units composed onto an engine. Name links to the tool itself; wri
 | [Hugging Face MCP Server](https://github.com/huggingface/hf-mcp-server) | Catalogued | MIT | 257 | searching Hub models/datasets/Spaces/papers, running Gradio… | [write-up](deep-dives/components/access-mcp/mcp-huggingface.md) |
 | [Linear MCP](https://mcp.linear.app) | Catalogued | Proprietary (likely) | — | managing Linear issues/projects/teams/comments/workflow sta… | [write-up](deep-dives/components/access-mcp/mcp-linear.md) |
 | [MindsDB](https://github.com/mindsdb/mindsdb) | Catalogued | MIT | 39.4k | unifying queries across many databases/platforms behind one… | [write-up](deep-dives/components/access-mcp/mcp-mindsdb.md) |
-| [Model Context Protocol — official SDKs (client + server)](https://github.com/modelcontextprotocol/typescript-sdk) | Catalogued | Apache-2.0 / MIT | 12.8k | building MCP clients and servers across 8 languages | [write-up](deep-dives/components/access-mcp/mcp.md) |
-| [Model Context Protocol — reference servers](https://github.com/modelcontextprotocol/servers) | Catalogued | Apache-2.0 / MIT | 88.1k | reference implementations for filesystem/git/fetch/memory/t… | [write-up](deep-dives/components/access-mcp/mcp.md) |
+| [Model Context Protocol — official SDKs (client + server)](https://github.com/modelcontextprotocol/typescript-sdk) | Catalogued | Apache-2.0 / MIT | 12.8k | building MCP clients and servers across 8 languages | [write-up](deep-dives/components/access-mcp/mcp.md) · Research: [MCP server design: progressive disclosure, primitive choice, and authorization](research/mcp-server-design-2026-07/README.md) |
+| [Model Context Protocol — reference servers](https://github.com/modelcontextprotocol/servers) | Catalogued | Apache-2.0 / MIT | 88.1k | reference implementations for filesystem/git/fetch/memory/t… | [write-up](deep-dives/components/access-mcp/mcp.md) · Research: [MCP server design: progressive disclosure, primitive choice, and authorization](research/mcp-server-design-2026-07/README.md) |
 | [MongoDB MCP Server](https://github.com/mongodb-js/mongodb-mcp-server) | Catalogued | Apache-2.0 | 1.1k | querying/managing MongoDB data from an agent | [write-up](deep-dives/components/access-mcp/mcp-mongodb.md) |
 | [Netlify MCP](https://github.com/netlify/netlify-mcp) | Catalogued | Unclear (verify) | 47 | managing Netlify sites/deploys from an agent | [write-up](deep-dives/components/access-mcp/mcp-netlify.md) |
 | [Notion MCP Server](https://github.com/makenotion/notion-mcp-server) | Catalogued | MIT | 4.5k | search/read/create/update Notion pages and databases from a… | [write-up](deep-dives/components/access-mcp/mcp-notion.md) |
@@ -865,3 +865,4 @@ Per-study research materials — a stable, citable home distinct from any one co
 | Title | Study type | Relevant components | Related studies | Write-up |
 |---|---|---|---|---|
 | base-project-template — research evidence | synthesis-digest | [base-project-template](deep-dives/components/instructions-rules/base-project-template/README.md) | — | [write-up](research/base-project-template-evidence/README.md) |
+| MCP server design: progressive disclosure, primitive choice, and authorization | synthesis-digest | [Model Context Protocol — reference servers](deep-dives/components/access-mcp/mcp.md), [Model Context Protocol — official SDKs (client + server)](deep-dives/components/access-mcp/mcp.md) | — | [write-up](research/mcp-server-design-2026-07/README.md) |

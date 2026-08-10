@@ -27,6 +27,15 @@
 # notes/decisions.md's issue #92 entry for the live-reproduced evidence). The only enforcement
 # is discipline: use this script, not raw `gh pr merge`, every time.
 #
+# The .claude/settings.json PreToolUse hook that blocks raw `gh pr merge` in this checkout is
+# itself the SAME kind of incomplete gate, and this names the gap explicitly rather than leaving
+# it to inference: the hook's regex keys on the literal string `gh` in the Bash command line, so
+# a direct `curl -X PUT https://api.github.com/repos/<owner>/<repo>/pulls/<N>/merge ...` (or any
+# other non-`gh` route to the same REST/GraphQL merge endpoint) is NOT matched and merges with
+# zero protection -- confirmed by testing the hook's own regex against exactly that payload, not
+# assumed. Same root cause as the "no way to force itself to be used" limitation above: this is a
+# discipline gate, not a technical barrier, and both this script's own docs and CLAUDE.md say so.
+#
 # Cross-repo design: the actual ROAST-artifact matching logic lives in ONE place
 # (agent-lab-manager's scripts/check_roast_artifact.sh, since every ROAST artifact in this
 # fleet -- regardless of which repo's PR it reviews -- is committed under agent-lab-manager's

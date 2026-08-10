@@ -43,6 +43,18 @@ contribution contract.
 - **Commit early and often; push after each meaningful unit.** A crash must lose nothing.
 - **Never merge your own PR and never self-ROAST** — the manager independently ROASTs and the
   operator/manager merges. Subagents commit only; the orchestrator pushes after review.
+- **Never call `gh pr merge` / `gh api .../pulls/<N>/merge` directly** — use
+  `scripts/safe-merge.sh <PR_NUMBER>` instead (agent-lab-manager#183's ROAST-artifact merge gate:
+  checks for a PASSing independent-ROAST artifact on file for this PR before merging, then merges
+  for you). Enforced by a `.claude/settings.json` `PreToolUse` hook that blocks a raw `gh pr merge`
+  in this checkout — but that hook is per-checkout and a plain terminal has no such protection, so
+  this is a binding rule independent of the hook, not just a nudge. `safe-merge.sh`'s own header
+  documents its one honest limitation: nothing on GitHub's side (Free-tier private repo) can force
+  its use outside this hook's reach. The hook itself only recognizes the literal string `gh` in
+  the command — a raw `curl -X PUT .../pulls/<N>/merge` (or any other non-`gh` route to the same
+  REST/GraphQL endpoint) bypasses it with zero protection, confirmed by testing the hook's regex
+  directly against that payload, not assumed. Same discipline-not-technical-barrier limitation as
+  above — never do this either.
 - When adding/updating an entry, run `python3 scripts/generate.py` and commit the `GUIDE.md`
   diff alongside the YAML/deep-dive change.
 

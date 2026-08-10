@@ -12,7 +12,7 @@ key_facts:
   - "5 domains: mock, airline, retail, telecom, banking_knowledge"
   - "τ²-bench/1.0.0 added multimodal, knowledge-aware, and full-duplex voice evaluation over the original text-only tau-bench"
   - "No contamination gate or reward-hacking detection found in fetched content"
-  - "1.5k stars (fetched 2026-07-05)"
+  - "1.8k stars (fetched 2026-08-10)"
 capabilities:
   contamination_gate: "none found in fetched content"
   reward_hacking_detection: "none found in fetched content"
@@ -20,13 +20,16 @@ capabilities:
   sandboxing: "n/a — dialogue/tool-call simulation, not code execution"
 license: MIT
 activity:
-  stars: "1.5k (per GitHub page fetch, tau2-bench repo)"
-  last_verified_note: "fetched live 2026-07-05; latest release noted was tau2-bench (aka \"tau3-bench\" per repo notes) 1.0.0 (2026-03-18), with \"75+ task fixes\" mentioned across airline/retail/banking domains"
+  stars: "1.8k (per gh api, 2026-08-10)"
+  last_verified_note: "re-fetched live 2026-08-10 via gh api; 1.5k stars at the prior 2026-07-05 fetch, no rename/archival. Latest release noted at the 2026-07-05 fetch was tau2-bench (aka \"tau3-bench\" per repo notes) 1.0.0 (2026-03-18), with \"75+ task fixes\" mentioned across airline/retail/banking domains"
 provenance:
   - url: https://github.com/sierra-research/tau2-bench
     note: "fetched live 2026-07-05"
   - url: https://arxiv.org/pdf/2406.12045
     note: "original tau-bench paper, found via search but not independently re-fetched for this entry [unverified beyond search summary]"
+  - url: https://github.com/sierra-research/tau2-bench
+    fetched: "2026-08-10"
+    note: "re-verified via gh api: star count refreshed (1.5k -> 1.8k), no other drift found"
 unverified:
   - "original tau-bench (sierra-research/tau-bench, predecessor repo) not independently re-checked — this entry covers the actively-developed tau2-bench successor"
   - "exact scoring formula (pass^k vs single-run success rate) not confirmed from fetched content"

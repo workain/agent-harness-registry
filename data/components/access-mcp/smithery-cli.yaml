@@ -1,7 +1,7 @@
 name: Smithery CLI
 slug: smithery-cli
 category: access-mcp
-homepage: https://github.com/smithery-ai/cli
+homepage: https://github.com/arcadeai-labs/smithery-cli
 layer: "Access placement / tool-access protocol layer (equivalent to Block B) — a REGISTRY/discovery layer on top of MCP, complementing this registry's mcp-servers and mcp-client-sdk entries"
 what_it_is: >
   A command-line tool for discovering, installing, and managing MCP servers AND skills from a
@@ -18,11 +18,14 @@ license_tag: "AGPL-3.0"
 open_source: true
 use_cases: "discovering/installing MCP servers and skills from a central registry"
 activity:
-  stars: "785 (per GitHub page fetch, 2026-07-05)"
-  last_verified_note: "fetched live 2026-07-05; 6 releases, latest v1.2.0 (May 2026), 610 commits, 94 forks, 22 open issues — a much smaller install base than the official MCP repos (mcp-servers: 88.1k stars), consistent with being a third-party discovery layer rather than the protocol's own reference implementation"
+  stars: "815 (per gh api, 2026-08-10)"
+  last_verified_note: "re-fetched live 2026-08-10 via `gh api repos/smithery-ai/cli`: the org has moved from smithery-ai to arcadeai-labs — `full_name` now resolves to `arcadeai-labs/smithery-cli` (not archived, license unchanged at AGPL-3.0); 785 stars, 94 forks at the prior 2026-07-05 fetch — a much smaller install base than the official MCP repos (mcp-servers: 88.1k stars), consistent with being a third-party discovery layer rather than the protocol's own reference implementation"
 provenance:
   - url: https://github.com/smithery-ai/cli
     fetched: "2026-07-05"
     note: "fetched directly (repo page): description, license, star count, MCP-server + skills registry mechanism, activity signal"
+  - url: https://github.com/arcadeai-labs/smithery-cli
+    fetched: "2026-08-10"
+    note: "re-verified via `gh api repos/smithery-ai/cli`: org rename confirmed (smithery-ai -> arcadeai-labs), star count refreshed"
 unverified: []
 deep_dive: deep-dives/components/access-mcp/smithery-cli.md

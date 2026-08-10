@@ -11,11 +11,14 @@ license: Apache-2.0
 open_source: true
 sandboxing: "n/a — no built-in sandbox; runs with the invoking user's own filesystem/git permissions directly, same caveat as the other CLI-style engines here"
 activity:
-  stars: "47.1k (per GitHub page fetch, 2026-07-05)"
-  last_verified_note: "fetched live 2026-07-05; latest release v0.86.0 (2025-08-09), 93 total releases, 13,138 commits — note the release date is roughly a year old relative to this fetch, worth re-checking for a more recent release before citing as current"
+  stars: "48.1k (per gh api, 2026-08-10)"
+  last_verified_note: "re-fetched live 2026-08-10 via gh api: repo pushed_at is 2026-05-22 and v0.86.0 (2025-08-09) is still the latest release — confirms last week's flag that the release looked stale was correct, not a fetch artifact. Not archived, but effectively dormant for ~2.5 months as of this fetch; 47.1k stars at the prior 2026-07-05 fetch"
 provenance:
   - url: https://github.com/Aider-AI/aider
     note: "fetched live 2026-07-05"
+  - url: https://github.com/Aider-AI/aider
+    fetched: "2026-08-10"
+    note: "re-verified via gh api: star count refreshed (47.1k -> 48.1k), confirmed no new release/push since the prior fetch's stale-release flag"
 unverified:
-  - "latest-release date looked stale relative to the fetch date (Aug 2025 release vs. a July 2026 fetch) — re-verify there isn't a newer release not surfaced by this fetch"
+  - "no newer release or repo push since 2025-08-09 / 2026-05-22 respectively, as of the 2026-08-10 re-check — worth watching for a maintenance slowdown, though the repo is not archived"
 deep_dive: deep-dives/engines/aider.md

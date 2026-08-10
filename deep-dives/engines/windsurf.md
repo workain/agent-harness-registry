@@ -1,6 +1,13 @@
-# Windsurf (Cascade)
+# Windsurf (Cascade) — rebranded to Devin Desktop, 2026-08
 
 **Registry entry:** `data/engines/windsurf.yaml`
+
+> **Superseded 2026-08-10:** `windsurf.com` now permanently redirects (HTTP 308) to
+> `https://devin.ai/desktop`, whose own FAQ says "Devin Desktop is the new name for
+> Windsurf." Existing plans/pricing carry over unchanged; Windsurf for JetBrains stays
+> separate. See `deep-dives/engines/devin.md` for the current product write-up. This
+> page is kept for history — the content below describes Windsurf as it was before the
+> rebrand.
 
 ## What it is
 

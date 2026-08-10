@@ -1,23 +1,38 @@
 name: Devin
 slug: devin
 homepage: https://devin.ai
-interface: "Web app, Slack integration, Linear integration, API, Devin Desktop (IDE + agent dashboard)"
+interface: "Web app, Slack integration, Linear integration, API, Devin Desktop (full IDE + agent command center), Devin CLI, Devin Review, Windows VM"
 what_it_is: >
   Cognition's autonomous AI software engineer: a tool-using agent with a persistent
   workspace (terminal, code editor, browser) plus planning/reflection loops supporting
   long-running tasks. Sessions can be started from Slack (tag Devin in a thread), Linear
-  (assign a ticket), the web app, or the API. Devin Desktop (a later release) combines an
-  IDE with a dashboard for coordinating agents across projects/codebases/environments.
-  No public source repository — proprietary, closed-source product.
+  (assign a ticket), the web app, or the API. **As of 2026-08-10, Devin Desktop is
+  Windsurf, rebranded** — Cognition confirms (own FAQ, fetched directly) "Devin Desktop
+  is the new name for Windsurf. We're building on the IDE foundation of Windsurf to
+  introduce the command center for managing all your agents in one place," retaining
+  Windsurf's full IDE (syntax highlighting, debugging, Supercomplete completions,
+  language servers for Rust/Python/Go/C/C++, ESLint/Prettier/rust-analyzer integration)
+  plus a new Agent Command Center (Spaces, Kanban views, multi-agent coordination) on
+  top — see `data/engines/windsurf.yaml` for the pre-rebrand entry, kept for history.
+  Also integrates with 100+ tools including GitHub, Teams, and Datadog; recently added a
+  "Security Swarm" feature per the homepage's own announcement banner. No public source
+  repository — proprietary, closed-source product.
 license: "Proprietary — no public source repository found; closed-source commercial product"
 open_source: false
-sandboxing: "Runs in a persistent, Cognition-managed workspace per session — not self-hosted or user-controlled infrastructure"
+sandboxing: "Runs in a persistent, Cognition-managed workspace per session — not self-hosted or user-controlled infrastructure; local Devin Desktop/IDE work runs with the invoking user's own filesystem/process permissions, per its Windsurf lineage"
 activity:
   stars: null
-  last_verified_note: "Devin 1.2 added improved in-context reasoning and Slack voice-message support; Devin Desktop is a more recent addition per official/press sources"
+  last_verified_note: "re-fetched live 2026-08-10 (https://devin.ai and https://devin.ai/desktop, direct fetch): confirmed Devin Desktop = rebranded Windsurf, not just a conceptual overlap as previously described; homepage also banners a new 'Security Swarm' feature. Prior note (from a search synthesis): Devin 1.2 added improved in-context reasoning and Slack voice-message support"
 provenance:
   - url: https://docs.devin.ai/get-started/devin-intro
     note: "found via search summary of official docs and press coverage — not independently re-fetched in full for this entry"
+  - url: https://devin.ai
+    fetched: "2026-08-10"
+    note: "fetched directly: current product list (Cloud/Desktop/CLI/Review/Windows VM), 100+ tool integrations, 'Security Swarm' announcement banner, Nubank case-study autonomy claims"
+  - url: https://devin.ai/desktop
+    fetched: "2026-08-10"
+    note: "fetched directly: confirms Devin Desktop is a rebrand of Windsurf (FAQ quote), full IDE feature list, Agent Command Center (Spaces/Kanban/multi-agent), pricing/plan continuity from Windsurf"
 unverified:
-  - "product details (exact reflection-loop mechanics, Devin Desktop feature set) are drawn from a WebSearch synthesis of official docs/press, not an independent full fetch"
+  - "product details for capabilities not covered by the 2026-08-10 direct fetches (exact reflection-loop mechanics, Devin Cloud/CLI/Review/Windows VM internals) are still drawn from a WebSearch synthesis of official docs/press, not an independent full fetch"
+  - "\"Security Swarm\" feature seen only as a homepage banner mention — not independently investigated"
 deep_dive: deep-dives/engines/devin.md

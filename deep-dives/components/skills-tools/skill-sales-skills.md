@@ -16,7 +16,8 @@ Low-traction but worth noting if specifically looking for a GTM-scoped skills ex
 
 ## Gotchas
 
-- Very low traction (62 stars) — a niche/early example, not a vetted default choice.
+- Very low traction (62 stars as of the last successful fetch) — a niche/early example, not a vetted default choice.
+- **Repo unreachable as of 2026-08-10** — `gh api repos/sales-skills/sales` returns 404. Deleted, made private, or renamed to something not found via search. Re-verify before recommending; not yet removed from the registry since the disappearance itself isn't independently confirmed as permanent.
 
 ## How it compares
 

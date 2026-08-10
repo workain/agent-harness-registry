@@ -1,7 +1,7 @@
 name: davepoon/claude-code-subagents-collection
 slug: subagent-davepoon-collection
 category: subagents
-homepage: https://github.com/davepoon/claude-code-subagents-collection
+homepage: https://github.com/davepoon/buildwithclaude
 license: "MIT"
 license_tag: "MIT"
 open_source: true
@@ -9,11 +9,14 @@ use_cases: "one hub spanning skills+agents+commands+hooks+plugins across multipl
 what_it_is: >
   Positions itself as "a single hub" spanning skills+agents+commands+hooks+plugins+marketplaces across Claude Code, Claude Desktop, Agent SDK, and OpenClaw.
 activity:
-  stars: "3.1k"
-  last_verified_note: "pushed 2026-07-04"
+  stars: "3.3k (per gh api, 2026-08-10)"
+  last_verified_note: "re-fetched live 2026-08-10 via `gh api repos/davepoon/claude-code-subagents-collection`: repo renamed davepoon/claude-code-subagents-collection -> davepoon/buildwithclaude (not archived, MIT unchanged); 453 forks, pushed 2026-08-07; 3.1k stars at the prior 2026-07-05 fetch"
 provenance:
   - url: https://github.com/davepoon/claude-code-subagents-collection
     fetched: "2026-07-05"
     note: "verified directly via gh api (stars/forks/license/push date)"
+  - url: https://github.com/davepoon/buildwithclaude
+    fetched: "2026-08-10"
+    note: "re-verified via `gh api repos/davepoon/claude-code-subagents-collection`: repo rename confirmed (claude-code-subagents-collection -> buildwithclaude), star count refreshed"
 unverified: []
 deep_dive: deep-dives/components/subagents/subagent-davepoon-collection.md

@@ -54,8 +54,32 @@ CATEGORY_TITLES = {
     "skills-tools": "Skills / tools",
     "subagents": "Subagents",
     "access-mcp": "Access placement / MCP",
+    "ops-supervision": "Operations / supervision",
 }
-CATEGORY_ORDER = ["memory", "skills-tools", "subagents", "access-mcp"]
+CATEGORY_ORDER = ["memory", "skills-tools", "subagents", "access-mcp", "ops-supervision"]
+
+# Short intro paragraphs rendered under a category's own heading, before its table — optional,
+# used sparingly (today: only ops-supervision, issue #41) for a category-specific honesty note
+# that doesn't fit the generic per-entry table format. Not a general mechanism to reach for on
+# every category; add here only when a category's own landscape has a finding worth stating in
+# prose (a real gap, a maturity caveat) that the table alone can't carry.
+CATEGORY_INTROS = {
+    "ops-supervision": (
+        "**Block J** (operator-ratified 2026-08-04, `agent-lab-manager` PR #402) — the engine "
+        "supplies the runtime mechanism (a process running, a model's own autocompact); this "
+        "category is the equipment that turns that into a supervised operation: agent/process "
+        "supervisors, liveness/heartbeat + dead-man's-switch tooling, context-budget/compaction "
+        "layered on top of or independent of engine-native autocompact, self-testing/synthetic "
+        "monitoring for deployed agent pipelines, and session-state/crash-resume tooling. A "
+        "2026-08-04 survey for this category found the space genuinely thin in two sub-areas, "
+        "not just under-catalogued here: **agent-native dead-man's-switch tooling** is close to "
+        "empty (one four-month-old, zero-star project found — see `healthchecks-io`'s write-up) "
+        "and **active synthetic/canary monitoring for agent pipelines specifically** (as opposed "
+        "to passive LLM-observability tracing, which is well served) has exactly one small "
+        "dedicated product (`promptcanary`). Both gaps are reported as found, not papered over "
+        "with a stretched entry."
+    ),
+}
 
 
 def _load_dir(name: str) -> list[dict]:
@@ -618,6 +642,10 @@ def main() -> None:
             continue
         out.append(f"### 1.{CATEGORY_ORDER.index(cat) + 1} {CATEGORY_TITLES[cat]}")
         out.append("")
+        intro = CATEGORY_INTROS.get(cat)
+        if intro:
+            out.append(intro)
+            out.append("")
         out.append(render_component_table(entries, research_index))
         out.append("")
 

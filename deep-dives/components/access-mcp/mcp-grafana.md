@@ -22,6 +22,8 @@ Connect to your existing Grafana instance per the repo's setup docs.
 
 Broader multi-backend observability reach than Sentry MCP (single-vendor error tracking) in this same registry.
 
+**Ops-supervision note (issue #41 re-scan, 2026-08-04):** this is genuine, headline alert/incident-response capability (Grafana Alerting, Incident, Sift), not incidental — but it supervises **external infrastructure** the agent is granted access to, not the agent's own process/liveness. That's a different axis from the `ops-supervision` category (agent/process supervisors, heartbeat, context-budget, self-testing, session-state) — correctly stays catalogued here in access-mcp, not moved.
+
 ## References
 
 - https://github.com/grafana/mcp-grafana — verified via `gh api`/direct fetch, 2026-07-05

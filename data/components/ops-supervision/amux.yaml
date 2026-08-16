@@ -1,0 +1,36 @@
+name: amux
+slug: amux
+category: ops-supervision
+homepage: https://github.com/mixpeek/amux
+license: "MIT + Commons Clause (source-available -- free to use/modify/self-host, may not be resold as a hosted service)"
+license_tag: "MIT+Commons Clause (source-available)"
+open_source: false
+use_cases: "self-healing watchdog for parallel Claude Code / Codex CLI / Gemini CLI sessions, auto-compact-before-overflow, corruption-error auto-restart"
+what_it_is: >
+  A single-file, tmux-native "agent control plane" that runs, monitors, and orchestrates
+  parallel coding-agent CLI sessions (Claude Code, OpenAI Codex CLI, Gemini CLI). Its
+  supervision core is a self-healing watchdog that parses tmux pane output without modifying
+  the wrapped CLI, and takes CLI-specific recovery actions: sends /compact when context drops
+  below 50%, detects Claude Code's specific "redacted_thinking ... cannot be modified"
+  corruption error and restarts the session while replaying the last message, and (opt-in via
+  CC_AUTO_CONTINUE=1) auto-answers stuck confirmation prompts. Unlike a generic process
+  supervisor, it reasons about model/CLI-specific failure signatures.
+integration: >
+  Single-file install, runs alongside tmux; point it at existing Claude Code / Codex / Gemini
+  CLI sessions running in tmux panes -- no changes to the wrapped CLI itself.
+activity:
+  stars: "332 (per gh api repos/mixpeek/amux, 2026-08-04; 37 forks)"
+  last_verified_note: "pushed 2026-08-04 (same day as this fetch); created 2026-02-18 -- young (~6 months) but actively maintained"
+provenance:
+  - url: https://github.com/mixpeek/amux
+    fetched: "2026-08-04"
+    note: "verified directly via gh api (stars/forks/push date) and README"
+  - url: https://raw.githubusercontent.com/mixpeek/amux/main/LICENSE
+    fetched: "2026-08-04"
+    note: "fetched the actual LICENSE file: MIT License + Commons Clause v1.0 -- free to use/modify/self-host; the Commons Clause blocks reselling the software itself as a fee-based service. GitHub's own license-detector API reports NOASSERTION for this repo (can't parse the combined license), so this entry's license_tag is derived from the fetched file text, not the API's summary field."
+  - url: https://amux.io/guides/claude-code-headless/
+    fetched: "2026-08-04"
+    note: "vendor's own guide, used only for the mechanism description (tmux pane parsing, /compact trigger, corruption-error handling), not for unverified marketing claims"
+unverified:
+  - "by mixpeek, a vector-DB/AI-infra company (per its own homepage) rather than an independent OSS maintainer -- worth knowing when weighing long-term maintenance incentives, though push activity is current as of this entry"
+deep_dive: deep-dives/components/ops-supervision/amux.md

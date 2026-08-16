@@ -1,0 +1,44 @@
+name: Restate
+slug: restate
+category: ops-supervision
+homepage: https://github.com/restatedev/restate
+license: "Business Source License 1.1 (source-available -- free to self-host for your own workloads; may not be resold as a 'Public Restate Platform Service')"
+license_tag: "BSL 1.1 (source-available, not OSI OSS)"
+open_source: false
+use_cases: "durable execution for dynamically-composed agent flows (no predefined graph required), journaled/replayed on crash -- alternative to Temporal for a lighter agent-native fit"
+what_it_is: >
+  A runtime for building resilient/durable applications generally, with agentic workflows as one
+  explicitly advertised use case -- not AI-specific, same "framework predates and extends beyond
+  agents" pattern as Temporal, and its marketing leans harder into the agent angle. Records every
+  durable step (an LLM call, a tool call, a routing decision -- each wrapped in `ctx.run()` or SDK
+  middleware) into a server-side journal. On crash, Restate detects the handler failure, restarts
+  it, and replays: completed steps return their cached journaled result instantly (no re-execution,
+  no duplicate LLM spend, no duplicate side effects) while execution resumes from the first
+  incomplete step. Unlike Temporal's up-front-defined workflow graphs, Restate explicitly supports
+  dynamically composed agent flows without a predefined graph -- a real architectural difference,
+  not just marketing framing. Ships integrations for the Vercel AI SDK, OpenAI Agents SDK, Google
+  ADK, Pydantic AI, and LangChain.
+license_note: >
+  GitHub's license-detector API reports NOASSERTION for this repo; the actual LICENSE file
+  (fetched directly) is Business Source License 1.1, NOT an OSI-approved open-source license --
+  free to self-host for your own workloads, restricted only from reselling it as your own managed
+  "Restate Platform" service. Don't read "BSL" as equivalent to MIT/Apache here.
+integration: >
+  Sidecar/server model -- self-host the Restate Server (or use their hosted option) as a service
+  the agent's handler code (exposed as HTTP endpoints via the Restate SDK) talks to. Durability
+  lives server-side, not embedded in-process.
+activity:
+  stars: "4.2k (per gh api repos/restatedev/restate, 2026-08-04; 191 forks)"
+  last_verified_note: "pushed 2026-08-03"
+provenance:
+  - url: https://github.com/restatedev/restate
+    fetched: "2026-08-04"
+    note: "verified directly via gh api (stars/forks/push date)"
+  - url: https://raw.githubusercontent.com/restatedev/restate/main/LICENSE
+    fetched: "2026-08-04"
+    note: "fetched the actual LICENSE file to confirm BSL 1.1 terms, since the GitHub API's license field reported NOASSERTION"
+  - url: https://docs.restate.dev/ai/patterns/durable-agents
+    fetched: "2026-08-04"
+    note: "durable-agents pattern docs -- journal/replay mechanism, dynamic-flow support, SDK integrations list"
+unverified: []
+deep_dive: deep-dives/components/ops-supervision/restate.md

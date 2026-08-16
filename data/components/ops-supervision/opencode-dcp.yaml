@@ -1,0 +1,39 @@
+name: OpenCode Dynamic Context Pruning (DCP)
+slug: opencode-dcp
+category: ops-supervision
+homepage: https://github.com/Opencode-DCP/opencode-dynamic-context-pruning
+license: "AGPL-3.0-or-later"
+license_tag: "AGPL-3.0-or-later"
+open_source: true
+use_cases: "model-directed context compaction for the OpenCode CLI, distinct from OpenCode's own engine-level compaction"
+what_it_is: >
+  A plugin for the OpenCode coding-agent CLI, installed via
+  `opencode plugin @tarquinen/opencode-dcp@latest --global`. Provides a model-callable
+  "Compress" tool (range or per-message summarization), automatic dedup of repeated tool calls,
+  automatic purge of stale failed-tool inputs after N turns, and manual /dcp-compress slash
+  commands. Monitors soft thresholds (50k-100k tokens by default) and nudges the model toward
+  compressing rather than forcing it only at hard session limits. Its own docs explicitly
+  contrast this with OpenCode's built-in engine-level compaction: DCP replaces pruned content
+  with retrievable summaries rather than deleting it, and gives the model (not a static
+  session-max trigger) control over when to compress -- squarely the "equipment layered on top
+  of the engine's mechanism" framing this category is scoped to. A smaller sibling/competitor in
+  the same ecosystem, ranxianglei/opencode-acp ("Active Context Pruning," 107 stars, license
+  NOASSERTION, actively pushed), takes the same "hand compression authority to the model"
+  approach -- worth knowing about but not catalogued separately here (thinner license/adoption
+  signal).
+integration: >
+  CLI plugin install into an existing OpenCode setup; hooks into OpenCode's own agent loop and
+  tool-call lifecycle. Locked to OpenCode -- not portable to other engines.
+activity:
+  stars: "3.9k (per gh api repos/Opencode-DCP/opencode-dynamic-context-pruning, 2026-08-04; 209 forks)"
+  last_verified_note: "pushed 2026-06-25; created 2025-11-20"
+provenance:
+  - url: https://github.com/Opencode-DCP/opencode-dynamic-context-pruning
+    fetched: "2026-08-04"
+    note: "verified directly via gh api (stars/forks/license/push date) and README"
+  - url: https://github.com/ranxianglei/opencode-acp
+    fetched: "2026-08-04"
+    note: "verified directly via gh api (107 stars, license reported NOASSERTION, pushed 2026-08-03) -- the sibling/competitor project this entry's what_it_is mentions in passing"
+unverified:
+  - "OpenCode-specific -- only usable if the harness's engine is OpenCode, not a general-purpose tool"
+deep_dive: deep-dives/components/ops-supervision/opencode-dcp.md

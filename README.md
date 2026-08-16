@@ -2,8 +2,9 @@
 
 Structured, community-maintainable reference registry for AI agents — **harness equipment**
 (atomic **components** + assembled **bundles**: memory, skills/tools, subagents, access
-placement — what you compose onto an engine, or what someone else pre-composed for you),
-**agent engines/runtimes** (the substrate an equipment component or bundle plugs into),
+placement, operations/supervision — what you compose onto an engine, or what someone else
+pre-composed for you), **agent engines/runtimes** (the substrate an equipment component or
+bundle plugs into),
 **benchmarks + eval-frameworks** (auxiliary, for measuring agents), and **research** (per-study
 evidence that informs one or more of the above, kept in its own citable home rather than
 scattered across write-ups).
@@ -27,7 +28,8 @@ via the category paths below.
 
 - `data/components/<category>/*.yaml` — **primary, work for volume**: one file per ATOMIC piece
   of harness equipment, in a subfolder for its own `category:` field: `memory`, `skills-tools`,
-  `subagents`, `access-mcp`, or `instructions-rules` (the last one renders inside the Bundles
+  `subagents`, `access-mcp`, `ops-supervision`, or `instructions-rules` (the last one renders
+  inside the Bundles
   section as background context, not its own component category; see `scripts/generate.py`'s
   comment on why). The YAML's `category:` field and the subfolder it lives in must always match.
   Breadth is the goal — catalog broadly.
@@ -154,9 +156,10 @@ Two different things live in this repo and it's worth keeping them distinct: **c
 (sourced, license/activity-verified, described — every entry here) and **tested** (independently
 live-run against a real benchmark by `workain/harness-eval`, verdict cited via
 `harness_eval_verdict`). As of this writing only the **memory** category has been through the
-testing pipeline; skills/tools, subagents, and access-placement/MCP entries are catalogued-only —
-real, sourced, and useful for discovery, but not yet ranked against each other on measured
-capability. This is a sequencing fact, not a permanent scope limit: the schema, the generator's
+testing pipeline; skills/tools, subagents, access-placement/MCP, and operations/supervision
+entries are catalogued-only — real, sourced, and useful for discovery, but not yet ranked against
+each other on measured capability. This is a sequencing fact, not a permanent scope limit: the
+schema, the generator's
 rendering, and the contribution contract below are the same for every category, so a future
 testing pass over any category drops in without a structural change. Don't read a missing tier as
 a negative verdict — it means "not yet run," not "failed."
@@ -189,7 +192,7 @@ framing is never passed through as fact.
 ## Adding or updating an entry
 
 1. **Component** (atomic): pick its `category:` (one of `memory`, `skills-tools`, `subagents`,
-   `access-mcp`, `instructions-rules`) — the YAML goes in
+   `access-mcp`, `ops-supervision`, `instructions-rules`) — the YAML goes in
    `data/components/<category>/<slug>.yaml` and the subfolder **must match** the `category:`
    field (`scripts/generate.py` raises if they disagree). Copy an existing entry in that category
    as a template. Set `license_tag`, `use_cases`, and a mandatory `deep_dive:` pointing at a new

@@ -1,0 +1,37 @@
+name: LLMLingua
+slug: llmlingua
+category: ops-supervision
+homepage: https://github.com/microsoft/LLMLingua
+license: "MIT"
+license_tag: "MIT"
+open_source: true
+use_cases: "prompt/context compression before a call reaches the model -- independent of and compatible with any engine's own autocompact"
+what_it_is: >
+  A Microsoft Research library (`pip install llmlingua`) that removes non-essential tokens from
+  a prompt via a small auxiliary LM, claiming up to 20x compression with limited quality loss.
+  Three variants: LLMLingua (general), LongLLMLingua (long-context/RAG-tuned), LLMLingua-2 (a
+  faster BERT-level token classifier, more robust to out-of-distribution text), plus a
+  security-focused spin-off (SecurityLingua, jailbreak-prompt compression). Backed by
+  peer-reviewed papers (EMNLP'23, ACL'24) and an active GitHub org -- the most mature, best-cited
+  entry in this specific niche. Operates on any text (prompt, tool output, retrieved chunk)
+  before it reaches a provider, so it composes with -- rather than replaces -- whatever
+  autocompact the target engine does on its own context.
+integration: >
+  Library import: instantiate `PromptCompressor` and call it on a prompt/message list as a
+  pre-call transform. Already wired into LangChain and LlamaIndex as an optional compression
+  step, so it can drop into an existing harness with minimal glue code.
+activity:
+  stars: "6.5k (per gh api repos/microsoft/LLMLingua, 2026-08-04; 412 forks)"
+  last_verified_note: "pushed 2026-04-08; created 2023-07-07 -- 3+ years old, the most established entry in this category's context-budget sub-area"
+provenance:
+  - url: https://github.com/microsoft/LLMLingua
+    fetched: "2026-08-04"
+    note: "verified directly via gh api (stars/forks/license/push date)"
+  - url: https://arxiv.org/pdf/2403.12968
+    fetched: "2026-08-04"
+    note: "LLMLingua-2 paper (ACL'24) -- token-classifier design, compression/quality tradeoffs"
+  - url: https://arxiv.org/pdf/2310.06839
+    fetched: "2026-08-04"
+    note: "LongLLMLingua paper (EMNLP'23) -- long-context/RAG-tuned variant"
+unverified: []
+deep_dive: deep-dives/components/ops-supervision/llmlingua.md

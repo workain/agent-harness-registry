@@ -1,0 +1,30 @@
+name: Dead Man's Snitch
+slug: deadmanssnitch
+category: ops-supervision
+homepage: https://deadmanssnitch.com/
+license: "Proprietary hosted SaaS -- no self-host, no source available"
+license_tag: "Proprietary SaaS (usable via free tier)"
+open_source: false
+use_cases: "minimalist dead-man's-switch for an agent loop -- append one curl call per cycle, get alerted on silence"
+what_it_is: >
+  The oldest, simplest player in the dead-man's-switch category (originally popular as a Heroku
+  add-on, predates most competitors). Each "snitch" is a unique URL; the worked example on its
+  own homepage is `run_backups_or_something && curl https://nosnch.in/c2354d53d2` -- append the
+  curl call to the end of a job, and silence past the configured interval triggers an alert
+  (email, mobile push). The same pattern generalizes trivially to an agent's per-cycle work, or
+  a cron wrapper that only fires the curl once a heartbeat/PID-liveness check confirms the agent
+  is genuinely still running. Catalogued alongside `healthchecks-io` as the closed-SaaS
+  counterpoint -- same mechanism, no self-host option, but the single-purpose free tier
+  ("The Lone Snitch," 1 snitch) is the lowest-friction way to try the pattern.
+activity:
+  stars: null
+  last_verified_note: "hosted-only, no repository -- no stars metric applies. Pricing verified live 2026-08-04: free (1 snitch), Little Birdy $5/mo (3 snitches), Private Eye $19/mo (100 snitches + integrations), Surveillance Van $49/mo (300 snitches + Smart Alerts)"
+provenance:
+  - url: https://deadmanssnitch.com/
+    fetched: "2026-08-04"
+    note: "homepage, including the worked curl example this entry's what_it_is describes"
+  - url: https://deadmanssnitch.com/plans
+    fetched: "2026-08-04"
+    note: "pricing tiers"
+unverified: []
+deep_dive: deep-dives/components/ops-supervision/deadmanssnitch.md

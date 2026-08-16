@@ -26,6 +26,8 @@ Follow the repo's quickstart; both AutoGen and Semantic Kernel users are pointed
 
 The migration target for both `autogen` (this registry's existing entry) and `subagent-semantic-kernel` above.
 
+**Ops-supervision note (issue #41 re-scan, 2026-08-04):** the "checkpointing and human-in-the-loop pause/resume" named in this entry's own description is exactly session-state/crash-resume shaped — but it lives inside the framework's own execution runtime, which this entry explicitly scopes out as engine territory (see the "Scope note" this entry already carries). Confirms the charter's framing precisely: named, then immediately fenced off as not this entry's business. For a standalone, adoptable session-state/crash-resume component, see `temporal`/`restate`/`dbos-transact` in the `ops-supervision` category.
+
 ## References
 
 - https://github.com/microsoft/agent-framework — verified via `gh api`/direct fetch, 2026-07-05

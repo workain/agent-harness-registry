@@ -1,0 +1,41 @@
+name: healthchecks.io
+slug: healthchecks-io
+category: ops-supervision
+homepage: https://healthchecks.io/
+license: "BSD-3-Clause (self-hosted OSS server); hosted SaaS is free-tier-usable, paid tiers for scale"
+license_tag: "BSD-3-Clause (OSS, self-hostable) / hosted free tier"
+open_source: true
+use_cases: "dead-man's-switch for a long-running agent loop or its cron wrapper -- agent pings a unique URL each cycle, silence triggers an alert"
+what_it_is: >
+  A dead-man's-switch / cron-job monitor: each "check" gets a unique ping URL; a script (or an
+  agent's own loop) hits it on success -- optionally /start before a run and /fail or
+  /<exitcode> on failure. Miss the configured Period+Grace window and the check flips
+  New->Up->Late->Down and fires alerts via 30+ integrations (Slack, Discord, Teams, Telegram,
+  PagerDuty, Opsgenie, email, SMS, phone call, webhooks, Prometheus). Not agent-native -- it is
+  the general cron/background-job dead-man's-switch pattern, catalogued here because composing
+  it onto an agent loop is a one-line `curl` addition and it is the one entry in this specific
+  niche that is genuinely open-source and self-hostable (no vendor lock-in, auditable, can run
+  air-gapped next to the agent) rather than closed SaaS-only.
+integration: >
+  `curl https://hc-ping.com/<uuid>` (hosted) or your own self-hosted instance's equivalent URL,
+  added to the end of each agent iteration or its cron wrapper. The project's own cron-job guide
+  documents this exact pattern for any periodic script.
+license_note: >
+  The hosted product at healthchecks.io and the self-hostable OSS server
+  (github.com/healthchecks/healthchecks) are the same codebase -- BSD-3-Clause either way; the
+  hosted version simply saves you the ops work of running it yourself.
+activity:
+  stars: "10.2k (per gh api repos/healthchecks/healthchecks, 2026-08-04; 995 forks)"
+  last_verified_note: "pushed 2026-07-31; hosted free tier: 20 checks, 100 log entries/check, no card required (healthchecks.io/pricing, fetched 2026-08-04)"
+provenance:
+  - url: https://github.com/healthchecks/healthchecks
+    fetched: "2026-08-04"
+    note: "verified directly via gh api (stars/forks/license/push date)"
+  - url: https://healthchecks.io/docs/monitoring_cron_jobs/
+    fetched: "2026-08-04"
+    note: "the documented ping-on-success/start/fail integration pattern this entry's integration: field describes"
+  - url: https://healthchecks.io/pricing/
+    fetched: "2026-08-04"
+    note: "free-tier limits and paid-tier pricing"
+unverified: []
+deep_dive: deep-dives/components/ops-supervision/healthchecks-io.md

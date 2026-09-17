@@ -232,9 +232,18 @@ python3 scripts/generate.py
 
 Only dependency is PyYAML (`pip install pyyaml`).
 
-## License & usage
+## Licensing
 
-No license has been chosen for this repository yet, so the default applies: **all rights
-reserved** by the workain lab. You are welcome to read, link to, and cite this registry with
-attribution (a link back to this repo). If you want to reuse the data or write-ups beyond that,
-open an issue — a proper data license is under consideration.
+Two licences, split by content type — pick the one that covers what you're taking:
+
+| Path | Licence | You can |
+|---|---|---|
+| `data/`, `deep-dives/`, `research/`, `GUIDE.md` | [**CC BY 4.0**](LICENSE-CC-BY-4.0) | copy, adapt, and redistribute the registry itself, commercially or not, as long as you credit this repo |
+| `templates/`, `scripts/`, everything else in the repo | [**MIT**](LICENSE) | use, copy, and modify freely, including in your own closed-source project, as long as the licence notice ships with it |
+
+Why the split: the registry's value is attribution — a citable, tested-and-ranked reference —
+so its content carries a licence that preserves credit. The templates and scripts exist to be
+copied wholesale into other people's projects, where attribution-on-derivative friction would
+defeat the point, so they're MIT instead. See `LICENSE` and `LICENSE-CC-BY-4.0` for the full
+legal text of each. `templates/base-project-template/LICENSE` is the same MIT text as the root
+`LICENSE`, so copying that template out of this repo keeps a matching licence with it.

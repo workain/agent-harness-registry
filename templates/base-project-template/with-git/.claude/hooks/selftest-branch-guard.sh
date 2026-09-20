@@ -22,6 +22,9 @@
 #   - changing your git version or default branch name,
 #   - moving/copying this project to a new machine (jq may simply not be installed there).
 #
+# It reports KNOWN LIMITS as well as pass/fail — cases where the hook is silent by construction
+# and therefore protects nothing. Read those lines; they are not passes.
+#
 # No network access, no writes outside a fresh mktemp directory, does not touch your repo.
 # It never runs `git commit` through Claude Code; it drives the hook's own command string,
 # read straight out of settings.json, against throwaway repos under /tmp.
@@ -42,6 +45,7 @@ EXPECT_ASK_REASON='WARNING: branch-protection gate inactive — this is not a gi
 
 PASSED=0
 FAILED=0
+LIMITS=0
 TMPROOT=""
 
 cleanup() { [ -n "$TMPROOT" ] && rm -rf "$TMPROOT"; }
@@ -139,18 +143,34 @@ expect_allow() {
   fi
 }
 
+# Asserts the hook is silent HERE ON PURPOSE, at a known boundary of what it can protect — a
+# limit, not a success. Counted and reported separately so it cannot be read as coverage.
+expect_allow_limit() {
+  local name="$1" advice="$2"
+  if [ -n "$HOOK_OUT" ]; then
+    bad "$name — this case is recorded as a KNOWN LIMIT (hook expected to stay silent), but it produced output: $HOOK_OUT
+          If you widened the branch comparison in settings.json on purpose, that is good — update this case to expect a decision."
+  else
+    LIMITS=$((LIMITS + 1)); printf '  LIMIT %s\n        %s\n' "$name" "$advice"
+  fi
+}
+
 # --- fixtures ----------------------------------------------------------------
-# `git init -b` needs git >= 2.28; fall back to setting HEAD by hand so this also runs on older git.
+# Sets the global $REPO rather than echoing the path: `die` inside a command substitution would
+# only exit the subshell, leaving a failed fixture to look like a passing one.
+# Avoids `git init -b` (needs git >= 2.28) and sets HEAD by hand, so this runs on older git too.
+REPO=""
 new_repo() {
   local dir="$TMPROOT/$1" branch="$2"
   mkdir -p "$dir"
   git init -q "$dir" >/dev/null 2>&1 || die "git init failed in $dir"
-  git -C "$dir" symbolic-ref HEAD "refs/heads/$branch"
+  git -C "$dir" symbolic-ref HEAD "refs/heads/$branch" || die "could not set HEAD to $branch in $dir"
   git -C "$dir" config user.email selftest@example.invalid
   git -C "$dir" config user.name  'Branch Guard Selftest'
-  printf '%s\n' "$dir"
+  git -C "$dir" config commit.gpgsign false   # a global signing default would break the fixtures
+  REPO="$dir"
 }
-add_commit() { git -C "$1" commit -q --allow-empty -m "selftest fixture" >/dev/null 2>&1 || die "fixture commit failed in $1"; }
+add_commit() { git -C "$1" commit -q --allow-empty -m "selftest fixture" >/dev/null 2>&1 || die "fixture commit failed in $1 (is git usable here?)"; }
 
 # --- the cases ---------------------------------------------------------------
 printf 'branch-guard selftest\n'
@@ -159,12 +179,12 @@ printf '  hook timeout: %ss  (a hook that misses its timeout does NOT block — 
 printf '  scratch:  %s\n\n' "$TMPROOT"
 
 # 1. The rule itself: a commit on main must be denied.
-repo="$(new_repo main-with-history main)"; add_commit "$repo"
+new_repo main-with-history main; repo="$REPO"; add_commit "$repo"
 run_hook "$repo" 'git commit -m "add feature"'
 expect_decision "commit on main" deny "$EXPECT_DENY_REASON"
 
 # 2. Same for master — the hook names both, so both are tested.
-repo="$(new_repo master-with-history master)"; add_commit "$repo"
+new_repo master-with-history master; repo="$REPO"; add_commit "$repo"
 run_hook "$repo" 'git commit -m "add feature"'
 expect_decision "commit on master" deny "$EXPECT_DENY_REASON"
 
@@ -173,7 +193,7 @@ expect_decision "commit on master" deny "$EXPECT_DENY_REASON"
 #    unable to fire and silently allow the very first commit — straight onto main. The hook uses
 #    `git symbolic-ref --short HEAD` instead, which resolves the name in the unborn case too.
 #    This is the case that regresses first, and regresses silently.
-repo="$(new_repo main-unborn main)"
+new_repo main-unborn main; repo="$REPO"
 run_hook "$repo" 'git commit -m "first commit"'
 expect_decision "commit on main, unborn HEAD (no commits yet)" deny "$EXPECT_DENY_REASON"
 
@@ -187,26 +207,36 @@ expect_decision "commit with no git repository at all" ask "$EXPECT_ASK_REASON"
 
 # 5. Negative control: on a feature branch the hook must stay out of the way. Without this, a
 #    hook that denied everything unconditionally would still pass cases 1-3.
-repo="$(new_repo feature-branch feature-x)"; add_commit "$repo"
+new_repo feature-branch feature-x; repo="$REPO"; add_commit "$repo"
 run_hook "$repo" 'git commit -m "add feature"'
 expect_allow "commit on feature-x"
 
 # 6. Negative control: a non-commit git command on main must not be caught by the grep.
-repo="$(new_repo main-noncommit main)"; add_commit "$repo"
+new_repo main-noncommit main; repo="$REPO"; add_commit "$repo"
 run_hook "$repo" 'git status --short'
 expect_allow "git status on main"
 
 # 7. Documented sharp edge, asserted so it stays documented rather than becoming a surprise:
 #    the hook reads the branch BEFORE the whole Bash command runs, so a switch chained onto the
 #    commit is still judged against the branch you are on now. Run the switch as its own call.
-repo="$(new_repo main-chained main)"; add_commit "$repo"
+new_repo main-chained main; repo="$REPO"; add_commit "$repo"
 run_hook "$repo" 'git switch -c feature-y && git commit -m "add feature"'
 expect_decision "chained 'git switch … && git commit' on main (known sharp edge: denied against the OLD branch)" deny "$EXPECT_DENY_REASON"
+
+# 8. A real boundary of this hook, asserted so it is VISIBLE instead of silent. On an unborn HEAD
+#    the branch name comes from `init.defaultBranch`. A user whose default is neither `main` nor
+#    `master` — say `trunk` — gets neither `deny` (the hook compares against those two names only)
+#    nor `ask` (it IS a repository), so the first commit is silently allowed: exactly the failure
+#    mode this self-test exists to expose. Not a bug in the hook; a limit of a name-based check.
+new_repo trunk-unborn trunk; repo="$REPO"
+run_hook "$repo" 'git commit -m "first commit"'
+expect_allow_limit "default branch named 'trunk' — commit is ALLOWED, not denied and not asked" \
+  "If your project's default branch is not main/master, add its name to the branch comparison in settings.json — otherwise this gate protects nothing here."
 
 # --- verdict -----------------------------------------------------------------
 printf '\n'
 if [ "$FAILED" -eq 0 ]; then
-  printf 'RESULT: PASS — %d/%d checks. The branch-protection gate was observed firing, not merely present.\n' "$PASSED" "$((PASSED + FAILED))"
+  printf 'RESULT: PASS — %d/%d checks, plus %d known limit(s) listed above (read them: at a limit this gate protects nothing).\n' "$PASSED" "$((PASSED + FAILED))" "$LIMITS"
   printf 'Re-run this after any Claude Code update or any edit to .claude/settings.json.\n'
   exit 0
 fi

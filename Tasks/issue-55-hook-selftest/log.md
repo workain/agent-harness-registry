@@ -100,6 +100,80 @@ Design decisions worth recording:
 
 `render_templates.py --check` → PASS (run even though `common/`/`fragments/` were untouched).
 
+## 3b. Two changes made after the first green run
+
+Recorded here because both came from re-reading the work rather than from it failing, and the
+second came from a reviewer rather than from me.
+
+**(a) A defect in the test harness itself.** The first committed version returned the fixture
+path by command substitution — `repo="$(new_repo main-with-history main)"`. `die` inside a
+command substitution exits only the *subshell*: a fixture that failed to build did not abort the
+run. Proven rather than reasoned about, with a `git` shim on `PATH` that fails `git init` and
+passes everything else through. The committed version, under that shim:
+
+```
+branch-guard selftest
+  settings: .claude/settings.json
+  hook timeout: 10s  (a hook that misses its timeout does NOT block — it is silently skipped)
+  scratch:  /tmp/branch-guard-selftest.6Mmrz2YV
+
+
+FATAL: git init failed in /tmp/branch-guard-selftest.6Mmrz2YV/main-with-history
+  FAIL  commit on main — expected deny, but the hook produced NO OUTPUT (rc=0). This is the silent-pass failure mode: to Claude Code it is indistinguishable from the rule being obeyed.
+
+FATAL: git init failed in /tmp/branch-guard-selftest.6Mmrz2YV/master-with-history
+  FAIL  commit on master — expected deny, but the hook produced NO OUTPUT (rc=0). This is the silent-pass failure mode: to Claude Code it is indistinguishable from the rule being obeyed.
+
+FATAL: git init failed in /tmp/branch-guard-selftest.6Mmrz2YV/main-unborn
+  FAIL  commit on main, unborn HEAD (no commits yet) — expected deny, but the hook produced NO OUTPUT (rc=0). This is the silent-pass failure mode: to Claude Code it is indistinguishable from the rule being obeyed.
+  PASS  commit with no git repository at all — permissionDecision=ask, reason text matches exactly.
+
+FATAL: git init failed in /tmp/branch-guard-selftest.6Mmrz2YV/feature-branch
+  PASS  commit on feature-x — hook stayed silent, as intended.
+
+FATAL: git init failed in /tmp/branch-guard-selftest.6Mmrz2YV/main-noncommit
+  PASS  git status on main — hook stayed silent, as intended.
+
+FATAL: git init failed in /tmp/branch-guard-selftest.6Mmrz2YV/main-chained
+  FAIL  chained 'git switch … && git commit' on main (known sharp edge: denied against the OLD branch) — expected deny, but the hook produced NO OUTPUT (rc=0). This is the silent-pass failure mode: to Claude Code it is indistinguishable from the rule being obeyed.
+
+RESULT: FAIL — 4 of 7 checks failed. The gate in .claude/settings.json is NOT doing what it claims.
+Do not rely on it until this passes: a gate that does not fire looks exactly like a gate that passed.
+EXIT=1
+```
+
+Note the two `PASS` lines — "commit on feature-x — hook stayed silent" and "git status on main —
+hook stayed silent" — reported against repositories **that were never created**. The hook was
+silent because there was no fixture, and the test read that as correct behaviour. That is the
+exact failure this order exists to eliminate, reproduced inside the self-test. Fixed by setting a
+global `$REPO` instead. Same shim, after the fix:
+
+```
+branch-guard selftest
+  settings: /home/harness/harness-projects/1/ahr-sem04-wt55/templates/base-project-template/with-git/.claude/settings.json
+  hook timeout: 10s  (a hook that misses its timeout does NOT block — it is silently skipped)
+  scratch:  /tmp/branch-guard-selftest.iKwLvPtF
+
+
+FATAL: git init failed in /tmp/branch-guard-selftest.iKwLvPtF/main-with-history
+EXIT=2
+```
+
+Also added `commit.gpgsign false` on fixture repos, so a user with global commit signing does not
+get a spurious failure.
+
+**(b) A boundary of the hook that was invisible.** Raised by the dispatcher session after my
+first six mutations: on an unborn HEAD the branch name comes from `init.defaultBranch`. A user
+whose default is neither `main` nor `master` — say `trunk` — gets neither `deny` (the hook
+compares against those two names only) nor `ask` (it *is* a repository). The first commit is
+silently allowed. Confirmed locally, and it is not a bug in the hook so much as the limit of any
+name-based check.
+
+Rather than leave that invisible, the script now reports it as a `LIMIT` line — counted and
+printed separately from passes, with the remedy next to it — and the final verdict line names the
+count. Mutation M7 below confirms the limit case is itself discriminating: widen the comparison
+to include `trunk` and it goes red, telling the reader to update the case.
+
 ## 4. The passing run — verbatim
 
 Run from the variant directory, `bash .claude/hooks/selftest-branch-guard.sh`:
@@ -108,7 +182,7 @@ Run from the variant directory, `bash .claude/hooks/selftest-branch-guard.sh`:
 branch-guard selftest
   settings: /home/harness/harness-projects/1/ahr-sem04-wt55/templates/base-project-template/with-git/.claude/settings.json
   hook timeout: 10s  (a hook that misses its timeout does NOT block — it is silently skipped)
-  scratch:  /tmp/branch-guard-selftest.93Gwg8DW
+  scratch:  /tmp/branch-guard-selftest.NfJLQhWm
 
   PASS  commit on main — permissionDecision=deny, reason text matches exactly.
   PASS  commit on master — permissionDecision=deny, reason text matches exactly.
@@ -117,20 +191,22 @@ branch-guard selftest
   PASS  commit on feature-x — hook stayed silent, as intended.
   PASS  git status on main — hook stayed silent, as intended.
   PASS  chained 'git switch … && git commit' on main (known sharp edge: denied against the OLD branch) — permissionDecision=deny, reason text matches exactly.
+  LIMIT default branch named 'trunk' — commit is ALLOWED, not denied and not asked
+        If your project's default branch is not main/master, add its name to the branch comparison in settings.json — otherwise this gate protects nothing here.
 
-RESULT: PASS — 7/7 checks. The branch-protection gate was observed firing, not merely present.
+RESULT: PASS — 7/7 checks, plus 1 known limit(s) listed above (read them: at a limit this gate protects nothing).
 Re-run this after any Claude Code update or any edit to .claude/settings.json.
 EXIT=0
 ```
 
-Also run the way a student actually meets it — `cp -a with-git/. $(mktemp -d)/`, `git init -q -b main`,
-then the Quick-start command from that new project root, outside this repo entirely:
+Also run the way a student actually meets it — `cp -a` the variant into a fresh directory outside
+this repo, `git init`, then the Quick-start command from that new project root:
 
 ```
 branch-guard selftest
-  settings: /tmp/student-project.1K9w/.claude/settings.json
+  settings: /tmp/student-project.KLLz/.claude/settings.json
   hook timeout: 10s  (a hook that misses its timeout does NOT block — it is silently skipped)
-  scratch:  /tmp/branch-guard-selftest.ltSUk6JI
+  scratch:  /tmp/branch-guard-selftest.vxIAessm
 
   PASS  commit on main — permissionDecision=deny, reason text matches exactly.
   PASS  commit on master — permissionDecision=deny, reason text matches exactly.
@@ -139,33 +215,36 @@ branch-guard selftest
   PASS  commit on feature-x — hook stayed silent, as intended.
   PASS  git status on main — hook stayed silent, as intended.
   PASS  chained 'git switch … && git commit' on main (known sharp edge: denied against the OLD branch) — permissionDecision=deny, reason text matches exactly.
+  LIMIT default branch named 'trunk' — commit is ALLOWED, not denied and not asked
+        If your project's default branch is not main/master, add its name to the branch comparison in settings.json — otherwise this gate protects nothing here.
 
-RESULT: PASS — 7/7 checks. The branch-protection gate was observed firing, not merely present.
+RESULT: PASS — 7/7 checks, plus 1 known limit(s) listed above (read them: at a limit this gate protects nothing).
 Re-run this after any Claude Code update or any edit to .claude/settings.json.
 EXIT=0
 ```
 
 ## 5. The mutation runs — verbatim
 
-A self-test that cannot fail proves nothing. Six mutations were applied to `settings.json`
-one at a time, each verified to apply exactly once, the test run, then the file restored with
-`git checkout --` and confirmed byte-identical to `HEAD` after every single one.
-
-Summary first (the full captured output follows):
+A self-test that cannot fail proves nothing. Seven mutations were applied to `settings.json` one
+at a time, each verified to apply exactly once, the test run, then the file restored with
+`git checkout --` and confirmed byte-identical to `HEAD` after every single one. `settings.json`
+is not modified by this PR.
 
 | # | Mutation | Expected to break | Result |
 |---|---|---|---|
-| M1 | branch comparison `main` → `mian` | the three `main` cases; `master` unaffected | FAIL 3/7, exit 1 ✅ |
-| M2 | matcher `"Bash"` → `"bash"` | hook not found at all | FATAL, exit 2 ✅ |
-| M3 | `symbolic-ref --short` → `rev-parse --abbrev-ref` | **only** the unborn-HEAD case | FAIL 1/7, exit 1 ✅ |
-| M4 | reword the deny message | every deny case, on text not decision | FAIL 4/7, exit 1 ✅ |
-| M5 | grep `git\s+commit` → `git\s+kommit` | every case that expects output | FAIL 5/7, exit 1 ✅ |
-| M6 | not-a-repo branch made to emit nothing | **only** the no-repo case | FAIL 1/7, exit 1 ✅ |
+| M1 | branch comparison `main` → `mian` | the three `main` cases; `master` unaffected | FAIL 3/7, exit 1 |
+| M2 | matcher `"Bash"` → `"bash"` | hook not found at all | FATAL, exit 2 |
+| M3 | `symbolic-ref --short` → `rev-parse --abbrev-ref` | **only** the unborn-HEAD case | FAIL 1/7, exit 1 |
+| M4 | reword the deny message | every deny case, on text not decision | FAIL 4/7, exit 1 |
+| M5 | grep `git\s+commit` → `git\s+kommit` | every case that expects output | FAIL 5/7, exit 1 |
+| M6 | not-a-repo branch made to emit nothing | **only** the no-repo case | FAIL 1/7, exit 1 |
+| M7 | widen comparison to cover `trunk` | **only** the LIMIT case | FAIL 1/8, exit 1 |
 
-M3 and M6 are the ones that matter most: each breaks exactly one edge case and leaves the
-other six green, which is what tells you the test is discriminating rather than merely noisy.
-M3 in particular re-introduces the precise historical regression `settings.json`'s `$comment`
-says the `symbolic-ref` choice exists to prevent, and the test isolates it to one line.
+M3, M6 and M7 are the ones that matter most: each breaks exactly one case and leaves the rest
+green, which is what distinguishes a discriminating test from a noisy one. M3 re-introduces the
+precise regression `settings.json`'s `$comment` says the `symbolic-ref` choice exists to prevent,
+and the test isolates it to one line. (M1–M6 were run against both the pre- and post-fix script
+and produced identical results; the output below is from the shipped version.)
 
 ```
 ==============================================================
@@ -176,7 +255,7 @@ MUTATION: M1 — break the branch comparison (main -> mian)
 branch-guard selftest
   settings: /home/harness/harness-projects/1/ahr-sem04-wt55/templates/base-project-template/with-git/.claude/settings.json
   hook timeout: 10s  (a hook that misses its timeout does NOT block — it is silently skipped)
-  scratch:  /tmp/branch-guard-selftest.ZO6RQwfa
+  scratch:  /tmp/branch-guard-selftest.EzSfxz49
 
   FAIL  commit on main — expected deny, but the hook produced NO OUTPUT (rc=0). This is the silent-pass failure mode: to Claude Code it is indistinguishable from the rule being obeyed.
   PASS  commit on master — permissionDecision=deny, reason text matches exactly.
@@ -185,6 +264,8 @@ branch-guard selftest
   PASS  commit on feature-x — hook stayed silent, as intended.
   PASS  git status on main — hook stayed silent, as intended.
   FAIL  chained 'git switch … && git commit' on main (known sharp edge: denied against the OLD branch) — expected deny, but the hook produced NO OUTPUT (rc=0). This is the silent-pass failure mode: to Claude Code it is indistinguishable from the rule being obeyed.
+  LIMIT default branch named 'trunk' — commit is ALLOWED, not denied and not asked
+        If your project's default branch is not main/master, add its name to the branch comparison in settings.json — otherwise this gate protects nothing here.
 
 RESULT: FAIL — 3 of 7 checks failed. The gate in /home/harness/harness-projects/1/ahr-sem04-wt55/templates/base-project-template/with-git/.claude/settings.json is NOT doing what it claims.
 Do not rely on it until this passes: a gate that does not fire looks exactly like a gate that passed.
@@ -209,7 +290,7 @@ MUTATION: M3 — regress the unborn-HEAD fix (symbolic-ref --short -> rev-parse 
 branch-guard selftest
   settings: /home/harness/harness-projects/1/ahr-sem04-wt55/templates/base-project-template/with-git/.claude/settings.json
   hook timeout: 10s  (a hook that misses its timeout does NOT block — it is silently skipped)
-  scratch:  /tmp/branch-guard-selftest.iFAiNMFI
+  scratch:  /tmp/branch-guard-selftest.BRadJu7r
 
   PASS  commit on main — permissionDecision=deny, reason text matches exactly.
   PASS  commit on master — permissionDecision=deny, reason text matches exactly.
@@ -218,6 +299,8 @@ branch-guard selftest
   PASS  commit on feature-x — hook stayed silent, as intended.
   PASS  git status on main — hook stayed silent, as intended.
   PASS  chained 'git switch … && git commit' on main (known sharp edge: denied against the OLD branch) — permissionDecision=deny, reason text matches exactly.
+  LIMIT default branch named 'trunk' — commit is ALLOWED, not denied and not asked
+        If your project's default branch is not main/master, add its name to the branch comparison in settings.json — otherwise this gate protects nothing here.
 
 RESULT: FAIL — 1 of 7 checks failed. The gate in /home/harness/harness-projects/1/ahr-sem04-wt55/templates/base-project-template/with-git/.claude/settings.json is NOT doing what it claims.
 Do not rely on it until this passes: a gate that does not fire looks exactly like a gate that passed.
@@ -225,14 +308,14 @@ EXIT=1
 --- restored; settings.json clean: 0 modified ---
 
 ==============================================================
-MUTATION: M4 — reword the deny message (does the exact-text assertion actually bite?)
+MUTATION: M4 — reword the deny message
   replace: BLOCKED: direct commit to main/master. Create a feature branch first.
      with: BLOCKED: no commits on main.
 --------------------------------------------------------------
 branch-guard selftest
   settings: /home/harness/harness-projects/1/ahr-sem04-wt55/templates/base-project-template/with-git/.claude/settings.json
   hook timeout: 10s  (a hook that misses its timeout does NOT block — it is silently skipped)
-  scratch:  /tmp/branch-guard-selftest.ou5BCiM8
+  scratch:  /tmp/branch-guard-selftest.8xBm02ne
 
   FAIL  commit on main — permissionDecision=deny is correct, but the reason text does not match the expected string.
           expected: BLOCKED: direct commit to main/master. Create a feature branch first.
@@ -249,6 +332,8 @@ branch-guard selftest
   FAIL  chained 'git switch … && git commit' on main (known sharp edge: denied against the OLD branch) — permissionDecision=deny is correct, but the reason text does not match the expected string.
           expected: BLOCKED: direct commit to main/master. Create a feature branch first.
           actual:   BLOCKED: no commits on main.
+  LIMIT default branch named 'trunk' — commit is ALLOWED, not denied and not asked
+        If your project's default branch is not main/master, add its name to the branch comparison in settings.json — otherwise this gate protects nothing here.
 
 RESULT: FAIL — 4 of 7 checks failed. The gate in /home/harness/harness-projects/1/ahr-sem04-wt55/templates/base-project-template/with-git/.claude/settings.json is NOT doing what it claims.
 Do not rely on it until this passes: a gate that does not fire looks exactly like a gate that passed.
@@ -256,14 +341,14 @@ EXIT=1
 --- restored; settings.json clean: 0 modified ---
 
 ==============================================================
-MUTATION: M5 — break the command grep (git\s+commit -> git\s+kommit): the gate stops seeing commits at all
+MUTATION: M5 — break the command grep (commit -> kommit)
   replace: git\\s+commit\\b
      with: git\\s+kommit\\b
 --------------------------------------------------------------
 branch-guard selftest
   settings: /home/harness/harness-projects/1/ahr-sem04-wt55/templates/base-project-template/with-git/.claude/settings.json
   hook timeout: 10s  (a hook that misses its timeout does NOT block — it is silently skipped)
-  scratch:  /tmp/branch-guard-selftest.utLI5hFo
+  scratch:  /tmp/branch-guard-selftest.XMZ9Wozu
 
   FAIL  commit on main — expected deny, but the hook produced NO OUTPUT (rc=0). This is the silent-pass failure mode: to Claude Code it is indistinguishable from the rule being obeyed.
   FAIL  commit on master — expected deny, but the hook produced NO OUTPUT (rc=0). This is the silent-pass failure mode: to Claude Code it is indistinguishable from the rule being obeyed.
@@ -272,6 +357,8 @@ branch-guard selftest
   PASS  commit on feature-x — hook stayed silent, as intended.
   PASS  git status on main — hook stayed silent, as intended.
   FAIL  chained 'git switch … && git commit' on main (known sharp edge: denied against the OLD branch) — expected deny, but the hook produced NO OUTPUT (rc=0). This is the silent-pass failure mode: to Claude Code it is indistinguishable from the rule being obeyed.
+  LIMIT default branch named 'trunk' — commit is ALLOWED, not denied and not asked
+        If your project's default branch is not main/master, add its name to the branch comparison in settings.json — otherwise this gate protects nothing here.
 
 RESULT: FAIL — 5 of 7 checks failed. The gate in /home/harness/harness-projects/1/ahr-sem04-wt55/templates/base-project-template/with-git/.claude/settings.json is NOT doing what it claims.
 Do not rely on it until this passes: a gate that does not fire looks exactly like a gate that passed.
@@ -279,14 +366,14 @@ EXIT=1
 --- restored; settings.json clean: 0 modified ---
 
 ==============================================================
-MUTATION: M6 — make the not-a-repo case fail open (ask -> exit without output)
-  replace: if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then echo
-     with: if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then true || echo
+MUTATION: M6 — make the not-a-repo case fail open
+  replace: if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then echo 
+     with: if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then true || echo 
 --------------------------------------------------------------
 branch-guard selftest
   settings: /home/harness/harness-projects/1/ahr-sem04-wt55/templates/base-project-template/with-git/.claude/settings.json
   hook timeout: 10s  (a hook that misses its timeout does NOT block — it is silently skipped)
-  scratch:  /tmp/branch-guard-selftest.dPYSoAp1
+  scratch:  /tmp/branch-guard-selftest.0MYdpkop
 
   PASS  commit on main — permissionDecision=deny, reason text matches exactly.
   PASS  commit on master — permissionDecision=deny, reason text matches exactly.
@@ -295,15 +382,39 @@ branch-guard selftest
   PASS  commit on feature-x — hook stayed silent, as intended.
   PASS  git status on main — hook stayed silent, as intended.
   PASS  chained 'git switch … && git commit' on main (known sharp edge: denied against the OLD branch) — permissionDecision=deny, reason text matches exactly.
+  LIMIT default branch named 'trunk' — commit is ALLOWED, not denied and not asked
+        If your project's default branch is not main/master, add its name to the branch comparison in settings.json — otherwise this gate protects nothing here.
 
 RESULT: FAIL — 1 of 7 checks failed. The gate in /home/harness/harness-projects/1/ahr-sem04-wt55/templates/base-project-template/with-git/.claude/settings.json is NOT doing what it claims.
 Do not rely on it until this passes: a gate that does not fire looks exactly like a gate that passed.
 EXIT=1
 --- restored; settings.json clean: 0 modified ---
-```
 
-After the last restore: `git diff --quiet HEAD -- .../settings.json` → clean. No mutation was
-committed; `settings.json` is untouched by this PR.
+==============================================================
+MUTATION: M7 — widen the branch comparison to cover 'trunk'
+  replace: [ \"$branch\" = \"main\" ] || [ \"$branch\" = \"master\" ]
+     with: [ \"$branch\" = \"main\" ] || [ \"$branch\" = \"master\" ] || [ \"$branch\" = \"trunk\" ]
+--------------------------------------------------------------
+branch-guard selftest
+  settings: /home/harness/harness-projects/1/ahr-sem04-wt55/templates/base-project-template/with-git/.claude/settings.json
+  hook timeout: 10s  (a hook that misses its timeout does NOT block — it is silently skipped)
+  scratch:  /tmp/branch-guard-selftest.oqcdWjjR
+
+  PASS  commit on main — permissionDecision=deny, reason text matches exactly.
+  PASS  commit on master — permissionDecision=deny, reason text matches exactly.
+  PASS  commit on main, unborn HEAD (no commits yet) — permissionDecision=deny, reason text matches exactly.
+  PASS  commit with no git repository at all — permissionDecision=ask, reason text matches exactly.
+  PASS  commit on feature-x — hook stayed silent, as intended.
+  PASS  git status on main — hook stayed silent, as intended.
+  PASS  chained 'git switch … && git commit' on main (known sharp edge: denied against the OLD branch) — permissionDecision=deny, reason text matches exactly.
+  FAIL  default branch named 'trunk' — commit is ALLOWED, not denied and not asked — this case is recorded as a KNOWN LIMIT (hook expected to stay silent), but it produced output: {"hookSpecificOutput":{"hookEventName":"PreToolUse","permissionDecision":"deny","permissionDecisionReason":"BLOCKED: direct commit to main/master. Create a feature branch first."}}
+          If you widened the branch comparison in settings.json on purpose, that is good — update this case to expect a decision.
+
+RESULT: FAIL — 1 of 8 checks failed. The gate in /home/harness/harness-projects/1/ahr-sem04-wt55/templates/base-project-template/with-git/.claude/settings.json is NOT doing what it claims.
+Do not rely on it until this passes: a gate that does not fire looks exactly like a gate that passed.
+EXIT=1
+--- restored; settings.json clean: 0 modified ---
+```
 
 ## 6. Environment hazard hit during this task (recorded because it nearly cost a commit)
 
@@ -317,24 +428,37 @@ order's branch.
 Moved to an isolated worktree before committing anything:
 `git worktree add /home/harness/harness-projects/1/ahr-sem04-wt55 issue-55-hook-selftest`.
 Untracked files do not follow a `worktree add`, so the in-progress script had to be copied over
-by hand. The session working order 1 reported the same finding independently and moved out too.
-Every commit in this task was made from inside the isolated worktree, verified each time with
-`git branch --show-current` immediately before `git add`.
+by hand. The sessions working orders 1 and 8 reported the same finding independently and moved
+out too. Every commit in this task was made from inside the isolated worktree, verified each time
+with `git branch --show-current` immediately before `git add`.
 
 ## 7. Scope held
 
 The order's own over-engineering caveat: *«Самотест должен остаться скриптом воспроизводимости
 для одного существующего хука, а не разрасться в общий фреймворк тестирования гипотетических
 будущих хуков.»* Honoured — the script hard-codes the one hook's matcher, its two decisions and
-their two texts. There is no registry, no plugin surface, no per-hook config. Issue #58's worked
-example (subtask 8.3) extends it when a second hook actually exists.
+their two texts. There is no registry, no plugin surface, no per-hook config, and no second hook.
+Issue #58's worked example (subtask 8.3) extends it when a second hook actually exists; that
+session has read this implementation and mapped the one place the matcher extraction needs
+widening.
 
-## 8. Status
+## 8. Credentials
+
+This session has no GitHub write credentials: `git push` fails with
+`could not read Username for 'https://github.com'`, and `GH_TOKEN`/`GITHUB_TOKEN` are unset. Reads
+work (the repo is public). The dispatch brief's instruction to use `$GH_TOKEN` was incorrect — the
+token lives in the dispatcher's environment, not this one, which matches this repo's documented
+split (subagents commit, the orchestrator pushes). Branch publication and PR creation are
+therefore the dispatcher's; commits here are local until it pushes them.
+
+## 9. Status
 
 - [x] Script written, executable, network-free
-- [x] Passing run captured (both in-repo and from a copied project root)
-- [x] Six mutations captured going red for the right reasons; `settings.json` restored clean
+- [x] Passing run captured, in-repo and from a copied project root
+- [x] Harness defect found and fixed (subshell `die`), with before/after evidence
+- [x] Hook boundary (`init.defaultBranch` not main/master) surfaced as a reported LIMIT
+- [x] Seven mutations captured going red for the right reasons; `settings.json` restored clean
 - [x] Quick-start step + table row in `with-git/README.md`
 - [x] `render_templates.py --check` PASS
-- [ ] Independent ROAST (`roast.md`) — never self-ROAST
-- [ ] Rebase on `origin/main`, re-verify, push, open PR
+- [ ] Independent ROAST (`roast.md`) — in progress, session `roast-55-hook-selftest`
+- [ ] Push + PR — dispatcher's action (see §8)

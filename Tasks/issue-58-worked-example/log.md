@@ -1259,3 +1259,96 @@ The reviewer's exit-code probe (correct JSON, `exit 1`) passes 17/17 because `ex
 ignores `HOOK_RC`. They expected a finding; there isn't one. The docs say that for a non-2 exit
 code, Claude Code ignores the exit code and the JSON alone decides the outcome — so ignoring `rc`
 is the **correct** modelling. Leave it.
+
+## 2026-09-20 17:45 — all seven orders merged (`main` = `4f391b4`); rebase deferred with reasons; two ROASTs in
+
+### Rebase timing — the epic declined "rebase now" and said so rather than silently not doing it
+
+The dispatcher asked for a rebase onto `main` now rather than at integration. **Declined, with
+reasons, and the decision offered back to them:** three children are mid-flight on those exact
+branches (rung 2 fixing a blocking finding, the scaffold session fixing two, rung 4 building on
+`issue-58-rung3`). Rebasing under them strands their worktrees mid-edit — the same class of
+failure this epic opened the day by reporting, self-inflicted this time.
+
+**What replaces it, achieving the same drift protection:** children read inherited content from
+`origin/main` directly rather than from their branch's stale copy. That is already how rung 3 got
+the `$comment` right, and the ROAST proved it mattered
+(`git merge-base --is-ancestor 66196f0 1568602` → NO). Verified present on `4f391b4`:
+
+- the corrected evidence line, three identifiers with three distinct mechanisms — GHSA-ph6w-f82w-28w6
+  (hook ran with no per-command approval **after** the trust dialog was accepted), CVE-2025-59536
+  (project code executed **before** acceptance; fixed 1.0.111), CVE-2026-21852 (API-key leak via
+  `ANTHROPIC_BASE_URL`, before the trust prompt);
+- `_example-reviewer.md`, `tools: Read, Grep, Glob`.
+
+**The single integration rebase lands after rung 7 and before 8.8** — forced rather than chosen:
+`--check-worked-example` compares structural invariants against `common/`/`fragments/`, so it must
+run against main's final content, and 8.9's clean-clone replay must run on the rebased tree.
+
+**Rung 6 requirement added:** the build's `diff-reviewer.md` must read as a *development* of order
+4's `_example-reviewer.md` applied to a real diff — not a second unrelated critic. That
+relationship is one of the few things a student can check to confirm the build and the template
+are one system.
+
+### Rung 3 ROAST fixes landed — `fa0e61d`, 20/20 checks, 10 LIMITs
+
+F2 closed with three cases (`maintenance-branch` on branch `maintenance` must ALLOW — catching
+prefix *and* substring in one; `rm -rf dist; echo $HOME` and `rm -rf dist && ls *.js` must ALLOW,
+one per separator). Both widenings now ship as M4/M5 with pasted output. The child added
+something the epic had not asked for and should have: **each of the five mutations fails only its
+own cases** (M1 3/20, M2 FATAL, M3 1/20, M4 1/20, M5 2/20), stated in the README — because a suite
+that goes red everywhere on any break doesn't tell you what broke.
+
+**They also corrected the epic's number:** with the stronger cheat hook M1 fails **3** of 20, not
+2 — `maintenance-branch` contains `main`, so a path-reading hook blocks it too.
+
+F3's true mapping, now shipped: of 10 LIMITs, 5→способ 2, 1→способ 3, 4→hook[1]'s own, **0**→способ
+1 (which was a defect in the *suite*, was fixed, and correctly prints PASS) — and способ 4 is not
+in the suite at all. Three dispositions printing differently *because they are different things*.
+Their subject sweep found the false sentence in **four locations across two sessions**: their
+README, `1568602`'s message, their report, and this epic's log plus its report upward. The
+sharpest instance of the routing rule yet — one sentence into four artifacts across two sessions.
+
+O2/O3 were taken and **asserted rather than described** — now real `LIMIT` cases, because "a
+documented boundary nothing executes is a claim rather than evidence", which is the distinction
+the whole rung is built on. That is what moved LIMITs from 8 to 10.
+
+### Scaffold + rungs 1–2 ROAST: PASS / PASS / **BLOCK**
+
+**Blocking (rung 2):** `DECISIONS.md:43` says 16 transitive packages. Reproduced by the epic from
+a fresh clone: `added 17 packages, and audited 18 packages in 2s`. Deterministic, not
+environmental — both rollup platform binaries carry `libc: None`. It blocks because of where it
+sits: the rung whose own commit message says *"a decisions log that misdescribes its own codebase
+is the failure this rung exists to prevent."*
+
+**The mechanism is the lesson, and it indicts the epic's briefs, not the child:** the
+inherited-number discipline was applied **where the brief pointed at it and nowhere else.** The
+brief named entry 1's "20 строк", so entry 1 got checked; nothing named entry 4, so an inherited
+integer of exactly the same class rode along from `Tasks/issue-58-scaffold/log.md` §8.
+
+**Scaffold S1 — the same defect class as rung 3's F2, found independently, same day.** Deleting
+the `pattern` attribute leaves the suite **4/4 green** (reproduced by the epic). The
+malformed-email fixture `anna-at-example` is caught by `type="email"` alone, so the one test that
+exists to exercise `pattern` passes for an unrelated reason and `MESSAGES.patternMismatch` is
+never executed. Two reviewers, two artifacts, one class: **a suite that confirms rather than
+discriminates.**
+
+**S2:** `Tasks/issue-58-scaffold/log.md:85` pastes `added 16 packages…` as evidence for acceptance
+criterion 1, and the committed tree does not produce it — not the ruled 69→74 drift; the paste
+predates the final lockfile. The `npm run build` block two lines below *is* reproducible to the
+asset hashes, which is likely why the whole section read as verified.
+
+### The judgement of this epic's reviews — recorded, because it is correct
+
+> "The RED proof passed" was treated as "the suite is honest." Different claims. The RED proof
+> shows the suite fails when `validate.js` is *destroyed* — load-bearingness, not coverage.
+
+And: **pasted terminal output was checked for plausibility, not reproducibility.**
+`added 16 packages…` looks exactly like real npm output because it *is* real npm output — just not
+from this tree. **A block is verified when it is re-executed, not when it is read.**
+
+Counterweight the reviewer offered unprompted and which this epic records rather than discards:
+they attacked rung 2's `DECISIONS.md` expecting an invented-but-plausible entry, read every cited
+log section, and found **none**; six of seven scaffold mutations were caught; both failure-story
+citations survived mechanism-level verification. The discipline is largely working — which is the
+reason the two slips are worth fixing rather than waving through.

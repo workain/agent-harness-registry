@@ -35,6 +35,7 @@ That's it — everything else in this directory works with no further setup.
 | `knowledge/notes.md` | A scratch file for anything else worth writing down. | No, but it stays one file until you actually need more than that. |
 | `Tasks/README.md` | The one rule this template asks you to keep: write a running log while you work, and get a second look before calling something done. | No — this is the cheapest, most useful habit in the whole template. |
 | `.claude/skills/`, `.claude/agents/`, `.claude/environment/` | Empty slots for things you'll only need later (a repeatable procedure, a specialist persona, an odd fact about your setup). | Fine to ignore entirely until you need one. |
+| `.claude/skills/_example/SKILL.md` | A worked example of the skill format — frontmatter with `name`/`description`, a concrete command, narrow scope. | Yes — delete once you've added your project's first real skill. |
 
 ## Why there's no safety-gate file here
 

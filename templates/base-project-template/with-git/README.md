@@ -35,6 +35,7 @@ mechanical Block-I gate that the `without-git/` variant deliberately does not.
 | `knowledge/notes.md` | A scratch file for anything else worth recording. | No, but stays a single file until you actually need more. |
 | `Tasks/README.md` | The rule: log your work, get it reviewed before calling it done. | No — this is the cheapest, most load-bearing discipline in the whole template. |
 | `.claude/skills/` | Empty until you have a recurring procedure worth packaging. | Keep the directory; delete/ignore its `README.md` once you understand it. |
+| `.claude/skills/_example/SKILL.md` | A worked example of the skill format — frontmatter with `name`/`description`, a concrete command, narrow scope. | Yes — delete once you've added your project's first real skill. |
 | `.claude/agents/` | Empty until you need a delegated specialist persona. | Same as skills. |
 | `.claude/environment/` | Non-obvious facts about your specific tooling/substrate (which of two similarly-named tools is correct here, etc.). | Keep the slot; `_example.md` is a worked example, delete once you've added a real one. |
 | `.claude/settings.json` | The git-tracked commit-block gate (Block I). | Only delete if you deliberately want no branch protection — see "Customizing" below first. |

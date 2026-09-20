@@ -1352,3 +1352,104 @@ they attacked rung 2's `DECISIONS.md` expecting an invented-but-plausible entry,
 log section, and found **none**; six of seven scaffold mutations were caught; both failure-story
 citations survived mechanism-level verification. The discipline is largely working — which is the
 reason the two slips are worth fixing rather than waving through.
+
+## 2026-09-20 18:20 — rung 2, scaffold and rung 4 all closed; rung 5 dispatched
+
+### Rung 2 blocking finding closed — `2e8ae00`, verified by the epic
+
+The child **dropped the integer** rather than writing 17, on the macOS argument: rollup's platform
+binaries are optional entries selected by `os`/`cpu`, `linux-x64` matches two, macOS one. The entry
+now rests on what the argument actually needs and what is stable — two devDependencies, zero
+runtime dependencies — plus one sentence on why the total varies, checkable in `package-lock.json`.
+Epic sweep: **no hard package count survives anywhere in the build tree.**
+
+### The scaffold settled the package-count question empirically, and the answer is better than expected
+
+`555ad20`. The child ran the three-way comparison instead of guessing:
+
+| starting state | command | npm reports |
+|---|---|---|
+| `package.json` only, no lockfile | `npm install` | added 16, audited 17 |
+| committed tree (lockfile) | `npm install` | added 17, audited 18 |
+| committed tree (lockfile) | `npm ci` | added 17, audited 18 |
+
+Row 1 is the state their original run started from and **still reproduces today**; the lockfile it
+generates is byte-identical to the committed one; and they diffed the installed trees of rows 1
+and 2 — **identical package-for-package**. Same packages on disk, different integer printed. So it
+was never `install` vs `ci` *resolving* differently, nor rollup drifting: **the number was never a
+property of this project at all**, only of npm's reporting of a fresh resolve versus a
+lockfile-driven install. That is the strongest possible argument for dropping the figure rather
+than updating it to 17.
+
+Handled per the epic's refinement: **§4 annotated, not rewritten** (a transcript of a real run
+stays as recorded, with a dated note that the figure no longer reproduces and why); **§8 lost the
+integer**, matching rung 2's fix.
+
+### Scaffold S1 — the `pattern` hole closed, and it now localises. Verified by the epic:
+
+```
+$ sed -i 's/ pattern="[^"]*"//' index.html && npx playwright test
+  ✓ 1  ✓ 2  ✓ 3   ✘ 4 an address type="email" accepts but our pattern rejects …   ✓ 5
+  1 failed, 4 passed
+```
+
+Exactly one case red. The child added a second mutation of their own accord
+(`MESSAGES.patternMismatch` → `'MUTATED'`) on the reasoning that *"the attribute is load-bearing"*
+and *"the branch is executed"* remain two claims — so the branch is now genuinely exercised rather
+than merely reachable. `git diff HEAD -- index.html src/` empty afterwards; asset hashes unchanged.
+
+Their correction of the epic's framing is worth keeping verbatim: the RED proof was never fake;
+the defect was titling a section **"proof that it is honest"** when what it established was
+*load-bearingness*. Destroying the whole module cannot distinguish load-bearingness from coverage,
+because every test goes red for one reason. **Only a mutation targeting a single constraint can.**
+The epic read the section title at face value; the section title was wrong.
+
+### Rung 4 — criterion met in full, honestly. `16bea19` (amended from `5181021`).
+
+**A real `/deploy` ran through the real harness** (Claude Code 2.1.197) against a copy whose
+`SKILL.md` md5 matched the committed file. It loaded, **step 0 actually executed** (`dist/` on disk
+is the trace), and it halted on the project's real `REPLACE_WITH_YOUR_FORM_ID` stub — **a genuine
+project reason, entirely independent of credentials** — honouring «Узкая область» unprompted.
+
+The child then located the credential boundary *provably* rather than settling for
+`command not found` (rc 127, which only proves the tool is absent): real wrangler 4.86.0 installed
+**outside** the project, run against the real `dist/`, halting on the missing `CLOUDFLARE_API_TOKEN`
+(rc 1). **Nothing anywhere describes a deployment that did not happen.**
+
+Epic-verified: frontmatter fits `head -10` exactly (closing `---` on line 10); `wc -w CLAUDE.md`
+→ 600 against the 800 ceiling; parent is `1568602`, i.e. **rung 4 predates rung 3's ROAST fix
+`fa0e61d`** — noted for the integration rebase.
+
+**A defect the rung found in itself and kept in the README rather than quietly fixing:** step 0's
+first draft (`… && echo STOP && exit 1`) returned 1 whether or not the stub was present, so it
+never passed anything through — caught only by running the case where it must **not** fire.
+Rung 3's diagnosis, one rung later, in a different artifact.
+
+**`disable-model-invocation: true`**, which § 8.4 does not ask for: without it the rung would ship
+a *model-invocable production deploy* into a project whose `CLAUDE.md` says «никогда не запускать
+деплой на прод без явного запроса» — the written-rule-without-a-mechanism that rungs 1 and 3 exist
+to discredit. Proven by a discriminating A/B (two copies differing by exactly one line, `diff` →
+`9d8`), with the alternative hypothesis explicitly closed in the README.
+
+### Two more work-order errors from rung 4 — NOT independently verified by the epic
+
+The child reports (a) § 8.4 attributes the paper's 307 harm cases to skills "without a valid
+`description`", whereas the paper's category for that condition — Applicability Mismatch — is
+**2 of 125 (1.6%)**, and its abstract says failures are *"rarely caused by obviously irrelevant
+skills"*; and (b) the analysis is in `07-skills.md` **§ 4.2**, not § 4.1 (§ 4.1 is the opposite
+failure — a description written for humans, so the skill never fires).
+
+**The epic could not re-fetch arXiv:2608.11888 to confirm this** — the abstract page returns 200
+but did not parse, and a follow-up grep timed out. **Recorded as child-verified only, not
+epic-verified.** The child reports fetching it three ways and reading Table III directly. The
+spec's raw numbers (307 = 125 + 182; 86/125 = 68.8%) are reported correct. **Flag to the
+dispatcher for independent confirmation before this reaches the seminar's owner** — this epic does
+not pass on an unverified correction as verified, which is the whole discipline.
+
+### Rung 5 dispatched
+
+`ahr58-5-mcp`, from `16bea19`. Carries: the owner question **must read as open** (matching 8.0's
+"declined pending the owner's ruling"); CVE-2025-59536 routed here from rung 3 and to be called
+**the consent bypass**, not "the MCP vulnerability"; the token table must not invent the MCP side;
+and the «Проверка»'s `gh issue list` cannot be run (`gh` absent) and must be stated as not-run,
+the way rung 4 stated `/skills`.

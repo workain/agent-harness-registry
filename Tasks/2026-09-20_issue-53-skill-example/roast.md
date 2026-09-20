@@ -110,3 +110,44 @@ Coordinator added the exact required footnote opening line to
 No new findings. The one nit from the original review is now closed.
 
 **Verdict stands: PASS.**
+
+## Re-verify (cc9978a)
+
+Dispatcher's own pre-PR check found a real defect neither of my prior passes caught: the
+frontmatter did not start at byte 0 — a `<!-- TEMPLATE FILE -->` comment preceded it (frontmatter
+started at line 9). Root cause of the miss, worth recording: both my original parse and my
+221d6ab re-check used `text.split('---\n')`-style logic, which locates the *first* `---` wherever
+it occurs in the file and has no way to fail on an arbitrary preamble before it — a `startswith`/
+byte-0-anchored check is required to catch this class of defect, not a split. Noted for future
+frontmatter checks in this repo.
+
+Fixed in `cc9978a`. Re-verified narrowly:
+
+- `git diff 221d6ab..cc9978a --name-status`: 8 files — the three `_example/SKILL.md` copies
+  (`M`, reorder), the three `skills/README.md` copies (`M`, new byte-0-rule paragraph),
+  `Tasks/.../log.md` (`M`), `Tasks/.../roast.md` (`M`). The `roast.md` hunk is exactly my own
+  "Re-verify (221d6ab)" section from the prior round, committed verbatim (diffed it directly —
+  unchanged content, not new material from this commit). No files outside that set.
+- `git diff 221d6ab..cc9978a -- templates/base-project-template`: each `SKILL.md` moves the
+  existing `<!-- TEMPLATE FILE -->` comment block from before the frontmatter to after the
+  closing `---`, and appends one new sentence inside it explaining why (byte-0 contract vs.
+  `environment/_example.md`'s plain-markdown comment, which has no such contract). Each
+  `skills/README.md` gains one new paragraph stating the byte-0 rule and pointing at
+  `_example/SKILL.md` as the reason for its comment placement. Nothing else in either file
+  changed. All three `SKILL.md`/`README.md` pairs (common/with-git/without-git) carry the
+  identical hunk.
+- Byte-0 check, this time anchored correctly (not a `split`): read each of the three
+  `_example/SKILL.md` files in binary and asserted `data.startswith(b"---\n")` — **true for all
+  three**, first 12 bytes `b'---\nname: cr'` in each case.
+- Re-parsed the frontmatter with a byte-0-anchored extraction (`assert text.startswith("---\n")`,
+  slice to the next `\n---\n`, `yaml.safe_load` on the slice) rather than a `split` — still a
+  dict with `name`/`description` present (`create-task-folder`, 506 chars, unchanged — the
+  frontmatter content itself wasn't touched, only what surrounds it).
+- Re-ran `python3 templates/base-project-template/render_templates.py --check` myself →
+  `PASS — both variants match their source fragments/common files.`
+- Re-ran the skills-directory scan → still exactly one (`_example`) under `skills/` in each of
+  `common/`, `with-git/`, `without-git/`; all three `SKILL.md` copies still byte-identical to
+  each other.
+- `git status --porcelain` clean at `cc9978a`.
+
+No new findings. **Verdict stands: PASS.**

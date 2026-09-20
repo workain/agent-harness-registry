@@ -150,3 +150,48 @@ orchestrator holds the push credential and pushes. Dispatcher pushed `issue-53-s
 `088012b` — confirmed via `git fetch origin && git log --oneline origin/issue-53-skill-example`
 from `wt53`. The footnote-fix commit above still needs to be pushed the same way before a PR can be
 opened against it.
+
+## BLOCK from dispatcher's own pre-PR check: frontmatter not at byte 0 (2026-09-20, ~13:05 UTC)
+
+After pushing `3d90a0b`, the dispatcher ran their own check before opening the PR and caught a real
+defect neither I nor the independent ROAST reviewer had found: the leading `<!-- TEMPLATE FILE -->`
+HTML comment sat *before* the YAML frontmatter's opening `---` (frontmatter started at line 9, not
+byte 0). Per Anthropic's own skills docs ("YAML frontmatter at the top of SKILL.md") and every real
+`SKILL.md` on this box, frontmatter must start at byte 0 with no preamble — a file that doesn't
+would fail to load as a skill at all, which is a worse teaching artifact than no example.
+
+**Why the mechanical check I ran (twice) and the ROAST reviewer's independent re-parse both missed
+it:** both used `text.split('---\n')[1]` (or equivalent), which finds the *first* `---` wherever it
+occurs and happily parses whatever follows — it can't fail on a file with an arbitrary preamble
+before real frontmatter. It correctly proves the YAML *between two `---` markers is valid*, but not
+that the frontmatter is *where a skill loader expects it to be*. A weaker check than the property it
+was meant to establish — worth remembering for any future frontmatter-format check in this repo.
+
+**Independently verified the claim before fixing anything:**
+- Sampled real `SKILL.md` files elsewhere on this box (kimi-cli's shipped skills, several
+  `.claude/skills/*/SKILL.md` corpora under `/tmp` and other project checkouts) — every file with
+  valid frontmatter starts with `---` at byte 0; a 40-file random sample (`shuf --random-source=
+  /dev/zero` for reproducibility) found 0 files with a preamble before working frontmatter (one
+  sampled file had no frontmatter at all — `# build-deck` as its first line — which is precisely
+  the §4.1 failure mode this whole order exists to prevent, not a counterexample to the byte-0
+  rule).
+- Confirmed the finding is real, not a style preference.
+
+**Fix applied** in `common/.claude/skills/_example/SKILL.md`: moved the YAML frontmatter to byte 0;
+moved the `<!-- TEMPLATE FILE -->` comment to immediately after the closing `---`, before the first
+`##` heading — same content, reordered — and added one sentence inside that comment explaining why
+(this file has a real frontmatter contract, unlike `environment/_example.md`'s plain-markdown
+comment-first convention it was originally copying). Also added a paragraph to
+`common/.claude/skills/README.md` stating the byte-0 rule explicitly, so the next contributor
+doesn't have to re-derive it.
+
+**Re-verified after the fix, not assumed:**
+- `text.startswith("---\n")` — now true (was the failing property before).
+- Re-parsed the frontmatter with the corrected byte-0-anchored parser (`text.index("\n---\n", 4)`
+  for the closing marker, only after confirming the opening one) — still valid, `name`/
+  `description` present, description unchanged (506 chars).
+- `render_templates.py` (propagate) then `--check` — PASS, re-run after each of the two edits
+  (SKILL.md reorder, then the README.md addition).
+
+Will ask the independent reviewer for a second narrow re-verify covering just this delta before
+telling the dispatcher it's ready to push/PR again.

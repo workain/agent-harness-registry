@@ -1,11 +1,3 @@
-<!--
-TEMPLATE FILE — this is a worked example of the SKILL.md format, not a skill every project
-needs verbatim. Delete this directory once you've added your project's first real skill (or
-keep it as a style reference, renamed). Do not add a second or third example next to it — one
-sample per slot is the point; a small starter library of "obviously useful" skills reproduces
-the exact selection-collapse problem this file exists to warn about (see the footnote below).
--->
-
 ---
 name: create-task-folder
 description: >-
@@ -16,6 +8,18 @@ description: >-
   calling it done", or "close out Tasks/<slug>". Not for writing the code itself or performing
   the review — see "Narrow scope" below.
 ---
+
+<!--
+TEMPLATE FILE — this is a worked example of the SKILL.md format, not a skill every project
+needs verbatim. Delete this directory once you've added your project's first real skill (or
+keep it as a style reference, renamed). Do not add a second or third example next to it — one
+sample per slot is the point; a small starter library of "obviously useful" skills reproduces
+the exact selection-collapse problem this file exists to warn about (see the footnote below).
+
+Frontmatter must start at byte 0 of the file — unlike `environment/_example.md`'s plain-markdown
+TEMPLATE FILE comment, this file's format has a real frontmatter contract, so the comment goes
+*after* the closing `---`, not before it.
+-->
 
 ## Opening a task folder
 

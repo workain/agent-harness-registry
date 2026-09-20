@@ -1,0 +1,72 @@
+name: base-project-worked-example
+slug: base-project-worked-example
+homepage: https://github.com/workain/agent-harness-registry/tree/main/templates/base-project-worked-example
+what_it_is: >
+  A filled-in, clone-and-run companion to this lab's own `base-project-template` component:
+  the same scaffold with every `<BRACKETED>` placeholder replaced by real content for one
+  deliberately small carrier project, so the seven-rung harness ladder (instructions → memory
+  → hooks → skill → MCP → subagent → process) can be read off real files and a real commit
+  history instead of a skeleton. The carrier is `signup-landing/` — a single-page Vite landing
+  page with a two-field (name, email) demo-lesson signup form, no backend of its own, Playwright
+  `tests/form.spec.ts` asserting the form refuses empty required fields, and static hosting.
+  Its purpose is pedagogical rather than functional: the build is the artifact, the landing page
+  is only what the artifact is built ON, and the design is explicitly held small so the carrier
+  never becomes a second product. Distinct from the template it derives from in exactly one
+  respect — the template teaches the SHAPE of a harness and ships blanks; this ships one
+  worked instance of that shape, wrong turns and honest gaps included (rung 5 deliberately
+  ships no working MCP connection at all — see the deep-dive).
+components_bundled:
+  - "instructions (rung 1): filled `CLAUDE.md` with real build/test/verify commands + `AGENTS.md` symlink"
+  - "memory (rung 2): committed `DECISIONS.md` decision journal; runtime auto-memory demonstrated but deliberately NOT committed (it lives outside the repo)"
+  - "hooks (rung 3): two `PreToolUse` hooks in one `.claude/settings.json` array (branch-protection + `rm -rf` wildcard block) plus a single self-test script covering both"
+  - "skill (rung 4): `.claude/skills/deploy/SKILL.md`"
+  - "MCP (rung 5): a README ANALYSIS section only — no `.mcp.json` with working credentials, by design"
+  - "subagent (rung 6): `.claude/agents/diff-reviewer.md`, read-only `tools:` (no Write/Edit)"
+  - "process (rung 7): `Tasks/` discipline with at least one real `Tasks/<date>_<slug>/` carrying `log.md` + `review.md`"
+  - "carrier project: `signup-landing/` (Vite page, two-field form, Playwright `tests/form.spec.ts`)"
+engine_lock: "Claude Code (hooks, skills, subagents, settings.json are all its conventions); only rung 1 ports via the AGENTS.md symlink"
+license_tag: "MIT"
+license: >
+  MIT — the same licence and the same reasoning as the template it derives from, since it lives
+  under `templates/` (see the root README's licensing table: `templates/` and `scripts/` are MIT
+  precisely so they can be copied wholesale into other people's projects, while the registry
+  content itself is CC BY 4.0).
+open_source: true
+first_party: true
+activity:
+  stars: null
+  last_verified_note: >
+    Not an independently-starred public repo — it is a directory inside this registry, authored
+    by this lab. Catalogued 2026-09-20 AHEAD of its own build (subtasks 8.1-8.7 of
+    agent-harness-registry#58 are constructing it in parallel); every claim about its file
+    contents is therefore tagged unverified below rather than asserted.
+use_cases: "teaching the seven-rung harness ladder on real files; a clone-ready reference configuration for a small web project; the worked counterpart to base-project-template's blanks"
+provenance:
+  - url: https://raw.githubusercontent.com/tellina-study/AI-usage-lessons/7f224dc058c171e05f81bb8d8def865e69ace5c2/library/seminars/_research/coding-agent/10-template-work-order-part2.md
+    fetched: "2026-09-20"
+    note: >
+      Fetched directly via curl at this pinned commit (7f224dc). This work order, sections
+      8.0-8.9, is the ONLY source for what this bundle will contain — the build did not exist
+      when this entry was written (`ls templates/` returned `base-project-template` alone), so
+      every structural claim above is quoted from the specification rather than observed in a
+      file. Section 8.0 is the contract for this catalog entry specifically; 8.1-8.7 define the
+      seven rungs enumerated in `components_bundled`; 8.5's "honest analysis, not a mock server"
+      decision and 8.9's clean-clone criterion are quoted in the deep-dive.
+  - url: https://github.com/workain/agent-harness-registry/tree/main/templates/base-project-template
+    fetched: "2026-09-20"
+    note: >
+      Read in-tree at origin/main 7b7c678 — the parent scaffold this bundle fills in, its
+      `common/`/`fragments/` + `render_templates.py` composition model, and its MIT `LICENSE`.
+      Verified present; the worked example's own directory was verified ABSENT at the same
+      commit.
+unverified:
+  - "[unverified — build in progress, subtask 8.1-8.7] Every file named in `components_bundled:` is specified by work order § 8.1-8.7, not observed: `templates/base-project-worked-example/` did not exist at origin/main 7b7c678 when this entry was written. Treat the component list as the build's contract, not as a file listing, until subtask 8.9's clean-clone pass confirms it."
+  - "[unverified — build in progress, subtask 8.3] That the two hooks actually BLOCK (rather than merely exist as files) is exactly what § 8.3's self-test is required to demonstrate live. Unproven here; no hook has been run by this entry's author."
+  - "[unverified — build in progress, subtask 8.4/8.6] § 8.4 and § 8.6 require a real recorded invocation of the `deploy` skill and of the `diff-reviewer` subagent in the build's own history. Whether those invocations happened cannot be checked from a build that has no history yet."
+  - "[unverified — build in progress, subtask 8.8/8.9] The anti-drift gate `render_templates.py --check-worked-example` (§ 8.8) and the end-to-end clean-clone reproducibility of all seven rungs without editing a file or supplying a secret (§ 8.9) are both acceptance criteria of OTHER subtasks. Neither is claimed as met here."
+  - "Not independently tested. This bundle carries no `harness_eval_verdict` — consistent with every other bundle in this catalog, none of which has been through `workain/harness-eval`. Its first-party status reflects authorship by this lab, not a measured ranking against the alternatives above it in the table."
+deep_dive: deep-dives/bundles/base-project-worked-example.md
+related_components:
+  - base-project-template
+related_research:
+  - base-project-template-evidence

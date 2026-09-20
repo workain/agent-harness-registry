@@ -8,7 +8,7 @@ Every claim is cited (see each entry's References) or marked `[unverified]`. Eac
 
 ## Overview — map of this registry
 
-**103 atomic components** across 4 categories (plus **7 instruction-file conventions** catalogued as background in the Bundles section — 110 component entries total), **8 assembled bundles**, **11 agent engines/runtimes**, **9 eval-frameworks**, **11 benchmarks**, **2 research studies**.
+**103 atomic components** across 4 categories (plus **7 instruction-file conventions** catalogued as background in the Bundles section — 110 component entries total), **9 assembled bundles**, **11 agent engines/runtimes**, **9 eval-frameworks**, **11 benchmarks**, **2 research studies**.
 
 **Components** are single-purpose atoms (a memory layer, a skill, an MCP server) composed one at a time. **Bundles** are pre-assembled multi-component kits. The market today is overwhelmingly atomic — Agent Skills alone spans 47,150 skills across 42 engines — though real demand for bundles exists too (see `workain/harness-eval`'s `docs/DEMAND-vs-ANTI-SIGNALS-equipment-bundles.md`). Each bundle's write-up scores it against three properties none yet fully combine: **sustained**, **engine-agnostic**, **progressively-disclosed**.
 
@@ -160,6 +160,7 @@ Pre-assembled multi-component kits — rare relative to components. Each write-u
 | [agent-harness-kit (enmanuelmag)](https://github.com/enmanuelmag/agent-harness-kit) | engine-agnostic by construction (Claude Code… | Apache-2.0 | 172 | [write-up](deep-dives/bundles/agent-harness-kit.md) |
 | [agent-teams plugin (wshobson/agents)](https://github.com/wshobson/agents/tree/main/plugins/agent-teams) | Claude Code + Codex (both plugin manifests p… | MIT | — | [write-up](deep-dives/bundles/wshobson-agent-teams.md) |
 | [ai-coding-project-boilerplate (shinpr)](https://github.com/shinpr/ai-coding-project-boilerplate) | Claude Code only | MIT | 221 | [write-up](deep-dives/bundles/ai-coding-project-boilerplate.md) |
+| [base-project-worked-example](https://github.com/workain/agent-harness-registry/tree/main/templates/base-project-worked-example) **`first-party`** | Claude Code (hooks, skills, subagents, setti… | MIT | — | [write-up](deep-dives/bundles/base-project-worked-example.md) · Research: [base-project-template — research evidence](research/base-project-template-evidence/README.md) |
 | [Claude Code Plugins (mechanism)](https://code.claude.com/docs/en/plugins-reference) | Claude-Code-native — the schema itself, not… | Proprietary feature (usable) | — | [write-up](deep-dives/bundles/claude-code-plugins.md) |
 | [Claude Flow / ruflo (ruvnet)](https://github.com/ruvnet/ruflo) | Native Claude Code/Codex/Hermes integration;… | MIT | 63.1k | [write-up](deep-dives/bundles/claude-flow.md) |
 | [GPT Store Custom GPTs](https://help.openai.com/en/articles/8554397-creating-and-editing-gpts) | hard-locked to the OpenAI/ChatGPT platform —… | Proprietary (no export) | — | [write-up](deep-dives/bundles/gpt-store-custom-gpts.md) |
@@ -864,5 +865,5 @@ Per-study research materials — a stable, citable home distinct from any one co
 
 | Title | Study type | Relevant components | Related studies | Write-up |
 |---|---|---|---|---|
-| base-project-template — research evidence | synthesis-digest | [base-project-template](deep-dives/components/instructions-rules/base-project-template/README.md) | — | [write-up](research/base-project-template-evidence/README.md) |
+| base-project-template — research evidence | synthesis-digest | [base-project-template](deep-dives/components/instructions-rules/base-project-template/README.md), [base-project-worked-example](deep-dives/bundles/base-project-worked-example.md) | — | [write-up](research/base-project-template-evidence/README.md) |
 | MCP server design: progressive disclosure, primitive choice, and authorization | synthesis-digest | [Model Context Protocol — reference servers](deep-dives/components/access-mcp/mcp.md), [Model Context Protocol — official SDKs (client + server)](deep-dives/components/access-mcp/mcp.md) | — | [write-up](research/mcp-server-design-2026-07/README.md) |

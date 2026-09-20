@@ -68,3 +68,5 @@ deep_dive: deep-dives/components/instructions-rules/base-project-template/README
 first_party: true
 related_research:
   - base-project-template-evidence
+related_components:
+  - base-project-worked-example

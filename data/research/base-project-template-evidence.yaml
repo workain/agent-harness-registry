@@ -16,5 +16,6 @@ source_urls:
   - https://github.com/pytorch/pytorch
 related_components:
   - base-project-template
+  - base-project-worked-example
 related_research: []
 deep_dive: research/base-project-template-evidence/README.md

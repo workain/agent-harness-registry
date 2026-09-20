@@ -525,6 +525,15 @@ def main() -> None:
     _check_cross_links(components + bundles, "related_research", research_index, "research/")
     _check_cross_links(research, "related_components", component_bundle_index, "data/components or data/bundles")
     _check_cross_links(research, "related_research", research_index, "research/")
+    # A component/bundle may also point at a sibling component/bundle (e.g. a worked example
+    # pointing back at the template it fills in). That direction was checked by nothing until
+    # agent-harness-registry#58: a dangling slug here produced exit 0 and rendered nowhere,
+    # which is exactly the silent rot the comment above says these fields exist to prevent.
+    # NOTE: unlike related_research, this field is currently validated but NOT rendered in any
+    # table -- _relevant_components_cell() is only called from render_research_table(). So the
+    # links are kept honest mechanically while staying invisible in GUIDE.md; surfacing them is
+    # a separate rendering decision, deliberately not made here.
+    _check_cross_links(components + bundles, "related_components", component_bundle_index, "data/components or data/bundles")
 
     by_category = {cat: [] for cat in CATEGORY_ORDER}
     for e in real_components:

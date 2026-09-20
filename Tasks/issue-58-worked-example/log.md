@@ -735,3 +735,50 @@ env git commit -m x        NO MATCH -> SILENTLY ALLOWED
 
 Rung 3 therefore ships **three demonstrable ways this gate does not fire** — `init.defaultBranch`,
 the #65 bypasses, and Finding A's hypothesis-blindness — all reproducible by a student.
+
+## 2026-09-20 15:10 — CORRECTION to the entry above: #65 needed no amendment
+
+The previous entry ends "Reported to the dispatcher to amend #65." **That is now false and is
+corrected here rather than edited away.** #65 as filed already separates the two causes — its
+body states that `read -r cmd` "consumes **only the first line**, so a multi-line command whose
+`git commit` is not on line 1 is never examined", and its remedy asks to widen the match **and**
+examine the whole command rather than its first line. The dispatcher reproduced the probe before
+replying rather than accepting the correction.
+
+So: the mechanism analysis was right, the issue already said it, and no amendment was needed.
+
+Two things worth keeping from this, and the second is the reason this entry exists at all:
+
+1. **Checking the claim was still correct.** The epic's first probe genuinely disagreed with the
+   report received, and chasing that rather than assuming the sender was right is what surfaced
+   the `read -r` mechanism into this log in the first place. A check that confirms the other
+   party was already correct is not a wasted check.
+2. **Accepting a correction that isn't needed is its own small failure.** It would leave this log
+   asserting something about #65 that #65 does not say, and the next reader reconciling the two
+   would find a contradiction that never existed. The dispatcher pushed back rather than
+   accepting, which is the same discipline in the opposite direction.
+
+And the shape is the one this epic has now hit three times in one day: **an artifact that
+restates a claim goes stale the moment the claim changes.** F1 was a deep-dive left behind by its
+own patch; R3 was a YAML field left behind by its own prose; this is the epic's own log left
+behind by a correction that turned out to be unnecessary. Same defect, three different artifacts,
+including this one. Fixed the same way — a new entry, not a silent edit.
+
+## Register guidance for rung 3, from the dispatcher
+
+The three bypasses must read as **this gate's real boundary**, not as **this template is broken**.
+The same file is a working, useful gate for the ordinary case, and it is the reason the rung
+exists at all. The honest register is the one `scripts/safe-merge.sh`'s own header already uses
+about itself: a discipline aid whose limits are named, not a barrier pretending to be one.
+
+Carried into 8.3's brief as a writing constraint, not just a note.
+
+## Dispatcher actions closing the 8.0 thread
+
+- **Merge-ordering hold recorded publicly** at issue #58 comment `5750007834` — with the 404
+  measurement, the #64 coupling, the current state (`4705457`, no PR open, deliberately), and an
+  explicit "who holds it / this comment is the handover" line for the case where that session is
+  replaced. The hold is no longer discipline living in one head.
+- **R2 filed as issue #66**, framed wider than this epic had it: **a superlative in a catalogue is
+  a claim about every other entry**, so it silently rots every time an entry is added. That
+  generalisation is better than the one-word fix it replaces.

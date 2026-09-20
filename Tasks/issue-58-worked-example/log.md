@@ -1177,3 +1177,85 @@ alongside rung 5:
   too much gets disabled, which is its own silent failure.**
 
 Both carry the citation standard above.
+
+## 2026-09-20 17:20 — rung 3 ROAST: PASS with 4 findings, and a CORRECTION to this log
+
+### CORRECTION — this log and this epic's report to the dispatcher both carried a false claim
+
+Two earlier entries state that rung 3's four documented ways-a-gate-fails are "all marked `LIMIT`,
+never `PASS`". **That is false**, and the ROAST caught it (their F3). Способ #1 (the suite that
+confirms rather than discriminates) was *fixed*, not merely documented — its remedy is cases 3–4,
+which print **PASS**, correctly. The actual mapping of the 8 `LIMIT` lines is 4→#2, 1→#3,
+3→hook[1]'s own. **Zero** correspond to #1.
+
+The claim propagated through **three artifacts**: the child's README, the child's commit message,
+and this log (plus the epic's report to the dispatcher, which repeated it verbatim). That is the
+correction-routing rule biting its own author — the proposition is "how each documented failure
+mode is represented in the suite", and it lived in four places while everyone edited one.
+Corrected here rather than silently edited above.
+
+### VERDICT: PASS with 4 findings (`1510e2b`)
+
+**What survived a hard attack.** The reviewer reproduced 17/17 from their own `/tmp` clone, built
+a **stronger** cheat hook than the author's (theirs also tests `[ -d .git ]` so case 6 passes) —
+it still failed only the two discriminating fixtures. Byte-identity was verified *and* proven
+load-bearing: `git merge-base --is-ancestor 66196f0 1568602` is **NO**, so the branch's
+checked-out template really was stale and the author genuinely went to `origin/main`. The CVE
+pairing was checked against GHSA and NVD text rather than by ID resolution, and could not be
+broken. Fixture independence, hard-coded `EXPECT_*`, and the rm rule against 14 ordinary commands
+(zero false positives — `[^;&|]*` is load-bearing) all clean.
+
+### F2 — the finding the epic's own review missed, and it is this rung's subject in the mirror
+
+**Nothing in the suite catches a gate that becomes TOO WIDE.** Reproduced by the epic:
+
+```
+# equality -> prefix, one line:  [ "$branch" = "main" ] …  ->  case "$branch" in main*|master*)
+./.claude/hooks/selftest-branch-guard.sh   ->  RESULT: PASS — 17/17
+# on a branch actually named `maintenance`:
+   {"permissionDecision":"deny","permissionDecisionReason":"BLOCKED: direct commit to main/master…"}
+```
+
+A gate blocking `maintenance`, `main-v2`, `mainline`, `master-thesis` passes the suite clean.
+Every branch-guard allow-fixture is `feature/x` or `feature-x`, so **nothing proves the comparison
+is equality rather than prefix or substring.** Same shape on the rm gate (`[^;&|]*` → `.*` denies
+`rm -rf dist; echo $HOME` and still passes).
+
+The author's own case 18 comment names this failure mode — *"if this case ever goes red the gate
+has started blocking ordinary cleanup, and will be switched off by the first person it
+inconveniences"* — and tests one instance of it. **A gate switched off because it over-blocks
+protects exactly as much as a gate that never fires.** That is ступень 3's thesis pointed the
+other way, and the build should carry both directions. ~4 lines to fix.
+
+### F1 — a limit the epic routed to 8.9 is stated nowhere in the artifact
+
+The wiring limit is stated well (script lines 40–46). The `$comment-rm-rf`-as-untested-top-level-
+key limit appears in none of the five files. The reviewer made it concrete:
+`jq -r 'keys[]' .claude/settings.json` on this repo's own live file returns `hooks` only — both
+files carrying `$comment` live under `templates/` and are never loaded, so **neither key has live
+evidence**. In a file whose preamble warns that one schema-invalid matcher disables every hook
+with no error shown, that omission sits in exactly the register the rung is about.
+
+**Lesson for the epic:** "routed to 8.9" is not the same as "stated in the artifact". Routing a
+limit into a future subtask's checklist does nothing for a student reading the artifact today.
+Both are needed, and the epic conflated them.
+
+### Routed onward, not defects in what shipped
+
+- **O1 → #65:** `git commit-tree abc` and `git commit-graph write` are denied by the `\b`;
+  pre-existing on `main`, verified at `66196f0`.
+- **O2, candidate fifth boundary:** all four documented bypasses are *prefix* forms. Grouping
+  forms share the root cause but a different shape, and one is genuinely confusing —
+  `&& git commit` denies, but `test -f x && { git commit; }` ALLOWs; likewise `{ git commit; }`,
+  `for …; do git commit`, `(git commit)` — though `(cd x && git commit)` denies.
+- **O3:** `rm --recursive --force *` ALLOWs — long-form flags are a fourth blind spot in a
+  comment that names exactly three.
+- **O4:** the «29 августа 2025» date is faithful to Check Point's own timeline, but GitHub
+  reports `published_at = 2025-09-03` for that GHSA — attribute the date to the article.
+
+### Recorded so nobody "fixes" it into a wrong assertion
+
+The reviewer's exit-code probe (correct JSON, `exit 1`) passes 17/17 because `expect_decision`
+ignores `HOOK_RC`. They expected a finding; there isn't one. The docs say that for a non-2 exit
+code, Claude Code ignores the exit code and the JSON alone decides the outcome — so ignoring `rc`
+is the **correct** modelling. Leave it.

@@ -24,7 +24,7 @@ components_bundled:
   - "subagent (rung 6): `.claude/agents/diff-reviewer.md`, read-only `tools:` (no Write/Edit)"
   - "process (rung 7): `Tasks/` discipline with at least one real `Tasks/<date>_<slug>/` carrying `log.md` + `review.md`"
   - "carrier project: `signup-landing/` (Vite page, two-field form, Playwright `tests/form.spec.ts`)"
-engine_lock: "Claude Code — 5 of 7 rungs are its conventions (hooks, skills, subagents, settings.json, plan-mode); only rungs 1 and 5 port, via the AGENTS.md symlink and because rung 5 is prose rather than a working integration"
+engine_lock: "Claude Code — 5 of 7 rungs are its conventions (memory, hooks, skills, subagents, plan-mode); only rungs 1 and 5 port, via the AGENTS.md symlink and because rung 5 is prose rather than a working integration"
 license_tag: "MIT"
 license: >
   MIT — the same licence and the same reasoning as the template it derives from, since it lives

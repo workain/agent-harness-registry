@@ -418,3 +418,78 @@ EXIT=0
 ```
 `GUIDE.md` **does** change this round, unlike round 1 — correctly, because `engine_lock:` is a
 rendered field. Diff is the single bundles-table cell. Regenerated and committed together.
+
+---
+
+# IMPROVE round 3 — final: the parenthetical didn't survive its own count
+
+## 24. R4 — "5 of 7" was right; the list proving it was not
+
+`engine_lock:`'s parenthetical read `(hooks, skills, subagents, settings.json, plan-mode)` —
+five items, but they resolve to **four** distinct rungs (`settings.json` is rung 3 again, which
+the deep-dive names as one thing: "`.claude/settings.json` `PreToolUse` hooks (3)"), and rung 2
+(`~/.claude/projects/*/memory/`) was missing entirely.
+
+A reader counting the parenthetical to check the "5 of 7" concludes either that `settings.json`
+is its own rung, or that memory is not engine-locked. The second contradicts this entry's own
+Component-coverage table, which scores `memory` **Partial** precisely because the runtime layer
+is a Claude Code path.
+
+Fixed to `(memory, hooks, skills, subagents, plan-mode)`, and verified by mapping rather than by
+eye:
+
+```
+YAML items      : ['memory', 'hooks', 'skills', 'subagents', 'plan-mode']
+-> rungs        : ['2', '3', '4', '6', '7'] | distinct: 5
+deep-dive rungs : ['2', '3', '4', '6', '7']
+MATCH: True | count matches "is 5 of 7": True
+```
+
+`GUIDE.md` unchanged — the parenthetical falls past `_truncate(…, 45)`. Regenerated and
+confirmed anyway rather than reasoned about:
+
+```
+$ python3 scripts/generate.py && git diff --quiet GUIDE.md && echo unchanged
+unchanged
+$ rendered cell: "Claude Code — 5 of 7 rungs are its conventio…"
+```
+
+## 25. The rule this whole thread converged on
+
+Three rounds, and the same defect recurred in three different costumes: F1 (prose stale after
+the patch), R3 (structured field stale after the prose was fixed), R4 (the enumeration stale
+after the count was fixed). Round 2's sweep — my own, § 20 — missed R4 despite being designed
+to catch exactly this, because I grepped for `"six of seven"`, and the YAML had never said
+"six of seven". **It said "only rung 1 ports".** I searched for the wording of the finding
+rather than for the proposition the finding corrected.
+
+The epic reports the independent ROAST made the identical mistake in its own round-2 sweep, on
+the same line, independently. That two parties committed it separately is the strongest
+available evidence it is structural rather than carelessness on either side.
+
+**The rule, stated mechanically because a discipline that relies on remembering will fail at
+three locations:**
+
+> **A correction has a SUBJECT, not a LOCATION.** Write down what the old claim *asserted*, then
+> find every place that assertion lives — however differently it is worded. Never grep the
+> finding's phrasing; grep the proposition's.
+
+Concretely here, the subject was *"how many rungs are engine-locked, and which"*. That
+proposition lived in three wordings across two files: `Six of seven…` (deep-dive prose),
+`only rung 1 ports…` (YAML `engine_lock:`), and the parenthetical list itself. A phrasing-grep
+found one. A subject-sweep finds all three.
+
+The epic is carrying this into rungs 8.1–8.7, where several claims will live in **three** places
+apiece once the build's own README exists.
+
+## 26. Final state
+
+```
+$ python3 scripts/generate.py
+wrote .../GUIDE.md (103 components, 7 instruction-conventions, 9 bundles, ..., 132 deep-dives)
+EXIT=0
+$ git status --porcelain
+[clean]
+```
+All three § 8.0 acceptance criteria hold at final state. No `roast.md` authored by me in any
+round. Branch never pushed by me.

@@ -590,3 +590,80 @@ rather than invent plausible ones — and to check the dictated entry's own "20 
 against `src/validate.js`, which is 24 lines including comments. Ruling passed down on
 `LESSONS.md`: ship only with a genuine promoted lesson, otherwise omit and say why; the slide
 tree marks it optional and an empty one is the unfilled boilerplate the template warns against.
+
+## 2026-09-20 14:45 — two live findings handed to rung 3 before it starts, and an epic ruling
+
+From #55's round-1 ROAST (returned BLOCK) and the dispatcher's own reproduction. Both are
+demonstrations of ступень 3's own lesson, found inside this build's dependency rather than
+imported from a paper.
+
+### Finding A — a hook that never runs `git` certified 7/7 PASS
+
+A reviewer built a `settings.json` whose hook answers from `case "$PWD"` and never invokes `git`
+at all. #55's self-test passed it **7/7**. Root cause: in every fixture the **directory name and
+the branch name agreed**, so the branch was never an independent variable. The suite could not
+distinguish "this hook reads HEAD" from "this hook reads the path".
+
+#55's formulation, which is the sharpest thing produced on this today and belongs in the build:
+**the suite was built to confirm the hook works, not to discriminate between hypotheses about
+why it works. Every case asked "does it deny here?"; none asked "could something else produce
+this same answer?"**
+
+Required fix, carried into 8.3: **fixtures whose directory name contradicts their branch name, in
+both directions** — a repo called `main-repo` on branch `feature/x` (must allow) and a repo
+called `feature-work` on branch `main` (must deny). Without that pair, the test cannot tell the
+two hypotheses apart.
+
+### Finding B — the shipped hook silently allows ordinary `git commit` invocations (issue #65)
+
+Reproduced by the dispatcher against the **real** hook on `main`. All silently ALLOWED on `main`:
+
+- `git -C . commit`
+- `/usr/bin/git commit`
+- `env git commit`
+- any multi-line command whose `git commit` is not on line 1
+
+The matcher is `grep -qE '(^|[;&|]\s*)git\s+commit\b'` — it anchors on `git` at a statement
+start, so a path-qualified, env-prefixed, `-C`-flagged, or not-first-line invocation slips past.
+**`git -C` is ordinary usage — it appears throughout #55's own self-test script.** This is
+everyday usage missed, not adversarial usage.
+
+### Epic ruling — the build ships the hook AS-IS, with the boundary stated
+
+Tempting and wrong: patch the hook inside the worked example so it looks complete.
+
+1. The build's hook is inherited from `templates/base-project-template/with-git/.claude/
+   settings.json`. Forking a "fixed" copy into the worked example creates exactly the drift that
+   § 8.8's `--check-worked-example` exists to detect. The fix belongs to **#65 against the
+   template**, and reaches the build the normal way.
+2. More importantly, ступень 3's lesson is **a gate that did not fire looks identical to one
+   that passed**. A build that ships a gate with a real, reproducible bypass and states it
+   plainly teaches that lesson. A build that silently ships a patched gate teaches the opposite —
+   that the gate is complete — which is the exact false confidence this rung exists to puncture.
+
+So rung 3 ships: the hook as inherited; the self-test extended to two hooks AND to the
+contradicting-fixture pair from Finding A; and an explicit, reproduced boundary list covering
+Finding B and the `init.defaultBranch=trunk` case, linked to #65. **Three known ways this gate
+does not fire, all demonstrable by a student on their own machine.**
+
+Flagged to the dispatcher as a ruling they may overturn, since it affects what students receive.
+Not blocking on it — the alternative (a quietly patched fork) is the one option I will not take
+without an explicit instruction.
+
+### Also confirmed by the dispatcher, independently
+
+Rung 1's symlink points at the **same blob** as the template's own two `AGENTS.md` symlinks —
+a real symlink in the committed tree, not a copy that happens to hold the right bytes. All five
+branches are pushed: `issue-58-rung1` (`3d58367`), `-rung2`, `-taxonomy` (`4705457`),
+`-roast-8-0`, `-worked-example` (`d302483`).
+
+### On the brief-as-context mechanism
+
+The dispatcher reports making the same error today — their acceptance criterion for #55 repeated
+the work order's `ask`-on-unborn-HEAD claim verbatim and had to be corrected by the session. The
+shared mechanism, worth naming once here because it governs every brief this epic writes:
+**a brief is written in the register of *context*, so claims inside it are not read as assertions
+needing support — by the writer or by the reader.** A substantive instruction gets read by
+someone about to act on it; a date in a supporting clause gets skimmed by everyone, including the
+person who wrote it. That is why all three work-order errors, and both of mine, landed in
+incidental claims rather than in instructions.

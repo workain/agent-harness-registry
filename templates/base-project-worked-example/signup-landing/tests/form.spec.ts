@@ -37,12 +37,29 @@ test('an empty form is not submitted, and says which fields are missing', async 
   await expect(page.getByLabel('Имя')).toBeFocused()
 })
 
-test('a malformed email is not submitted either', async ({ page }) => {
+test('an address with no @ at all is not submitted (caught by type="email")', async ({ page }) => {
   const attempts = await stubFormEndpoint(page)
   await page.goto('/')
 
   await page.getByLabel('Имя').fill('Анна')
   await page.getByLabel('Email').fill('anna-at-example')
+  await page.getByRole('button', { name: 'Отправить заявку' }).click()
+
+  await expect(page).toHaveURL('/')
+  expect(attempts).toEqual([])
+
+  await expect(page.locator('.error[data-error-for="email"]')).toHaveText('Проверьте адрес почты')
+})
+
+test('an address type="email" accepts but our pattern rejects is not submitted', async ({ page }) => {
+  const attempts = await stubFormEndpoint(page)
+  await page.goto('/')
+
+  // `a@b` is a perfectly valid address as far as type="email" is concerned. It is the
+  // `pattern` attribute, and only that attribute, that insists on a dot in the domain --
+  // so this is the one test that goes red if `pattern` is dropped from index.html.
+  await page.getByLabel('Имя').fill('Анна')
+  await page.getByLabel('Email').fill('a@b')
   await page.getByRole('button', { name: 'Отправить заявку' }).click()
 
   await expect(page).toHaveURL('/')

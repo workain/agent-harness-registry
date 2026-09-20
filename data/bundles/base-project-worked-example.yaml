@@ -20,7 +20,7 @@ components_bundled:
   - "memory (rung 2): committed `DECISIONS.md` decision journal; runtime auto-memory demonstrated but deliberately NOT committed (it lives outside the repo)"
   - "hooks (rung 3): two `PreToolUse` hooks in one `.claude/settings.json` array (branch-protection + `rm -rf` wildcard block) plus a single self-test script covering both"
   - "skill (rung 4): `.claude/skills/deploy/SKILL.md`"
-  - "MCP (rung 5): a README ANALYSIS section only — no `.mcp.json` with working credentials, by design"
+  - "MCP (rung 5): a README ANALYSIS section only — no `.mcp.json` with working credentials. Work order § 8.5 is explicit that this is the EXECUTOR'S RECOMMENDATION, not the owner's decision, and is to be reopened on review — so read this slot as declined-pending-ruling, not settled"
   - "subagent (rung 6): `.claude/agents/diff-reviewer.md`, read-only `tools:` (no Write/Edit)"
   - "process (rung 7): `Tasks/` discipline with at least one real `Tasks/<date>_<slug>/` carrying `log.md` + `review.md`"
   - "carrier project: `signup-landing/` (Vite page, two-field form, Playwright `tests/form.spec.ts`)"

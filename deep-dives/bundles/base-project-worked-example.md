@@ -108,18 +108,25 @@ whoever next revisits the taxonomy; not a defect in either direction.
 ## Scored against the three properties no bundle in this registry combines
 
 The root `README.md` requires this table of every bundle. Scored honestly, including — in fact
-especially — where this build scores badly. It currently scores **worse than every other bundle
-in this catalog**, and that is the correct result for an artifact that does not yet exist.
+especially — where this build scores badly. It currently ties for **the lowest score in this
+catalog**, which is the correct result for an artifact that does not yet exist.
 
 | Property | Status | Evidence |
 |---|---|---|
 | Sustained | **Not established (no history to establish it from)** | The build had **zero commits** when this was written; a maintenance record cannot be claimed before there is anything to maintain. The only positive signal available is structural, not observed: it lives inside this registry, so it inherits this repo's own contribution gate (`scripts/generate.py` raising on taxonomy violations, the pre-commit hook, the independent-ROAST requirement). Against that, § 8.8 specifies an anti-drift gate (`render_templates.py --check-worked-example`) *precisely because* a worked example is expected to drift from the `common/`/`fragments/` source it was filled in from — and that gate is **specified but not implemented** (§ 8.8 is a separate, unstarted subtask). A drift risk named in the spec and not yet mechanically closed is the honest reading here. `[unverified — build in progress, subtask 8.8]` |
-| Engine-agnostic | **No — and this is the worst of the three** | Six of seven rungs are Claude Code file conventions and nothing else: `.claude/settings.json` `PreToolUse` hooks (3), `.claude/skills/<name>/SKILL.md` (4), `.claude/agents/<name>.md` with a `tools:` frontmatter key (6), `~/.claude/projects/*/memory/` (2), and the `Tasks/` + plan-mode workflow whose verification step is literally "press `Shift+Tab` twice in a Claude Code session" (7). Only rung 1 ports, and only because `AGENTS.md` is a symlink to `CLAUDE.md`. This is **weaker than `agent-harness-kit`** (engine-agnostic by construction across three engines) and weaker than `wshobson-agent-teams` (two engine manifests verified present). The lock-in is deliberate — § 8.9 requires all seven rungs reproducible from a clean clone with no file edits, which is only achievable by committing to one engine's conventions — but a deliberate limitation is still a limitation, and pedagogical intent does not earn a property the artifact does not have |
+| Engine-agnostic | **No — and this is the worst of the three** | **Five** of seven rungs are Claude Code file conventions and nothing else: `~/.claude/projects/*/memory/` (2), `.claude/settings.json` `PreToolUse` hooks (3), `.claude/skills/<name>/SKILL.md` (4), `.claude/agents/<name>.md` with a `tools:` frontmatter key (6), and the `Tasks/` + plan-mode workflow whose verification step is literally "press `Shift+Tab` twice in a Claude Code session" (7). The two that are not: rung 1 ports because `AGENTS.md` is a symlink to `CLAUDE.md`, and rung 5 is engine-neutral prose — it ports precisely because it is an *analysis* of an MCP setup rather than a working one, which is a thin kind of portability to claim credit for. This is **weaker than `agent-harness-kit`** (engine-agnostic by construction across three engines) and weaker than `wshobson-agent-teams` (two engine manifests verified present). The lock-in is deliberate — § 8.9 requires all seven rungs reproducible from a clean clone with no file edits, which is only achievable by committing to one engine's conventions — but a deliberate limitation is still a limitation, and pedagogical intent does not earn a property the artifact does not have |
 | Progressively-disclosed | **Partial, and inherited rather than designed-in** | Genuine on rung 4: `SKILL.md` uses the same progressive-disclosure mechanism as this registry's `anthropic-skills` component (name+description preload, body loads on trigger), and § 8.4's stated trigger is exactly the context-cost argument — keeping the deploy procedure in `CLAUDE.md` means paying for it on every request, including the ones with no deploy. Rung 6 adds context *isolation* (the subagent sees the diff, not the authoring conversation), which is adjacent but not the same property. Against that, rungs 1 and 3 load in bulk on every single session, and rung 5's MCP analysis is README prose that is never disclosed to the agent at all. § 8.1's `wc -l CLAUDE.md` check is a context **budget** discipline, not disclosure. Crucially, the mechanism on rung 4 is Claude Code's, not something this bundle contributes — the same "inherited, not designed-in" status already recorded for `ai-coding-project-boilerplate` and `gtm-starter-kit` |
 
-**Score: 0 of 3 confidently; 1 of 3 counting an inherited property.** The weakest-scoring bundle
-in this catalog on these axes — below `gtm-starter-kit` (0 by design, 1 inherited) because that
-bundle at least has a maintenance history to point at, and this one has none yet.
+**Score: 0 of 3 confidently; 1 of 3 counting an inherited property** — **tied with
+`gtm-starter-kit`** (also 0 by design, 1 inherited) for the weakest score on these three axes in
+this catalog. The tie is closer than a first-party entry would like: an earlier draft of this
+write-up ranked this bundle *below* gtm-starter-kit on the grounds that gtm "at least has a
+maintenance history to point at." The registry's own data says otherwise — that bundle's Sustained
+row reads **"No — created and pushed the same day (2026-04-03); 12 commits total, zero since."**
+It has no maintenance history either. An abandoned **No** and a not-yet-existent **Not
+established** are different *kinds* of absence rather than different *amounts* of it, and if
+anything the abandoned one is the worse signal, having had the chance to accumulate a record and
+not done so.
 
 That result is worth stating plainly rather than softening, because the three properties measure
 something this bundle is **not optimised for**. Sustained / engine-agnostic /
@@ -141,12 +148,20 @@ Cross-linked in both directions by hand (`related_components:` on each side), an
 through the shared research study `base-project-template-evidence` via
 `related_research:` ⇄ `related_components:`.
 
-That second pair is not redundancy. `scripts/generate.py` checks `related_components:` **only on
-research entries** — a bundle's or component's `related_components:` is validated by nothing and
-rendered by nothing (verified by mutation: a deliberately bogus slug on a bundle produced exit 0
-and zero occurrences in `GUIDE.md`, while the same bogus slug in `related_research:` raised).
-The research-entry path is therefore the only one the generator actually enforces, so the link
-that survives a refactor runs through it.
+That second pair is not redundancy, though the reason is narrower than it first appears.
+**Both pairs are now mechanically checked.** Until this entry's own commit, `related_components:`
+on a component or bundle was validated by nothing — a deliberately bogus slug produced exit 0 and
+rendered nowhere, while the same bogus slug in `related_research:` raised — so that same commit
+added the missing `_check_cross_links` call covering it (`scripts/generate.py`, at the end of the
+cross-link block). A dangling slug in either pair now fails the build.
+
+What still differs between them is **visibility, not enforcement**: `related_components:` is
+rendered nowhere outside the research table, because `_relevant_components_cell()` is only called
+from `render_research_table()`. So the bundle ⇄ component pair is enforced but invisible in
+`GUIDE.md`, while the research pair is the one a reader actually sees rendered in both
+directions. Keeping both is what makes the relationship simultaneously machine-checked and
+legible — surfacing `related_components:` in a rendered table is a separate layout decision,
+deliberately left unmade here.
 
 The evidence base is the template's, not separately gathered: this bundle inherits every content
 decision the template made, and the honest limits of that evidence — in particular that the one

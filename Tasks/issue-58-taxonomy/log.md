@@ -245,3 +245,103 @@ Recorded deliberately without softening, along with the reason the axes fit this
 No `roast.md`. This work is not self-ROASTed; the epic arranges an independent one.
 No push attempted — per the epic's standing protocol, workers commit and the orchestrator
 pushes. No token was looked for anywhere.
+
+---
+
+# IMPROVE round 1 — independent ROAST returned BLOCK on 783a294
+
+## 13. F1 (blocking) — I published a false claim wearing a mutation reproduction
+
+The deep-dive's "Relationship to `base-project-template`" section told a published reader that
+`related_components:` on a bundle "is validated by nothing and rendered by nothing", citing my
+own § 5 mutation as evidence. **My own commit's `generate.py` validates it** — I added the call
+in § 7-8 of this same log, and proved it fires.
+
+**Cause, recorded because the shape of it generalises:** I wrote that passage against the § 5
+pre-patch findings, then changed the facts in § 8, and never went back. The log is correctly
+sequenced — it says "was checked by nothing *until*" throughout — but the artifact was written
+in the present tense and left behind. *A finding you write down before you fix the thing becomes
+false the moment you fix it, and nothing warns you.* The log being right is not a defence: the
+deep-dive is the published half.
+
+Worse than an ordinary error, and rightly blocking: a false claim carrying a reproduction
+instructs the reader not to check it, and the sentence "the link that survives a refactor runs
+through [the research path]" is exactly the argument a future maintainer would use to delete the
+gate I had just added — eight lines of diff from a code comment saying the opposite.
+
+**Fix.** Kept the true half, dropped the false half, stated that this commit closed the gap, and
+re-grounded the reason for keeping the research pair on what is *still* true: the distinction is
+now **visibility, not enforcement**.
+
+Re-verified both halves of the corrected passage rather than trusting the edit:
+
+```
+-- related_components dangling on bundle:
+entries with a related_components: slug not found among data/components or data/bundles: ["base-project-worked-example.related_components='base-project-template-TYPO'"]
+   EXIT=1
+-- related_research dangling on bundle:
+entries with a related_research: slug not found among research/: ["base-project-worked-example.related_research='base-project-template-evidence-TYPO'"]
+
+-- rendered-nowhere half still true: only 2 occurrences in GUIDE.md
+line 163  (bundles table: deep_dive + related_research)
+line 868  (research table)
+```
+No component⇄bundle link renders anywhere. Both claims in the new text are now true.
+
+## 14. F3 — a self-criticism that cut past accuracy is still an accuracy defect
+
+I wrote that this build ranks below `gtm-starter-kit` "because that bundle at least has a
+maintenance history to point at." The registry's own data:
+
+```
+$ grep -n "^| Sustained" deep-dives/bundles/gtm-starter-kit.md
+66:| Sustained | **No** | Created and pushed the same day (2026-04-03); 12 commits total, zero since |
+```
+
+It has no maintenance history either. On the three axes we are **tied** (0 confident / 1
+inherited each). Corrected to a tie, with the false premise named rather than quietly deleted —
+and the observation kept that an abandoned **No** is arguably the worse signal of the two, since
+it had the chance to accumulate a record and didn't. Fixed for accuracy, not softened.
+
+## 15. F4 — two write-ups claiming the same superlative
+
+`gtm-starter-kit.md:70` already says "The weakest bundle in this registry on this scoring". My
+entry claimed it too — mutually exclusive claims introduced by my own commit. Scoped mine to a
+tie rather than editing another entry's write-up.
+
+**Found a second instance the ROAST did not flag**, on my own re-read: the scoring-table intro
+(line 111) separately claimed the build "scores **worse than every other bundle in this
+catalog**" — same false exclusive superlative, same defect class. Fixed both, not just the
+reported one.
+
+## 16. F5 — "six of seven" enumerated five
+
+The unenumerated rung was 5, which is README prose and therefore the *least* engine-locked item
+in the bundle — so the honest number is **five**. Rewrote the row to say five and to account for
+both non-locked rungs, including the note that rung 5's portability is "a thin kind of
+portability to claim credit for" (it ports because it isn't a working integration).
+
+## 17. F6 — the YAML now carries the caveat the deep-dive had
+
+`components_bundled:`'s rung-5 line said "by design" without recording that § 8.5 is explicitly
+the executor's recommendation and not the owner's decision. Added; the YAML is what
+`generate.py` reads, so the caveat belongs there too, not only in prose.
+
+## 18. Not changed, per the epic's explicit rulings
+
+- **F2** — `GUIDE.md:163`'s homepage URL 404s because the build doesn't exist. Epic ruled: keep
+  the URL (it is the correct final target) and handle it as a merge-ordering constraint — 8.0
+  must not reach `main` ahead of the build. Not my edit.
+- **F2b** — the five `unverified:` entries render nowhere, because `_unverified_block()` is only
+  called from the eval-framework/benchmark detail renderers, never for bundles. Real gap; epic
+  ruled it a follow-up issue, same class as the rendering decision already scoped out of #58.
+
+## 19. Post-fix verification
+
+```
+$ python3 scripts/generate.py
+wrote .../GUIDE.md (103 components, 7 instruction-conventions, 9 bundles, ..., 132 deep-dives)
+EXIT=0
+```
+`GUIDE.md` is **unchanged** by this round — every edit landed in deep-dive prose or in a YAML
+string that no table renders. That is the expected result and was checked, not assumed.

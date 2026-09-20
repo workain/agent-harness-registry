@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Демо-урок — заявка</title>
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <main class="card">
+      <h1>Запишитесь на демо-урок</h1>
+      <p class="lead">Оставьте имя и почту — мы вернёмся с датой и временем.</p>
+
+      <!--
+        The form posts straight to an external form-intake service: this project has no
+        backend of its own. Replace the action with your own endpoint before deploying.
+
+        `novalidate` is deliberate. `required` and `pattern` below stay the single
+        declarative source of truth for what "valid" means; `novalidate` only turns off the
+        browser's own bubbles so that src/validate.js can read those same constraints through
+        the Constraint Validation API and render the messages inline.
+      -->
+      <form
+        id="signup-form"
+        action="https://formspree.io/f/REPLACE_WITH_YOUR_FORM_ID"
+        method="POST"
+        novalidate
+      >
+        <label for="name">Имя</label>
+        <input id="name" name="name" type="text" required autocomplete="name" />
+        <p class="error" data-error-for="name" hidden></p>
+
+        <label for="email">Email</label>
+        <input
+          id="email"
+          name="email"
+          type="email"
+          required
+          pattern="[^@\s]+@[^@\s]+\.[^@\s]+"
+          autocomplete="email"
+        />
+        <p class="error" data-error-for="email" hidden></p>
+
+        <button type="submit">Отправить заявку</button>
+      </form>
+    </main>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

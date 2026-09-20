@@ -1028,3 +1028,86 @@ Every session has its own worktree; the shared tree sits detached at `7b7c678` h
 harness bookkeeping. Order 7 is the only order that never got one — idle 22 minutes with an
 unresolved tool call, and the dispatcher has sent it a clean-start command. It is not a
 dependency of this epic.
+
+## 2026-09-20 16:45 — rung 3 ACCEPTED (`1568602`); spec errors #4 and #5; rung 4 dispatched
+
+### Verified by the epic from a fresh `git clone`, not from the child's report
+
+```
+100755 blob 9e3d8d0b…  .claude/hooks/selftest-branch-guard.sh   (committed mode)
+-rwxr-xr-x                                                       (clone checkout)
+./.claude/hooks/selftest-branch-guard.sh -> RESULT: PASS — 17/17, 8 KNOWN LIMIT(S), exit 0
+```
+
+**Exec-bit contrast reproduced**, landing exactly as #55 predicted: `chmod -x` → `./…` returns
+`Permission denied`; `bash …` still prints `PASS — 17/17`. The ordinary invocation hides the loss
+completely — which is why the «Проверка» block now uses the direct form.
+
+**The epic installed its own `case "$PWD"` cheat hook** rather than trusting the child's M1 — a
+hook that never calls `git` at all. The suite caught it (`RESULT: FAIL`). The old 7/7 suite
+passed that same class of hook. The discriminating fixtures (`main-repo`@`feature/x` must ALLOW,
+`feature-work`@`main` must DENY) are doing real work, not decorating the suite.
+
+The build ships **four demonstrable ways a gate here goes silently absent** — confirm-not-
+discriminate, the regex/`read -r` blind spots, `init.defaultBranch`, and the exec bit — all
+marked `LIMIT`, never `PASS`.
+
+### Spec errors #4 and #5, both in § 8.3's failure story, both verified by the epic
+
+**#4 — CVE-2025-59536 is not the hooks vulnerability.** The article's own text:
+
+> "in response to our **first reported vulnerability [GHSA-ph6w-f82w-28w6]**. This new dialog
+> explicitly mentions that commands in **.mcp.json** may be executed…"
+
+Timeline: `Aug 29 2025 — GHSA-ph6w-f82w-28w6` / `Oct 3 2025 — CVE-2025-59536` /
+`Jan 21 2026 — CVE-2026-21852`. The hooks RCE is the **GHSA**; CVE-2025-59536 is the **MCP
+consent bypass**.
+
+**#5 — the "hook ran before the trust dialog" claim is also wrong.** The dialog *was* shown and
+accepted; what was missing was the per-command approval an ordinary bash command receives. The
+"before the user could even read the trust dialog" text is real but belongs to the MCP
+vulnerability.
+
+**Consequence: § 8.3 misfiled an MCP failure story into rung 3.** CVE-2025-59536 is a *rung 5*
+story, and routing it there strengthens 8.5, which was relying on Invariant Labs plus the lethal
+trifecta alone. Routed.
+
+### The deviation the epic confirmed — and the pattern it models
+
+The child widened the `rm -rf` hook from "wildcard" to **a target the shell expands rather than
+one you wrote out** (`*`, `?`, `~`, `$VAR`). The cited Docker incident command is
+`rm -rf tests/ patches/ plan/ ~/` — **no wildcard in it**. Their sentence:
+
+> A glob-only hook justified by that citation would be a gate named after a case it doesn't
+> catch: the citation doing the reassuring while the regex did nothing.
+
+Shipping the literal instruction would have planted a live instance of the defect **inside the
+rung that warns about it**. Confirmed, and kept.
+
+**The handling is the pattern this epic wants from children:** deviate, say so explicitly, give
+the reasoning, and ask — rather than silent compliance producing a defective artifact, or silent
+deviation producing an unreviewable one. Recorded here so later rungs' briefs can cite it.
+
+### Two limits accepted and routed to 8.9 rather than waved through
+
+- `$comment-rm-rf` as a second top-level key is **untested against a live Claude Code load**.
+  Same risk class as `$comment` itself, which the template already relies on.
+- **No live `claude` session proves Claude Code loads the settings file.** The self-test drives
+  the hooks' real command strings with the real PreToolUse payload — that proves the logic, not
+  the wiring. #55's own header states the same limit about itself.
+
+Both are now 8.9 verification items.
+
+### Rung 4 dispatched — with the collision named up front
+
+§ 8.4's acceptance criterion demands **a real `deploy` invocation with a result, visible in the
+build's record**. That collides head-on with "clones with no keys": there is no Cloudflare
+account and no `wrangler` credentials, and there must be no secret in the tree.
+
+Instruction given: resolve it the way rung 3 resolved its equivalent — **run what genuinely runs
+(`npm run build`, which really produces `dist/`), and state the boundary exactly where it falls**,
+making the stopping point a documented boundary rather than a gap. Explicitly forbidden: faking a
+deploy, stubbing `wrangler`, or writing a transcript of a deployment that did not happen — the
+same defect class as rung 5's forbidden mock MCP server, an artifact presenting itself as a
+working connection. And told plainly: if the criterion cannot be honestly met in full, say so
+rather than hiding it, because that judgement is the epic's to make.

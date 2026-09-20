@@ -845,3 +845,55 @@ makes shipping the spec's text verbatim the one thing rung 2 must not do.
 
 All four of that child's sources (§ 8.2, the axis row, `02-memory.md` § 4.2, the SpAIware
 article dated 2024-09-25) were fetched and agree with the spec; no contradiction this time.
+
+## 2026-09-20 15:40 — delta confirmed; one last finding; the mechanical form of the routing rule
+
+ROAST delta pass on `db62edd`: **clean, round-2 PASS stands** (artifact `7e9aded`). Regeneration
+`EXIT=0`, porcelain empty, all three ACs hold, and the one-line `GUIDE.md` move is exactly the
+expected consequence of editing a rendered field.
+
+**Truncation side effect checked rather than assumed.** Old `'Claude Code (hooks, skills,
+subagents, setti…'` vs new `'Claude Code — 5 of 7 rungs are its conventio…'`. Both clip mid-word,
+as do four of the other eight bundles in that column — the table's normal behaviour, not a
+regression. The clip lands inside "conventions" (reconstructable) and leads with the load-bearing
+number. The bad case would have been a clip mid-qualifier, ending at "only rungs 1 and"; it
+doesn't.
+
+R1 is also better sourced than the ROAST's own suggestion: § 8.0 does name the field verbatim
+(«`related_components: [base-project-template]` в новой YAML»), so "dropping it would silently
+narrow the spec" is sourced, not a rationalisation.
+
+### Final finding — five items, four rungs, one missing
+
+`base-project-worked-example.yaml:27`'s parenthetical `(hooks, skills, subagents,
+settings.json, plan-mode)` lists five items resolving to **four** distinct rungs — `hooks` and
+`settings.json` are both rung 3, per the deep-dive's own "`.claude/settings.json` `PreToolUse`
+hooks (3)" — and omits rung **2** (`~/.claude/projects/*/memory/`), which the deep-dive does
+enumerate. A reader counting the parenthetical to check "5 of 7" concludes either that
+`settings.json` is its own rung or that memory isn't engine-locked; the latter contradicts the
+entry's own Component-coverage table, which scores memory **Partial** because the runtime layer
+is a Claude Code path. Verified against the deep-dive's enumeration (rungs 2, 3, 4, 6, 7).
+
+Fix dispatched: `(memory, hooks, skills, subagents, plan-mode)`. Folded into the same commit
+series rather than left for later — the whole subject of this thread is that small stale claims
+are cheap to leave and compound.
+
+### The routing rule, now in mechanical form — and corroborated against the reviewer
+
+The ROAST corroborated the child's diagnosis **against themselves**, which is stronger evidence
+than agreeing with it: their own round-2 sweep grepped for `Six of seven` and came back clean,
+because the YAML never said "six of seven" — it said "only rung 1 ports". **They searched for the
+wording of their own finding instead of the proposition it corrected.** The same failure,
+committed independently by author and by reviewer, which is decent evidence it is structural
+rather than either being careless.
+
+**Mechanical form, carried into all six remaining rungs:**
+
+> A correction has a **subject**, not a location. List what the old claim *asserted*, then find
+> every place that assertion lives, **however worded** — rather than grepping the finding's own
+> phrasing.
+
+That is a checklist item rather than a discipline, which is the point. Several later claims will
+live in **three** places apiece — the YAML, the deep-dive, and the build's own README once 8.8
+exists: rung 1's `wc -l` budget, rung 3's two-hooks-one-selftest, rung 5's declined slot. Three
+is where this stops being catchable by memory.

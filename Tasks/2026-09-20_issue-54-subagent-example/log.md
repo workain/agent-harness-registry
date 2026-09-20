@@ -106,3 +106,22 @@ starting from that rather than re-discovering it independently:
 - Provenance: this entry's account of order 3's defect and fix is read directly from
   `Tasks/2026-09-20_issue-53-skill-example/roast.md` (fetched from this same checkout, not a
   paraphrase from memory) — quoted claims above match that file's own text.
+
+## 2026-09-20 — independent ROAST (agent af309ef075099583b) — PASS, one non-blocking fix applied
+
+Dispatched a fresh subagent with no prior context to verify everything above from scratch (not
+trust this log). Verdict: **PASS**. It independently re-ran the byte-0 check, the YAML parse, the
+`render_templates.py --check`, the README row-diff-against-`origin/main` check, and cross-read
+`edcc353` directly to confirm the defect was real. Full detail in `roast.md`.
+
+One non-blocking finding: this log's step-4 entry above claimed the `agents/README.md` byte-0
+paragraph was "mirroring `skills/README.md`'s paragraph in substance, not verbatim" — the roast
+correctly caught that the paragraph as first written was in fact the same sentence with only two
+noun substitutions, not independently worded, contradicting that claim. (The `_example-reviewer.md`
+comment block *was* genuinely reworded — only the README paragraph fell short.) Not part of
+issue #54's acceptance criteria, so it didn't block, but fixed anyway for the log to be accurate:
+rewrote `common/.claude/agents/README.md`'s paragraph around the routing-logic rationale instead
+of the byte-0 mechanics, genuinely different sentence structure and framing from
+`skills/README.md`'s version. Re-ran `render_templates.py` (propagates to both variants) then
+`--check` → PASS. Re-verified byte-0 + YAML parse on all three `_example-reviewer.md` copies
+unaffected by this change (only `agents/README.md` touched).

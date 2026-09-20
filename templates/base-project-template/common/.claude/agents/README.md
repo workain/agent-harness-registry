@@ -10,7 +10,10 @@ See `_example-reviewer.md` for a worked example of the format (routing-logic `de
 mechanical `tools:` guard, a fixed-format verdict) — delete it once you've added your project's
 first real subagent.
 
-Frontmatter must start at byte 0 of a subagent file — no preamble, not even a comment, above the
-opening `---`. That's why `_example-reviewer.md`'s own "TEMPLATE FILE" note sits *after* the
-closing `---` instead of before it, unlike this repo's other `_example.md`-style files (e.g.
-`environment/_example.md`), which have no frontmatter contract and can safely lead with a comment.
+A subagent's `description` is routing logic, not documentation — the model reads it to decide
+whether to delegate here at all, before it ever sees the rest of the file. That only works if the
+frontmatter parses, which means it has to start at byte 0: nothing, not even a `<!-- TEMPLATE
+FILE -->` comment, may precede the opening `---`. Contrast `.claude/environment/_example.md`,
+which carries no frontmatter contract and so can open with a comment safely — a subagent file
+cannot. `_example-reviewer.md` puts its own such comment after the closing `---` for exactly this
+reason.

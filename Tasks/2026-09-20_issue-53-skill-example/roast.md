@@ -73,3 +73,40 @@ criteria I was asked to check mechanically and doesn't affect any of them (front
 search-query-style description, concrete command, narrow scope, single example, render
 parity all hold regardless) — flagging it only because the work order's "Что сделать" text for
 Наряд 3 calls it out by name as part of item (3). Optional follow-up, not a reason to block.
+
+Addressed in commit 221d6ab — see re-verify below.
+
+## Re-verify (221d6ab)
+
+Coordinator added the exact required footnote opening line to
+`common/.claude/skills/_example/SKILL.md`, propagated to both variants via
+`render_templates.py`. Re-verified narrowly, not a full re-review:
+
+- `git diff 088012b..221d6ab --name-status`: exactly 5 files — the three `_example/SKILL.md`
+  copies (common + with-git + without-git, each `M`), `Tasks/2026-09-20_issue-53-skill-example/
+  log.md` (`M`, new dated entry), and `Tasks/2026-09-20_issue-53-skill-example/roast.md` (`A`,
+  this file, added byte-for-byte identical to what I had staged in the prior round — confirmed
+  via `git diff HEAD -- .../roast.md` returning empty after the commit). No unrelated files.
+- `git diff 088012b..221d6ab -- templates/base-project-template` shows the same 3-line hunk
+  added in all three copies, nothing else touched:
+  ```
+  +`description` is the only thing the model sees when choosing among installed skills — verify
+  +after writing via `/skills`, don't assume it fires just because you wrote it.
+  ```
+- Matches the Наряд 3 footnote spec verbatim in substance: "description — единственное, что
+  видит модель при выборе среди установленных скиллов; проверьте после написания через
+  `/skills`, не полагайтесь на то, что скилл сработает, потому что вы его написали" — the
+  delivered line is a faithful rendering (same claim, same imperative to check via `/skills`,
+  same "don't assume/rely on it firing just because you wrote it" close).
+- Re-ran `python3 templates/base-project-template/render_templates.py --check` myself →
+  `PASS — both variants match their source fragments/common files.`
+- Re-parsed the frontmatter YAML independently (fresh `yaml.safe_load`) → still a dict with
+  `name`/`description` present (`create-task-folder`, 506 chars — footnote body text doesn't
+  touch the frontmatter block, as expected).
+- Re-ran the skills-directory scan → still exactly one (`_example`) under `skills/` in each of
+  `common/`, `with-git/`, `without-git/`; `diff`'d all three `SKILL.md` copies against each
+  other → byte-identical.
+
+No new findings. The one nit from the original review is now closed.
+
+**Verdict stands: PASS.**

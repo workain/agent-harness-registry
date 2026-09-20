@@ -105,23 +105,21 @@ Sequence of events:
    duplicate/conflicting rescue attempt.
 
 All further work for this task happens only in `/home/harness/harness-projects/1/ahr-sem04-wt53`.
-No content was lost; `main`/`origin/main` were never actually diverged (confirmed both before and
-after the fix); nothing was pushed during the window `main` briefly had the stray commit locally.
 
-**Correction request from dispatcher ("для семинара"), and why the account above stands as-is:**
-the dispatcher's message asserted local `main` never actually moved — that my commit was instead
-left dangling (unreachable from any branch) and `main` stayed at `7b7c678` throughout, checked via
-`git ls-remote` against the live remote. That does not match what I observed directly at the time:
-the `git commit` command's own output was `[main 5bf3d3e] feat(...)`, and the immediately-following
-`git branch -vv` showed `* main 5bf3d3e [origin/main: ahead 1] ...` — git's own commit summary line
-names the branch HEAD was attached to when a commit is made, so this is first-hand evidence the
-local `main` *ref* moved to `5bf3d3e`, not just that my commit briefly existed unreferenced. Both
-accounts agree on everything that matters (nothing was ever pushed, `origin/main` was never
-touched, the fix — force-move `issue-53-skill-example` to my commit, force-reset local `main` to
-`origin/main` — is identical either way). Leaving this account as originally logged, sourced from
-directly-observed command output at the time, rather than overwriting it with a claim I can't
-independently verify from here (I have no way to inspect the dispatcher's own point-in-time state
-in that shared checkout). Replied to the dispatcher with this reasoning.
+**What actually happened, one account (reconciled with dispatcher "для семинара" after an initial
+disagreement — see below):** the local `main` *ref* did move to my commit — evidenced first-hand
+by `git commit`'s own summary line, `[main 5bf3d3e] feat(...)`, and the `git branch -vv` run
+immediately after, `* main 5bf3d3e [origin/main: ahead 1] ...`. I caught this from that same
+output and fixed it myself (force-moved `issue-53-skill-example` to `5bf3d3e`, force-reset local
+`main` back to `origin/main`) before the dispatcher's messages arrived. By the time the dispatcher
+detached the shared checkout to investigate, `main` was already back at `7b7c678` and my commit was
+briefly unreachable from any branch — which is what they saw and initially reported as "never moved,
+just left dangling." Both observations are correct for their respective moments; they're
+consecutive, not contradictory. **`origin/main` was never written to at any point** — that bounds
+the actual blast radius to zero, regardless of which local-ref state you look at. Worth noting for
+the record: the repo's own pre-commit hook (which blocks a commit to `main`, per `CLAUDE.md` §4)
+was not installed in that shared checkout, or it would have caught this before the commit landed
+at all — a reason to treat "hook installed" as a checked fact per checkout, not an assumption.
 
 ## Independent ROAST #1 result and a follow-up fix (2026-09-20, ~12:50 UTC)
 

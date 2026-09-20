@@ -45,6 +45,7 @@ mechanical Block-I gate that the `without-git/` variant deliberately does not.
 | `.claude/skills/` | Empty until you have a recurring procedure worth packaging. | Keep the directory; delete/ignore its `README.md` once you understand it. |
 | `.claude/skills/_example/SKILL.md` | A worked example of the skill format — frontmatter with `name`/`description`, a concrete command, narrow scope. | Yes — delete once you've added your project's first real skill. |
 | `.claude/agents/` | Empty until you need a delegated specialist persona. | Same as skills. |
+| `.claude/agents/_example-reviewer.md` | A worked example of the subagent format: routing-logic `description`, a mechanical `tools:` guard excluding `Write`/`Edit`, a fixed-format verdict. | Yes, once you've added a real subagent — or keep as a style reference. |
 | `.claude/mcp-notes.md` | A 5-point note on when MCP is (and isn't) worth connecting, and what to check before you do. | No — read it before adding your project's first `.mcp.json` entry, not after. |
 | `.claude/environment/` | Non-obvious facts about your specific tooling/substrate (which of two similarly-named tools is correct here, etc.). | Keep the slot; `_example.md` is a worked example, delete once you've added a real one. |
 | `.claude/memory-notes.md` | Discipline for this runtime's own built-in auto-memory feature — one entry per fact, keep `MEMORY.md` an index, don't trust untrusted-sourced entries as instructions. | No — short, and the thing standing between auto-memory and a second `CLAUDE.md`. |

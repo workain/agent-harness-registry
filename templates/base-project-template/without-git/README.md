@@ -36,6 +36,7 @@ That's it — everything else in this directory works with no further setup.
 | `Tasks/README.md` | The one rule this template asks you to keep: write a running log while you work, and get a second look before calling something done. | No — this is the cheapest, most useful habit in the whole template. |
 | `.claude/skills/`, `.claude/agents/`, `.claude/environment/` | Empty slots for things you'll only need later (a repeatable procedure, a specialist persona, an odd fact about your setup). | Fine to ignore entirely until you need one. |
 | `.claude/skills/_example/SKILL.md` | A worked example of the skill format — frontmatter with `name`/`description`, a concrete command, narrow scope. | Yes — delete once you've added your project's first real skill. |
+| `.claude/agents/_example-reviewer.md` | A worked example of the subagent format: routing-logic `description`, a mechanical `tools:` guard excluding `Write`/`Edit`, a fixed-format verdict. | Yes, once you've added a real subagent — or keep as a style reference. |
 | `.claude/mcp-notes.md` | A 5-point note on when MCP is (and isn't) worth connecting, and what to check before you do. | No — read it before adding your project's first `.mcp.json` entry, not after. |
 | `.claude/memory-notes.md` | Discipline for this runtime's own built-in auto-memory feature — one entry per fact, keep `MEMORY.md` an index, don't trust untrusted-sourced entries as instructions. | No — short, and the thing standing between auto-memory and a second `CLAUDE.md`. |
 

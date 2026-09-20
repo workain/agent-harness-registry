@@ -14,6 +14,12 @@ it doesn't summarize.
 
 ## Safety / scope boundaries
 
+- `.claude/settings.json` is executable config, not documentation — review a diff to it like code, especially from a PR or fork.
+- Hooks and the `env` block run *before* the folder-trust dialog — don't open `claude` in an unvetted clone without `--setting-sources user` or reading the file first.
+- `bypassPermissions` only in a throwaway, isolated environment: no secrets, no outbound network.
+- `deny` in `permissions` always beats `allow` — that, not prose in this file, is the only reliable way to forbid an action.
+- Evidence: CVE-2025-59536 (RCE via a pre-trust-dialog `SessionStart` hook) and CVE-2026-21852 (API-key leak via `ANTHROPIC_BASE_URL` in `settings.json`) — both are Claude Code's own configuration-surface CVEs, not hypothetical.
+
 <Delete this section entirely if nothing applies. Only fill in constraints an agent
 would not otherwise infer: things it must never do autonomously (e.g. "never deploy to
 prod without explicit approval," "never touch the `payments/` directory," "never merge

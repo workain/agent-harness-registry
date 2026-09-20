@@ -1111,3 +1111,69 @@ deploy, stubbing `wrangler`, or writing a transcript of a deployment that did no
 same defect class as rung 5's forbidden mock MCP server, an artifact presenting itself as a
 working connection. And told plainly: if the criterion cannot be honestly met in full, say so
 rather than hiding it, because that judgement is the epic's to make.
+
+## 2026-09-20 17:00 — spec error #4 was already SHIPPED and public; correction to this epic's own reading; ROASTs dispatched
+
+### #4 is the most consequential finding of the day, because it had already shipped
+
+Order 1 merged the CVE misattribution into `fragments/claude-core-top.md` — **the file that copies
+into every adopting project**. Filed by the dispatcher as **#68** with a session spawned to fix it.
+This epic found it while fact-checking a failure story for rung 3; it was never in scope.
+
+### CORRECTION to this epic's own reading — the defect is the PAIRING, not either phrase
+
+This log previously recorded that the "before the trust dialog" claim is simply wrong. That is
+too strong, and the dispatcher's independent check corrected it. **NVD's own description of
+CVE-2025-59536** reads:
+
+> "Claude Code could be tricked to execute code contained in a project **before the user accepted
+> the startup trust dialog**" (fixed 1.0.111, CVSS 8.7)
+
+So "before the trust dialog" **is accurate about CVE-2025-59536**. It is wrong only when attached
+to the **hook** mechanism — which is GHSA-ph6w-f82w-28w6, and whose narrative is the opposite
+(*"we clicked 'Yes, proceed' … Surprisingly, the Calculator app opened immediately, with no
+additional prompt or execution warning"* — the dialog WAS accepted; what was missing was the
+**per-command** approval an ordinary bash command gets).
+
+**Consequence for rung 5**, which is where this epic routed CVE-2025-59536: the text must describe
+it as **the consent bypass**, not as "the MCP vulnerability" — NVD frames it more broadly than
+`.mcp.json`. Carried into 8.5's brief. Rung 3's shipped text must state the pairing correctly; the
+rung-3 ROAST is checking exactly that.
+
+### The rung-7 requirement this produces — the strongest one yet
+
+**Three checks passed the misattribution:** the work order asserted it, the dispatcher's issue
+repeated it verbatim, and an independent ROAST "re-verified against live NVD records". What that
+ROAST verified was that the CVE *numbers resolve* and the *CVSS scores match*. **None of those
+could catch a real identifier attached to the wrong mechanism.**
+
+> **Checking that a citation resolves is not checking that it says what you claim.**
+
+#68's acceptance criteria now require quoting, per identifier, the source sentence that supports
+the *mechanism* — and require telling the reviewer that "both CVEs exist and the scores match" is
+**a reproduction of the original failure, not a verification**.
+
+This is rung 7's third shipped lesson, alongside the log-to-deliverable ratio and the
+expiring-findings hazard. All three came from this build's own work rather than from a paper, and
+this one has three failed checks attached as evidence.
+
+### ROASTs dispatched — the backlog is cleared rather than deferred
+
+The dispatcher endorsed not letting these pile up: *"a batch of four reviews arriving at the end
+is where a BLOCK becomes unaffordable and quietly becomes a nit."* Started now rather than
+alongside rung 5:
+
+- **`ahr58-roast-scaffold-r1-r2`** — scaffold `c1997b1`, rung 1 `3d58367`, rung 2 `629d0c2`.
+  Required to issue a **separate verdict per commit**, not one blended verdict. Pointed at the
+  shapes this build has already produced: whether the Playwright suite could pass for the wrong
+  reason (the same confirm-don't-discriminate defect rung 3 proved live), whether each
+  `DECISIONS.md` entry really traces to its cited log section, and whether the corrected
+  code-claims match the code.
+- **`ahr58-roast-rung3-hooks`** — rung 3 `1568602`. Told to run all three of the author's
+  mutations and then **invent a fourth the author didn't anticipate** — a subtly wrong hook rather
+  than an obviously wrong one — and to look for a **fifth** boundary the author missed. Explicitly
+  told not to re-litigate the confirmed `rm -rf` deviation but to check the widened rule for false
+  positives on ordinary commands (`rm -rf dist`, `rm -rf node_modules`), since **a rule that blocks
+  too much gets disabled, which is its own silent failure.**
+
+Both carry the citation standard above.

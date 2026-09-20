@@ -87,6 +87,8 @@ fi
 HOOK_OUT=""; HOOK_ERR=""; HOOK_RC=0
 run_hook() {
   local workdir="$1" cmd="$2" payload errfile
+  [ -n "$workdir" ] && [ -d "$workdir" ] && [ "${workdir#"$TMPROOT"}" != "$workdir" ] \
+    || die "internal: refusing to run the hook in '${workdir:-<empty>}' — not a directory under $TMPROOT."
   payload="$(jq -nc --arg cmd "$cmd" --arg cwd "$workdir" '{
     session_id: "selftest-branch-guard",
     transcript_path: "/dev/null",
@@ -170,7 +172,17 @@ new_repo() {
   git -C "$dir" config commit.gpgsign false   # a global signing default would break the fixtures
   REPO="$dir"
 }
-add_commit() { git -C "$1" commit -q --allow-empty -m "selftest fixture" >/dev/null 2>&1 || die "fixture commit failed in $1 (is git usable here?)"; }
+# The path guard is not paranoia: `git -C ""` does NOT fail, it silently operates on the CURRENT
+# directory. Combined with a fixture that failed to build, that put ten empty commits into this
+# template's own repository during development. A self-test must never be able to commit anywhere
+# but its own throwaway fixtures.
+add_commit() {
+  local dir="${1:-}"
+  [ -n "$dir" ] && [ "${dir#"$TMPROOT/"}" != "$dir" ] && [ -d "$dir/.git" ] \
+    || die "internal: refusing to commit in '${dir:-<empty>}' — not a fixture repo under $TMPROOT. (git -C \"\" would have committed into the current directory, i.e. YOUR repository.)"
+  git -C "$dir" commit -q --allow-empty -m "selftest fixture" >/dev/null 2>&1 \
+    || die "fixture commit failed in $dir (is git usable here?)"
+}
 
 # --- the cases ---------------------------------------------------------------
 printf 'branch-guard selftest\n'

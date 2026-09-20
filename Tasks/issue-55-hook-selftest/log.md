@@ -174,6 +174,58 @@ printed separately from passes, with the remedy next to it — and the final ver
 count. Mutation M7 below confirms the limit case is itself discriminating: widen the comparison
 to include `trunk` and it goes red, telling the reader to update the case.
 
+## 3c. The same bug's third face — it committed into this repository
+
+Found during a final clean-state check, after the fix in §3b was already in: `git log
+origin/main..HEAD` showed **ten empty `selftest fixture` commits** on this branch that I did not
+write.
+
+Cause, confirmed by direct probe rather than inferred:
+
+```
+$ d=$(mktemp -d); cd "$d"; git init -q .; git -C "" commit -q --allow-empty -m "landed via empty -C"
+$ git log --oneline -1
+e7d975e landed via empty -C
+```
+
+**`git -C ""` does not fail. It silently skips the directory change and operates on the current
+directory.** So in the pre-fix script, when `new_repo`'s `die` killed only its subshell (§3b),
+`$repo` came back as the empty string, and `add_commit ""` ran `git -C "" commit --allow-empty`
+from a working directory inside this checkout. Five `add_commit` calls per run × the two
+pre-fix runs I made under the failing-`init` shim = exactly the ten commits observed.
+
+Three things follow, and all three are worth more than the inconvenience:
+
+1. **The shipped script now refuses to act on a path that is not a fixture directory under its
+   own `$TMPROOT`** — in `add_commit` and in `run_hook`. The script's header claims it "does not
+   touch your repo"; that claim was not previously enforced by anything, and this is what
+   enforcing it looks like. Under the same shim, the hardened script now stops at
+   `FATAL: git init failed …`, exit 2, and adds no commits:
+
+```
+branch-guard selftest
+  settings: /home/harness/harness-projects/1/ahr-sem04-wt55/templates/base-project-template/with-git/.claude/settings.json
+  hook timeout: 10s  (a hook that misses its timeout does NOT block — it is silently skipped)
+  scratch:  /tmp/branch-guard-selftest.ArMzuGax
+
+
+FATAL: git init failed in /tmp/branch-guard-selftest.ArMzuGax/main-with-history
+EXIT=2
+```
+
+2. **The ten commits were removed from this branch** with `git rebase --empty=drop origin/main`.
+   They were empty, so no file content was ever at risk; `git diff` against the pre-cleanup tree
+   is empty. They were never pushed — the dispatcher had published `d904774`, which precedes all
+   of them.
+
+3. **This is the same defect as §3b, and I only found it because of a routine check I nearly
+   skipped.** The §3b fix addressed the visible symptom (false PASSes) and I moved on; the
+   silent side effect (commits in the wrong repository) was a second consequence of the same
+   root cause and survived it. Recorded rather than quietly cleaned up, because "my self-test
+   committed to my repo without telling me" is precisely the class of silent failure this order
+   is about, and a log that only records the failures that were easy to find is not an honest
+   log.
+
 ## 4. The passing run — verbatim
 
 Run from the variant directory, `bash .claude/hooks/selftest-branch-guard.sh`:
@@ -182,7 +234,7 @@ Run from the variant directory, `bash .claude/hooks/selftest-branch-guard.sh`:
 branch-guard selftest
   settings: /home/harness/harness-projects/1/ahr-sem04-wt55/templates/base-project-template/with-git/.claude/settings.json
   hook timeout: 10s  (a hook that misses its timeout does NOT block — it is silently skipped)
-  scratch:  /tmp/branch-guard-selftest.NfJLQhWm
+  scratch:  /tmp/branch-guard-selftest.KxnySnSi
 
   PASS  commit on main — permissionDecision=deny, reason text matches exactly.
   PASS  commit on master — permissionDecision=deny, reason text matches exactly.
@@ -456,6 +508,7 @@ therefore the dispatcher's; commits here are local until it pushes them.
 - [x] Script written, executable, network-free
 - [x] Passing run captured, in-repo and from a copied project root
 - [x] Harness defect found and fixed (subshell `die`), with before/after evidence
+- [x] Its second consequence found and fixed (`git -C ""` committing into this repo); branch history cleaned
 - [x] Hook boundary (`init.defaultBranch` not main/master) surfaced as a reported LIMIT
 - [x] Seven mutations captured going red for the right reasons; `settings.json` restored clean
 - [x] Quick-start step + table row in `with-git/README.md`

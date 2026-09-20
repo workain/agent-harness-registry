@@ -72,3 +72,38 @@
   name: create-task-folder
   description length: 506
   ```
+
+## Incident: shared checkout collision (2026-09-20, ~12:39-12:42 UTC)
+
+`/home/harness/harness-projects/1/ahr-sem04` (this session's assigned cwd) turned out to be a
+**physically shared checkout** across at least 8 concurrent order sessions (issue-51, 52, 53, 54,
+55, 56, 58 branches all created there, no dedicated worktrees for most of them) — not an
+isolated per-session worktree as the dispatch instructions assumed. Sessions were running
+`git checkout <their-branch>` in the same directory, stomping on each other's HEAD.
+
+Sequence of events:
+1. My `git commit` (intended for `issue-53-skill-example`) landed on `main` instead, because
+   another session's `git checkout` had silently switched the shared HEAD to `main` between my
+   `git checkout -b issue-53-skill-example` earlier in the session and my commit.
+2. Caught via `git status`/`git branch -vv` immediately after committing — `main` was reported
+   "ahead of origin/main by 1 commit". **This commit was never pushed** — caught before any push.
+3. Fix applied: `git branch -f issue-53-skill-example 5bf3d3e` (move my commit onto the right
+   branch), `git branch -f main origin/main` (reset local `main` back to match remote — verified
+   `git rev-parse main origin/main` identical, `7b7c678`, both before and after), then checked
+   out `issue-53-skill-example` in the shared dir.
+4. Two sibling sessions (`для семинара`, `ahr51-security-paragraph`) independently flagged the
+   same shared-checkout hazard mid-turn and had parked a safety-net branch (`rescue-53-commit`,
+   same commit `5bf3d3e`) pointing at my commit. Cross-checked: identical SHA, so no divergence.
+5. Moved permanently off the shared dir: detached its HEAD (`git checkout --detach origin/main`)
+   to free the branch name, then `git worktree add /home/harness/harness-projects/1/ahr-sem04-wt53
+   issue-53-skill-example` — a genuinely isolated worktree. Confirmed clean `git status`, correct
+   commit (`5bf3d3e`, all 9 files, nothing from other sessions' branches).
+6. **Re-ran `render_templates.py --check` inside `wt53`** (not the shared dir) — PASS. The earlier
+   PASS recorded above was measured in a tree other sessions were concurrently mutating, so it is
+   void; this later one is the one that counts.
+7. Notified both sibling sessions that the situation was already resolved on my end, to avoid a
+   duplicate/conflicting rescue attempt.
+
+All further work for this task happens only in `/home/harness/harness-projects/1/ahr-sem04-wt53`.
+No content was lost; `main`/`origin/main` were never actually diverged (confirmed both before and
+after the fix); nothing was pushed during the window `main` briefly had the stray commit locally.

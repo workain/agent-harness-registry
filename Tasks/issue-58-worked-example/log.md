@@ -667,3 +667,71 @@ needing support — by the writer or by the reader.** A substantive instruction 
 someone about to act on it; a date in a supporting clause gets skimmed by everyone, including the
 person who wrote it. That is why all three work-order errors, and both of mine, landed in
 incidental claims rather than in instructions.
+
+## 2026-09-20 15:00 — 8.0 PASS (ROAST round 2); #65's stated mechanism corrected
+
+### 8.0: VERDICT PASS on `4705457` (ROAST artifact `a260fbe`)
+
+The re-check ran a fourth mutation direction neither the epic nor round 1 had run —
+`related_components` dangling on a **research** entry — on the reasoning that "both pairs are now
+mechanically checked" is a claim about four links and a claim should be tested at its widest
+reading. It holds. Also confirmed no finding of the ROAST's own was imported into the entry.
+
+Two non-blocking residuals dispatched as a final polish commit:
+
+- **R3 — the F5 correction never reached the YAML.** `base-project-worked-example.yaml:27`
+  `engine_lock:` still carried "only rung 1 ports via the AGENTS.md symlink", the exact phrasing
+  the deep-dive had just corrected to two. **This is the F1 pattern in miniature** — prose
+  corrected, structured field left stale — and worse than its size suggests, because
+  `engine_lock:` is what the bundles table generates from. It fails to reach a reader today only
+  because GUIDE truncates the cell at `…subagents, setti…`; a display limit, not an absence.
+  Generalised for every remaining rung: **revisit every artifact that restates the claim, not
+  just the write-up.** Structured fields are the easiest to miss precisely because they don't
+  read like prose.
+- **R1 — one fresh overstatement in the rewrite, argumentative rather than empirical.** "Keeping
+  both is what makes the relationship simultaneously machine-checked and legible" does not follow:
+  both pairs are checked and only the research pair is legible, so the research pair alone already
+  delivers both. The true reason is in the child's own log — § 8.0 mandates the field by name and
+  dropping it would silently narrow the spec — and is the better one. Note the shape: a passage
+  rewritten under pressure to be accurate opened by narrowing its claim and then quietly widened
+  it back in its last sentence. That is where to look for fresh overstatement in any rewrite.
+- **R2 — tracked, not fixed.** `gtm-starter-kit.md:70` still claims "The weakest bundle in this
+  registry", no longer uniquely true now the tie is established. Editing a neighbouring entry
+  inside an 8.0 commit is how scope creep starts; it goes in the PR body and to the dispatcher.
+
+The ROAST also flagged that the **merge-ordering hold is discipline, not mechanism** — it lives
+in the dispatcher's head and this log, nowhere a second person sees it. Same class as `CLAUDE.md`'s
+own honest note that the `safe-merge.sh` hook is per-checkout and a raw `curl` bypasses it. Asked
+the dispatcher to put it on the issue; the PR body will carry it too, but a PR that does not yet
+exist protects nothing.
+
+### #65's mechanism corrected — the multi-line bypass is `read -r`, not the regex
+
+Caught only because the epic's own probe **disagreed** with the reported cause:
+
+```
+$ printf 'echo hi\ngit commit -m x' | grep -qE '(^|[;&|]\s*)git\s+commit\b'   -> MATCHED
+$ printf 'echo hi\ngit commit -m x' | { read -r cmd; echo "[$cmd]"; }         -> [echo hi]
+```
+
+grep scans every line, so the regex alone would have caught it. The hook is
+`jq -r '.tool_input.command' | { read -r cmd; … }` — **`read -r` truncates the payload to line 1
+before the regex ever sees it.** The finding is real; the cause is a different line of the hook.
+
+This matters because the two classes need different fixes: the regex bypasses
+(`git -C . commit`, `/usr/bin/git commit`, `env git commit`) want a better pattern, while the
+multi-line bypass wants the whole payload read (`cmd=$(cat)`). Patching either alone leaves a
+silent hole and closes the issue. Reported to the dispatcher to amend #65.
+
+Confirmed matrix against the real hook's matcher:
+
+```
+git commit -m x            MATCHED -> deny fires
+git -C . commit -m x       NO MATCH -> SILENTLY ALLOWED     <- ordinary usage
+/usr/bin/git commit -m x   NO MATCH -> SILENTLY ALLOWED
+env git commit -m x        NO MATCH -> SILENTLY ALLOWED
+(multi-line, line 2)       truncated by read -r -> SILENTLY ALLOWED
+```
+
+Rung 3 therefore ships **three demonstrable ways this gate does not fire** — `init.defaultBranch`,
+the #65 bypasses, and Finding A's hypothesis-blindness — all reproducible by a student.

@@ -782,3 +782,66 @@ Carried into 8.3's brief as a writing constraint, not just a note.
 - **R2 filed as issue #66**, framed wider than this epic had it: **a superlative in a catalogue is
   a claim about every other entry**, so it silently rots every time an entry is added. That
   generalisation is better than the one-word fix it replaces.
+
+## 2026-09-20 15:25 — 8.0 residuals closed (`db62edd`), and the generalisable form of F1/R3
+
+Branch: `783a294` → `4705457` → **`db62edd`**. Verified by the epic:
+
+```
+engine_lock: "Claude Code — 5 of 7 rungs are its conventions (hooks, skills, subagents,
+  settings.json, plan-mode); only rungs 1 and 5 port, …"
+rendered cell:  Claude Code — 5 of 7 rungs are its conventio…
+generate.py -> EXIT=0, porcelain empty; all three ACs hold at final state
+```
+
+**Note the side effect, which is the opposite of the usual one.** `engine_lock:` feeds the table
+through `_truncate(…, 45)`. The stale text's contradicting clause had been *concealed* by that
+truncation; the corrected text now **leads** with the number, so the fix reaches the table reader
+rather than living only in the deep-dive. A display limit that hid a defect now carries the
+correction.
+
+R1 closed with the narrower, truer reason — § 8.0 mandates the field by name, so dropping it
+because the generator happens not to surface it would silently narrow the spec.
+
+### The generalisable form — better than the epic's own statement of it
+
+The epic told the child "revisit every artifact that restates the claim". The child's own
+diagnosis is sharper and is now the version carried forward:
+
+> The defect was not "forgot to check the YAML". It was **repairing at the location of the
+> report rather than at the location of the claim.** F5 arrived as a deep-dive finding, so it
+> was fixed in the deep-dive.
+
+That reframes it from a diligence problem (check more places) into a *routing* problem (a finding
+arrives attached to wherever it was noticed, which is rarely everywhere the claim lives). The
+child then swept both files for every claim corrected in **any** round — four sweeps, not the two
+the epic named — and that is how a **third** instance surfaced, which neither the epic nor the
+ROAST had flagged: the deep-dive's "Bottom line" still described the `access-mcp` slot as
+"knowingly left empty and said so", settled language, missing the pending-ruling caveat F6 had
+just added to the YAML. § 8.5 now reads as open in all three places (`:83`, `:182`, YAML `:23`).
+
+**Carried into every remaining rung.** Rungs 3–8 each document a mechanism and then change it —
+8.3 ships a hook plus a self-test plus a boundary list, 8.8 restructures a README written by six
+earlier rungs. Each is a routing problem waiting to happen. The instruction to each: when a
+finding lands, fix it at every location the *claim* lives, not at the location the *report*
+arrived, and sweep for prior rounds' claims too.
+
+Asked the ROAST for a short confirmation pass on the delta only — justified rather than
+ceremonial, because unlike the previous round **this commit changes `GUIDE.md`**, a real output
+change landing after their PASS.
+
+## Rung 2 in flight — a fourth work-order inaccuracy, self-reported
+
+The rung-2 child reports that § 8.2's own dictated `DECISIONS.md` entry misdescribes the code it
+documents: `src/validate.js` is **24 lines (14 of code), not 20**, and because the form carries
+`novalidate`, `required`/`pattern` are the declarative source of truth read back through the
+Constraint Validation API — they are **not** what blocks submission. The entry ships corrected.
+
+This one is different in kind from the previous three: the spec was written *before* the code
+existed, so it is a prediction that the implementation did not match, not a checkable claim the
+author got wrong. Recorded as such rather than added to the error tally. It is also the exact
+failure this rung exists to prevent — a decisions log that misdescribes its own codebase — which
+makes shipping the spec's text verbatim the one thing rung 2 must not do.
+
+All four of that child's sources (§ 8.2, the axis row, `02-memory.md` § 4.2, the SpAIware
+article dated 2024-09-25) were fetched and agree with the spec; no contradiction this time.

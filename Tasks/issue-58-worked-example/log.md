@@ -228,3 +228,57 @@ actually clones and runs. Ступень 3's entire lesson is that **a gate that
 exactly like a gate that passed** — so a silently-allowed commit under `init.defaultBranch=trunk`
 must be visible in the build, not a footnote. 8.3's dispatch will carry this as a named
 deliverable, not as context.
+
+## 2026-09-20 13:20 — 8.0 accepted by epic review (independent ROAST dispatched separately)
+
+`issue-58-taxonomy` @ `783a294`. All three acceptance criteria re-run BY THE EPIC, not accepted
+from the child's report:
+
+- `python3 scripts/generate.py` → exit 0; 8→9 bundles, 131→132 deep-dives; `git status
+  --porcelain` empty after regeneration, so the committed `GUIDE.md` is genuinely in sync.
+- `GUIDE.md:163` — the `base-project-worked-example` row carries the `first-party` badge in the
+  bundles table. First `first_party: true` bundle in the catalog.
+- Both directions render: bundle→research at `:163`, research→bundle at `:868`.
+
+**Generator patch mutation reproduced independently:**
+
+```
+$ sed -i 's/base-project-template/base-project-template-DOES-NOT-EXIST/' \
+    data/bundles/base-project-worked-example.yaml
+$ python3 scripts/generate.py            ->  EXIT=1
+entries with a related_components: slug not found among data/components or data/bundles:
+  ["base-project-worked-example.related_components='base-project-template-DOES-NOT-EXIST'"]
+$ # restored                              ->  EXIT=0, tree clean
+```
+
+The same error was exit 0 and rendered nowhere before the patch. The child verified no existing
+entry used the field before touching shared code, so nothing pre-existing was dragged in — the
+bound held. `scripts/generate.py` is shared infrastructure; flagged for integration.
+
+## 2026-09-20 13:20 — SECOND work-order error, verified (and this one was repeated by the epic)
+
+§ 8.0 asserts the scoring table is one "которую сегодня не заполняет ни один бандл каталога".
+False:
+
+```
+$ grep -rln "rogressively-disclosed" deep-dives/bundles/ | wc -l
+9      # 8 pre-existing bundles + the new one
+```
+
+The root `README.md` actually says the three properties are ones "no bundle here yet
+**combines**" — none scores yes on all three. A different claim, which the work order misread.
+
+**This epic repeated the error into the 8.0 child's brief** ("no bundle fills this in today, so
+there is no example to copy"). The child caught it, followed the existing house format instead
+of inventing one, and reported it back. No damage done, but recorded here rather than quietly
+fixed: a brief that invents a false absence invites a child to invent a format. Corrected for
+all later child briefs.
+
+## 2026-09-20 13:20 — rendering decision, ruled by the epic
+
+The child asked whether the now-enforced bundle⇄component `related_components:` pair should also
+be RENDERED in `GUIDE.md` (validated, but appearing in no table — `_relevant_components_cell` is
+called only from `render_research_table`). **Ruled: no, out of scope for #58.** It is a
+`GUIDE.md` layout change affecting every entry, not a worked-example concern, and #58 is already
+the largest item in the work order. Recommended as a separate issue. Raised to the dispatcher in
+case they want it to ride along.

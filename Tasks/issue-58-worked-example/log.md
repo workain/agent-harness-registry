@@ -1550,3 +1550,23 @@ seminar's owner.
 sense; and the real-run bar is raised because **its own failure story is a subagent that returned
 a fully hallucinated report with zero tool calls** — so the recorded run must carry evidence only
 a real read could produce, and the README must say how a reader tells the two apart.
+
+## 2026-09-20 19:00 — CORRECTION: work-order finding #6 is now epic-verified
+
+The entry above records finding #6 (§ 8.5's `claude mcp add github --scope project` does not run)
+as "NOT independently verified by this epic — two attempts hung and returned no output". **One of
+those attempts had been moved to the background and has now completed.** Its output:
+
+```
+$ claude mcp add github --scope project
+error: missing required argument 'commandOrUrl'
+```
+
+Identical to the string the child reported. **Finding #6 is independently confirmed.** Corrected
+here rather than edited above, same discipline as every other correction in this log.
+
+Still child-verified only, and still needing confirmation before it reaches the seminar's owner:
+**rung 4's arXiv:2608.11888 corrections** (the 307-harm-cases causal attribution, and
+`07-skills.md` § 4.1 vs § 4.2). This epic's fetches of the abstract page returned 200 but did not
+parse, and a follow-up grep timed out. That one remains unverified by the epic and must be
+labelled as such wherever it travels.

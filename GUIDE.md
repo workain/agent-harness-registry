@@ -8,7 +8,7 @@ Every claim is cited (see each entry's References) or marked `[unverified]`. Eac
 
 ## Overview — map of this registry
 
-**103 atomic components** across 4 categories (plus **7 instruction-file conventions** catalogued as background in the Bundles section — 110 component entries total), **8 assembled bundles**, **11 agent engines/runtimes**, **9 eval-frameworks**, **11 benchmarks**, **2 research studies**.
+**104 atomic components** across 4 categories (plus **7 instruction-file conventions** catalogued as background in the Bundles section — 111 component entries total), **8 assembled bundles**, **11 agent engines/runtimes**, **9 eval-frameworks**, **11 benchmarks**, **2 research studies**.
 
 **Components** are single-purpose atoms (a memory layer, a skill, an MCP server) composed one at a time. **Bundles** are pre-assembled multi-component kits. The market today is overwhelmingly atomic — Agent Skills alone spans 47,150 skills across 42 engines — though real demand for bundles exists too (see `workain/harness-eval`'s `docs/DEMAND-vs-ANTI-SIGNALS-equipment-bundles.md`). Each bundle's write-up scores it against three properties none yet fully combine: **sustained**, **engine-agnostic**, **progressively-disclosed**.
 
@@ -16,7 +16,7 @@ Every claim is cited (see each entry's References) or marked `[unverified]`. Eac
 
 **Component categories:**
 - **Memory** (11, 9 tested) — see below
-- **Skills / tools** (26, catalogued only, not yet tested) — see below
+- **Skills / tools** (27, catalogued only, not yet tested) — see below
 - **Subagents** (32, catalogued only, not yet tested) — see below
 - **Access placement / MCP** (34, catalogued only, not yet tested) — see below
 
@@ -72,6 +72,7 @@ Single-purpose units composed onto an engine. Name links to the tool itself; wri
 | [vercel-labs/skills](https://github.com/vercel-labs/skills) | Catalogued | Unclear (verify) | 25.1k | universal skill installer CLI (`npx skills`) | [write-up](deep-dives/components/skills-tools/skill-vercel-skills-cli.md) |
 | [VoltAgent/awesome-agent-skills](https://github.com/VoltAgent/awesome-agent-skills) | Catalogued | MIT | 27.4k | 1000+ agent skills from official dev teams and the communit… | [write-up](deep-dives/components/skills-tools/skill-voltagent-awesome-skills.md) |
 | [WorldFlowAI/everything-claude-code](https://github.com/WorldFlowAI/everything-claude-code) | Catalogued | Unclear (verify) | 362 | agents/commands/skills/rules/hooks toolkit including a nota… | [write-up](deep-dives/components/skills-tools/skill-worldflowai-toolkit.md) |
+| [yylo-dev/yylo-skills](https://github.com/yylo-dev/yylo-skills) | Catalogued | MIT | 1 | official skills pack for the YYLO orchestration toolchain (… | [write-up](deep-dives/components/skills-tools/skill-yylo-skills.md) |
 
 ### 1.3 Subagents
 

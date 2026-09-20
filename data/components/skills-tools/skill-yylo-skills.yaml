@@ -1,0 +1,25 @@
+name: yylo-dev/yylo-skills
+slug: skill-yylo-skills
+category: skills-tools
+homepage: https://github.com/yylo-dev/yylo-skills
+license: "MIT"
+license_tag: "MIT"
+open_source: true
+use_cases: "official skills pack for the YYLO orchestration toolchain (Ledger task/workflow/artifact/plan/Ralph-loop skills)"
+what_it_is: >
+  Canonical, independently versioned source for the agent skills used by YYLO CLI and YYLO Ledger —
+  7 SKILL.md skills under skills/<slug>/ (ledger-tasks-yylo, wiki-yylo, workflow-yylo,
+  artifact-yylo, understand-project-yylo, plan-ledger-tasks-yylo, ralph-loop-yylo) that teach an
+  agent the YYLO controller workflow: Ledger task management and source-of-truth boundaries,
+  revisioned wiki records, workflow records, provenance-bound artifacts, project inspection before
+  planning, and one-task-to-validated-delivery execution. Installs through the open `skills` CLI
+  (`npx skills add yylo-dev/yylo-skills`); every canonical slug ends in `-yylo`.
+activity:
+  stars: "1"
+  last_verified_note: "pushed 2026-09-15; indexed on skills.sh; README carries eight awesome.re mentioned-badges (community registries)"
+provenance:
+  - url: https://github.com/yylo-dev/yylo-skills
+    fetched: "2026-09-18"
+    note: "verified directly via gh api (stars/license/pushed_at); skill slugs read from the live skills/ tree; quotes reproduced verbatim from the fetched README"
+unverified: []
+deep_dive: deep-dives/components/skills-tools/skill-yylo-skills.md

@@ -229,3 +229,81 @@ One commit on `issue-58-rung2`, local only — never pushed; this session has no
 design and the orchestrator publishes. Rung 2 is deliberately one commit so the build's history
 reads as seven steps (subtask 8.8); rung 1's commit was not amended. Its SHA is reported upward
 rather than written here — a file cannot name the commit that contains it.
+
+---
+
+## 2026-09-20 — ROAST round 1: BLOCK on `DECISIONS.md:43`, fixed in a follow-up commit
+
+Independent ROAST returned BLOCK on one finding plus two minor ones. Follow-up commit on
+`issue-58-rung2`; `629d0c2` **not** amended — rungs 3–7 are built on it.
+
+### R2-1 (BLOCKING) — «16 пакетов транзитивно» is false. Confirmed; entry rewritten.
+
+Reproduced independently before touching anything, from a **fresh clone of the pushed branch**
+rather than from this worktree:
+
+```
+$ git clone --branch issue-58-rung2 --no-local … clone
+$ cmp package-lock.json <worktree copy>   # byte-identical
+$ npm ci
+added 17 packages, and audited 18 packages in 773ms
+$ ls node_modules | grep -v '^\.' | wc -l
+17
+$ ls node_modules/@rollup/
+rollup-linux-x64-gnu
+rollup-linux-x64-musl
+```
+
+17, not 16. Root cause confirmed from `package-lock.json` directly, not taken from the review:
+rollup's platform binaries are `optional` entries selected by `os`/`cpu`, and on `linux-x64`
+**two** of them match (`-gnu` and `-musl`) because neither declares a `libc` constraint. On
+macOS only one darwin binary matches, so the total is genuinely different there.
+
+**How the number got in.** Inherited verbatim from `Tasks/issue-58-scaffold/log.md` §8
+(«Transitively that is 16 packages», itself derived from the `npm install` output pasted in §4)
+and never re-run. This is the same class of defect as the «20 строк» I *did* catch in entry 1 —
+and the difference in outcome is the whole lesson: **the brief named entry 1's number, so I
+checked entry 1; nothing named entry 4, so it rode through.** An inherited-number discipline that
+only fires where someone points at it is not a discipline. Recorded here because it is more
+reusable than the fix.
+
+**Fix.** The integer is gone rather than corrected to 17 — a hard install count is
+platform-dependent and would be wrong for a macOS student on the next read. The entry now rests
+on what the argument actually needs and what is stable: two devDependencies (`vite`,
+`@playwright/test` — verified against `package.json`), no runtime dependencies at all, and one
+sentence naming *why* the install total varies, which is checkable in `package-lock.json`.
+
+**Subject sweep before committing**, run as "where is this project's install size asserted",
+not as `grep 16`:
+
+```
+$ grep -rInE "пакет|package|зависимост|dependenc|npm (ci|install)|транзитив|audited|added [0-9]" \
+    templates/base-project-worked-example/ Tasks/issue-58-*/ --include='*.md'
+```
+
+Result — the proposition lives in exactly three places:
+
+| Location | Status |
+|---|---|
+| `signup-landing/DECISIONS.md:43` (mine) | **fixed** in this commit |
+| `templates/base-project-worked-example/README.md` | **clean** — shows the `npm ci` command, never pastes an `added N packages` line |
+| `Tasks/issue-58-scaffold/log.md` §4 (`added 16 packages…`) and §8 («Transitively that is 16 packages») | **not touched** — another session's log, out of bounds; reported upward for routing |
+| `Tasks/issue-58-rung2/log.md` (mine) | never asserted a count |
+
+### R2-2 (minor) — entry 2's heading overstated what `src/validate.js` does. Confirmed; fixed.
+
+The heading read «…а блокирует отправку `src/validate.js`». It cannot: `validateForm` is a pure
+function returning an array of errors, and `grep -n preventDefault src/main.js src/validate.js`
+matches **only** `src/main.js:16`. Heading is now «отправку останавливает наш код, а не браузер»,
+and the body — which `DECISIONS.md` had never done — names both files and their split:
+`validate.js` collects, `main.js` calls `preventDefault()` and renders.
+
+### R2-3 (nit) — README pasted `MEMORY.md` as two wrapped lines. Confirmed; fixed.
+
+The real file is a single unwrapped line (`wc -l` = 1, 166 bytes, verified with `cat -A`). The
+paste is now one line, i.e. actually what the command prints.
+
+### Re-verification after the edits
+
+`npx playwright test` → **4 passed (4.3s)**. Docs-only change; no site file touched, no other
+rung's file touched, no memory artifact committed.

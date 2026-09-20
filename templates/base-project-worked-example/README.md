@@ -211,8 +211,7 @@ MEMORY.md
 no-form-validation-library.md
 
 $ cat ~/.claude/projects/-tmp-rung2-fresh-signup-landing/memory/MEMORY.md
-- [No form validation library](no-form-validation-library.md) — signup-landing validates
-  natively (HTML attrs + Constraint Validation API), never a third-party lib
+- [No form validation library](no-form-validation-library.md) — signup-landing validates natively (HTML attrs + Constraint Validation API), never a third-party lib
 ```
 
 `MEMORY.md` — индекс, который грузится каждую сессию; сам факт лежит отдельным файлом рядом и

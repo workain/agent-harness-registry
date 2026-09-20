@@ -114,3 +114,56 @@ correct location with no LESSONS.md/DECISIONS.md overlap, `render_templates.py -
 reproduced PASS, no scope creep. Every load-bearing factual claim — including the one
 explicitly flagged as highest-risk, the CrewAI/LongMemEval figure — checked exact against the
 pinned primary sources. **PASS, unconditional.**
+
+## Rebase re-verify addendum — 2026-09-20
+
+Narrow re-verification scoped only to the rebase of `issue-56-memory-notes` onto a moved
+`origin/main` (`c91dfec`), after orders 1/2/3 (issues #51/#52/#53) landed and two of them
+collided with files this branch also touches. Not a re-review of `memory-notes.md` content —
+that verdict above stands untouched. Read-only; nothing edited.
+
+**1. Commit count.** `git log --oneline origin/main..HEAD` → exactly 2 commits:
+`c87c32c` (roast) on top of `7398ec4` (content). Nothing extra absorbed during rebase.
+
+**2. `design-and-usage.md` delta.** `git diff origin/main -- .../design-and-usage.md` shows
+exactly one added line — the "Memory / repeated context" growth-ladder row — inserted
+immediately after the "Access to external systems" row, which is untouched. No other line in
+the file changed.
+
+**3. `claude-core-bottom.md` delta.** `git diff origin/main -- .../claude-core-bottom.md`
+shows exactly one edit: the "Persistent memory" bullet gains its trailing
+`.claude/memory-notes.md` clause. No other bullet in the file touched.
+
+**4. Other orders' rows survived the conflict resolution, byte-for-byte.** Checked all three
+call-outs directly against `origin/main`'s own copies:
+- `templates/base-project-template/without-git/README.md` line 38:
+  `.claude/skills/_example/SKILL.md` row — present, identical text to `origin/main`.
+- `templates/base-project-template/with-git/README.md` line 38: same row — present, identical.
+- `.claude/mcp-notes.md` row present, identical, in **both** READMEs (line 39 without-git,
+  line 40 with-git — matching `origin/main`'s own line numbers exactly, i.e. nothing shifted
+  around it either).
+- `deep-dives/.../design-and-usage.md` line 69: "Access to external systems" growth-ladder row
+  — present, identical to `origin/main`.
+
+No dropped row found. The failure mode this step was checking for (this branch's conflict
+resolution silently keeping its own addition while eating another order's row) did not occur.
+
+**5. Conflict markers.** `grep -rn '^<<<<<<<\|^=======$\|^>>>>>>>' .` (excluding `.git/`) from
+the worktree root: zero matches (grep exit 1). No leftover markers anywhere in the tree.
+
+**6. `render_templates.py --check`.** Re-ran fresh, myself, from
+`/home/harness/harness-projects/1/ahr-sem04-wt56/templates/base-project-template` on this
+rebased tree:
+
+```
+render_templates.py --check: PASS — both variants match their source fragments/common files.
+```
+Exit code 0. Not trusted from any prior log entry — reproduced live on the post-rebase HEAD.
+
+### Rebase-delta verdict: PASS (unconditional)
+
+The rebase is clean: exactly the branch's own 2-commit content unchanged in substance, the two
+conflicted files resolved correctly with both this branch's and the other orders' contributions
+intact byte-for-byte, no leftover conflict markers, and a fresh `render_templates.py --check`
+pass on the rebased tree. Combined with the original content PASS above, this branch is clear
+to proceed.

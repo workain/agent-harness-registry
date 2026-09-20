@@ -451,3 +451,50 @@ Russian quotations held. The block is one stale paragraph, not the work.
 Both known corrections were independently confirmed by the ROAST rather than inherited: the
 § 8.0 spec error (all 8 pre-existing bundles carry a filled scoring table, each with a
 `**Score: N of 3**` line) and rung 5 not being settled by § 8.5.
+
+## 2026-09-20 14:10 — integration state from the dispatcher, and a new content requirement for 8.7
+
+**Merge-ordering constraint accepted and held.** `issue-58-taxonomy` is pushed but has **no PR
+open**, and will not get one until the build lands (confirmed against the live open-PR list).
+`issue-58-scaffold` → `c1997b1` is pushed too.
+
+**Orders 1–7 status, for integration planning:**
+
+| Order | State |
+|---|---|
+| 1, 3 | **merged to `main`** at `b1b9b35`, suite green on the merged head |
+| 2, 6 | conflict pairwise with each other AND with order 3 in the README tables — land one at a time |
+| 5 | `03c2dc5`, awaiting its ROAST verdict, **unmerged** — this is 8.3's dependency |
+| 4, 7 | not reported yet |
+
+**Rebase on `main` at INTEGRATION time, not now.** Rungs 8.1–8.7 continue to branch from each
+other off the scaffold; pulling `main` in mid-ladder would interleave other orders' commits into
+the seven-step history that § 8.8 needs to read cleanly.
+
+**Two follow-up issues filed, neither in #58's scope:**
+- **#62** — `related_components:` validated but never rendered (from the epic's first report).
+- **#64** — `unverified:` blocks never render for bundles/components. The dispatcher sharpened
+  the framing beyond what the epic supplied, and the sharpening is the point: the dropped content
+  is specifically **the part that limits a claim**, so an entry careful enough to write its own
+  caveats renders *more confident* than one that had none. Its acceptance criteria require
+  showing that an empty list does **not** produce an empty block, so the fix cannot pass by
+  rendering something unconditionally.
+
+### NEW CONTENT REQUIREMENT for 8.7 (ступень 7)
+
+The dispatcher is taking this epic's own formulation — **"a finding written down before you fix
+the thing becomes false the moment you fix it, and nothing warns you"** — and asking for it in
+the build's ступень-7 material, next to the "confidently reported done" failure (arXiv:2606.09863
+/ METR reward hacking).
+
+The reason it belongs there rather than in a task log: it is the **same family as that failure,
+in the opposite direction**. Not a false claim of success, but *a true claim of failure that
+silently expired*. Both are failures of a written record to stay true to the work it describes,
+which is exactly what ступень 7's log-and-roast discipline exists to produce — and this hazard
+is intrinsic to the log-as-you-go rule the whole fleet (and the template's `Tasks/` discipline)
+runs on. It was found live in this epic's own 8.0, not imported from a paper.
+
+8.7's dispatch carries this as a named deliverable. Three of the seven rungs now ship a
+requirement the work order never states — 8.1 (`npx playwright install chromium`), 8.3 (the
+`init.defaultBranch=trunk` silent-allow boundary + #55's harness-blindness lesson), and 8.7
+(this). All three came from the work actually being done rather than from reading the spec.

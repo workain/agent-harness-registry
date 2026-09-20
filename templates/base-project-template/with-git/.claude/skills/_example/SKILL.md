@@ -50,6 +50,9 @@ skills, if this project has them). Don't reach for this to "review my code" or "
 
 ## Footnote: why `description` is written this way
 
+`description` is the only thing the model sees when choosing among installed skills — verify
+after writing via `/skills`, don't assume it fires just because you wrote it.
+
 Only this frontmatter's `name`/`description` preloads into the system prompt at startup — the
 model chooses whether to load the rest of this file from that field alone, potentially among
 100+ other installed skills competing for the same decision. A vague description ("helps with

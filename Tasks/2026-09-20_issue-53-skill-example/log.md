@@ -107,3 +107,48 @@ Sequence of events:
 All further work for this task happens only in `/home/harness/harness-projects/1/ahr-sem04-wt53`.
 No content was lost; `main`/`origin/main` were never actually diverged (confirmed both before and
 after the fix); nothing was pushed during the window `main` briefly had the stray commit locally.
+
+**Correction request from dispatcher ("для семинара"), and why the account above stands as-is:**
+the dispatcher's message asserted local `main` never actually moved — that my commit was instead
+left dangling (unreachable from any branch) and `main` stayed at `7b7c678` throughout, checked via
+`git ls-remote` against the live remote. That does not match what I observed directly at the time:
+the `git commit` command's own output was `[main 5bf3d3e] feat(...)`, and the immediately-following
+`git branch -vv` showed `* main 5bf3d3e [origin/main: ahead 1] ...` — git's own commit summary line
+names the branch HEAD was attached to when a commit is made, so this is first-hand evidence the
+local `main` *ref* moved to `5bf3d3e`, not just that my commit briefly existed unreferenced. Both
+accounts agree on everything that matters (nothing was ever pushed, `origin/main` was never
+touched, the fix — force-move `issue-53-skill-example` to my commit, force-reset local `main` to
+`origin/main` — is identical either way). Leaving this account as originally logged, sourced from
+directly-observed command output at the time, rather than overwriting it with a claim I can't
+independently verify from here (I have no way to inspect the dispatcher's own point-in-time state
+in that shared checkout). Replied to the dispatcher with this reasoning.
+
+## Independent ROAST #1 result and a follow-up fix (2026-09-20, ~12:50 UTC)
+
+A separate, fresh subagent (no context of this session) reviewed the branch independently in this
+same `wt53` worktree and wrote `Tasks/2026-09-20_issue-53-skill-example/roast.md`.
+
+**Verdict: PASS**, commit `088012b`. It re-ran every mechanical check itself (fresh YAML parse,
+`render_templates.py --check`, diff scope, single-example check, both cited sources re-fetched and
+quoted at the pinned commit) rather than trusting this log. One non-blocking nit: the delivered
+footnote covered *why* `description`-only visibility matters but omitted the work order's own
+specific instruction — I re-fetched "Наряд 3" verbatim to confirm the exact required footnote text:
+*"проверьте после написания через `/skills`, не полагайтесь на то, что скилл сработает, потому что
+вы его написали"* (verify after writing via `/skills`, don't assume it fires just because you wrote
+it) — and it wasn't in my first draft.
+
+Fixed: added that exact instruction as the footnote's opening line in
+`common/.claude/skills/_example/SKILL.md`. Re-ran `render_templates.py` (propagate) then `--check`
+(PASS) and the YAML-frontmatter parse (still valid, `name`+`description` present, unchanged 506-char
+description) — all re-verified after the edit, not assumed still valid from before.
+
+## Push (2026-09-20, ~12:48 UTC)
+
+Per this session's own task instructions, `GH_TOKEN` was expected to be in this session's own
+environment — it was not (checked process env, shell profile files, `~/.netrc`, SSH agent; none
+present). Flagged as a blocker to the dispatcher rather than working around it. Dispatcher clarified
+the actual fleet convention is the reverse of what my dispatch brief said: sessions commit, the
+orchestrator holds the push credential and pushes. Dispatcher pushed `issue-53-skill-example` at
+`088012b` — confirmed via `git fetch origin && git log --oneline origin/issue-53-skill-example`
+from `wt53`. The footnote-fix commit above still needs to be pushed the same way before a PR can be
+opened against it.

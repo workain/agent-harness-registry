@@ -1,14 +1,3 @@
-<!--
-TEMPLATE FILE — this is a worked example of the subagent format, not a subagent every project
-needs verbatim. Delete it once you've added your project's first real one (or keep it as a style
-reference, renamed). Do not add a second or third example next to it — one sample per slot is the
-point; a small starter set of "obviously useful" roles (a security reviewer, a style reviewer, a
-performance reviewer...) reproduces the exact selection-collapse problem this file exists to warn
-about (see the footnote below), and multi-agent systems fail through role/coordination confusion
-far more often than through any one agent's own mistake — treat "just add another critic" as a
-cost, not a free win.
--->
-
 ---
 name: example-reviewer
 description: >-
@@ -21,6 +10,23 @@ description: >-
   not" below.
 tools: Read, Grep, Glob
 ---
+
+<!--
+TEMPLATE FILE — this is a worked example of the subagent format, not a subagent every project
+needs verbatim. Delete it once you've added your project's first real one (or keep it as a style
+reference, renamed). Do not add a second or third example next to it — one sample per slot is the
+point; a small starter set of "obviously useful" roles (a security reviewer, a style reviewer, a
+performance reviewer...) reproduces the exact selection-collapse problem this file exists to warn
+about (see the footnote below), and multi-agent systems fail through role/coordination confusion
+far more often than through any one agent's own mistake — treat "just add another critic" as a
+cost, not a free win.
+
+This comment sits *after* the closing `---`, not before it, because a subagent file's frontmatter
+must start at byte 0 — `description` is what the model reads to decide whether to route to this
+agent at all, so anything ahead of the opening `---` (even a one-line comment) can leave it
+unparsed and the agent silently never selected. `environment/_example.md` is different: it has no
+frontmatter contract, so its own leading comment is harmless there.
+-->
 
 You are reviewing a diff or a stated task result that someone else produced. You did not write
 it, and nothing in your own context is the conversation that produced it — you were handed the

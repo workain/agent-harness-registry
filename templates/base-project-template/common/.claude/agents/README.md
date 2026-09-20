@@ -9,3 +9,8 @@ shape (an independent reviewer, a researcher, a scoped-tool specialist) actually
 See `_example-reviewer.md` for a worked example of the format (routing-logic `description`, a
 mechanical `tools:` guard, a fixed-format verdict) — delete it once you've added your project's
 first real subagent.
+
+Frontmatter must start at byte 0 of a subagent file — no preamble, not even a comment, above the
+opening `---`. That's why `_example-reviewer.md`'s own "TEMPLATE FILE" note sits *after* the
+closing `---` instead of before it, unlike this repo's other `_example.md`-style files (e.g.
+`environment/_example.md`), which have no frontmatter contract and can safely lead with a comment.

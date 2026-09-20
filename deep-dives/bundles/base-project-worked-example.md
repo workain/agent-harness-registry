@@ -93,11 +93,11 @@ default. A reviewer that can edit the thing it reviews is not an independent rev
 
 | Category | Present? |
 |---|---|
-| `instructions-rules` | **Yes** — rung 1; the only rung that ports across engines (via the `AGENTS.md` symlink) |
+| `instructions-rules` | **Yes** — rung 1; the only rung that ports across engines *as a working artifact* (via the `AGENTS.md` symlink). Rung 5 also ports, but only because it is prose rather than an integration |
 | `memory` | **Partial** — a committed decision journal (rung 2); the continuous/automatic layer is demonstrated but deliberately lives outside the tree |
 | `skills-tools` | **Yes** — one skill (rung 4), single-purpose (`deploy`) |
 | `subagents` | **Yes** — one subagent (rung 6), read-only, single-purpose (`diff-reviewer`) |
-| `access-mcp` | **No — deliberately declined.** Rung 5 is prose analysis, not a connection. This is the honest gap the bundle is designed around, not an oversight |
+| `access-mcp` | **No — declined pending the owner's ruling.** Rung 5 is prose analysis, not a connection. This is the honest gap the bundle is designed around, not an oversight — but § 8.5 records the decision as the executor's recommendation, still open, not the owner's |
 
 Two rungs (3 — hooks/permissions, 7 — process discipline) map to **no** registry category at
 all. That is a genuine observation about this registry's taxonomy rather than about this bundle:

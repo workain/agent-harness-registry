@@ -493,3 +493,44 @@ $ git status --porcelain
 ```
 All three § 8.0 acceptance criteria hold at final state. No `roast.md` authored by me in any
 round. Branch never pushed by me.
+
+## 27. Applying the rule found TWO more instances the ROAST never flagged
+
+Ran the subject-sweep from § 25 properly — four propositions, every wording, both files, rather
+than grepping any finding's phrasing. It found two live defects:
+
+**S1 "how many rungs are engine-locked, and which" — a FOURTH costume, at line 96.** The
+Component-coverage table read:
+
+> | `instructions-rules` | **Yes** — rung 1; **the only rung that ports across engines** (via the `AGENTS.md` symlink) |
+
+That is the pre-F5 claim, surviving in a third wording, in a different table, two rounds after
+F5 supposedly corrected it. No phrasing-grep could have found it: it says neither "six of seven"
+(round 2's grep) nor "only rung 1 ports" (round 3's line). Only asking *"where else does this
+entry state how many rungs port?"* surfaces it. Fixed to distinguish the two cases honestly —
+rung 1 ports as a working artifact, rung 5 only because it is prose.
+
+**S4 "is the MCP slot decision settled" — line 100** still read `**No — deliberately declined.**
+… the honest gap the bundle is designed around, not an oversight`, with no pending-ruling
+caveat. Same class as the Bottom-line instance fixed in round 2, and missed then for the same
+reason: I corrected the two places I had *just edited* rather than every place the proposition
+lived. Now `**No — declined pending the owner's ruling.**`
+
+**Score for the rule:** three review rounds by two independent parties left four stale
+statements of two propositions in this entry. One subject-sweep, run once, found all the
+remainder. The rule is not a nicety — it is the only thing in this thread that actually
+converged.
+
+For 8.1–8.7: the sweep is cheap (four greps) and must run *before* the fix commit, not after
+review. Its input is a list of propositions the entry asserts — written down when the
+correction is made, not reconstructed later.
+
+## 28. Final
+
+```
+$ python3 scripts/generate.py
+wrote .../GUIDE.md (..., 9 bundles, ..., 132 deep-dives)
+EXIT=0
+```
+`GUIDE.md` unchanged (both edits are deep-dive prose). S1 now agrees across all three of its
+wordings; S2/S3/S4 each consistent across every location.

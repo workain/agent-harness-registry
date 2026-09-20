@@ -345,3 +345,76 @@ EXIT=0
 ```
 `GUIDE.md` is **unchanged** by this round — every edit landed in deep-dive prose or in a YAML
 string that no table renders. That is the expected result and was checked, not assumed.
+
+---
+
+# IMPROVE round 2 — PASS on 4705457, two residuals closed
+
+## 20. R3 — the F5 correction never reached the structured field
+
+`engine_lock:` still read *"only rung 1 ports via the AGENTS.md symlink"* — the exact phrasing
+the deep-dive had just corrected to **two** rungs, one round earlier.
+
+**This is F1 in miniature, and I should have caught it.** In round 1 I edited the YAML (F6) and
+the deep-dive (F1/F3/F4/F5) in the *same commit*, and the YAML still went stale — because F5 was
+filed as a deep-dive finding and I fixed it where it was reported rather than everywhere the
+claim lived. The generalisation is wider than "revisit your write-up after you fix the thing":
+**revisit every artifact that restates the claim, and structured fields are the easiest to miss
+because they do not read like prose.**
+
+It also mattered more than its size. `engine_lock:` is the field the bundles table *generates
+from*; the stale clause was reaching readers only by accident, hidden behind `_truncate(…, 45)`
+rather than being absent. Corrected to:
+
+```yaml
+engine_lock: "Claude Code — 5 of 7 rungs are its conventions (hooks, skills, subagents,
+  settings.json, plan-mode); only rungs 1 and 5 port, via the AGENTS.md symlink and because
+  rung 5 is prose rather than a working integration"
+```
+
+Side effect worth noting: the truncated cell now *leads* with the corrected number —
+`Claude Code — 5 of 7 rungs are its conventio…` — so the fix reaches the table reader instead
+of the old text's contradiction being concealed by the same truncation.
+
+**Swept the rest of the entry rather than fixing only what was reported.** Both files, for every
+claim corrected in any round:
+
+```
+sweep 1 — "six of seven" / "only rung 1":            none surviving
+sweep 2 — exclusive superlative / gtm comparison:     2 hits, both already tie-scoped (111, 121)
+sweep 3 — present-tense "validated by nothing":       none
+sweep 4 — every engine-agnostic restatement:          2 (YAML:27, deep-dive:117) — now agree
+```
+
+That sweep found one more of the same class the ROAST had not flagged: the **Bottom line** said
+the `access-mcp` slot was "knowingly left empty and said so", without the pending-ruling caveat
+F6 had just added to the YAML and the body carries. Aligned it — the § 8.5 question is recorded
+as open there too now.
+
+## 21. R1 — the one fresh overstatement in my own rewrite
+
+My round-1 passage closed: *"Keeping both is what makes the relationship simultaneously
+machine-checked and legible."* It does not follow. Both pairs are checked and only the research
+pair is legible, so the research pair **alone** delivers both — `related_components:` adds
+neither. The paragraph opened by conceding "the reason is narrower than it first appears" and
+then quietly widened it back in its last sentence.
+
+Replaced with the real reason, which was in § 6 of this log all along: § 8.0 mandates the field
+by name, and dropping it because the generator happens not to surface it would silently narrow
+the spec. Weaker-sounding, and true.
+
+## 22. Not touched, per the epic
+
+R2 — `gtm-starter-kit.md:70`'s now-non-unique "weakest bundle in this registry" superlative.
+Editing a neighbouring entry inside a subtask-8.0 commit is how scope creep starts; the epic is
+tracking it in the PR body and with the dispatcher.
+
+## 23. Final verification
+
+```
+$ python3 scripts/generate.py
+wrote .../GUIDE.md (103 components, 7 instruction-conventions, 9 bundles, ..., 132 deep-dives)
+EXIT=0
+```
+`GUIDE.md` **does** change this round, unlike round 1 — correctly, because `engine_lock:` is a
+rendered field. Diff is the single bundles-table cell. Regenerated and committed together.

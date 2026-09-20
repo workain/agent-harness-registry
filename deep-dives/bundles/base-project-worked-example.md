@@ -159,9 +159,14 @@ What still differs between them is **visibility, not enforcement**: `related_com
 rendered nowhere outside the research table, because `_relevant_components_cell()` is only called
 from `render_research_table()`. So the bundle ⇄ component pair is enforced but invisible in
 `GUIDE.md`, while the research pair is the one a reader actually sees rendered in both
-directions. Keeping both is what makes the relationship simultaneously machine-checked and
-legible — surfacing `related_components:` in a rendered table is a separate layout decision,
-deliberately left unmade here.
+directions.
+
+Which means the research pair **alone** already delivers both properties, and
+`related_components:` adds neither. It is kept for a different and narrower reason: work order
+§ 8.0 mandates that field by name, so dropping it because the generator happens not to surface
+it would silently narrow the spec — the field records the intended relationship even where no
+table shows it. Surfacing `related_components:` in a rendered table is a separate layout
+decision, deliberately left unmade here.
 
 The evidence base is the template's, not separately gathered: this bundle inherits every content
 decision the template made, and the honest limits of that evidence — in particular that the one
@@ -174,6 +179,7 @@ unchanged and are not re-litigated. See `research/base-project-template-evidence
 A first-party, deliberately small, deliberately engine-locked teaching artifact that trades every
 one of the registry's three bundle properties for one thing those properties do not measure:
 being **concrete**. Catalogued ahead of its own construction, scoring 0 of 3 confidently, with
-its `access-mcp` slot knowingly left empty and said so. Re-score after subtask 8.9's clean-clone
+its `access-mcp` slot knowingly left empty and said so — pending the owner's ruling on § 8.5,
+which this entry records as open rather than settled. Re-score after subtask 8.9's clean-clone
 pass, at which point the unverified tags above become checkable and the "no history" reading of
 *sustained* can be replaced with a real one.

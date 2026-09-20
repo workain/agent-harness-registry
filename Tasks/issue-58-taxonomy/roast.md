@@ -576,3 +576,129 @@ is the line this registry's provenance rule actually draws, and none should hold
 
 Subtask 8.0 is done and correct on `4705457`, subject to the merge-ordering hold on F2 that the
 epic has already imposed.
+
+---
+
+# 7. Delta confirmation — `db62edd` (R1 + R3 + a self-found third instance)
+
+Short confirmation pass on `4705457` → `db62edd` only, not a third full ROAST. 4 files,
++85/-6: `GUIDE.md` (1 line), the bundle YAML (1 line), the deep-dive (2 hunks), `log.md`.
+
+**Verdict on the delta: clean, with one new minor inaccuracy worth a one-word fix before 8.0
+closes.** It does not change the round-2 **PASS**.
+
+## 7.1 Re-verified
+
+```
+$ python3 scripts/generate.py; echo "EXIT=$?"; git status --porcelain
+wrote .../GUIDE.md (103 components, 7 instruction-conventions, 9 bundles, ..., 132 deep-dives)
+EXIT=0
+(no output)
+```
+
+All three acceptance criteria still hold at `db62edd`: generator clean, `GUIDE.md` in sync after
+a fresh regeneration, badge still at `GUIDE.md:163` in the five-column bundles table, all four
+cross-links resolving. This commit *does* move `GUIDE.md` — one line, the `Engine lock-in` cell —
+which is the expected consequence of editing a rendered field, and the regenerated output matches
+the committed one exactly.
+
+**R1 — closed.** `:159-168` now states the real reason: the research pair alone already delivers
+both properties, `related_components:` adds neither, and it is kept because § 8.0 mandates that
+field by name so dropping it would silently narrow the spec. Checked against the work order: § 8.0
+does name it verbatim — «`related_components: [base-project-template]` в новой YAML». The
+overreaching sentence is gone, and what replaced it is narrower *and* better sourced.
+
+**R3 — closed.** `engine_lock:` propagated. **Third instance — confirmed real.** The deep-dive's
+"Bottom line" (`:181-182`) now reads "knowingly left empty and said so — pending the owner's
+ruling on § 8.5, which this entry records as open rather than settled." § 8.5 now reads as open in
+all three places: deep-dive `:82-84`, deep-dive `:181-182`, YAML `:23`.
+
+A sweep for every superseded phrasing from all three rounds across `data/`, `deep-dives/`,
+`research/`, `GUIDE.md` and `README.md` returns exactly one hit — `:153`, the legitimate
+past-tense sentence. Nothing else stale remains.
+
+## 7.2 The truncation side effect — checked, and it reads better, not worse
+
+`_truncate(e.get("engine_lock"), 45)` at `generate.py:273`; `_truncate` keeps `text[:n-1]` and
+appends `…`. Computed both:
+
+```
+OLD rendered: 'Claude Code (hooks, skills, subagents, setti…'
+NEW rendered: 'Claude Code — 5 of 7 rungs are its conventio…'
+```
+
+Both clip mid-word, and so do four of the other eight bundles in the same column
+(`…manifests p…`, `…integration;…`, `…(Claude Code…`, `…(AGENTS.md-b…`) — mid-word clipping is
+this table's normal behaviour, not a regression introduced here. More importantly the new clip
+does not land anywhere that inverts or half-states a claim: it ends inside the word
+"conventions", which any reader reconstructs, and it leads with the load-bearing number. The
+worry worth having would have been a clip landing mid-qualifier (e.g. ending at "only rungs 1
+and"), and it does not. The corrected count now reaches the table reader where the old
+contradiction had been concealed by the same truncation. Net improvement.
+
+## 7.3 One new finding, minor — the parenthetical does not enumerate the rungs it counts
+
+`data/bundles/base-project-worked-example.yaml:27`:
+
+```yaml
+engine_lock: "Claude Code — 5 of 7 rungs are its conventions (hooks, skills, subagents, settings.json, plan-mode); only rungs 1 and 5 port, …"
+```
+
+The **count is right** and the "only rungs 1 and 5 port" clause matches the corrected deep-dive
+exactly. But the parenthetical lists five items that resolve to only **four** distinct rungs, and
+it omits one that the deep-dive counts.
+
+Against `deep-dives/bundles/base-project-worked-example.md:117`, whose five are rungs 2, 3, 4, 6, 7:
+
+| Parenthetical item | Rung |
+|---|---|
+| hooks | 3 |
+| skills | 4 |
+| subagents | 6 |
+| settings.json | **3 again** — the deep-dive names rung 3 as one thing, "`.claude/settings.json` `PreToolUse` hooks (3)", and no other `settings.json` content is claimed anywhere in the entry |
+| plan-mode | 7 |
+| *(absent)* | **2 — `~/.claude/projects/*/memory/`** |
+
+Five items, four rungs, memory missing. A reader who counts the parenthetical to check the "5 of
+7" gets five and maps them one-to-one, concluding either that `settings.json` is its own rung or
+that memory is not one of the locked ones. Both are wrong, and the second contradicts the
+Component-coverage table at `:97`, which scores `memory` as **Partial** precisely because the
+runtime layer is a Claude Code path.
+
+**Severity: minor, but it is a fresh inaccuracy introduced at the location the correction was
+propagated to** — the same class this whole thread has been chasing, one level down. It reaches
+no reader today (truncation clips the parenthetical away) but `engine_lock:` is machine-readable
+data and the field the bundles table generates from.
+
+**Fix:** one word — `(memory, hooks, skills, subagents, plan-mode)`. `GUIDE.md` will not move,
+since the change falls past the 45-character clip.
+
+## 7.4 On the diagnosis — it holds, and my own round-1 sweep corroborates it
+
+The author's reading — that the defect was **repairing at the location of the report rather than
+at the location of the claim** — is right, and it is a better generalisation than "check the YAML
+too."
+
+I can corroborate it from the other side, against myself. My round-2 sweep for stale phrasings
+(§ 6.2) grepped for `Six of seven` among others and returned clean — because the YAML never said
+"six of seven", it said "only rung 1 ports". I searched for the **wording of my own finding**
+instead of for the **proposition it corrected**, which is exactly the failure the author names,
+committed independently by the reviewer as well as by the author. That is decent evidence it is
+structural rather than a lapse of care by either of us.
+
+The sharpening I would add for the epic log: a correction has a **subject**, not a location, so
+the mechanical form of the sweep is *grep for the superseded proposition's every phrasing, not
+the finding's phrasing* — list what the old claim ASSERTED, then find every place that assertion
+lives, however worded. That is a checklist item rather than a discipline, which matters for the
+six remaining rungs: § 8.1-8.7 each document a mechanism and then change it, and several
+(rung 1's `wc -l` budget, rung 3's two-hooks-one-selftest, rung 5's declined slot) are already
+asserted in three places apiece — YAML, deep-dive, and the build's own README once it exists.
+Three places is where this stops being catchable by memory.
+
+## 7.5 Delta verdict
+
+**Clean apart from § 7.3.** R1, R3 and the self-found third instance are all genuinely closed;
+the `GUIDE.md` change is correct and the truncation reads better than what it replaced. I would
+fix the one-word parenthetical in the same commit series rather than after — not because it is
+serious on its own, but because the entire subject of this thread is that small stale claims are
+cheap to leave and compound — and then close 8.0.

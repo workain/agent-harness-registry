@@ -167,3 +167,17 @@ render_templates.py --check: PASS — both variants match their source fragments
 $ echo $?
 0
 ```
+
+Committed locally: `9fb3986` on `issue-51-security-boundaries` (parent `7b7c678` = `origin/main`
+at the time of branching), 4 files changed (the fragment, both rendered `CLAUDE.md`s, this log).
+
+## Blocker: no push credentials in this session
+
+`git push -u origin issue-51-security-boundaries` failed:
+`fatal: could not read Username for 'https://github.com': No such device or address`.
+The dispatch instructions state `$GH_TOKEN` is "already in your environment" — it is not
+(`printenv GH_TOKEN` empty, no `~/.netrc`, no `~/.ssh` keys, no other `GH_*`/`GITHUB_*`/token-
+looking env var found). Unauthenticated GET against `api.github.com` works fine (used it
+earlier for research), so this is a write-auth gap, not a network issue. Reported to the
+dispatcher rather than guessing at a workaround; work is committed and safe locally in the
+isolated worktree either way — nothing is at risk of being lost while this is resolved.

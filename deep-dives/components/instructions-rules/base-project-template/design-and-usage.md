@@ -66,6 +66,7 @@ not a ceiling.
 | Orchestration / multi-agent | A recurring task shape genuinely benefits from a distinct reviewer/research/specialist role | Populate the already-scaffolded `.claude/agents/` with a real subagent definition |
 | Orchestration / multi-agent | The first real "wrong tool" or non-obvious-substrate collision actually happens (not a speculative worry) | Write the first real module into `.claude/environment/`, replacing the worked `_example.md` |
 | Orchestration / multi-agent | The project stops being one agent working one repo at a time — genuinely concurrent sessions, not just sequential work | Add a session/epic register and WIP-cap discipline, sized to however many concurrent threads actually exist |
+| Access to external systems | An ordinary command is no longer enough | Read `.claude/mcp-notes.md`, then add a scoped `.mcp.json` entry — not a speculative connection |
 
 Every row reuses an evidence-linked decision from the template's own design notes rather than
 inventing a new one; none of it is pre-built into the template itself.

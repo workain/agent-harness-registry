@@ -89,6 +89,7 @@ that needs to know where something lives can read the directory itself.>
 - Skills: `.claude/skills/` — anything not broadly applicable to every session belongs
   here, not in this file (this file loads every session; skills load on demand).
 - Subagents: `.claude/agents/`.
+- MCP (connecting to an external system): `.claude/mcp-notes.md`.
 - **Nothing of value lives only in a session's working directory** — commit an artifact when it
   exists, not when the task ends. A crash or a cleanup job in between loses it silently.
 - Non-obvious environment/substrate knowledge (which of two similarly-named tools is

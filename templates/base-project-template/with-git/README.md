@@ -37,6 +37,7 @@ mechanical Block-I gate that the `without-git/` variant deliberately does not.
 | `.claude/skills/` | Empty until you have a recurring procedure worth packaging. | Keep the directory; delete/ignore its `README.md` once you understand it. |
 | `.claude/skills/_example/SKILL.md` | A worked example of the skill format — frontmatter with `name`/`description`, a concrete command, narrow scope. | Yes — delete once you've added your project's first real skill. |
 | `.claude/agents/` | Empty until you need a delegated specialist persona. | Same as skills. |
+| `.claude/mcp-notes.md` | A 5-point note on when MCP is (and isn't) worth connecting, and what to check before you do. | No — read it before adding your project's first `.mcp.json` entry, not after. |
 | `.claude/environment/` | Non-obvious facts about your specific tooling/substrate (which of two similarly-named tools is correct here, etc.). | Keep the slot; `_example.md` is a worked example, delete once you've added a real one. |
 | `.claude/settings.json` | The git-tracked commit-block gate (Block I). | Only delete if you deliberately want no branch protection — see "Customizing" below first. |
 | `.github/PULL_REQUEST_TEMPLATE.md` | Forces a review-artifact link and a merged-reference on every PR. | Keep if you use PRs; delete if you don't (and see `without-git/` if you don't use git at all). |

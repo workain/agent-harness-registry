@@ -498,3 +498,95 @@ runs on. It was found live in this epic's own 8.0, not imported from a paper.
 requirement the work order never states — 8.1 (`npx playwright install chromium`), 8.3 (the
 `init.defaultBranch=trunk` silent-allow boundary + #55's harness-blindness lesson), and 8.7
 (this). All three came from the work actually being done rather than from reading the spec.
+
+## 2026-09-20 14:30 — 8.0 IMPROVE verified; rung 1 accepted; rung 2 dispatched
+
+### 8.0 fix `4705457` — verified by the epic, returned to the ROAST for re-check
+
+Corrected passage now states both pairs ARE checked, puts the pre-patch state in the past tense,
+and keeps only the true distinction (**visibility, not enforcement**). The "link that survives a
+refactor" argument — the one that would have got the gate deleted — is gone. Re-run here:
+
+```
+$ git diff --stat 783a294 4705457 -- GUIDE.md   -> empty   (GUIDE.md byte-unchanged by the fix)
+   files touched: log.md, bundle YAML, deep-dive  (no code, no generator)
+M1 related_components dangling -> EXIT=1, slug named
+M2 related_research  dangling -> EXIT=1, slug named
+clean                          -> EXIT=0, worktree clean
+```
+
+F3 corrected to a **tie** with `gtm-starter-kit`, with the false premise **named rather than
+quietly deleted** — the write-up now quotes gtm's own `Sustained: No` row and distinguishes kinds
+of absence from amounts. F4: the author self-found a **second** false superlative at line 111
+that the ROAST had not flagged; both gone. F5: now "**Five** of seven", five actually enumerated,
+and both non-locked rungs accounted for, including that rung 5's portability is thin because it
+is an analysis rather than a working setup. F6 added to the YAML, which is what `generate.py`
+reads.
+
+Note the author's own restraint, which is the right instinct: they declined to restate the
+ROAST's stronger byte-identical-`GUIDE.md` result in the entry, because it was the ROAST's test
+and not theirs. I asked the ROAST to specifically check the rewrite for *fresh* overstatement —
+a passage rewritten under pressure to be accurate is a good hiding place for a new one.
+
+### Rung 1 (`3d58367`, parent `c1997b1`) — ACCEPTED, verified independently
+
+```
+$ git ls-tree HEAD .../signup-landing/
+120000 blob …  AGENTS.md      <- symlink, not a copy
+100644 blob …  CLAUDE.md
+$ wc -l CLAUDE.md      -> 69 CLAUDE.md
+$ ls -la AGENTS.md     -> lrwxrwxrwx … AGENTS.md -> CLAUDE.md   (resolves; head reads CLAUDE.md)
+```
+
+**The fresh-machine Playwright failure, reproduced by the epic in an empty cache:**
+
+```
+$ PLAYWRIGHT_BROWSERS_PATH=/tmp/pw-epic-check npx playwright test
+  ✘ 1 (5ms)  ✘ 2 (3ms)  ✘ 3 (3ms)  ✘ 4 (3ms)
+  Error: browserType.launch: Executable doesn't exist at …/chrome-headless-shell
+$ …npx playwright install chromium ; …npx playwright test   -> 4 passed (2.9s)
+$ du -sh /tmp/pw-epic-check   -> 658M
+```
+
+All four fail in **milliseconds, before any assertion** — infrastructure, not test failure, which
+is exactly why it had to be named for a student whose first real command is the one they type
+after cloning. `install chromium` (not bare `install`) is verified sufficient.
+
+**Two corrections the child made to THIS EPIC'S OWN BRIEF, both verified and both upheld:**
+
+1. **Size.** My brief said ~300 MiB. Measured 658M (393M `chromium-1243` + 261M
+   `chromium_headless_shell-1243` + 4.9M ffmpeg). The build states ~650 МиБ, the measured figure.
+2. **Date.** § 8.1 says the failure issue was "закрыт как «not planned», апрель 2026". Verified
+   against the API: `created_at` 2026-04-03, **`closed_at` 2026-05-18**, `state_reason`
+   `not_planned`. April is the OPENING month. The spec conflated the two; the build states both
+   dates.
+
+That makes **three** work-order errors found so far (§ 8.3's `ask`-on-unborn-HEAD, § 8.0's false
+"no bundle fills in the scoring table", § 8.1's misdated closure), plus two errors of mine that
+children caught. The pattern is consistent: the errors are all in *incidental* claims — a date, a
+count, a negative about a corpus — not in the substantive instructions. Those are precisely the
+claims a reader skims, and precisely the ones one command settles.
+
+The child also verified the `#42863` failure story first-hand rather than passing it through, and
+pulled the root cause from `01-instruction-files.md` into the README in one sentence: **CLAUDE.md
+is context, not enforced configuration — only a `PreToolUse` hook blocks an action regardless of
+the model's decision.** That is what makes rung 3 land as necessary rather than arbitrary, and it
+was the child's addition, not the spec's.
+
+### Standing instruction now carried into every later rung
+
+Rung 1 deleted the skeleton's `Where things live` section, because every pointer in it named a
+file belonging to rungs 2–7 that does not exist yet — "a pointer to nothing is worse than no
+pointer." Correct, **and it creates an obligation**: each rung must add its own pointer as its
+file lands, or nobody ever will. Now a named deliverable in every remaining rung brief, starting
+with 8.2's pointer to `DECISIONS.md`.
+
+### Rung 2 dispatched
+
+`ahr58-2-memory`, branched from `issue-58-rung1`. Told to mine its 3–4 real `DECISIONS.md`
+entries from the scaffold's and rung 1's actual logs (the `novalidate` call, the dropped
+`typescript` dep, the committed lockfile, the placeholder form action, the instruction budget)
+rather than invent plausible ones — and to check the dictated entry's own "20 строк" claim
+against `src/validate.js`, which is 24 lines including comments. Ruling passed down on
+`LESSONS.md`: ship only with a genuine promoted lesson, otherwise omit and say why; the slide
+tree marks it optional and an empty one is the unfilled boilerplate the template warns against.

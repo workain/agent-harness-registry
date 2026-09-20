@@ -373,3 +373,81 @@ exactly as uninformative there as a gate that does not fire.** Ступень 3'
 gate which did not fire looks identical to one that passed — this is that lesson one level up,
 with a live reproduction attached. 8.3 ships it as content, alongside the
 `init.defaultBranch=trunk` boundary.
+
+## 2026-09-20 13:55 — 8.0's independent ROAST: BLOCK, and it caught what the epic's pass missed
+
+`Tasks/issue-58-taxonomy/roast.md`, branch `issue-58-roast-8-0` @ `15e45e5`. One blocking
+finding. Every finding re-verified by the epic before being actioned.
+
+### F1 (blocking, confirmed)
+
+`deep-dives/bundles/base-project-worked-example.md:144-149` tells a published reader that
+`generate.py` checks `related_components:` "**only on research entries**" and that a bundle's is
+"validated by nothing … (verified by mutation: a deliberately bogus slug on a bundle produced
+exit 0)". The same commit's `generate.py:534` checks exactly that — the author added the call,
+and both the epic and the ROAST proved it fires.
+
+Half the sentence is still true (a bundle's `related_components:` is **rendered** nowhere), which
+is what let it survive two readings. The false half is the one carrying the reproduction.
+
+It blocks because it is **the provenance rule inverted: a false claim wearing a mutation
+reproduction is worse than an untagged one, because it instructs the reader not to check.** It is
+also the `[write-up]` target of `GUIDE.md:163` in a public repo, and "the link that survives a
+refactor runs through [the research path]" is precisely the argument a future maintainer would
+use to delete the gate this very commit adds.
+
+Cause, visible in the child's own `log.md`: the passage was written against its § 5 pre-patch
+findings and never revised after § 8 changed the facts. The log is honest and correctly
+sequenced; the published artifact was left behind. Generalised for later rungs: **a finding
+written down before you fix the thing becomes false the moment you fix it, and nothing warns
+you.** Rungs 8.3–8.8 all involve writing up a mechanism and then changing it — this failure mode
+is live for every one of them.
+
+### What the epic's own first pass got wrong — recorded, not glossed
+
+The epic's ROAST brief framed the item as "the author claims the pair is now enforced but
+rendered nowhere". That claim is made by the **code comment**, and it is true. The **deep-dive**
+says the opposite, and it is false. The epic verified the two artifacts against each other
+instead of each against the code, so the claim as phrased passed while the artifact failed.
+This is the near-miss an adversarial second pass exists for, and the argument for keeping the
+ROAST adversarial rather than confirmatory even when the first pass looked clean.
+
+The epic also did not MEASURE the 404 (F2) — one `curl` separated a philosophical point from a
+finding:
+
+```
+worked-example tree: 404
+template tree (control): 200
+```
+
+### Epic rulings on the ROAST's findings
+
+- **F2 — keep the URL, constrain the merge instead.** The link 404s only because the build does
+  not exist yet, and resolves when #58 lands. `issue-58-taxonomy` **must not merge to `main`
+  ahead of the build**: alone, it would put a bundle row on `main` with a broken `[write-up]`
+  link and none of its five `unverified:` caveats — `_unverified_block()` is called only from
+  the evalframework/benchmark detail renderers, never for bundles. A GUIDE reader would see an
+  ordinary, confident row pointing at nothing. Raised with the dispatcher, who holds the branch.
+- **F2 second half → follow-up issue**, not an 8.0 edit: `unverified:` blocks render nowhere for
+  bundles/components. Same class as the `related_components` rendering decision already ruled
+  out of scope.
+- **F3, F4, F5, F6 → ride along in the fix commit.** F3 is the notable one: the entry ranks
+  itself below `gtm-starter-kit` "because that bundle at least has a maintenance history to point
+  at", but gtm's own row reads `Sustained: **No** — created and pushed the same day; 12 commits
+  total, zero since`. The registry's own data refutes the stated reason; on the three axes they
+  are tied. **Self-criticism that cut past accuracy is still an accuracy defect** — and the
+  harshness is probably why the epic's pass let it through, which is its own lesson about
+  grading tone instead of claims.
+
+### What survived a real attack
+
+The `generate.py` patch drew no finding: absent / bare / `[]` / `null` all tolerated across 117
+of 119 entries; `component_bundle_index` is the right index; no slug collisions; and dropping the
+patched generator onto an untouched `origin/main` export produced a **byte-identical `GUIDE.md`**
+— behaviour-preserving, not merely non-fatal, which is stronger than the author claimed. All
+three acceptance criteria, the badge-table distinction, the `unverified:` coverage and both
+Russian quotations held. The block is one stale paragraph, not the work.
+
+Both known corrections were independently confirmed by the ROAST rather than inherited: the
+§ 8.0 spec error (all 8 pre-existing bundles carry a filled scoring table, each with a
+`**Score: N of 3**` line) and rung 5 not being settled by § 8.5.

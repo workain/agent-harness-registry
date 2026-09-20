@@ -12,13 +12,21 @@ mechanical Block-I gate that the `without-git/` variant deliberately does not.
 2. If this isn't already a git repository, run `git init` now. The branch-protection gate in
    `.claude/settings.json` needs a real repo to check anything — until `git init` has run, it
    will visibly warn you rather than silently do nothing (see that file's own comment).
-3. Fill in every `<BRACKETED>` placeholder — start with `CLAUDE.md`. Delete each file's leading
+3. Run the gate's self-test once, now: `bash .claude/hooks/selftest-branch-guard.sh`. It
+   should end in `RESULT: PASS`. Nothing else distinguishes a working branch-protection gate
+   from a silently broken one — a hook that does not fire produces no error and no output,
+   which looks exactly like a hook that fired and let the command through. **Then read the
+   `LIMIT` lines it prints**: those name real cases where this gate is silent and protects
+   nothing (a default branch that isn't `main`/`master`, and four ordinary command forms that
+   walk straight past it). A green run does not mean the gate cannot be got around. Re-run it
+   after every edit to `.claude/settings.json` and after every Claude Code update.
+4. Fill in every `<BRACKETED>` placeholder — start with `CLAUDE.md`. Delete each file's leading
    HTML comment once you've read it; those comments are fill-in instructions, not content that
    should ship in a real project.
-4. Delete anything that doesn't apply (e.g. the safety/scope-boundaries section, or `AGENTS.md`
+5. Delete anything that doesn't apply (e.g. the safety/scope-boundaries section, or `AGENTS.md`
    if only one agent engine will ever read this repo). An unfilled, irrelevant section is worse
    than an absent one.
-5. Prefer `cp -a`, `git clone`, or `git archive` over a plain `cp -r`/`cp -R` when copying this
+6. Prefer `cp -a`, `git clone`, or `git archive` over a plain `cp -r`/`cp -R` when copying this
    directory: GNU `cp -r` preserves the `AGENTS.md` symlink by default, but BSD/macOS `cp -R`
    dereferences it into a second real copy of `CLAUDE.md`'s content unless `-P` is given, which
    silently recreates the duplicate-instructions-file anti-pattern `CLAUDE.md`'s own
@@ -41,6 +49,7 @@ mechanical Block-I gate that the `without-git/` variant deliberately does not.
 | `.claude/environment/` | Non-obvious facts about your specific tooling/substrate (which of two similarly-named tools is correct here, etc.). | Keep the slot; `_example.md` is a worked example, delete once you've added a real one. |
 | `.claude/memory-notes.md` | Discipline for this runtime's own built-in auto-memory feature — one entry per fact, keep `MEMORY.md` an index, don't trust untrusted-sourced entries as instructions. | No — short, and the thing standing between auto-memory and a second `CLAUDE.md`. |
 | `.claude/settings.json` | The git-tracked commit-block gate (Block I). | Only delete if you deliberately want no branch protection — see "Customizing" below first. |
+| `.claude/hooks/selftest-branch-guard.sh` | The self-test for that gate — drives the hook's own command against throwaway repos in `/tmp` and asserts it actually denies. No network access. | Only if you deleted `settings.json` too; an unproven gate is the failure mode this file exists to catch. |
 | `.github/PULL_REQUEST_TEMPLATE.md` | Forces a review-artifact link and a merged-reference on every PR. | Keep if you use PRs; delete if you don't (and see `without-git/` if you don't use git at all). |
 
 ## Customizing this template (load-bearing vs. replaceable)

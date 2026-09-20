@@ -897,3 +897,72 @@ That is a checklist item rather than a discipline, which is the point. Several l
 live in **three** places apiece — the YAML, the deep-dive, and the build's own README once 8.8
 exists: rung 1's `wc -l` budget, rung 3's two-hooks-one-selftest, rung 5's declined slot. Three
 is where this stops being catchable by memory.
+
+## 2026-09-20 16:00 — 8.0 CLOSED at `46ad76d`; the subject-sweep rule is now evidence-backed
+
+Chain: `783a294` → `4705457` → `db62edd` → `ecffe96` → **`46ad76d`**. Verified by the epic:
+`generate.py` EXIT=0, porcelain empty, all three ACs hold at final state.
+
+`ecffe96` closed R4 — the parenthetical now reads `(memory, hooks, skills, subagents, plan-mode)`
+→ rungs 2, 3, 4, 6, 7 → five distinct, matching the deep-dive's own enumeration exactly, and
+matching the "5 of 7" it annotates. The child verified it by mapping items to rungs rather than
+by eye.
+
+### `46ad76d` — the subject-sweep, run properly, found two more
+
+**The tally is the useful output.** Three review rounds, two independent parties (the author and
+the ROAST), **four stale statements of two propositions left standing**. One subject-sweep found
+every remaining one. The phrasing-greps across those three rounds found **zero of the four**.
+
+- **S1 — a FOURTH wording of the F5 proposition**, alive two rounds after F5 "corrected" it, in a
+  *different table*: `deep-dives/…:96` read "**the only rung that ports across engines**". It
+  matched neither round 2's grep (`Six of seven`) nor round 3's (`only rung 1 ports`) — no
+  phrasing-grep could reach it. Only *"where else does this entry state how many rungs port?"*
+  does. Now distinguishes rung 1 (ports as a working artifact) from rung 5 (ports only as prose),
+  consistent with `:117` and YAML `:27`.
+- **S4 — the F6 proposition, same class as the previous round's Bottom line.** `:100` still read
+  `**No — deliberately declined.** … not an oversight`, with no pending-ruling caveat. Now
+  `**No — declined pending the owner's ruling.**`, consistent with the YAML, the rung-5 section
+  and the Bottom line. The child's own diagnosis of why they missed it in round 2 is exact: they
+  corrected the two places they had *just edited* rather than every place the proposition lived.
+
+### The rule, in its final operational form — carried into rungs 3–8
+
+> A correction has a **subject**, not a location. List what the old claim *asserted*, then find
+> every place that assertion lives, **however worded**.
+
+Two refinements the child added, both from having the failure happen to them:
+
+1. **Run the sweep BEFORE the fix commit, not after review.** Every one of the four instances was
+   catchable at the moment of the original correction; each instead cost a full review round.
+2. **Its input is a written list of propositions, produced when the correction is made.**
+   Reconstructing "what did that claim assert?" later is precisely where round 2 failed — the
+   reviewer reconstructed it as the finding's own wording, which is how they came to grep
+   `six of seven` against a file that had never contained that phrase.
+
+This is no longer a hunch from one incident. It is the thing that actually converged, against
+three rounds of review that did not.
+
+## 2026-09-20 16:00 — rung 2 ACCEPTED (`629d0c2`), rung 3 dispatched
+
+Verified independently: history linear (`c1997b1` → `3d58367` → `629d0c2`); `wc -l CLAUDE.md`
+= **74** (rung 1 pasted 69 — the drift is real, see below); `src/validate.js` = 24 lines, 14 of
+code, confirming § 8.2's dictated "20 строк" was wrong; `AGENTS.md` still mode `120000` on the
+same blob; no `memory/` path committed anywhere under the build; site untouched — `npm run build`
+✓ and `npx playwright test` → 4 passed.
+
+One count reconciled rather than waved through: `grep -c "^## "` on `DECISIONS.md` returns **7**
+against the child's reported 6. Line 11 is inside a fenced `Формат:` block — a format
+specification, not an entry. The child's count is right; six real entries, each sourced to a
+specific log section, with the file's own header stating the inclusion rule (an entry earns its
+place only if the decision had a **rejected alternative**). Three candidates were rejected as
+padding under that rule, which is the discipline working.
+
+### Ruling on the stale-number drift the child flagged
+
+Adding rung 2's pointer changed `wc -l CLAUDE.md` from 69 to 74, so rung 1's pasted «Проверка»
+output is now stale — and every later rung touching `CLAUDE.md` will do it again. **Ruled: rungs
+3–7 do NOT patch earlier rungs' numbers and do NOT add their own "current number" notes. 8.8
+normalises all pasted numbers once.** Seven rungs each patching the one before is worse than one
+reconciliation pass, and rung 2's existing note will be reconciled there too. Recorded as an 8.8
+requirement. Rung 1's actual assertion («заметно меньше 200 строк») still holds regardless.

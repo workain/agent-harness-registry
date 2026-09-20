@@ -1,6 +1,11 @@
-VERDICT: BLOCK
+VERDICT: PASS
 
 # Independent ROAST — agent-harness-registry#58, subtask 8.0 (taxonomy placement)
+
+> **Two rounds.** Round 1 (against `783a294`) returned **BLOCK** on one finding plus five lesser
+> ones. Round 2 (against the fix commit `4705457`) returns **PASS**. The verdict line above is the
+> current one; § 1-5 below are round 1's record, preserved unedited so the fix can be read against
+> what it was answering, and § 6 is round 2. Nothing in § 1-5 was revised after the fact.
 
 **Under test:** branch `issue-58-taxonomy`, commit `783a294eb532b0e7f145f45a1d1c22f8a6d6dc5e`
 (7 files, +498/-2), worktree `/home/harness/harness-projects/1/ahr-sem04-wt58-taxonomy`.
@@ -348,3 +353,226 @@ published reader, with a fabricated-by-staleness reproduction attached, that the
 adds does not exist — and supplies the argument for deleting it. Fix those four sentences and
 this is a PASS; F3/F4 should ride along in the same edit since they are two lines and touch the
 same file plus one neighbour.
+
+---
+
+# 6. Round 2 — re-ROAST of the fix commit `4705457`
+
+**Under test:** `issue-58-taxonomy` @ `47054573372b7c96e654fdf9c68996211c63451f`, a follow-up
+commit; `783a294` untouched. 3 files, +128/-13: `Tasks/issue-58-taxonomy/log.md`,
+`data/bundles/base-project-worked-example.yaml` (1 line),
+`deep-dives/bundles/base-project-worked-example.md`. **No code, no generator.**
+Mutation work again in a throwaway copy (`/tmp/roast80b`); the worktree under test was not modified.
+
+## VERDICT: PASS
+
+F1 is genuinely fixed — not papered over — and F3/F4/F5/F6 are all closed. I attacked the
+rewritten passage clause by clause for the fresh-overstatement the epic asked me to look for, and
+every empirical claim in it is one I reproduced. The one thing I found there is an argument that
+does not survive its own preceding two sentences, not a false claim; it is recorded below as
+non-blocking. Two small residuals of the same *class* as F1 are also recorded. None of them
+warrants holding the work.
+
+## 6.1 Re-verified the epic's own verification rather than trusting it
+
+Every line of the epic's report reproduces:
+
+```
+$ git diff --stat 783a294 4705457 -- GUIDE.md
+(empty)
+$ git show 783a294:GUIDE.md > /tmp/g783.md && diff -q /tmp/g783.md GUIDE.md
+IDENTICAL
+$ git diff --name-only 783a294 4705457
+Tasks/issue-58-taxonomy/log.md
+data/bundles/base-project-worked-example.yaml
+deep-dives/bundles/base-project-worked-example.md
+$ python3 scripts/generate.py; echo "EXIT=$?"; git status --porcelain
+wrote .../GUIDE.md (103 components, 7 instruction-conventions, 9 bundles, ..., 132 deep-dives)
+EXIT=0
+(no output)
+```
+
+`GUIDE.md` is byte-unchanged by the fix *and* still in sync after a fresh regeneration — the YAML
+edit lands in `components_bundled:`, which the bundles table does not render. All three acceptance
+criteria therefore still hold on `4705457` by the same tests run in § 1.
+
+## 6.2 F1 — CLOSED. Every clause of the rewrite checked against the code, not against the epic
+
+The rewritten passage is `deep-dives/bundles/base-project-worked-example.md:151-164`. Taken clause
+by clause, with what I ran against each:
+
+| Clause | Check | Result |
+|---|---|---|
+| "**Both pairs are now mechanically checked.**" | four mutations, one per link on disk | all `EXIT=1`, correct slug named in each |
+| "Until this entry's own commit … was validated by nothing — a deliberately bogus slug produced exit 0" | round 1's M1b: same mutation, new call surgically removed | `EXIT=0` — the past tense is the correct tense |
+| "while the same bogus slug in `related_research:` raised" | M2 below | `EXIT=1` |
+| "that same commit added the missing `_check_cross_links` call … at the end of the cross-link block" | `generate.py`, four calls, the new one last | accurate — and citing the block rather than a line number is the more durable reference |
+| "A dangling slug in either pair now fails the build" | M1–M4 | holds for all four directions |
+| "`related_components:` is rendered nowhere outside the research table, because `_relevant_components_cell()` is only called from `render_research_table()`" | `grep -n "_relevant_components_cell"` → one real call site, line 299, inside `def render_research_table(` at line 285 | accurate |
+| "the research pair is the one a reader actually sees rendered in both directions" | `GUIDE.md:163` `· Research:` cell; `GUIDE.md:868` *Relevant components* cell | both render — accurate |
+
+The mutations, run on `4705457`:
+
+```
+M1 related_components dangling on the BUNDLE    -> EXIT=1  ..."base-project-worked-example.related_components='base-project-template-TYPO'"
+M2 related_research  dangling on the BUNDLE     -> EXIT=1  ..."base-project-worked-example.related_research='base-project-template-evidence-TYPO'"
+M3 related_components dangling on the COMPONENT -> EXIT=1  ..."base-project-template.related_components='base-project-worked-example-TYPO'"
+M4 related_components dangling on the RESEARCH  -> EXIT=1  ..."base-project-template-evidence.related_components='bpwe-TYPO'"
+restored, clean run                             -> EXIT=0, worktree clean
+```
+
+M4 is one the epic did not run — the fourth direction, checked by the *pre-existing* call. I ran
+it because "both pairs are now mechanically checked" is a claim about all four links, not two, and
+a claim should be tested at its widest reading. It holds.
+
+The two things that made this blocking are both gone: the false present-tense assertion, and
+the "link that survives a refactor runs through [the research path]" conclusion — the sentence
+that supplied the argument for deleting the gate. `grep` over `data/`, `deep-dives/`, `research/`
+and `GUIDE.md` for the stale phrasings returns exactly one hit, at :153, inside the corrected
+past-tense sentence where it belongs.
+
+I also checked the thing the epic flagged: **no result of mine was imported into the entry.**
+`grep -i "byte-identical\|roast\|reviewer"` across the YAML and deep-dive returns only pre-existing
+matches for the `diff-reviewer` subagent and one line of prose about reviewer independence. The
+author's reasoning — that it is my test result and not theirs — is right, and declining to borrow
+it is the same discipline that makes the rest of the entry's provenance trustworthy.
+
+### R1 (non-blocking) — one argument in the rewrite that its own preceding sentences refute
+
+Line 162-164: "Keeping both is what makes the relationship simultaneously machine-checked and
+legible."
+
+This does not follow from the two sentences above it. *Both* pairs are now machine-checked, and
+only the research pair is legible — so the research pair **alone** already delivers both
+properties, and keeping the `related_components:` pair adds neither. The real reason to keep it is
+recorded in `log.md` § 6: § 8.0 mandates that exact field verbatim, and the epic ruled that
+dropping it would silently narrow the spec. That reason is good, concrete, and better than the one
+written.
+
+This is an argument that overreaches, not a claim that outruns a test — there is nothing here to
+reproduce or refute empirically, which is why it is not a finding of the F1 class. It is worth one
+sentence of editing (say "§ 8.0 asks for this pair by name" instead), and worth nothing more. The
+passage opens by conceding "the reason is narrower than it first appears," which is the honest
+frame; this last sentence quietly widens it again.
+
+## 6.3 F3 — CLOSED, and better than the correction I asked for
+
+`:120-129` now reads "tied with `gtm-starter-kit` (also 0 by design, 1 inherited)", and names the
+false premise instead of deleting it: it quotes gtm's own Sustained row and explains that an
+abandoned **No** and a not-yet-existent **Not established** are different *kinds* of absence
+rather than different *amounts*. I asked for the ordering to be dropped; keeping the retracted
+claim visible with its refutation attached is the stronger move, and it is the form a registry
+built on a provenance rule should prefer.
+
+Verified against the source rather than the report:
+
+- `deep-dives/bundles/gtm-starter-kit.md:66` — `| Sustained | **No** | Created and pushed the same day (2026-04-03); 12 commits total, zero since |`. The quote joins the two cells with an em-dash and lowercases "Created"; faithful, not a misquote.
+- `gtm-starter-kit.md:70` — `**Score: 0 of 3 by design, 1 of 3 counting an inherited property.**` The claimed tie is against the real recorded score.
+- All nine bundles' score lines read directly: `agent-harness-kit` 1 confident · `ai-coding-project-boilerplate` 1 by design, 2 inherited · `claude-code-plugins` 1 confident · `claude-flow` 1 confident · `gpt-store-custom-gpts` 1 confident · `gtm-starter-kit` **0** · `vibeready` 2 claimed · `wshobson-agent-teams` 2 confident · this entry **0**. Two bundles at zero. The tie is exactly two-wide.
+
+**One contestable point, which I do not think is a finding.** `vibeready` records "2 of 3 claimed"
+but its section heading is "(all vendor-claimed, unverified)" and its Sustained row is
+"Unknown/unverified" — so on a *confirmed-only* reading it has nothing verified either, and the tie
+would be three-wide. The entry compares against the catalogue's own recorded score lines, which is
+the defensible basis and the only one a reader can check without re-scoring a third entry. I raise
+it only because the epic asked me to attack hard; I would not change the text for it.
+
+## 6.4 F4 — CLOSED. The self-found second instance is real, and I did miss it
+
+Confirmed by `git diff`: line 111's "scores **worse than every other bundle in this catalog**"
+became "ties for **the lowest score in this catalog**". I flagged only the `:120` superlative in
+round 1 and did not flag `:111` — the author found it themselves. `grep -n -i "weakest\|worst\|lowest"`
+over the entry now returns one scoped superlative (the tie), plus "the worst of the three" inside
+the Engine-agnostic row, which is a within-entry comparison of the three axes and not a
+cross-catalogue claim. No unscoped superlative remains.
+
+### R2 (non-blocking, follow-up not fix) — the *other* side of F4 is now the stale one
+
+`gtm-starter-kit.md:70` still reads "The weakest bundle in this registry on this scoring." With the
+tie established, that exclusive superlative is no longer uniquely true. My round-1 wording was
+"one of the two lines needs to move"; one moved, and the remaining one is now the stale half.
+
+The epic's call to scope the fix to this entry rather than edit a neighbouring bundle's write-up
+inside a subtask-8.0 commit is **right**, and I would have made the same call — editing an
+unrelated entry to accommodate a new one is how scope creep starts. But the corpus does now carry
+one stale exclusive superlative, and it should be a tracked line rather than an accepted one. A
+one-word edit ("The weakest" → "Tied for the weakest") in whatever PR next touches that file, or a
+line on #64, closes it.
+
+## 6.5 F5 — CLOSED in the deep-dive
+
+`:117` now reads "**Five** of seven", enumerates exactly five (rungs 2, 3, 4, 6, 7), and accounts
+for both remainders: rung 1 via the `AGENTS.md` symlink, and rung 5 as engine-neutral prose that
+"ports precisely because it is an *analysis* of an MCP setup rather than a working one, which is a
+thin kind of portability to claim credit for." 5 + 2 = 7. That last clause is the right instinct —
+it takes the point and declines the credit in the same breath.
+
+### R3 (non-blocking) — the same correction did not reach the YAML
+
+`data/bundles/base-project-worked-example.yaml:27` is unchanged:
+
+```yaml
+engine_lock: "Claude Code (hooks, skills, subagents, settings.json are all its conventions); only rung 1 ports via the AGENTS.md symlink"
+```
+
+"only rung 1 ports" is the exact phrasing the deep-dive just corrected to two. This is the F1
+*pattern* in miniature — a claim fixed in one artifact and left standing in its neighbour — which
+is why I am naming it rather than letting it go, even though the substance is minor: read as
+"only rung 1 ships portable working equipment" it is defensible, and the deep-dive itself calls
+rung 5's portability thin. `GUIDE.md` renders this field truncated at ~45 characters, so the
+contradicting clause is clipped out of the published table and reaches no reader today.
+
+Not blocking, and genuinely close to a nitpick. But `engine_lock:` is machine-readable data, it is
+the field the bundles table is generated from, and the fix is four words.
+
+## 6.6 F6 — CLOSED
+
+`data/bundles/base-project-worked-example.yaml:23` now ends "…so read this slot as
+declined-**pending-ruling**, not settled," and names § 8.5's "executor's recommendation, not the
+owner's decision" explicitly. That is the right file: `generate.py` reads the YAML, and the caveat
+now lives where a machine consumer of `data/` will find it rather than only in prose one click
+away. The remaining "rung 5 deliberately ships no working MCP connection … see the deep-dive" in
+`what_it_is` is fine as it stands — declining *is* deliberate; what was unsettled was whether it
+stays, and that is now stated in the neighbouring field.
+
+## 6.7 The two rulings I was asked to confirm or push back on
+
+**F2 (the 404ing `homepage:`) — I agree, and the ruling is better than my suggestion.** I proposed
+caveating the URL. Holding `issue-58-taxonomy` unmerged until the build lands makes the 404
+temporary *by construction* instead of documented, and it keeps `homepage:` pointing at the
+correct final target rather than at a placeholder someone would later have to remember to change.
+That is the right trade.
+
+One thing to name rather than block on: the constraint is **discipline, not mechanism** — nothing
+in the repo enforces merge ordering, and `CLAUDE.md` already records the same honest limitation
+about `safe-merge.sh` (the `PreToolUse` hook is per-checkout and a raw `curl` to the merge endpoint
+bypasses it entirely). If the hold is load-bearing, it belongs written down somewhere a second
+person would see it — the issue, or the PR description when one is opened — not only in the
+dispatcher's head. I am told the dispatcher has confirmed and is holding; I have no token and
+could not verify that independently, and I am recording it as unverified rather than assumed.
+
+**F2b (`unverified:` never rendering for bundles), filed as #64 — I agree.** Verified the
+mechanism again: `_unverified_block()` is called only from `render_evalframework_detail` and
+`render_benchmark_detail`. The acceptance criterion the epic attached — that an empty list must
+not produce an empty block — is tighter than anything I wrote, and it is the right one: the
+obvious implementation renders a bare heading for the 100+ entries that carry no `unverified:`
+list, which would be a regression dressed as a fix.
+
+## 6.8 What I could not check in round 2
+
+Unchanged from § 4, and one addition: I could not verify the dispatcher's merge-ordering hold or
+the existence and contents of issue **#64** — `gh` is not installed, there is no `GH_TOKEN` in this
+session by design, and I did not go looking for one. Both are taken on report and labelled as such.
+
+## 6.9 Bottom line, round 2
+
+**PASS.** The blocking finding is closed at the root rather than at the symptom: the passage now
+says something true, says it in the right tense, and the sentence that would have justified
+deleting the new gate is gone. F3 is closed better than I asked. F4, F5 and F6 are closed, and the
+author self-found an instance of F4 I had missed. Three non-blocking residuals are recorded above
+(R1 an argument that overreaches, R2 the now-stale superlative in the neighbouring write-up, R3
+the YAML's un-updated `engine_lock:`); none of them is a false claim presented as verified, which
+is the line this registry's provenance rule actually draws, and none should hold the work.
+
+Subtask 8.0 is done and correct on `4705457`, subject to the merge-ordering hold on F2 that the
+epic has already imposed.

@@ -282,3 +282,94 @@ called only from `render_research_table`). **Ruled: no, out of scope for #58.** 
 `GUIDE.md` layout change affecting every entry, not a worked-example concern, and #58 is already
 the largest item in the work order. Recommended as a separate issue. Raised to the dispatcher in
 case they want it to ride along.
+
+## 2026-09-20 13:35 — S-scaffold accepted after independent epic verification
+
+`issue-58-scaffold` @ `c1997b1`, 11 files, +1719. Every acceptance criterion re-run by the epic
+rather than accepted from the child's report.
+
+Build, real run in the child's worktree:
+
+```
+$ npm run build
+✓ 5 modules transformed.
+dist/index.html  1.86 kB │ dist/assets/index-*.css 0.75 kB │ dist/assets/index-*.js 1.57 kB
+$ npx playwright test --reporter=list     ->  4 passed (4.0s)
+```
+
+**The RED proof, reproduced by the epic — this is the claim that mattered.** Gutted
+`src/validate.js` to `return []`, left `index.html` untouched (`git diff --stat -- index.html`
+empty):
+
+```
+  ✓  1 › the page shows a name field, an email field and a submit button
+  ✘  2 › an empty form is not submitted, and says which fields are missing
+  ✘  3 › a malformed email is not submitted either
+  ✓  4 › a filled-in form is sent to the external form service
+    Expected: "http://localhost:5173/"
+    Received: "https://formspree.io/f/REPLACE_WITH_YOUR_FORM_ID"
+  2 failed, 2 passed
+```
+
+With the author's code gutted and the browser's own `required`/`pattern` sitting untouched in
+the markup, an empty form really does navigate to the endpoint. **The native attributes did not
+save the run** — which is precisely what makes the test non-vacuous. Restored: byte-identical to
+the commit (`git diff --quiet` clean), 4 passed again.
+
+Design that earns this: markup carries `required`/`pattern` **and** `novalidate`, so
+`src/validate.js` reads the constraints back through the Constraint Validation API and is what
+actually blocks submission. Had native validation done the blocking, gutting `validate.js` would
+have left the suite green — the exact failure mode this seminar exists to teach against.
+
+Two devDependencies (`vite`, `@playwright/test`), both named by the work order; **zero runtime
+dependencies**; no `typescript` (Playwright transpiles its own specs). No secrets: the form
+action is the literal placeholder `https://formspree.io/f/REPLACE_WITH_YOUR_FORM_ID` — the child
+deliberately declined to put a live Formspree id in a teaching repo that every student clones.
+
+### Epic rulings on the child's two open questions
+
+1. **`signup-landing/README.md` — ruled: it does not exist.** There is exactly ONE README for
+   the build, at `templates/base-project-worked-example/README.md`, parallel to
+   `templates/base-project-template/README.md`. Inside the project the agent-facing entry point
+   is `CLAUDE.md` — which is the entire point of rung 1. Rung 8.1 creates that README with its
+   own section; rungs 2–7 append; 8.8 restructures it into the seven-step ladder. This also
+   resolves where § 8.2's memory-path note and § 8.5's MCP section land: both are "README
+   сборки", i.e. that one file.
+2. **`package-lock.json` — ruled: keep it committed.** § 8.9's criterion is a clean clone
+   reproducing seven steps without editing a file. Without a lock a student's `npm install`
+   resolves whatever Vite 7.x is current that week and their build output stops matching the
+   seminar materials. It is generated rather than hand-written, but this is an application, not
+   a prose artifact.
+
+### Carried into 8.1 from the scaffold's own finding
+
+A fresh clone fails `npx playwright test` with `browserType.launch: Executable doesn't exist`
+until `npx playwright install chromium` (~300 MiB) has run once. The spec's § 8.1 does not name
+it. With no live demo at the seminar, the student's first real command is the one they type after
+cloning — so an unnamed one-time setup step means their first experience of the whole build is an
+infrastructure error. 8.1 is required to name it in `Build, test, verify`.
+
+## 2026-09-20 13:35 — 8.3's base updated, and a requirement that outranks the script itself
+
+#55's head is **`03c2dc5`**, not `d904774`. The dispatcher ran the self-test in a clean tree
+(7/7 plus the `trunk` limit) and then mutated `settings.json` to confirm it can fail (3 red,
+exit 1, failure text naming the silent-pass mode). Sound as 8.3's base.
+
+**The part 8.3 must carry into the build, not just inherit as a script.** #55's self-test
+contained the very defect it exists to catch, twice:
+
+- a fixture builder that failed silently, so the run reported PASS on repositories that were
+  never created — the hook was quiet because there was no fixture, and the harness read quiet
+  as correct;
+- an empty path variable, so `git -C "" commit` operated on the *current* directory and put ten
+  commits on their real branch. `git -C ""` does not fail.
+
+Neither was found by running the test. Both came from re-reading it and from a `git log` that
+was nearly skipped.
+
+Their formulation, which belongs in the build a student clones rather than in a task log:
+**a self-test's own harness is the one part of it that nothing tests, and "the run was green" is
+exactly as uninformative there as a gate that does not fire.** Ступень 3's whole lesson is that a
+gate which did not fire looks identical to one that passed — this is that lesson one level up,
+with a live reproduction attached. 8.3 ships it as content, alongside the
+`init.defaultBranch=trunk` boundary.

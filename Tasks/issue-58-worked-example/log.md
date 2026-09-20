@@ -966,3 +966,65 @@ output is now stale — and every later rung touching `CLAUDE.md` will do it aga
 normalises all pasted numbers once.** Seven rungs each patching the one before is worse than one
 reconciliation pass, and rung 2's existing note will be reconciled there too. Recorded as an 8.8
 requirement. Rung 1's actual assertion («заметно меньше 200 строк») still holds regardless.
+
+## 2026-09-20 16:15 — order 5 merged; exec-bit requirement added to rung 3; ratio requirement recorded for rung 7
+
+**Order 5 is on `main` at `66196f0`** — 8.3's dependency is no longer a branch. Verified:
+
+```
+$ git ls-tree origin/main -r | grep selftest
+100755 blob f469b3b5…  templates/base-project-template/with-git/.claude/hooks/selftest-branch-guard.sh
+$ git diff origin/main issue-55-hook-selftest -- <that path>   -> identical, no change in the merge
+```
+
+331 lines. Rung 3 redirected to take it from `main`; it does **not** rebase (the epic rebases the
+whole ladder at integration), it just sources the script's content from there. Five of seven
+orders are now merged: 1, 3, 2, 6, 5.
+
+### NEW rung-3 requirement — the executable bit is a fourth way a gate goes silently absent
+
+#55 re-verified mode `100755` **after** the merge, because a squash-merge or patch application
+can quietly drop the exec bit. Their reasoning transplants into this rung better than any
+argument could:
+
+> Had the bit dropped, the script would still **exist**, would still **run** under
+> `bash .claude/hooks/selftest-branch-guard.sh` — and the README's own invocation uses exactly
+> that form, so the normal way of using the thing would have **hidden the loss**.
+
+That is ступень 3's thesis in a second, independent instance: **the failure is invisible
+precisely because the normal way of using the thing routes around it.** The build already ships
+three ways the branch-guard does not fire; this is a fourth way a gate can be absent altogether,
+and it is about the *harness* rather than the hook — which makes it the more general case.
+
+Dispatched to rung 3: preserve `100755` and verify it with `git ls-tree` on the commit (the
+committed mode is what a student clones, not what `ls -l` shows in a working tree); make the
+«Проверка» block invoke `./.claude/hooks/selftest-branch-guard.sh` rather than `bash …`, because
+only the direct form exercises the bit; and demonstrate the contrast by dropping the bit in a
+scratch copy — `./…` fails, `bash …` still passes — then restoring.
+
+### RECORDED for rung 7 (8.7) — show the log-to-deliverable ratio deliberately
+
+#55's `Tasks/issue-55-hook-selftest/` is roughly **2000 lines of `log.md` + `roast.md` beneath a
+330-line deliverable**. That is the discipline working exactly as designed. It is also, to a
+student meeting it cold, **indistinguishable from bloat** — and rung 7 is the rung that asks them
+to keep precisely those two artifacts.
+
+So 8.7 must show that ratio *deliberately* rather than letting a student discover it and conclude
+the process is overhead. What makes it worth paying, stated concretely: nearly everything that
+changed #55's artifact is in those 2000 lines and **nowhere else** — the confounded-experiment
+diagnosis, the `git -C ""` trap that put ten commits on a real branch, the two overclaims that
+were rewritten, the residuals recorded rather than closed. The deliverable alone reads as though
+it were right the first time. It was not, and the record is the only place that is visible.
+
+The framing to use: **the 330 lines are what the project gets; the 2000 are what the *next*
+person gets. A student who has only ever seen finished code has never seen the second thing.**
+
+This epic's own `Tasks/issue-58-worked-example/log.md` is a live second instance of the same
+ratio and may be cited alongside it.
+
+### Shared-checkout hazard formally closed
+
+Every session has its own worktree; the shared tree sits detached at `7b7c678` holding only
+harness bookkeeping. Order 7 is the only order that never got one — idle 22 minutes with an
+unresolved tool call, and the dispatcher has sent it a clean-start command. It is not a
+dependency of this epic.

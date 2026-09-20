@@ -192,3 +192,115 @@ for either. The timeout claim it *does* state, and is quoted verbatim in the REA
 Rung 1's pasted `wc -l CLAUDE.md` (`69`) and rung 2's note about it are untouched, per the
 ruling that § 8.8 normalises all pasted numbers in one pass. This rung's pointer makes the file
 78 lines / 551 words; no new "current number" note was added.
+
+---
+
+## 7. ROAST follow-up (`1510e2b`): PASS with 4 findings — what changed
+
+Fixed in a separate commit on top of `1568602`, not an amend.
+
+### F2 (blocking-quality) — the suite was ONE-SIDED
+
+The set of checks could only catch a gate that became too NARROW. Nothing in it could catch one
+that became too WIDE. Reproduced before fixing, both halves:
+
+- `[ "$branch" = "main" ] || [ "$branch" = "master" ]` → `case "$branch" in main*|master*)`,
+  one line: **17/17 PASS**, and then `deny` on a branch named `maintenance`.
+- `[^;&|]*` → `.*` in the rm target scan: **17/17 PASS**, and then `deny` on
+  `rm -rf dist; echo $HOME`.
+
+Root cause, and it is the same shape as Finding A one level up: every allow-fixture for the
+branch guard was a `feature/…` branch, so **equality was never distinguishable from a prefix or
+substring test**; every rm negative control happened to contain no expansion character anywhere
+else in the line, so **the statement boundary was never an independent variable**. The suite
+asked "does it stay silent here?" and never "could a much wider rule also stay silent here?"
+
+Three cases added (two rm, one branch), and both mutations are now shipped as M4 and M5 with
+pasted output. Each fails only its own cases — 1 of 20 and 2 of 20 — which is itself the thing
+worth checking: a suite that goes red everywhere on any break does not tell you what broke.
+
+**Why this one mattered more than its size.** Case 18's own comment already said it —
+*"if this case ever goes red the gate has started blocking ordinary cleanup, and will be
+switched off by the first person it inconveniences"*. I wrote the sentence, tested one instance
+of it, and did not generalise. A gate switched off for over-blocking protects exactly as much as
+one that never fires, which is this rung's thesis pointed the other way.
+
+### F3 — the one untrue shipped sentence
+
+The README said: *«Все три … Поэтому в самотесте они стоят отдельной категорией `LIMIT`, а не
+среди `PASS`»*. **False for способ #1.** That one was a defect in the *suite*, not the hook; it
+was FIXED, and its remedy (cases 3–4) correctly prints `PASS`. Способ #4 (the exec bit) is not
+in the suite at all.
+
+Subject sweep, run before the fix commit, on the proposition **"how is each documented
+way-a-gate-fails represented in the suite?"** — not on the sentence's wording. Four locations:
+
+| where | what it asserted | disposition |
+|---|---|---|
+| README, «Три способа» closing | all three are `LIMIT` | rewritten with the real mapping |
+| commit message of `1568602` | "All are reported as LIMIT, never as PASS" | cannot amend; corrected here and in the follow-up commit message |
+| my report to the epic | "All are `LIMIT`, never `PASS`" | corrected in the follow-up report |
+| epic's own log and their report upward | same sentence, inherited from mine | epic is fixing theirs |
+
+The real mapping, now stated in the README: of the ten `LIMIT` lines, **five** are способ #2,
+**one** is способ #3, **four** are hook `[1]`'s own. **Zero** are способ #1, and that is correct
+— a hole that was closed should read as `PASS`. Three different dispositions (fixed / open and
+named / checked by a different instrument) print three different ways precisely because they are
+three different things.
+
+Note the shape of this one: the claim propagated from my README into my commit message, my
+report, and then into the epic's log and their report upward — four artifacts and two sessions
+from one sentence. That is the fifth instance in this task of a correction having a subject
+rather than a location.
+
+### F1 — an unstated limit in a file about unstated failures
+
+The `$comment-rm-rf` key is a second non-standard top-level key, and whether Claude Code
+tolerates it was never verified live. `$comment` is itself unrecognised and the upstream
+template already relies on it, so the risk is the same class — but same-class is not tested,
+and the reviewer's probe makes it concrete: `jq -r 'keys[]' .claude/settings.json` in this
+repository returns `hooks` alone, because both files carrying `$comment` live under
+`templates/` and are never loaded. **Neither key has live evidence behind it.** Now stated in
+`$comment-rm-rf` itself (the key confessing about itself) and in the README.
+
+### F4 — what the evidence actually proves
+
+The README claimed *«доказательство — увидеть, как они закрываются»* without saying what it is
+that closes. The self-test drives the hook's **command string** against a real `PreToolUse`
+payload: that proves the logic, not that Claude Code loaded and invoked it. The script's header
+was already candid about this; the README — which is what a student actually reads — was not.
+A section opening with "the file existing is not evidence" has to name the boundary of its own
+evidence too.
+
+### O2 / O3 — taken, and asserted rather than described
+
+Both were offered as optional README rows. They are shipped as **real `LIMIT` cases as well**,
+because a documented boundary that nothing executes is a claim, not evidence — which is the
+distinction this whole rung is built on.
+
+- O2: `test -f release.txt && { git commit -m x; }` is ALLOWED while the ungrouped `&& git commit`
+  is denied — the character before `git` is `{`, not a separator. Same anchor as the other three.
+- O3: `rm --recursive --force dist/*` is ALLOWED — `--recursive` is not `-[a-zA-Z]+`, so the flag
+  scan never reaches the target.
+
+### O4 — date attributed
+
+`GHSA-ph6w-f82w-28w6` «29 августа 2025» now says the date is Check Point's own timeline, and
+notes GitHub reports `published_at = 2025-09-03` for that advisory.
+
+### Left alone deliberately
+
+The reviewer's exit-code probe (valid JSON + `exit 1`) passes because `expect_decision` ignores
+`HOOK_RC`. That is correct modelling — the docs say the JSON alone decides for a non-2 exit
+code — so it stays as it is, recorded here so a later reader does not "fix" it.
+
+O1 (`git commit-tree` / `commit-graph` caught by the `\b`) is pre-existing on `main` and belongs
+to #65 against the template, not to this rung — same reasoning as the ruling that the branch
+guard ships unpatched.
+
+### Verification after the fixes
+
+Fresh `git clone` → `./.claude/hooks/selftest-branch-guard.sh` → **20/20 PASS, 10 KNOWN LIMITS,
+exit 0**. Five mutations, all red, each only on its own cases: M1 cheat hook 3/20 (the reviewer's
+stronger variant, with `[ -d .git ]` so the not-a-repo case passes too), M2 FATAL exit 2, M3 1/20,
+M4 1/20, M5 2/20.

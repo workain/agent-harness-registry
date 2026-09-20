@@ -364,6 +364,24 @@ stalled hook to act as a gate.»* То же самое, если не устан
 пропустивший. Отсюда правило ступени: *наличие файла — не доказательство, что ворота стоят;
 доказательство — увидеть, как они закрываются.*
 
+**Что именно закрывается в этом доказательстве — и что нет.** Самотест ниже запускает
+**командную строку хука**, ту самую, что лежит в `settings.json`, и подаёт ей настоящий payload
+события `PreToolUse`. Этим доказана **логика** ворот. Этим **не** доказано, что Claude Code эту
+строку загрузил и вызвал: проводка проверяется только живой сессией, и ни одна строка самотеста
+этого сделать не может — он сам говорит об этом в своей шапке. Раздел, который начинается с
+«наличие файла — не доказательство», обязан назвать и границу своего собственного
+доказательства, иначе он повторяет ровно ту ошибку, о которой предупреждает.
+
+**И вторая такая же граница, поменьше.** Пояснение ко второму хуку лежит в
+`settings.json` отдельным ключом верхнего уровня `$comment-rm-rf` — рядом с `$comment`, который
+унаследован из шаблона. Терпит ли Claude Code такой второй нестандартный ключ, **живьём не
+проверено**: `$comment` — тоже нераспознаваемый ключ, так что риск того же класса, но «того же
+класса» и «проверено» — разные вещи. Убедиться, что ни один из них не имеет живого
+подтверждения, можно одной командой: `jq -r 'keys[]' .claude/settings.json` в *этом*
+репозитории печатает `hooks` и ничего больше — оба файла с `$comment` лежат под `templates/` и
+не загружаются никогда. Если будущая версия откажется от неизвестных ключей, оба текста
+переезжают в соседний файл; сами хуки ни от одного из ключей не зависят.
+
 ### Три способа, которыми эти ворота не срабатывают
 
 Они здесь не как дисклеймер и не как признание, что шаблон сломан. Это **граница** рабочего
@@ -396,9 +414,13 @@ stalled hook to act as a gate.»* То же самое, если не устан
 | `/usr/bin/git commit -m x` | **пропускает молча** |
 | `env git commit -m x` | **пропускает молча** |
 | `git commit` второй строкой многострочной команды | **пропускает молча** |
+| `test -f x && { git commit -m x; }` | **пропускает молча** |
 
-Причины **две разные**, и их не надо смешивать. Первые три — регексп
+Причины **две разные**, и их не надо смешивать. Первая, вторая, третья и пятая строки — регексп
 `(^|[;&|]\s*)git\s+commit\b`: он требует `git` в начале инструкции, и любой префикс его прячет.
+Пятая строка стоит того, чтобы на неё посмотреть отдельно: `&& git commit` **блокируется**, а
+`&& { git commit; }` — нет, потому что непосредственно перед `git` стоит `{`, а не разделитель.
+Одна фигурная скобка, и те же ворота отвечают противоположным образом.
 Четвёртая — **не** регексп, `grep` бы её поймал: хук устроен как `jq -r … | { read -r cmd; … }`,
 и `read -r` обрезает вход до первой строки **до** того, как регексп что-либо увидит:
 
@@ -416,9 +438,20 @@ $ printf 'echo hi\ngit commit -m x' | { read -r cmd; echo "[$cmd]"; }
 `deny` (хук сравнивает только с `main` и `master`), ни `ask` (это **уже** репозиторий) — он
 пройдёт молча. Не ошибка хука: граница проверки, устроенной по имени.
 
-Все три ведут себя как ворота, которых нет, — и выглядят одинаково с воротами, которые
+Способы 2 и 3 ведут себя как ворота, которых нет, — и выглядят одинаково с воротами, которые
 сработали и пропустили. Поэтому в самотесте они стоят отдельной категорией **`LIMIT`**, а не
 среди `PASS`: пройденная проверка и не проводившаяся проверка не должны печататься одинаково.
+Из десяти строк `LIMIT` в прогоне ниже **пять** — способ 2, **одна** — способ 3, оставшиеся
+**четыре** — собственные границы второго хука (префикс пути, вторая строка, `rm -r -f`
+раздельными словами и длинные формы флагов `--recursive --force`).
+
+**А способ 1 в `LIMIT` не попадает — и это не недосмотр.** Он был дефектом **самого набора
+проверок**, а не хука, и он **починен**: его лекарство — фикстуры 3–4, и они печатают `PASS`.
+Закрытая дыра и выглядит как `PASS`; стой она в `LIMIT`, это значило бы, что её не закрыли.
+Способа 4 в самотесте нет вовсе — бит исполнения проверяется не им, а сравнением двух способов
+запуска ниже. Три разных способа рассказать про дыру — «починена», «открыта и названа»,
+«проверяется другим инструментом» — и печатаются они по-разному именно потому, что это разные
+вещи.
 
 **Почему это не чинится здесь.** Хук унаследован из шаблона. Вилка «исправленной» копии внутри
 учебной сборки создаёт ровно то расхождение с шаблоном, которое ступень README-лестницы ловит
@@ -448,7 +481,8 @@ Claude Code спрашивает его всегда. И далее: *«there's 
 .claude/settings.json will run automatically without confirmation… The session appears completely
 normal while commands from the untrusted repository have already run in the background»*. Это
 уязвимость **#1** в их разборе, закрытая Anthropic усиленным диалогом доверия; её идентификатор
-— **GHSA-ph6w-f82w-28w6** (29 августа 2025).
+— **GHSA-ph6w-f82w-28w6**. Дату 29 августа 2025 даёт хронология самой Check Point; GitHub для
+этого GHSA показывает `published_at = 2025-09-03`, так что число — их, а не реестра.
 
 Отсюда практический вывод ровно для этой ступени. `.claude/settings.json` — не метаданные,
 а исполняемая конфигурация; в чужом PR её читают глазами, как читают код. Их же рекомендация:
@@ -479,11 +513,11 @@ cd templates/base-project-worked-example/signup-landing
 
 ```
 settings.json hook selftest — 2 hooks
-  settings: /tmp/rung3-clone/templates/base-project-worked-example/signup-landing/.claude/settings.json
+  settings: /tmp/r3c/templates/base-project-worked-example/signup-landing/.claude/settings.json
   hook [0]: branch-protection guard      (timeout 10s)
   hook [1]: `rm -rf` expansion guard     (timeout 10s)
             a hook that misses its timeout does NOT block — it is silently skipped
-  scratch:  /tmp/branch-guard-selftest.CHLo5jHc
+  scratch:  /tmp/branch-guard-selftest.VXYtNEtr
 
   PASS  commit on main — permissionDecision=deny, reason text matches exactly.
   PASS  commit on master — permissionDecision=deny, reason text matches exactly.
@@ -492,6 +526,7 @@ settings.json hook selftest — 2 hooks
   PASS  commit on main, unborn HEAD (no commits yet) — permissionDecision=deny, reason text matches exactly.
   PASS  commit with no git repository at all — permissionDecision=ask, reason text matches exactly.
   PASS  commit on feature-x — hook stayed silent, as intended.
+  PASS  commit on 'maintenance' — a branch that merely STARTS WITH 'main' — hook stayed silent, as intended.
   PASS  git status on main — hook stayed silent, as intended.
   PASS  chained 'git switch … && git commit' on main (known sharp edge: denied against the OLD branch) — permissionDecision=deny, reason text matches exactly.
   LIMIT default branch named 'trunk' — commit is ALLOWED, neither denied nor asked
@@ -504,6 +539,8 @@ settings.json hook selftest — 2 hooks
         Same root cause. Treat the gate as a reminder that fires on the common shape, not as a boundary.
   LIMIT `git commit` on the SECOND line of a multi-line command — ALLOWED: the hook reads only the first line
         Multi-line Bash calls are routine. Keep a commit on the first line of its own call, or widen the hook to read all of stdin.
+  LIMIT `&& { git commit; }` on main (grouped) — ALLOWED: the character before 'git' is '{', not a separator
+        Same anchor as the three above. Worth knowing because the ungrouped form of the same line IS denied, which makes this one look like a gate that changed its mind.
   PASS  rm -rf against a glob — permissionDecision=deny, reason text matches exactly.
   PASS  rm -rf tests/ patches/ plan/ ~/ (the reported incident, verbatim) — permissionDecision=deny, reason text matches exactly.
   PASS  rm -rf on a variable-built path — permissionDecision=deny, reason text matches exactly.
@@ -511,6 +548,8 @@ settings.json hook selftest — 2 hooks
   PASS  rm -rf after '&&' — a statement start is a statement start — permissionDecision=deny, reason text matches exactly.
   PASS  rm -rf on a written-out path — allowed by design — hook stayed silent, as intended.
   PASS  plain rm on a glob (no -rf) — outside this gate's stated scope — hook stayed silent, as intended.
+  PASS  rm -rf on a written-out path, a '$' in a LATER statement (;) — hook stayed silent, as intended.
+  PASS  rm -rf on a written-out path, a glob in a LATER statement (&&) — hook stayed silent, as intended.
   PASS  ordinary non-rm command — hook stayed silent, as intended.
   LIMIT `/bin/rm -rf dist/*` — ALLOWED: an absolute path is not the literal word 'rm'
         Same root cause as the branch guard's case 12. These gates filter one command SHAPE, not intent.
@@ -518,43 +557,52 @@ settings.json hook selftest — 2 hooks
         Keep a destructive command on the first line of its own call, or widen both hooks to read all of stdin.
   LIMIT `rm -r -f dist/*` (flags split into two words) — ALLOWED: the regex wants one flag cluster
         One space is the whole difference. Widening the regex closes this one case; it does not change what the two above are telling you.
+  LIMIT `rm --recursive --force dist/*` (long-form flags) — ALLOWED: the regex reads short clusters only
+        Short and long flags are the same command to the shell. Any name-based check has a spelling it does not know; this is this one's.
 
-RESULT: PASS — 17/17 checks. Both gates were observed firing where this script checks them.
-        8 KNOWN LIMIT(S) listed above: real cases where a gate is silent and protects
+RESULT: PASS — 20/20 checks. Both gates were observed firing where this script checks them.
+        10 KNOWN LIMIT(S) listed above: real cases where a gate is silent and protects
         nothing. Green here does not mean these gates cannot be walked past — read them.
 Re-run after any Claude Code update or any edit to .claude/settings.json.
 ```
 
-Читается так: **17 `PASS`** — ворота видели закрывающимися там, где скрипт их проверяет;
-**8 `LIMIT`** — места, где ворот нет, перечисленные поимённо. `LIMIT` — не `PASS`; зелёный итог
+Читается так: **20 `PASS`** — ворота видели закрывающимися (и, столь же важно, молчащими)
+там, где скрипт их проверяет; **10 `LIMIT`** — места, где ворот нет, перечисленные поимённо. `LIMIT` — не `PASS`; зелёный итог
 означает «сработало там, где проверяли», а не «обойти нельзя».
 
 **Прогон, в котором самотест падает.** Набор проверок, который никто не видел красным, — не
-доказательство, а оформление. Три мутации, каждая на копии `settings.json` в `/tmp`, настоящий
-файл сборки не трогается.
+доказательство, а оформление. Пять мутаций, каждая на копии `settings.json` в `/tmp`, настоящий
+файл сборки не трогается. Первые три делают ворота **у́же** — они перестают срабатывать там, где
+должны. Последние две делают их **шире**, и это вторая половина, без которой набор проверок
+однобок: ворота, блокирующие обычную работу, выключит первый же, кому они помешают, а выключенные
+ворота защищают ровно столько же, сколько несработавшие.
 
-*Мутация 1 — подставной хук: не вызывает `git` вовсе, отвечает из `case "$PWD"`.* Именно на нём
-предыдущая редакция самотеста показывала 7/7:
+*Мутация 1 — подставной хук: не вызывает `git` вовсе, отвечает из `case "$PWD"`* (с проверкой
+`[ -d .git ]`, чтобы проходил и случай «не репозиторий»). Именно на хуке этого класса предыдущая
+редакция самотеста показывала 7/7:
 
 ```
-$ ./.claude/hooks/selftest-branch-guard.sh /tmp/rung3-mut/m1-pwd-cheat.json
-…  (показаны только отличия: остальные 15 проверок подставной хук проходит)
+$ ./.claude/hooks/selftest-branch-guard.sh /tmp/mut-m1.json
+…  (показаны только отличия: остальные 17 проверок подставной хук проходит)
   FAIL  repo directory named 'main-repo', HEAD is feature/x — must ALLOW — expected NO hook output (allow), got: {"hookSpecificOutput":{"hookEventName":"PreToolUse","permissionDecision":"deny","permissionDecisionReason":"BLOCKED: direct commit to main/master. Create a feature branch first."}}
   FAIL  repo directory named 'feature-work', HEAD is main — must DENY — expected deny, but the hook produced NO OUTPUT (rc=0). This is the silent-pass failure mode: to Claude Code it is indistinguishable from the rule being obeyed.
-RESULT: FAIL — 2 of 17 checks failed. A gate in /tmp/rung3-mut/m1-pwd-cheat.json is NOT doing what it claims.
+  FAIL  commit on 'maintenance' — a branch that merely STARTS WITH 'main' — expected NO hook output (allow), got: {"hookSpecificOutput":{"hookEventName":"PreToolUse","permissionDecision":"deny","permissionDecisionReason":"BLOCKED: direct commit to main/master. Create a feature branch first."}}
+RESULT: FAIL — 3 of 20 checks failed. A gate in /tmp/mut-m1.json is NOT doing what it claims.
 (код возврата 1)
 ```
 
-Падают ровно те две фикстуры, у которых имя противоречит ветке, — и ни одна другая. Это и есть
-то, ради чего они добавлены.
+Падают ровно три проверки, и все три — те, что смотрят на ветку независимо от пути: две
+фикстуры, у которых имя противоречит ветке, и ветка `maintenance` (её каталог содержит `main`,
+поэтому путь-читающий хук её блокирует). Ни одна другая. Это и есть то, ради чего они
+добавлены.
 
 *Мутация 2 — второй хук удалён из массива.* Извлечение хуков идёт по позиции, и отсутствие
 второго — фатальная ошибка, а не пропущенный блок:
 
 ```
-$ ./.claude/hooks/selftest-branch-guard.sh /tmp/rung3-mut/m2-second-hook-deleted.json
+$ ./.claude/hooks/selftest-branch-guard.sh /tmp/mut-m2.json
 
-FATAL: found only ONE command hook in the "Bash" group of /tmp/rung3-mut/m2-second-hook-deleted.json; this
+FATAL: found only ONE command hook in the "Bash" group of /tmp/mut-m2.json; this
        project ships two, and the second (the rm -rf expansion guard) is missing. This is FATAL
        rather than a skipped block on purpose: a suite that quietly tests the hooks it can find
        and prints PASS is worse than no suite, because it certifies the half that is gone.
@@ -565,12 +613,41 @@ FATAL: found only ONE command hook in the "Bash" group of /tmp/rung3-mut/m2-seco
 командой из разобранного случая:
 
 ```
-$ ./.claude/hooks/selftest-branch-guard.sh /tmp/rung3-mut/m3-globs-only.json
+$ ./.claude/hooks/selftest-branch-guard.sh /tmp/mut-m3.json
 …  (показаны только отличия)
   FAIL  rm -rf tests/ patches/ plan/ ~/ (the reported incident, verbatim) — expected deny, but the hook produced NO OUTPUT (rc=0). This is the silent-pass failure mode: to Claude Code it is indistinguishable from the rule being obeyed.
-RESULT: FAIL — 1 of 17 checks failed. A gate in /tmp/rung3-mut/m3-globs-only.json is NOT doing what it claims.
+RESULT: FAIL — 1 of 20 checks failed. A gate in /tmp/mut-m3.json is NOT doing what it claims.
 (код возврата 1)
 ```
+
+*Мутация 4 — сравнение имени ветки заменено на сравнение по префиксу* (`[ "$branch" = "main" ]`
+→ `case "$branch" in main*|master*)`, одна строка). Ворота начинают блокировать `maintenance`,
+`main-v2`, `mainline`, `master-thesis`; до появления фикстуры с веткой `maintenance` этот вариант
+проходил набор проверок целиком:
+
+```
+$ ./.claude/hooks/selftest-branch-guard.sh /tmp/mut-m4.json
+…  (показаны только отличия)
+  FAIL  commit on 'maintenance' — a branch that merely STARTS WITH 'main' — expected NO hook output (allow), got: {"hookSpecificOutput":{"hookEventName":"PreToolUse","permissionDecision":"deny","permissionDecisionReason":"BLOCKED: direct commit to main/master. Create a feature branch first."}}
+RESULT: FAIL — 1 of 20 checks failed. A gate in /tmp/mut-m4.json is NOT doing what it claims.
+(код возврата 1)
+```
+
+*Мутация 5 — сканирование цели `rm -rf` перестаёт останавливаться на границе инструкции*
+(`[^;&|]*` → `.*`). Теперь звёздочка или `$` в **любом месте дальше по команде** осуждает
+обычный `rm -rf dist`:
+
+```
+$ ./.claude/hooks/selftest-branch-guard.sh /tmp/mut-m5.json
+…  (показаны только отличия)
+  FAIL  rm -rf on a written-out path, a '$' in a LATER statement (;) — expected NO hook output (allow), got: {"hookSpecificOutput":{"hookEventName":"PreToolUse","permissionDecision":"deny","permissionDecisionReason":"BLOCKED: `rm -rf` whose target the shell expands (`*`, `?`, `~`, `$VAR`) instead of naming. What gets deleted is then decided at run time, not in the command you approved: `rm -rf $BUILD_DIR/*` with BUILD_DIR unset is `rm -rf /*`, and the incident this gate exists for ended in `rm -rf tests/ patches/ plan/ ~/`. Write out the paths you mean."}}
+  FAIL  rm -rf on a written-out path, a glob in a LATER statement (&&) — expected NO hook output (allow), got: {"hookSpecificOutput":{"hookEventName":"PreToolUse","permissionDecision":"deny","permissionDecisionReason":"BLOCKED: `rm -rf` whose target the shell expands (`*`, `?`, `~`, `$VAR`) instead of naming. What gets deleted is then decided at run time, not in the command you approved: `rm -rf $BUILD_DIR/*` with BUILD_DIR unset is `rm -rf /*`, and the incident this gate exists for ended in `rm -rf tests/ patches/ plan/ ~/`. Write out the paths you mean."}}
+RESULT: FAIL — 2 of 20 checks failed. A gate in /tmp/mut-m5.json is NOT doing what it claims.
+(код возврата 1)
+```
+
+Обратите внимание, что каждая из пяти мутаций роняет **ровно свои** проверки и не трогает
+остальные. Набор, который на любую поломку краснеет целиком, не сказал бы, что именно сломано.
 
 **Проверка бита исполнения.** Уроните бит в копии и сравните два способа запуска:
 
@@ -579,12 +656,12 @@ $ ls -l .claude/hooks/selftest-branch-guard.sh   # бит уронен
 -rw-r--r-- .claude/hooks/selftest-branch-guard.sh
 
 $ ./.claude/hooks/selftest-branch-guard.sh
-/bin/bash: line 58: ./.claude/hooks/selftest-branch-guard.sh: Permission denied
+/bin/bash: line 61: ./.claude/hooks/selftest-branch-guard.sh: Permission denied
 (код возврата 126)
 
 $ bash .claude/hooks/selftest-branch-guard.sh
-RESULT: PASS — 17/17 checks. Both gates were observed firing where this script checks them.
-        8 KNOWN LIMIT(S) listed above: real cases where a gate is silent and protects
+RESULT: PASS — 20/20 checks. Both gates were observed firing where this script checks them.
+        10 KNOWN LIMIT(S) listed above: real cases where a gate is silent and protects
         nothing. Green here does not mean these gates cannot be walked past — read them.
 Re-run after any Claude Code update or any edit to .claude/settings.json.
 (код возврата 0)
@@ -596,7 +673,7 @@ Re-run after any Claude Code update or any edit to .claude/settings.json.
 
 ```
 $ git ls-tree HEAD templates/base-project-worked-example/signup-landing/.claude/hooks/selftest-branch-guard.sh
-100755 blob 9e3d8d0bbb550e2a5100355accb70a648d2378f6	templates/base-project-worked-example/signup-landing/.claude/hooks/selftest-branch-guard.sh
+100755 blob 29dea6650c1467296270dae04f65eb56e4bcafae	templates/base-project-worked-example/signup-landing/.claude/hooks/selftest-branch-guard.sh
 ```
 
 Первое поле — `100755`. У потерявшего бит файла было бы `100644`.

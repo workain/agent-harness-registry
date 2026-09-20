@@ -316,6 +316,20 @@ new_repo feature-branch feature-x; repo="$REPO"; add_commit "$repo"
 run_hook "$repo" 'git commit -m "add feature"'
 expect_allow "commit on feature-x"
 
+# 7b. The comparison must be EQUALITY, not a prefix or a substring match. `maintenance` merely
+#     begins with `main`; `main-v2`, `mainline` and `master-thesis` are the same trap. Replacing
+#     the two `=` tests with `case "$branch" in main*|master*)` is a one-line edit that passes
+#     every other check in this file — and then blocks an ordinary branch. This suite was
+#     one-sided until this case existed: every allow-fixture was a `feature/…` branch, so
+#     nothing here could tell equality from a prefix test.
+#
+#     Over-blocking is not the milder failure. A gate that denies ordinary work is switched off
+#     by the first person it inconveniences, and a gate switched off protects exactly as much as
+#     one that never fires — this file's own thesis, pointed the other way.
+new_repo maintenance-branch maintenance; repo="$REPO"; add_commit "$repo"
+run_hook "$repo" 'git commit -m "add feature"'
+expect_allow "commit on 'maintenance' — a branch that merely STARTS WITH 'main'"
+
 # 8. Negative control: a non-commit git command on main must not be caught by the grep.
 new_repo main-noncommit main; repo="$REPO"; add_commit "$repo"
 run_hook "$repo" 'git status --short'
@@ -365,6 +379,15 @@ run_hook "$repo" $'cd .\ngit commit -m "add feature"'
 expect_allow_limit "\`git commit\` on the SECOND line of a multi-line command — ALLOWED: the hook reads only the first line" \
   "Multi-line Bash calls are routine. Keep a commit on the first line of its own call, or widen the hook to read all of stdin."
 
+# 14b. A third shape past the same anchor, and the least obvious of them: grouping. `&& git commit`
+#      is denied because `&` is a statement separator the regex accepts; `&& { git commit; }` is
+#      not, because the character immediately before `git` is `{`. Same for `( git commit )` and
+#      for a commit inside an `if`/`then`. Nothing here is adversarial — this is how a conditional
+#      commit gets written.
+run_hook "$repo" 'test -f release.txt && { git commit -m "add feature"; }'
+expect_allow_limit "\`&& { git commit; }\` on main (grouped) — ALLOWED: the character before 'git' is '{', not a separator" \
+  "Same anchor as the three above. Worth knowing because the ungrouped form of the same line IS denied, which makes this one look like a gate that changed its mind."
+
 # =============================================================================
 # HOOK [1] of 2 — the `rm -rf` expansion guard: it denies `rm -rf` whose target the shell
 # expands (`*`, `?`, `~`, `$VAR`) rather than names. Every case below drives RM_HOOK_CMD.
@@ -410,6 +433,17 @@ expect_allow "rm -rf on a written-out path — allowed by design"
 run_rm_hook "$rmprobe" 'rm dist/*'
 expect_allow "plain rm on a glob (no -rf) — outside this gate's stated scope"
 
+# 19b+19c. The target scan must STOP at the statement boundary. `[^;&|]*` is the piece that
+#     does that. Widen it to `.*` — again a one-line edit — and an expansion character anywhere
+#     LATER in the command condemns an ordinary `rm -rf dist`, while every other check in this
+#     file still passes: the rm negative controls above happen to contain no `*`, `~` or `$`
+#     anywhere else. These two close that, one per separator.
+run_rm_hook "$rmprobe" 'rm -rf dist; echo $HOME'
+expect_allow "rm -rf on a written-out path, a '$' in a LATER statement (;)"
+
+run_rm_hook "$rmprobe" 'rm -rf dist && ls *.js'
+expect_allow "rm -rf on a written-out path, a glob in a LATER statement (&&)"
+
 # 20. Negative control: an ordinary build command is neither denied nor asked about.
 run_rm_hook "$rmprobe" 'npm run build'
 expect_allow "ordinary non-rm command"
@@ -438,6 +472,12 @@ expect_allow_limit "rm -rf on the SECOND line of a multi-line command — ALLOWE
 run_rm_hook "$rmprobe" 'rm -r -f dist/*'
 expect_allow_limit "\`rm -r -f dist/*\` (flags split into two words) — ALLOWED: the regex wants one flag cluster" \
   "One space is the whole difference. Widening the regex closes this one case; it does not change what the two above are telling you."
+
+# 23b. Same boundary from the other end: the long forms of the same two flags. `--recursive` is
+#      not `-[a-zA-Z]+`, so the flag scan never reaches the target.
+run_rm_hook "$rmprobe" 'rm --recursive --force dist/*'
+expect_allow_limit "\`rm --recursive --force dist/*\` (long-form flags) — ALLOWED: the regex reads short clusters only" \
+  "Short and long flags are the same command to the shell. Any name-based check has a spelling it does not know; this is this one's."
 
 # --- verdict -----------------------------------------------------------------
 printf '\n'

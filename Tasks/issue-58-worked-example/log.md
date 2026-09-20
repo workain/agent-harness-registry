@@ -1453,3 +1453,100 @@ not pass on an unverified correction as verified, which is the whole discipline.
 **the consent bypass**, not "the MCP vulnerability"; the token table must not invent the MCP side;
 and the «Проверка»'s `gh issue list` cannot be run (`gh` absent) and must be stated as not-run,
 the way rung 4 stated `/skills`.
+
+## 2026-09-20 18:50 — rung 5 ACCEPTED (`327b3a4`); rung 6 dispatched
+
+### Verified by the epic
+
+```
+$ cat .mcp.json          -> env-var reference only: "Bearer ${GITHUB_PERSONAL_ACCESS_TOKEN}"
+$ grep -rniE 'ghp_…|github_pat_…|sk-…|Bearer <literal>' templates/base-project-worked-example/
+   -> NO credential-shaped strings found
+$ wc -l CLAUDE.md -> 87    $ wc -w CLAUDE.md -> 657   (ceiling 800, headroom 143)
+```
+
+The `_comment` array states in the file itself that it is an example and not a working
+connection, names the missing variable, records the real command that generated it, and notes
+that `_comment` is not in the schema and is silently tolerated — **proven by mutation**, not
+assumed: a one-character change (`"type": "http"` → `"htp"`, `diff`-verified as exactly one line)
+made the validator name the field and drop the server entirely, so the silence about `_comment`
+is real tolerance rather than a validator that never looks. File restored, `diff` empty.
+
+### How the owner question was kept open — the standard to copy
+
+A subsection «Открытое решение владельца, а не закрытый вопрос» comes **before** any substance,
+names the conflict, and calls what follows «действующее по умолчанию, а не ответ». Then «Что
+меняется, если владелец решит иначе» lists the four concrete changes a reversal would require.
+The child checked that **no sentence in the section would be false if the owner rules for a live
+MCP** — which is the right test, and a better one than this epic specified. The only thing stated
+as settled regardless is "no mock server", which is § 8.5's own explicit position.
+
+They also caught their own first draft citing the 8.0 catalogue entry as present: that file lives
+on `issue-58-taxonomy`, not this branch. Corrected to say it arrives with 8.0.
+
+### The «Проверка» problem, solved by discrimination rather than substitution
+
+`gh` is not installed; the child printed the real failure (`gh: command not found`, rc 127) rather
+than papering over it, then substituted two runnable credential-free checks. `claude mcp list`
+shows `⏸ Pending approval` **and** names the missing variable — establishing two things at once:
+a committed `.mcp.json` is *not* a connection (a human approval stands in front of it), and the
+credential is genuinely absent. **Then they closed the rival hypothesis**, which this epic would
+have accepted without: "the entry never parsed" yields the same "no connection", so they ran
+`claude mcp get github` and showed Scope/Type/URL/Headers fully resolved. That is rung 3's
+discipline arriving unprompted in rung 5.
+
+### Figures: the honest split
+
+**Measured by the child** at a pinned commit of `github/github-mcp-server` (tarball downloaded and
+counted locally): 125 toolsnap files, 154,348 chars minified, `inputSchema` 68.7% of it; the six
+default toolsets' 46 tools = 59,553 chars vs **745 chars** for bare tool names. Ordinary-command
+side measured too: a real `api.github.com` issues call, 117,001 bytes raw vs 3,439 projected to
+what `gh issue list` prints — 34×. Three caveats shipped rather than omitted (fixtures not a live
+response; 125 snaps vs 92 tools in the README; five documented default toolsets vs six marked
+`Default: true` in `tools.go`, so the figure errs high).
+
+**Cited and attributed** with fetch dates: Anthropic's tool-search page for the ~55k-tokens and
+"30–50 tools" figures — fetched from Anthropic directly rather than via this registry's own
+research README that also quotes it; the Claude Code MCP docs for `${VAR}` expansion and the
+commit-`.mcp.json` guidance; and a dev.to audit shipped **with two caveats** — it is promotional
+for the author's own tool, and its printed "average 200 tokens per tool" contradicts its own table
+(22,945/137 = 167). **Characters are never converted to tokens**: no tokenizer, and the ratio
+differs for Russian. Stated in the table.
+
+### What the fetches actually said — two findings this epic did not anticipate
+
+- **Invariant Labs:** the attack's own trigger sentence **is this rung's trigger, word for word**
+  — *«…queries their agent with a benign request, such as `Have a look at the open issues in
+  <user>/public-repo`»*. The course note does not make that explicit; the child found it by
+  reading the source. Also carried: *«this is not a flaw in the GitHub MCP server code itself»*,
+  and its two mitigations are pitched around Invariant's own products — flagged rather than passed
+  off as vendor-neutral.
+- **Willison's lethal trifecta is NOT a second incident.** It post-dates Invariant by three weeks
+  and *cites it*. Presenting them as two data points would double-count one event; the README says
+  so. This epic's own brief listed them as two failure stories and would have let that through.
+- **CVE-2025-59536 severity:** 8.7 is right but only on one scale — CVSS 4.0 **8.7** from the CNA,
+  CVSS 3.1 **8.8** from NVD, both in the same record. The README prints the scale beside the
+  number. Confirmed that **neither NVD nor the GHSA mentions `.mcp.json`**, so the "consent
+  bypass, not the MCP vulnerability" framing this epic routed was right; the child states the
+  published wording («code contained in a project») and then makes the narrower point separately,
+  and keeps the **two** consent gates apart — the startup trust dialog the CVE bypassed, and the
+  distinct `.mcp.json` approval seen live as `⏸ Pending approval` — without claiming the CVE
+  reached the second.
+
+### Work-order finding #6 — the connection command in § 8.5 does not run
+
+`claude mcp add github --scope project` → `error: missing required argument 'commandOrUrl'`. Real
+signature is `claude mcp add [options] <name> <commandOrUrl> [args...]`. The committed `.mcp.json`
+was **generated by the real command**, not hand-authored. **NOT independently verified by this
+epic** — two attempts to run it here hung and returned no output. Recorded as child-verified,
+same disposition as rung 4's arXiv correction. Both need confirming before they reach the
+seminar's owner.
+
+### Rung 6 dispatched
+
+`ahr58-6-subagent` from `327b3a4`. Carries: must be a visible **development** of order 4's
+`_example-reviewer.md` (read from `origin/main`), not a rival critic; `tools:` excluding
+`Write`/`Edit` is half the criterion and must be explained as a *mechanical* guarantee in rung 3's
+sense; and the real-run bar is raised because **its own failure story is a subagent that returned
+a fully hallucinated report with zero tool calls** — so the recorded run must carry evidence only
+a real read could produce, and the README must say how a reader tells the two apart.

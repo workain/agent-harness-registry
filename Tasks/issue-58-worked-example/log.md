@@ -1570,3 +1570,82 @@ Still child-verified only, and still needing confirmation before it reaches the 
 `07-skills.md` § 4.1 vs § 4.2). This epic's fetches of the abstract page returned 200 but did not
 parse, and a follow-up grep timed out. That one remains unverified by the epic and must be
 labelled as such wherever it travels.
+
+## 2026-09-20 19:15 — both open verification requests settled, and one of them by a better route
+
+### Finding #6 independently confirmed by the dispatcher
+
+```
+$ claude --version                          -> 2.1.197 (Claude Code)
+$ claude mcp add github --scope project     -> error: missing required argument 'commandOrUrl'
+```
+Filed as correction 6 in the operator's sheet.
+
+### The arXiv corrections — confirmed WITHOUT the arXiv fetch that kept failing
+
+The dispatcher verified them from the course's own research file, which is the better source for
+this particular claim:
+
+`07-skills.md:116` breaks the 125 functional failures down as Task-Implementation Fault 68,8% /
+Artifact Misplacement 19,2% / Environment Mismatch 10,4% / **Applicability Mismatch 1,6%** —
+applicability mismatch being the description-selection failure. `0,016 × 125 = 2`. And § 8.4 says
+verbatim *«307 подтверждённых случаев вреда от скиллов без валидного `description`»*. So rung 4's
+"2 of 125" is exactly right, and **checkable from documents already held** — no network fetch
+needed. The section number too: the `307 / 68,8% / 1,6%` passage sits at `:116` under `### 4.2`,
+while `### 4.1` begins at `:90` and is about descriptions written for humans.
+
+**The distinction the dispatcher filed in this epic's name as well as their own, and it is the
+whole point of having refused:** this confirms the work order misdescribes **the course's own
+research file**. Whether that file correctly describes the *paper* is a separate question, and
+both parties' arXiv fetches failed to parse. **The paper-level reading stays child-verified
+only.** Corrections 7 and 8 are filed at the level actually supportable, not the level that would
+sound strongest.
+
+That is the correct shape for every finding in this build: name the level of evidence you have,
+not the level the claim would carry if you had more.
+
+### Corrections 7 and 8 are one slip seen twice — worth the pattern, not two fixes
+
+> A number was paired with the section that discusses its **mechanism** rather than the section
+> that contains the **number**.
+
+§ 4.1 is genuinely about descriptions, which is presumably what attracted the citation. A more
+sympathetic error than carelessness, and a harder one to catch — the citation is topically apt
+and numerically wrong. Related to, but distinct from, the CVE misattribution (a real identifier
+on the wrong mechanism): here it is a real section on the right *topic* but without the figure.
+
+### Still not independently verified, and labelled as such wherever they travel
+
+- The Invariant/Willison double-count (rung 5's finding).
+- The CVSS scale-dependence — though the dispatcher did see both scores in the NVD JSON while
+  fetching for the CVE correction, so it is close to confirmed; printing the scale beside the
+  number is right either way.
+
+Both sit in a separate "NOT independently verified" section of the operator's sheet, so nothing
+carries more confidence than it earned.
+
+### Rung 5's two standards adopted upward
+
+The dispatcher is adopting the child's wording over their own instruction:
+
+> *"No sentence in the section would be false if the owner rules for a live MCP."*
+
+It is falsifiable, a reader can apply it, and it survives the reversal — versus "flag it as open",
+which any text can claim to satisfy. The second half is listing the concrete changes a reversal
+would require.
+
+And the `_comment` tolerance proof: **a validator that never looks is silent in exactly the same
+way as a validator that looks and approves**, and a one-character mutation is the cheapest way to
+tell them apart. The day's recurring lesson, applied by a child without being told.
+
+### Rung 6's evidence bar, sharpened and forwarded
+
+> Whatever evidence you require must be evidence a **fabricating agent could not have produced** —
+> file content it could not guess, not a claim that it read the file.
+
+Forwarded to rung 6 with the exclusions spelled out: a `VERDICT:` line and a findings list are the
+required *shape*, which is exactly what a fabricator produces most convincingly; a plausible
+summary is derivable from the README. What survives is content whose only source is the file —
+an exact distinctive string, a line number that checks out, a detail deliberately kept out of the
+prompt — ideally verifiable mechanically afterwards. And the negative-case test: if a fabricated
+report would contain the same thing you are pointing at, it is not evidence.

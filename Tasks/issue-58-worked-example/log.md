@@ -94,3 +94,40 @@ because 8.1–8.7 share one tree and one commit history.
 
 Both were told: no self-ROAST, log as the work happens, evidence is pasted command output
 and never a claim that it works.
+
+## 2026-09-20 12:52 — spec error found in § 8.3's «Проверка» block (verified, not read)
+
+Reading ahead to 8.3 (which extends order #55's self-test rather than writing a second
+script), the work order's stated expected output does not match the template's own hook.
+
+Part 2 § 8.3 says the self-test must print: `deny` on commit to main, **`ask` при unborn
+HEAD**, `deny` on `rm -rf` wildcard. Traced the hook in
+`templates/base-project-template/with-git/.claude/settings.json` against real git:
+
+```
+$ git init -q /tmp/hooktest && cd /tmp/hooktest
+is-inside-work-tree:         true       <- unborn HEAD is still inside a work tree
+symbolic-ref --short HEAD:   master     <- resolves fine on unborn HEAD
+rev-parse --abbrev-ref HEAD: fatal: ambiguous argument 'HEAD': unknown revision...
+
+$ cd /tmp/notarepo-xyz
+fatal: not a git repository (or any of the parent directories): .git
+```
+
+On an unborn HEAD the `is-inside-work-tree` guard passes, `symbolic-ref` returns the branch
+name, and the branch check fires → **`deny`, not `ask`**. The `ask` path is reached only when
+the directory is not a git repository at all.
+
+This is the hook working as designed, not a bug in it: its own `$comment` records that it
+switched from `rev-parse --abbrev-ref HEAD` to `symbolic-ref --short HEAD` precisely because
+the former "errors on this and would leave the branch check silently unable to fire".
+Asserting `ask` for unborn HEAD would require breaking that fix.
+
+Correct assertions: `deny` (commit on main/master) · `ask` (**not a git repository**) ·
+`deny` (`rm -rf` wildcard, the second hook, added by 8.3). Unborn-HEAD-on-`main` deserves a
+fourth explicit `deny` assertion — it is the exact regression `symbolic-ref` exists to prevent.
+
+Flagged to order #55 directly (they are writing that script now and would otherwise encode
+the wrong expectation, whose obvious "fix" is to break the hook) and reported to the
+dispatcher as a spec error rather than an implementation choice. Recorded here so 8.3 and
+8.9 inherit the corrected expectation with its evidence.

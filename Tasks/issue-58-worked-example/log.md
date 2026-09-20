@@ -186,3 +186,45 @@ Did not go looking for a token in the operator's machine-level env files — an 
 enumerate variable NAMES in `~/.harness-deploy.env` was blocked by the sandbox classifier, and
 hunting for credentials that were not handed to me is not something to work around. Reported
 to the dispatcher; local commits continue meanwhile, so no work is lost, only unpublished.
+
+## 2026-09-20 13:05 — all three blockers closed by the dispatcher; 8.3's criterion is now a comment, not the work order
+
+**Credentials (Blocker 2) — resolved, and it was never a fleet outage.** `$GH_TOKEN` lives in
+the ORCHESTRATOR's environment, not in the worker sessions'. That is the fleet's documented
+split: sessions commit, the orchestrator pushes. The dispatch brief stated it incorrectly.
+Standing protocol from here, and passed to every child this epic spawns: **commit locally,
+report, the epic relays, the dispatcher pushes. Nobody goes looking for a token.** The epic
+branch `issue-58-worked-example` is on the remote at `187316f`, as are all six order branches.
+
+**Shared checkout (Blocker 1) — closed.** Every order now has its own worktree; the shared
+checkout is detached and kept detached; #53's orphaned commit was rescued into its branch;
+`main` never moved (verified against the live remote, not a local ref).
+
+**8.3's acceptance criterion is corrected and RELOCATED.** Three independent reproductions
+(#55 by probe, this epic by probe, the dispatcher by re-probe rather than accepting two
+reports). The corrected criterion lives at
+`https://github.com/workain/agent-harness-registry/issues/55#issuecomment-5749883791` —
+fetched here via the public REST API and transcribed, because **8.3 is graded against that
+comment, not against the work order's § 8.3 text**:
+
+> - `deny`, with the exact text from `settings.json`, on a commit while on `main` — and on `master`
+> - `deny` on an unborn HEAD whose default branch is `main`/`master` (**was: `ask`**)
+> - `ask` only when the directory is not a git repository at all
+> - a silent-allow negative control: an ordinary non-commit command is neither denied nor asked
+
+Correcting the source document is the seminar repo owner's call and has been raised with them;
+not ours to edit.
+
+**The residual — a hard design requirement for 8.3, quoted verbatim from that comment:**
+
+> **One residual worth asserting or at least naming**, which falls out of the same mechanism: on an
+> unborn HEAD the branch name comes from `init.defaultBranch`. A user whose default is `trunk` gets
+> neither `deny` (the hook only compares against `main`/`master`) nor `ask` (it *is* a repo) — the
+> commit is silently allowed. That is the hook's real boundary, not the self-test's bug; state it
+> where a reader of the self-test will see it.
+
+This matters more for 8.3 than for order #55, because this build is the version a student
+actually clones and runs. Ступень 3's entire lesson is that **a gate that did not fire looks
+exactly like a gate that passed** — so a silently-allowed commit under `init.defaultBranch=trunk`
+must be visible in the build, not a footnote. 8.3's dispatch will carry this as a named
+deliverable, not as context.

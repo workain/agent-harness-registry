@@ -2,32 +2,47 @@
 # TEMPLATE FILE — ships with your project. Keep it next to the hook it tests.
 #
 # selftest-branch-guard.sh — proves the branch-protection PreToolUse hook in
-# ../settings.json actually fires.
+# ../settings.json actually fires, and names the cases where it does not protect you.
 #
 # WHY THIS FILE EXISTS
-#   A hook's characteristic failure mode is silence, not a wrong answer. One schema-invalid
-#   matcher anywhere in settings.json disables *every* hook in that file with no error shown;
-#   a hook that exceeds its timeout does not block — the tool call just proceeds down the
-#   normal permission path, exactly as if no hook existed; a hook whose helper binary (here:
-#   jq) is missing fails open the same way. In all three cases the gate not firing looks
-#   identical to the gate firing and passing. So "the file exists" is not evidence the gate
-#   is installed — observing it deny a real case is.
+#   A hook's characteristic failure mode is silence, not a wrong answer:
+#     - A hook that exceeds its timeout does NOT block. Official docs
+#       (code.claude.com/docs/en/hooks § Timeouts, fetched 2026-09-20): "A timed-out command,
+#       http, or mcp_tool hook doesn't block the tool call. The call continues through the
+#       normal permission flow, so don't count on a stalled hook to act as a gate."
+#     - A hook whose helper binary (here: jq) is missing fails open the same way.
+#     - [unverified — reported by third-party analysis of anthropics/claude-code issues
+#       (Alex Dunlop, "Claude Code Hook Not Firing", 2026); NOT stated in the official hooks
+#       reference, which we checked] one schema-invalid matcher anywhere in settings.json
+#       disables every hook in that file, with no error shown.
+#   In each case the gate not firing looks identical to the gate firing and passing. So "the
+#   file exists" is not evidence the gate is installed — observing it deny a real case is.
 #
 # RUN IT:  bash .claude/hooks/selftest-branch-guard.sh        (from your project root)
 #
-# RE-RUN IT after ANY of:
-#   - editing .claude/settings.json (including "just" the message text — see EXPECT_* below),
-#   - upgrading Claude Code (hook payload shape and hook-output schema are its contract,
-#     not yours; a silently changed field name turns the gate off without a warning),
-#   - changing your git version or default branch name,
-#   - moving/copying this project to a new machine (jq may simply not be installed there).
+# READ THE `LIMIT` LINES. They are not passes. Each one names a case where this gate is silent
+# by construction and therefore protects nothing — including several ordinary command forms a
+# coding agent emits without any intent to evade. A green run means the gate fires where this
+# script checks it fires; it does not mean the gate cannot be walked past.
 #
-# It reports KNOWN LIMITS as well as pass/fail — cases where the hook is silent by construction
-# and therefore protects nothing. Read those lines; they are not passes.
+# RE-RUN IT after editing .claude/settings.json (including "just" the message text — see
+# EXPECT_* below), after upgrading Claude Code, after changing your git version or default
+# branch name, and after moving this project to another machine (jq may not be installed there).
 #
-# No network access, no writes outside a fresh mktemp directory, does not touch your repo.
-# It never runs `git commit` through Claude Code; it drives the hook's own command string,
-# read straight out of settings.json, against throwaway repos under /tmp.
+#   What re-running actually buys, stated honestly: it re-checks the hook against the payload
+#   and output schema AS THIS SCRIPT UNDERSTANDS THEM. That catches an edit to settings.json, a
+#   changed git, a missing jq, a different default branch. It does NOT catch Claude Code itself
+#   changing the hook contract: this script builds the payload and asserts the schema from
+#   hard-coded templates, so if the product renamed a field, the test would keep passing against
+#   the old shape while the real gate was dead. Confirming that needs a live Claude Code
+#   session; nothing in this file can do it.
+#
+# CONTAINMENT, precisely. This script's own code makes no network calls, writes nothing outside
+# one fresh mktemp directory, commits only inside its own throwaway fixtures, and never runs
+# `git commit` through Claude Code. But it DOES execute — repeatedly — the hook command string
+# it reads out of settings.json. That is the whole point of it. settings.json is executable
+# configuration that travels with a repository, so if you are checking a settings.json you did
+# not write (from a PR, a fork, a fresh clone), read that command string before running this.
 
 set -u
 
@@ -48,6 +63,8 @@ FAILED=0
 LIMITS=0
 TMPROOT=""
 
+# The [ -n "$TMPROOT" ] guard is load-bearing, not defensive noise: without it, an empty
+# TMPROOT would turn this line into `rm -rf ""` at best and a much worse mistake at worst.
 cleanup() { [ -n "$TMPROOT" ] && rm -rf "$TMPROOT"; }
 trap cleanup EXIT
 
@@ -61,19 +78,25 @@ command -v git >/dev/null 2>&1 || die "git is not installed."
 [ -f "$SETTINGS" ] || die "settings.json not found at: $SETTINGS"
 jq -e . "$SETTINGS" >/dev/null 2>&1 || die "$SETTINGS is not valid JSON. Claude Code will load no hooks at all from it."
 
-# Extract the hook under test BY ITS MATCHER. An invalid or renamed matcher (e.g. lowercase
-# "bash", which does not match the tool name "Bash") is the documented way to disable every
-# hook in the file without an error message — so failing to find it here is a real failure,
-# not a lookup inconvenience.
+# Extract the hook under test BY ITS MATCHER, and run THAT — this script keeps no copy of the
+# hook's command string, so breaking the hook breaks the test.
 HOOK_CMD="$(jq -r '
   .hooks.PreToolUse // [] | map(select(.matcher == "Bash")) | .[0].hooks // []
   | map(select(.type == "command")) | .[0].command // empty
 ' "$SETTINGS")"
-[ -n "$HOOK_CMD" ] || die "no PreToolUse hook with matcher \"Bash\" and type \"command\" found in $SETTINGS. Claude Code matches the tool name \"Bash\" exactly (case-sensitively), so a hook registered under any other matcher never runs for a Bash call."
+[ -n "$HOOK_CMD" ] || die "no PreToolUse hook with matcher exactly \"Bash\" and type \"command\" found in $SETTINGS.
+       This selector is deliberately exact. Matchers are regexes, so \"Bash|Write\" is a valid,
+       working configuration that this script will nonetheless refuse to test — if you widened
+       the matcher on purpose, update the selector above rather than loosening it here.
+       [unverified — from third-party analysis, not the official hooks reference] the tool name
+       is matched case-sensitively, so a hook registered under \"bash\" never runs for a Bash call.
+       Note this script tests only the FIRST \"Bash\" group; append new checks, don't prepend."
 
 HOOK_TIMEOUT="$(jq -r '.hooks.PreToolUse[]? | select(.matcher == "Bash") | .hooks[]? | select(.type == "command") | .timeout // empty' "$SETTINGS" | head -1)"
 
-TMPROOT="$(mktemp -d "${TMPDIR:-/tmp}/branch-guard-selftest.XXXXXXXX")"
+TMPROOT="$(mktemp -d "${TMPDIR:-/tmp}/branch-guard-selftest.XXXXXXXX")" \
+  || die "could not create a scratch directory under ${TMPDIR:-/tmp} — is TMPDIR set to something that exists and is writable? (Without this check every fixture below would be aimed at the filesystem root.)"
+[ -n "$TMPROOT" ] && [ -d "$TMPROOT" ] || die "mktemp reported success but produced no usable directory."
 
 # The not-a-repo case only means anything if the scratch directory is not itself inside some
 # enclosing repository — git walks up to the filesystem root looking for one.
@@ -87,8 +110,10 @@ fi
 HOOK_OUT=""; HOOK_ERR=""; HOOK_RC=0
 run_hook() {
   local workdir="$1" cmd="$2" payload errfile
-  [ -n "$workdir" ] && [ -d "$workdir" ] && [ "${workdir#"$TMPROOT"}" != "$workdir" ] \
-    || die "internal: refusing to run the hook in '${workdir:-<empty>}' — not a directory under $TMPROOT."
+  # Same containment invariant as add_commit's, spelled the same way on purpose: these two
+  # guards enforce one rule, and a version that drifts is how the next edit gets it wrong.
+  [ -n "$workdir" ] && [ -d "$workdir" ] && [ "${workdir#"$TMPROOT/"}" != "$workdir" ] \
+    || die "internal: refusing to run the hook in '${workdir:-<empty>}' — not a directory under $TMPROOT/."
   payload="$(jq -nc --arg cmd "$cmd" --arg cwd "$workdir" '{
     session_id: "selftest-branch-guard",
     transcript_path: "/dev/null",
@@ -99,7 +124,9 @@ run_hook() {
     tool_input: { command: $cmd, description: "branch-guard selftest" }
   }')"
   errfile="$TMPROOT/stderr"
-  HOOK_OUT="$(cd "$workdir" && printf '%s' "$payload" | bash -c "$HOOK_CMD" 2>"$errfile")"
+  # Hook commands are documented as being able to reference ${CLAUDE_PROJECT_DIR} (the official
+  # reference's own example invokes a script by that path), so export it as Claude Code would.
+  HOOK_OUT="$(cd "$workdir" && printf '%s' "$payload" | CLAUDE_PROJECT_DIR="$workdir" bash -c "$HOOK_CMD" 2>"$errfile")"
   HOOK_RC=$?
   HOOK_ERR="$(cat "$errfile")"
 }
@@ -151,7 +178,7 @@ expect_allow_limit() {
   local name="$1" advice="$2"
   if [ -n "$HOOK_OUT" ]; then
     bad "$name — this case is recorded as a KNOWN LIMIT (hook expected to stay silent), but it produced output: $HOOK_OUT
-          If you widened the branch comparison in settings.json on purpose, that is good — update this case to expect a decision."
+          If you widened the gate in settings.json on purpose, that is good — update this case to expect a decision."
   else
     LIMITS=$((LIMITS + 1)); printf '  LIMIT %s\n        %s\n' "$name" "$advice"
   fi
@@ -161,6 +188,11 @@ expect_allow_limit() {
 # Sets the global $REPO rather than echoing the path: `die` inside a command substitution would
 # only exit the subshell, leaving a failed fixture to look like a passing one.
 # Avoids `git init -b` (needs git >= 2.28) and sets HEAD by hand, so this runs on older git too.
+#
+# Fixture names deliberately do NOT agree with their branch names in every case (see cases 3
+# and 4). If every fixture directory were named after its own branch, this suite could not tell
+# a hook that reads HEAD from a hook that reads the path — and a hook that never calls git at
+# all would pass every check.
 REPO=""
 new_repo() {
   local dir="$TMPROOT/$1" branch="$2"
@@ -179,7 +211,7 @@ new_repo() {
 add_commit() {
   local dir="${1:-}"
   [ -n "$dir" ] && [ "${dir#"$TMPROOT/"}" != "$dir" ] && [ -d "$dir/.git" ] \
-    || die "internal: refusing to commit in '${dir:-<empty>}' — not a fixture repo under $TMPROOT. (git -C \"\" would have committed into the current directory, i.e. YOUR repository.)"
+    || die "internal: refusing to commit in '${dir:-<empty>}' — not a fixture repo under $TMPROOT/. (git -C \"\" would have committed into the current directory, i.e. YOUR repository.)"
   git -C "$dir" commit -q --allow-empty -m "selftest fixture" >/dev/null 2>&1 \
     || die "fixture commit failed in $dir (is git usable here?)"
 }
@@ -200,7 +232,19 @@ new_repo master-with-history master; repo="$REPO"; add_commit "$repo"
 run_hook "$repo" 'git commit -m "add feature"'
 expect_decision "commit on master" deny "$EXPECT_DENY_REASON"
 
-# 3. Edge case 1 from settings.json's $comment: a brand-new repo whose HEAD is unborn (no commit
+# 3+4. The branch must be an INDEPENDENT variable, not something the directory name gives away.
+#      These two fixtures are named to contradict their own branch, in both directions. Without
+#      them a hook that never calls git — deciding purely from the name of the current directory
+#      — passes every other check in this file while protecting nothing whatsoever.
+new_repo looks-like-main feature-z; repo="$REPO"; add_commit "$repo"
+run_hook "$repo" 'git commit -m "add feature"'
+expect_allow "directory named 'looks-like-main' but HEAD is feature-z"
+
+new_repo looks-like-a-feature main; repo="$REPO"; add_commit "$repo"
+run_hook "$repo" 'git commit -m "add feature"'
+expect_decision "directory named 'looks-like-a-feature' but HEAD is main" deny "$EXPECT_DENY_REASON"
+
+# 5. Edge case 1 from settings.json's $comment: a brand-new repo whose HEAD is unborn (no commit
 #    exists yet). `git rev-parse --abbrev-ref HEAD` fails here, which would leave the branch check
 #    unable to fire and silently allow the very first commit — straight onto main. The hook uses
 #    `git symbolic-ref --short HEAD` instead, which resolves the name in the unborn case too.
@@ -209,47 +253,77 @@ new_repo main-unborn main; repo="$REPO"
 run_hook "$repo" 'git commit -m "first commit"'
 expect_decision "commit on main, unborn HEAD (no commits yet)" deny "$EXPECT_DENY_REASON"
 
-# 4. Edge case 2 from settings.json's $comment: not a git repository at all (the template was
+# 6. Edge case 2 from settings.json's $comment: not a git repository at all (the template was
 #    copied into a plain folder and `git init` has not run). The hook cannot reason about
 #    branches with no repo, so it asks — visibly — rather than allowing, which would look like
-#    protection while providing none.
-plain="$TMPROOT/not-a-repo"; mkdir -p "$plain"
+#    protection while providing none. The directory is named to look protected on purpose: a
+#    path-reading hook would answer `deny` here, which is wrong.
+plain="$TMPROOT/looks-like-main-but-no-git"; mkdir -p "$plain"
 run_hook "$plain" 'git commit -m "first commit"'
 expect_decision "commit with no git repository at all" ask "$EXPECT_ASK_REASON"
 
-# 5. Negative control: on a feature branch the hook must stay out of the way. Without this, a
-#    hook that denied everything unconditionally would still pass cases 1-3.
+# 7. Negative control: on a feature branch the hook must stay out of the way. Without this, a
+#    hook that denied everything unconditionally would still pass the deny cases.
 new_repo feature-branch feature-x; repo="$REPO"; add_commit "$repo"
 run_hook "$repo" 'git commit -m "add feature"'
 expect_allow "commit on feature-x"
 
-# 6. Negative control: a non-commit git command on main must not be caught by the grep.
+# 8. Negative control: a non-commit git command on main must not be caught by the grep.
 new_repo main-noncommit main; repo="$REPO"; add_commit "$repo"
 run_hook "$repo" 'git status --short'
 expect_allow "git status on main"
 
-# 7. Documented sharp edge, asserted so it stays documented rather than becoming a surprise:
+# 9. Documented sharp edge, asserted so it stays documented rather than becoming a surprise:
 #    the hook reads the branch BEFORE the whole Bash command runs, so a switch chained onto the
 #    commit is still judged against the branch you are on now. Run the switch as its own call.
 new_repo main-chained main; repo="$REPO"; add_commit "$repo"
 run_hook "$repo" 'git switch -c feature-y && git commit -m "add feature"'
 expect_decision "chained 'git switch … && git commit' on main (known sharp edge: denied against the OLD branch)" deny "$EXPECT_DENY_REASON"
 
-# 8. A real boundary of this hook, asserted so it is VISIBLE instead of silent. On an unborn HEAD
-#    the branch name comes from `init.defaultBranch`. A user whose default is neither `main` nor
-#    `master` — say `trunk` — gets neither `deny` (the hook compares against those two names only)
-#    nor `ask` (it IS a repository), so the first commit is silently allowed: exactly the failure
-#    mode this self-test exists to expose. Not a bug in the hook; a limit of a name-based check.
+# --- known limits: where this gate does NOT protect you ----------------------
+# Everything below is silent BY CONSTRUCTION. Reported, counted separately from passes, and
+# never described as coverage — a confident green over a gate that is partly off is precisely
+# the harm this self-test exists to prevent.
+
+# 10. On an unborn HEAD the branch name comes from `init.defaultBranch`. A user whose default is
+#     neither `main` nor `master` gets neither `deny` (the hook compares those two names only)
+#     nor `ask` (it IS a repository): the first commit is silently allowed.
 new_repo trunk-unborn trunk; repo="$REPO"
 run_hook "$repo" 'git commit -m "first commit"'
-expect_allow_limit "default branch named 'trunk' — commit is ALLOWED, not denied and not asked" \
+expect_allow_limit "default branch named 'trunk' — commit is ALLOWED, neither denied nor asked" \
   "If your project's default branch is not main/master, add its name to the branch comparison in settings.json — otherwise this gate protects nothing here."
+
+# 11-14. Ordinary command forms that walk straight past the gate on a protected branch. Two root
+#     causes, both in the hook's first line: its regex needs `commit` to be the literal next word
+#     after `git`, and `read -r cmd` consumes only the FIRST line of stdin. None of these require
+#     any intent to evade — a coding agent emits them by accident, and `git -C` is used
+#     throughout this very script. Fixing the hook is a separate change; making the holes visible
+#     is this file's job.
+new_repo main-bypass-probe main; repo="$REPO"; add_commit "$repo"
+
+run_hook "$repo" 'git -C . commit -m "add feature"'
+expect_allow_limit "\`git -C <path> commit\` on main — ALLOWED: the regex matches only 'git' and 'commit' as adjacent words" \
+  "This gate filters one command SHAPE, not intent. Do not rely on it to stop a determined or merely creative caller."
+
+run_hook "$repo" '/usr/bin/git commit -m "add feature"'
+expect_allow_limit "\`/usr/bin/git commit\` on main — ALLOWED: an absolute path is not the literal word 'git'" \
+  "Same root cause as above. A second, independent gate (a server-side branch protection rule) is the only thing that closes this class."
+
+run_hook "$repo" 'env git commit -m "add feature"'
+expect_allow_limit "\`env git commit\` on main — ALLOWED: any prefix command hides the commit from the regex" \
+  "Same root cause. Treat the gate as a reminder that fires on the common shape, not as a boundary."
+
+run_hook "$repo" $'cd .\ngit commit -m "add feature"'
+expect_allow_limit "\`git commit\` on the SECOND line of a multi-line command — ALLOWED: the hook reads only the first line" \
+  "Multi-line Bash calls are routine. Keep a commit on the first line of its own call, or widen the hook to read all of stdin."
 
 # --- verdict -----------------------------------------------------------------
 printf '\n'
 if [ "$FAILED" -eq 0 ]; then
-  printf 'RESULT: PASS — %d/%d checks, plus %d known limit(s) listed above (read them: at a limit this gate protects nothing).\n' "$PASSED" "$((PASSED + FAILED))" "$LIMITS"
-  printf 'Re-run this after any Claude Code update or any edit to .claude/settings.json.\n'
+  printf 'RESULT: PASS — %d/%d checks. The gate was observed firing where this script checks it.\n' "$PASSED" "$((PASSED + FAILED))"
+  printf '        %d KNOWN LIMIT(S) listed above: real cases where this gate is silent and protects\n' "$LIMITS"
+  printf '        nothing. Green here does not mean the gate cannot be walked past — read them.\n'
+  printf 'Re-run after any Claude Code update or any edit to .claude/settings.json.\n'
   exit 0
 fi
 printf 'RESULT: FAIL — %d of %d checks failed. The gate in %s is NOT doing what it claims.\n' "$FAILED" "$((PASSED + FAILED))" "$SETTINGS"

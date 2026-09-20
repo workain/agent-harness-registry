@@ -13,10 +13,13 @@ mechanical Block-I gate that the `without-git/` variant deliberately does not.
    `.claude/settings.json` needs a real repo to check anything — until `git init` has run, it
    will visibly warn you rather than silently do nothing (see that file's own comment).
 3. Run the gate's self-test once, now: `bash .claude/hooks/selftest-branch-guard.sh`. It
-   should end in `RESULT: PASS`. This is the only thing that distinguishes a working
-   branch-protection gate from a silently broken one — a hook that does not fire produces no
-   error and no output, which looks exactly like a hook that fired and let the command through.
-   Re-run it after every edit to `.claude/settings.json` and after every Claude Code update.
+   should end in `RESULT: PASS`. Nothing else distinguishes a working branch-protection gate
+   from a silently broken one — a hook that does not fire produces no error and no output,
+   which looks exactly like a hook that fired and let the command through. **Then read the
+   `LIMIT` lines it prints**: those name real cases where this gate is silent and protects
+   nothing (a default branch that isn't `main`/`master`, and four ordinary command forms that
+   walk straight past it). A green run does not mean the gate cannot be got around. Re-run it
+   after every edit to `.claude/settings.json` and after every Claude Code update.
 4. Fill in every `<BRACKETED>` placeholder — start with `CLAUDE.md`. Delete each file's leading
    HTML comment once you've read it; those comments are fill-in instructions, not content that
    should ship in a real project.

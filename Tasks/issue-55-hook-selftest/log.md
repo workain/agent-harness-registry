@@ -503,15 +503,403 @@ token lives in the dispatcher's environment, not this one, which matches this re
 split (subagents commit, the orchestrator pushes). Branch publication and PR creation are
 therefore the dispatcher's; commits here are local until it pushes them.
 
-## 9. Status
+## 9. ROAST round 1 — BLOCK, and what it cost me to be wrong
 
-- [x] Script written, executable, network-free
+Verdict `BLOCK` on `03c2dc5` from session `roast-55-hook-selftest`, full text in `roast.md`.
+Two blocking findings, ten more. Both blocks were correct and neither was a matter of taste.
+
+### F1 — the suite could not tell a hook that reads HEAD from one that reads the path
+
+The reviewer built a `settings.json` whose hook **never runs a single `git` command** — it
+decides from `case "$PWD"` — and my suite certified it **7/7 PASS**. In a real project that hook
+protects nothing at all.
+
+The cheat was not the finding; the root cause was. In all eight of my fixtures the directory name
+and the branch name agreed (`main-with-history`/`main`, `feature-branch`/`feature-x`, …), so the
+branch was **never an independent variable**. A suite whose stated purpose is to prove the gate
+reads `HEAD` never varied `HEAD` against anything. I had built the negative controls (feature
+branch, non-commit command) and still missed this, because both of those vary the *command* and
+the *branch together with the directory* — never the branch alone.
+
+Fixed with two fixtures named to contradict their own branch, in both directions, plus renaming
+the no-repo fixture from `not-a-repo` to `looks-like-main-but-no-git` so a path-reading hook
+answers `deny` there and is caught. Re-running the reviewer's own cheat hook against the fixed
+suite:
+
+```
+  PASS  commit on main — permissionDecision=deny, reason text matches exactly.
+  PASS  commit on master — permissionDecision=deny, reason text matches exactly.
+  FAIL  directory named 'looks-like-main' but HEAD is feature-z — expected NO hook output (allow), got: {"hookSpecificOutput":{"hookEventName":"PreToolUse","permissionDecision":"deny","permissionDecisionReason":"BLOCKED: direct commit to main/master. Create a feature branch first."}}
+  FAIL  directory named 'looks-like-a-feature' but HEAD is main — expected deny, but the hook produced NO OUTPUT (rc=0). This is the silent-pass failure mode: to Claude Code it is indistinguishable from the rule being obeyed.
+RESULT: FAIL — 2 of 9 checks failed.
+EXIT=1
+```
+
+Caught in both directions, by the two cases that exist only because of this finding.
+
+### F2 — a confident green over four holes
+
+Driving the **real, unmutated** hook on `main`, the reviewer found four command forms silently
+allowed. Two root causes, both in the hook's first line: the regex needs `commit` to be the
+literal next word after `git`, and `read -r cmd` consumes only the **first line** of stdin.
+
+```
+git -C . commit -m "x"                        -> SILENT, ALLOWED
+/usr/bin/git commit -m "x"                    -> SILENT, ALLOWED
+env git commit -m "x"                         -> SILENT, ALLOWED
+git commit on line 2 of a multi-line command  -> SILENT, ALLOWED
+```
+
+None require any intent to evade — and `git -C` is used throughout this very script. The reviewer
+explicitly did **not** ask for the hook to be fixed (separate change, separate issue); the finding
+is that the script printed *"the branch-protection gate was observed firing"* and the README said
+the self-test is *"the only thing that distinguishes a working gate from a silently broken one"*,
+over a gate four ordinary commands walk past. That is the same harm the order exists to prevent.
+
+Fixed with four more `LIMIT` lines — the mechanism that already existed for `trunk` — and by
+rewriting both overclaims. The verdict line now reads *"the gate was observed firing where this
+script checks it"* and names the limit count; the README tells the reader to go read them.
+
+### F3–F7, F9, F12 — taken in the same pass
+
+- **F3** `mktemp -d` was unchecked, so a bad `TMPDIR` aimed every fixture at `/` (stopped only by
+  filesystem permissions; as root it would have created eight repos at the root and `cleanup()`
+  would not have removed them). Now `|| die`:
+  ```
+  mktemp: failed to create directory via template ‘/nonexistent/zzz/branch-guard-selftest.XXXXXXXX’: No such file or directory
+
+FATAL: could not create a scratch directory under /nonexistent/zzz — is TMPDIR set to something that exists and is writable? (Without this check every fixture below would be aimed at the filesystem root.)
+EXIT=2
+  ```
+- **F4** the two containment guards enforced one invariant and disagreed by a trailing slash.
+  Both now `"$TMPROOT/"`.
+- **F5** `CLAUDE_PROJECT_DIR` is now exported to the hook, as Claude Code does — the official
+  reference's own example invokes a hook script by that path, and the `$comment` invites students
+  to add such hooks. Verified by substituting a hook that echoes it.
+- **F6 (provenance)** the two claims I could not source to a primary reference are now tagged
+  `[unverified — …]` **in the shipped script**, not only in this log — the log is not shipped.
+  Conversely the timeout claim, which the reviewer checked and found corroborated verbatim in
+  `code.claude.com/docs/en/hooks` § Timeouts, is now cited rather than asserted.
+- **F7** the header's flat "no network access, no writes" promise is now scoped: it is true of
+  this script's own code, but the script *executes the hook command string out of settings.json*,
+  which is executable configuration that arrives with a repository. Readers are told to read that
+  string before running this against a `settings.json` they did not write.
+- **F9** the "re-run after upgrading Claude Code" advice now states what re-running actually
+  buys and what it cannot catch (the product changing the hook contract — this script builds the
+  payload and asserts the schema from hard-coded templates, so it would stay green while the real
+  gate was dead).
+- **F12** the `die` message now says the selector requires the matcher to be exactly `Bash`, that
+  matchers are regexes so `Bash|Write` is valid-but-untestable here, and that new checks should be
+  appended rather than prepended. **F11** put that last sentence into `settings.json`'s `$comment`
+  too, which is the file a student actually edits.
+
+### What I take from the block
+
+Both blocking findings are about the same thing, and it is not a coding mistake: **the suite was
+built to confirm the hook works, not to discriminate between hypotheses about why it works.**
+Every case I wrote asked "does it deny here?" — none asked "could something else produce this
+same answer?" The reviewer's cheat hook is the question I never asked, and it took ten seconds to
+build. That is the third time in this task that the artifact meant to demonstrate "a green run
+proves nothing on its own" has had to be told so about itself.
+
+Two findings I want to keep visible because they went the other way: **F10** — the reviewer
+mutated the deny path to emit correct JSON but `exit 3`, expecting to file a fail-open, and found
+the docs say the exit code is ignored when the JSON parses, so the script's silence on exit status
+is correct. **F8** — the reviewer found the `git -C ""` mechanism independently from the diff and
+reproduced it end-to-end on a victim repo before my disclosure reached them.
+
+## 10. The passing run after the block — verbatim
+
+```
+branch-guard selftest
+  settings: /home/harness/harness-projects/1/ahr-sem04-wt55/templates/base-project-template/with-git/.claude/settings.json
+  hook timeout: 10s  (a hook that misses its timeout does NOT block — it is silently skipped)
+  scratch:  /tmp/branch-guard-selftest.TbfI3ogX
+
+  PASS  commit on main — permissionDecision=deny, reason text matches exactly.
+  PASS  commit on master — permissionDecision=deny, reason text matches exactly.
+  PASS  directory named 'looks-like-main' but HEAD is feature-z — hook stayed silent, as intended.
+  PASS  directory named 'looks-like-a-feature' but HEAD is main — permissionDecision=deny, reason text matches exactly.
+  PASS  commit on main, unborn HEAD (no commits yet) — permissionDecision=deny, reason text matches exactly.
+  PASS  commit with no git repository at all — permissionDecision=ask, reason text matches exactly.
+  PASS  commit on feature-x — hook stayed silent, as intended.
+  PASS  git status on main — hook stayed silent, as intended.
+  PASS  chained 'git switch … && git commit' on main (known sharp edge: denied against the OLD branch) — permissionDecision=deny, reason text matches exactly.
+  LIMIT default branch named 'trunk' — commit is ALLOWED, neither denied nor asked
+        If your project's default branch is not main/master, add its name to the branch comparison in settings.json — otherwise this gate protects nothing here.
+  LIMIT `git -C <path> commit` on main — ALLOWED: the regex matches only 'git' and 'commit' as adjacent words
+        This gate filters one command SHAPE, not intent. Do not rely on it to stop a determined or merely creative caller.
+  LIMIT `/usr/bin/git commit` on main — ALLOWED: an absolute path is not the literal word 'git'
+        Same root cause as above. A second, independent gate (a server-side branch protection rule) is the only thing that closes this class.
+  LIMIT `env git commit` on main — ALLOWED: any prefix command hides the commit from the regex
+        Same root cause. Treat the gate as a reminder that fires on the common shape, not as a boundary.
+  LIMIT `git commit` on the SECOND line of a multi-line command — ALLOWED: the hook reads only the first line
+        Multi-line Bash calls are routine. Keep a commit on the first line of its own call, or widen the hook to read all of stdin.
+
+RESULT: PASS — 9/9 checks. The gate was observed firing where this script checks it.
+        5 KNOWN LIMIT(S) listed above: real cases where this gate is silent and protects
+        nothing. Green here does not mean the gate cannot be walked past — read them.
+Re-run after any Claude Code update or any edit to .claude/settings.json.
+EXIT=0
+```
+
+## 11. Mutations re-run against the fixed suite — verbatim
+
+M1–M7 unchanged in definition; counts shift because the suite is now 9 checks + 5 limits.
+Each is still red for its own reason and `settings.json` is byte-identical to `HEAD` after each.
+
+```
+==============================================================
+MUTATION: M1 — break the branch comparison (main -> mian)
+  replace: [ \"$branch\" = \"main\" ]
+     with: [ \"$branch\" = \"mian\" ]
+--------------------------------------------------------------
+branch-guard selftest
+  settings: /home/harness/harness-projects/1/ahr-sem04-wt55/templates/base-project-template/with-git/.claude/settings.json
+  hook timeout: 10s  (a hook that misses its timeout does NOT block — it is silently skipped)
+  scratch:  /tmp/branch-guard-selftest.vh7e5TOA
+
+  FAIL  commit on main — expected deny, but the hook produced NO OUTPUT (rc=0). This is the silent-pass failure mode: to Claude Code it is indistinguishable from the rule being obeyed.
+  PASS  commit on master — permissionDecision=deny, reason text matches exactly.
+  PASS  directory named 'looks-like-main' but HEAD is feature-z — hook stayed silent, as intended.
+  FAIL  directory named 'looks-like-a-feature' but HEAD is main — expected deny, but the hook produced NO OUTPUT (rc=0). This is the silent-pass failure mode: to Claude Code it is indistinguishable from the rule being obeyed.
+  FAIL  commit on main, unborn HEAD (no commits yet) — expected deny, but the hook produced NO OUTPUT (rc=0). This is the silent-pass failure mode: to Claude Code it is indistinguishable from the rule being obeyed.
+  PASS  commit with no git repository at all — permissionDecision=ask, reason text matches exactly.
+  PASS  commit on feature-x — hook stayed silent, as intended.
+  PASS  git status on main — hook stayed silent, as intended.
+  FAIL  chained 'git switch … && git commit' on main (known sharp edge: denied against the OLD branch) — expected deny, but the hook produced NO OUTPUT (rc=0). This is the silent-pass failure mode: to Claude Code it is indistinguishable from the rule being obeyed.
+  LIMIT default branch named 'trunk' — commit is ALLOWED, neither denied nor asked
+        If your project's default branch is not main/master, add its name to the branch comparison in settings.json — otherwise this gate protects nothing here.
+  LIMIT `git -C <path> commit` on main — ALLOWED: the regex matches only 'git' and 'commit' as adjacent words
+        This gate filters one command SHAPE, not intent. Do not rely on it to stop a determined or merely creative caller.
+  LIMIT `/usr/bin/git commit` on main — ALLOWED: an absolute path is not the literal word 'git'
+        Same root cause as above. A second, independent gate (a server-side branch protection rule) is the only thing that closes this class.
+  LIMIT `env git commit` on main — ALLOWED: any prefix command hides the commit from the regex
+        Same root cause. Treat the gate as a reminder that fires on the common shape, not as a boundary.
+  LIMIT `git commit` on the SECOND line of a multi-line command — ALLOWED: the hook reads only the first line
+        Multi-line Bash calls are routine. Keep a commit on the first line of its own call, or widen the hook to read all of stdin.
+
+RESULT: FAIL — 4 of 9 checks failed. The gate in /home/harness/harness-projects/1/ahr-sem04-wt55/templates/base-project-template/with-git/.claude/settings.json is NOT doing what it claims.
+Do not rely on it until this passes: a gate that does not fire looks exactly like a gate that passed.
+EXIT=1
+--- restored; settings.json clean: 0 modified ---
+
+==============================================================
+MUTATION: M2 — break the matcher (Bash -> bash)
+  replace: "matcher": "Bash"
+     with: "matcher": "bash"
+--------------------------------------------------------------
+
+FATAL: no PreToolUse hook with matcher exactly "Bash" and type "command" found in /home/harness/harness-projects/1/ahr-sem04-wt55/templates/base-project-template/with-git/.claude/settings.json.
+       This selector is deliberately exact. Matchers are regexes, so "Bash|Write" is a valid,
+       working configuration that this script will nonetheless refuse to test — if you widened
+       the matcher on purpose, update the selector above rather than loosening it here.
+       [unverified — from third-party analysis, not the official hooks reference] the tool name
+       is matched case-sensitively, so a hook registered under "bash" never runs for a Bash call.
+       Note this script tests only the FIRST "Bash" group; append new checks, don't prepend.
+EXIT=2
+--- restored; settings.json clean: 0 modified ---
+
+==============================================================
+MUTATION: M3 — regress the unborn-HEAD fix (symbolic-ref --short -> rev-parse --abbrev-ref)
+  replace: git symbolic-ref --short HEAD 2>/dev/null
+     with: git rev-parse --abbrev-ref HEAD 2>/dev/null
+--------------------------------------------------------------
+branch-guard selftest
+  settings: /home/harness/harness-projects/1/ahr-sem04-wt55/templates/base-project-template/with-git/.claude/settings.json
+  hook timeout: 10s  (a hook that misses its timeout does NOT block — it is silently skipped)
+  scratch:  /tmp/branch-guard-selftest.XFfpOJtj
+
+  PASS  commit on main — permissionDecision=deny, reason text matches exactly.
+  PASS  commit on master — permissionDecision=deny, reason text matches exactly.
+  PASS  directory named 'looks-like-main' but HEAD is feature-z — hook stayed silent, as intended.
+  PASS  directory named 'looks-like-a-feature' but HEAD is main — permissionDecision=deny, reason text matches exactly.
+  FAIL  commit on main, unborn HEAD (no commits yet) — expected deny, but the hook produced NO OUTPUT (rc=0). This is the silent-pass failure mode: to Claude Code it is indistinguishable from the rule being obeyed.
+  PASS  commit with no git repository at all — permissionDecision=ask, reason text matches exactly.
+  PASS  commit on feature-x — hook stayed silent, as intended.
+  PASS  git status on main — hook stayed silent, as intended.
+  PASS  chained 'git switch … && git commit' on main (known sharp edge: denied against the OLD branch) — permissionDecision=deny, reason text matches exactly.
+  LIMIT default branch named 'trunk' — commit is ALLOWED, neither denied nor asked
+        If your project's default branch is not main/master, add its name to the branch comparison in settings.json — otherwise this gate protects nothing here.
+  LIMIT `git -C <path> commit` on main — ALLOWED: the regex matches only 'git' and 'commit' as adjacent words
+        This gate filters one command SHAPE, not intent. Do not rely on it to stop a determined or merely creative caller.
+  LIMIT `/usr/bin/git commit` on main — ALLOWED: an absolute path is not the literal word 'git'
+        Same root cause as above. A second, independent gate (a server-side branch protection rule) is the only thing that closes this class.
+  LIMIT `env git commit` on main — ALLOWED: any prefix command hides the commit from the regex
+        Same root cause. Treat the gate as a reminder that fires on the common shape, not as a boundary.
+  LIMIT `git commit` on the SECOND line of a multi-line command — ALLOWED: the hook reads only the first line
+        Multi-line Bash calls are routine. Keep a commit on the first line of its own call, or widen the hook to read all of stdin.
+
+RESULT: FAIL — 1 of 9 checks failed. The gate in /home/harness/harness-projects/1/ahr-sem04-wt55/templates/base-project-template/with-git/.claude/settings.json is NOT doing what it claims.
+Do not rely on it until this passes: a gate that does not fire looks exactly like a gate that passed.
+EXIT=1
+--- restored; settings.json clean: 0 modified ---
+
+==============================================================
+MUTATION: M4 — reword the deny message
+  replace: BLOCKED: direct commit to main/master. Create a feature branch first.
+     with: BLOCKED: no commits on main.
+--------------------------------------------------------------
+branch-guard selftest
+  settings: /home/harness/harness-projects/1/ahr-sem04-wt55/templates/base-project-template/with-git/.claude/settings.json
+  hook timeout: 10s  (a hook that misses its timeout does NOT block — it is silently skipped)
+  scratch:  /tmp/branch-guard-selftest.1Li9f0Hg
+
+  FAIL  commit on main — permissionDecision=deny is correct, but the reason text does not match the expected string.
+          expected: BLOCKED: direct commit to main/master. Create a feature branch first.
+          actual:   BLOCKED: no commits on main.
+  FAIL  commit on master — permissionDecision=deny is correct, but the reason text does not match the expected string.
+          expected: BLOCKED: direct commit to main/master. Create a feature branch first.
+          actual:   BLOCKED: no commits on main.
+  PASS  directory named 'looks-like-main' but HEAD is feature-z — hook stayed silent, as intended.
+  FAIL  directory named 'looks-like-a-feature' but HEAD is main — permissionDecision=deny is correct, but the reason text does not match the expected string.
+          expected: BLOCKED: direct commit to main/master. Create a feature branch first.
+          actual:   BLOCKED: no commits on main.
+  FAIL  commit on main, unborn HEAD (no commits yet) — permissionDecision=deny is correct, but the reason text does not match the expected string.
+          expected: BLOCKED: direct commit to main/master. Create a feature branch first.
+          actual:   BLOCKED: no commits on main.
+  PASS  commit with no git repository at all — permissionDecision=ask, reason text matches exactly.
+  PASS  commit on feature-x — hook stayed silent, as intended.
+  PASS  git status on main — hook stayed silent, as intended.
+  FAIL  chained 'git switch … && git commit' on main (known sharp edge: denied against the OLD branch) — permissionDecision=deny is correct, but the reason text does not match the expected string.
+          expected: BLOCKED: direct commit to main/master. Create a feature branch first.
+          actual:   BLOCKED: no commits on main.
+  LIMIT default branch named 'trunk' — commit is ALLOWED, neither denied nor asked
+        If your project's default branch is not main/master, add its name to the branch comparison in settings.json — otherwise this gate protects nothing here.
+  LIMIT `git -C <path> commit` on main — ALLOWED: the regex matches only 'git' and 'commit' as adjacent words
+        This gate filters one command SHAPE, not intent. Do not rely on it to stop a determined or merely creative caller.
+  LIMIT `/usr/bin/git commit` on main — ALLOWED: an absolute path is not the literal word 'git'
+        Same root cause as above. A second, independent gate (a server-side branch protection rule) is the only thing that closes this class.
+  LIMIT `env git commit` on main — ALLOWED: any prefix command hides the commit from the regex
+        Same root cause. Treat the gate as a reminder that fires on the common shape, not as a boundary.
+  LIMIT `git commit` on the SECOND line of a multi-line command — ALLOWED: the hook reads only the first line
+        Multi-line Bash calls are routine. Keep a commit on the first line of its own call, or widen the hook to read all of stdin.
+
+RESULT: FAIL — 5 of 9 checks failed. The gate in /home/harness/harness-projects/1/ahr-sem04-wt55/templates/base-project-template/with-git/.claude/settings.json is NOT doing what it claims.
+Do not rely on it until this passes: a gate that does not fire looks exactly like a gate that passed.
+EXIT=1
+--- restored; settings.json clean: 0 modified ---
+
+==============================================================
+MUTATION: M5 — break the command grep (commit -> kommit)
+  replace: git\\s+commit\\b
+     with: git\\s+kommit\\b
+--------------------------------------------------------------
+branch-guard selftest
+  settings: /home/harness/harness-projects/1/ahr-sem04-wt55/templates/base-project-template/with-git/.claude/settings.json
+  hook timeout: 10s  (a hook that misses its timeout does NOT block — it is silently skipped)
+  scratch:  /tmp/branch-guard-selftest.PKZwhudh
+
+  FAIL  commit on main — expected deny, but the hook produced NO OUTPUT (rc=0). This is the silent-pass failure mode: to Claude Code it is indistinguishable from the rule being obeyed.
+  FAIL  commit on master — expected deny, but the hook produced NO OUTPUT (rc=0). This is the silent-pass failure mode: to Claude Code it is indistinguishable from the rule being obeyed.
+  PASS  directory named 'looks-like-main' but HEAD is feature-z — hook stayed silent, as intended.
+  FAIL  directory named 'looks-like-a-feature' but HEAD is main — expected deny, but the hook produced NO OUTPUT (rc=0). This is the silent-pass failure mode: to Claude Code it is indistinguishable from the rule being obeyed.
+  FAIL  commit on main, unborn HEAD (no commits yet) — expected deny, but the hook produced NO OUTPUT (rc=0). This is the silent-pass failure mode: to Claude Code it is indistinguishable from the rule being obeyed.
+  FAIL  commit with no git repository at all — expected ask, but the hook produced NO OUTPUT (rc=0). This is the silent-pass failure mode: to Claude Code it is indistinguishable from the rule being obeyed.
+  PASS  commit on feature-x — hook stayed silent, as intended.
+  PASS  git status on main — hook stayed silent, as intended.
+  FAIL  chained 'git switch … && git commit' on main (known sharp edge: denied against the OLD branch) — expected deny, but the hook produced NO OUTPUT (rc=0). This is the silent-pass failure mode: to Claude Code it is indistinguishable from the rule being obeyed.
+  LIMIT default branch named 'trunk' — commit is ALLOWED, neither denied nor asked
+        If your project's default branch is not main/master, add its name to the branch comparison in settings.json — otherwise this gate protects nothing here.
+  LIMIT `git -C <path> commit` on main — ALLOWED: the regex matches only 'git' and 'commit' as adjacent words
+        This gate filters one command SHAPE, not intent. Do not rely on it to stop a determined or merely creative caller.
+  LIMIT `/usr/bin/git commit` on main — ALLOWED: an absolute path is not the literal word 'git'
+        Same root cause as above. A second, independent gate (a server-side branch protection rule) is the only thing that closes this class.
+  LIMIT `env git commit` on main — ALLOWED: any prefix command hides the commit from the regex
+        Same root cause. Treat the gate as a reminder that fires on the common shape, not as a boundary.
+  LIMIT `git commit` on the SECOND line of a multi-line command — ALLOWED: the hook reads only the first line
+        Multi-line Bash calls are routine. Keep a commit on the first line of its own call, or widen the hook to read all of stdin.
+
+RESULT: FAIL — 6 of 9 checks failed. The gate in /home/harness/harness-projects/1/ahr-sem04-wt55/templates/base-project-template/with-git/.claude/settings.json is NOT doing what it claims.
+Do not rely on it until this passes: a gate that does not fire looks exactly like a gate that passed.
+EXIT=1
+--- restored; settings.json clean: 0 modified ---
+
+==============================================================
+MUTATION: M6 — make the not-a-repo case fail open
+  replace: if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then echo 
+     with: if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then true || echo 
+--------------------------------------------------------------
+branch-guard selftest
+  settings: /home/harness/harness-projects/1/ahr-sem04-wt55/templates/base-project-template/with-git/.claude/settings.json
+  hook timeout: 10s  (a hook that misses its timeout does NOT block — it is silently skipped)
+  scratch:  /tmp/branch-guard-selftest.YAnRLyY7
+
+  PASS  commit on main — permissionDecision=deny, reason text matches exactly.
+  PASS  commit on master — permissionDecision=deny, reason text matches exactly.
+  PASS  directory named 'looks-like-main' but HEAD is feature-z — hook stayed silent, as intended.
+  PASS  directory named 'looks-like-a-feature' but HEAD is main — permissionDecision=deny, reason text matches exactly.
+  PASS  commit on main, unborn HEAD (no commits yet) — permissionDecision=deny, reason text matches exactly.
+  FAIL  commit with no git repository at all — expected ask, but the hook produced NO OUTPUT (rc=0). This is the silent-pass failure mode: to Claude Code it is indistinguishable from the rule being obeyed.
+  PASS  commit on feature-x — hook stayed silent, as intended.
+  PASS  git status on main — hook stayed silent, as intended.
+  PASS  chained 'git switch … && git commit' on main (known sharp edge: denied against the OLD branch) — permissionDecision=deny, reason text matches exactly.
+  LIMIT default branch named 'trunk' — commit is ALLOWED, neither denied nor asked
+        If your project's default branch is not main/master, add its name to the branch comparison in settings.json — otherwise this gate protects nothing here.
+  LIMIT `git -C <path> commit` on main — ALLOWED: the regex matches only 'git' and 'commit' as adjacent words
+        This gate filters one command SHAPE, not intent. Do not rely on it to stop a determined or merely creative caller.
+  LIMIT `/usr/bin/git commit` on main — ALLOWED: an absolute path is not the literal word 'git'
+        Same root cause as above. A second, independent gate (a server-side branch protection rule) is the only thing that closes this class.
+  LIMIT `env git commit` on main — ALLOWED: any prefix command hides the commit from the regex
+        Same root cause. Treat the gate as a reminder that fires on the common shape, not as a boundary.
+  LIMIT `git commit` on the SECOND line of a multi-line command — ALLOWED: the hook reads only the first line
+        Multi-line Bash calls are routine. Keep a commit on the first line of its own call, or widen the hook to read all of stdin.
+
+RESULT: FAIL — 1 of 9 checks failed. The gate in /home/harness/harness-projects/1/ahr-sem04-wt55/templates/base-project-template/with-git/.claude/settings.json is NOT doing what it claims.
+Do not rely on it until this passes: a gate that does not fire looks exactly like a gate that passed.
+EXIT=1
+--- restored; settings.json clean: 0 modified ---
+
+==============================================================
+MUTATION: M7 — widen the branch comparison to cover 'trunk'
+  replace: [ \"$branch\" = \"main\" ] || [ \"$branch\" = \"master\" ]
+     with: [ \"$branch\" = \"main\" ] || [ \"$branch\" = \"master\" ] || [ \"$branch\" = \"trunk\" ]
+--------------------------------------------------------------
+branch-guard selftest
+  settings: /home/harness/harness-projects/1/ahr-sem04-wt55/templates/base-project-template/with-git/.claude/settings.json
+  hook timeout: 10s  (a hook that misses its timeout does NOT block — it is silently skipped)
+  scratch:  /tmp/branch-guard-selftest.CuAa0X6v
+
+  PASS  commit on main — permissionDecision=deny, reason text matches exactly.
+  PASS  commit on master — permissionDecision=deny, reason text matches exactly.
+  PASS  directory named 'looks-like-main' but HEAD is feature-z — hook stayed silent, as intended.
+  PASS  directory named 'looks-like-a-feature' but HEAD is main — permissionDecision=deny, reason text matches exactly.
+  PASS  commit on main, unborn HEAD (no commits yet) — permissionDecision=deny, reason text matches exactly.
+  PASS  commit with no git repository at all — permissionDecision=ask, reason text matches exactly.
+  PASS  commit on feature-x — hook stayed silent, as intended.
+  PASS  git status on main — hook stayed silent, as intended.
+  PASS  chained 'git switch … && git commit' on main (known sharp edge: denied against the OLD branch) — permissionDecision=deny, reason text matches exactly.
+  FAIL  default branch named 'trunk' — commit is ALLOWED, neither denied nor asked — this case is recorded as a KNOWN LIMIT (hook expected to stay silent), but it produced output: {"hookSpecificOutput":{"hookEventName":"PreToolUse","permissionDecision":"deny","permissionDecisionReason":"BLOCKED: direct commit to main/master. Create a feature branch first."}}
+          If you widened the gate in settings.json on purpose, that is good — update this case to expect a decision.
+  LIMIT `git -C <path> commit` on main — ALLOWED: the regex matches only 'git' and 'commit' as adjacent words
+        This gate filters one command SHAPE, not intent. Do not rely on it to stop a determined or merely creative caller.
+  LIMIT `/usr/bin/git commit` on main — ALLOWED: an absolute path is not the literal word 'git'
+        Same root cause as above. A second, independent gate (a server-side branch protection rule) is the only thing that closes this class.
+  LIMIT `env git commit` on main — ALLOWED: any prefix command hides the commit from the regex
+        Same root cause. Treat the gate as a reminder that fires on the common shape, not as a boundary.
+  LIMIT `git commit` on the SECOND line of a multi-line command — ALLOWED: the hook reads only the first line
+        Multi-line Bash calls are routine. Keep a commit on the first line of its own call, or widen the hook to read all of stdin.
+
+RESULT: FAIL — 1 of 10 checks failed. The gate in /home/harness/harness-projects/1/ahr-sem04-wt55/templates/base-project-template/with-git/.claude/settings.json is NOT doing what it claims.
+Do not rely on it until this passes: a gate that does not fire looks exactly like a gate that passed.
+EXIT=1
+--- restored; settings.json clean: 0 modified ---
+```
+
+Plus the reviewer's N10 cheat hook, now caught — §9 above.
+
+## 12. Status
+
+- [x] Script written, executable, network-free, contained
 - [x] Passing run captured, in-repo and from a copied project root
 - [x] Harness defect found and fixed (subshell `die`), with before/after evidence
-- [x] Its second consequence found and fixed (`git -C ""` committing into this repo); branch history cleaned
-- [x] Hook boundary (`init.defaultBranch` not main/master) surfaced as a reported LIMIT
-- [x] Seven mutations captured going red for the right reasons; `settings.json` restored clean
+- [x] Its second consequence found and fixed (`git -C ""` committing into this repo); history cleaned
+- [x] Mutations M1–M7 red for the right reasons; `settings.json` restored clean
 - [x] Quick-start step + table row in `with-git/README.md`
 - [x] `render_templates.py --check` PASS
-- [ ] Independent ROAST (`roast.md`) — in progress, session `roast-55-hook-selftest`
-- [ ] Push + PR — dispatcher's action (see §8)
+- [x] Independent ROAST round 1 → **BLOCK** (F1, F2), `roast.md`
+- [x] F1 fixed and verified against the reviewer's own cheat hook
+- [x] F2 fixed: four `LIMIT` lines, both overclaims rewritten
+- [x] F3, F4, F5, F6, F7, F9, F11, F12 taken in the same pass
+- [ ] ROAST round 2 — re-review requested
+- [ ] Push + PR — dispatcher's action

@@ -36,6 +36,7 @@ mechanical Block-I gate that the `without-git/` variant deliberately does not.
 | `Tasks/README.md` | The rule: log your work, get it reviewed before calling it done. | No — this is the cheapest, most load-bearing discipline in the whole template. |
 | `.claude/skills/` | Empty until you have a recurring procedure worth packaging. | Keep the directory; delete/ignore its `README.md` once you understand it. |
 | `.claude/agents/` | Empty until you need a delegated specialist persona. | Same as skills. |
+| `.claude/agents/_example-reviewer.md` | A worked example of the subagent format: routing-logic `description`, a mechanical `tools:` guard excluding `Write`/`Edit`, a fixed-format verdict. | Yes, once you've added a real subagent — or keep as a style reference. |
 | `.claude/environment/` | Non-obvious facts about your specific tooling/substrate (which of two similarly-named tools is correct here, etc.). | Keep the slot; `_example.md` is a worked example, delete once you've added a real one. |
 | `.claude/settings.json` | The git-tracked commit-block gate (Block I). | Only delete if you deliberately want no branch protection — see "Customizing" below first. |
 | `.github/PULL_REQUEST_TEMPLATE.md` | Forces a review-artifact link and a merged-reference on every PR. | Keep if you use PRs; delete if you don't (and see `without-git/` if you don't use git at all). |

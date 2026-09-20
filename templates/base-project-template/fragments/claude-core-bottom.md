@@ -3,7 +3,8 @@
 - Persistent memory: this runtime's own auto-memory feature, if it has one (e.g. Claude
   Code's `~/.claude/projects/<project>/memory/`), for anything learned during a session
   that should carry to the next one. See `LESSONS.md` for the smaller, deliberately-
-  promoted subset that's worth keeping permanently.
+  promoted subset that's worth keeping permanently, and `.claude/memory-notes.md` for the
+  discipline that keeps auto-memory itself from becoming a second copy of this file.
 - Knowledge / notes: `knowledge/notes.md` — starts as one flat file; split into
   subdirectories only once a genre of content (e.g. literature vs. landscape survey vs.
   methodology) actually accumulates enough to need its own home.

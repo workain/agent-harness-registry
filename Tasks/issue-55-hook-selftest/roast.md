@@ -1,4 +1,4 @@
-VERDICT: BLOCK
+VERDICT: PASS
 
 # Independent ROAST — issue #55, order 5: executable self-test for the branch-protection hook
 
@@ -685,3 +685,280 @@ already exist, and both keep the script squarely inside the order's anti-framewo
 
 Fix F1 and F2 and I will re-review promptly; F3–F7 are worth taking in the same pass while the file is
 open. F8's history cleanup is verified clean and fast-forwardable — no action needed there.
+
+---
+---
+
+# ROUND 2 — re-review of `ca570f5`
+
+**Reviewer:** session `roast-55-hook-selftest` — same reviewer, independent of the author.
+**Date:** 2026-09-20
+**Head reviewed:** `ca570f5d3ae70f9055d9cd1930c58206b5156371`, a fast-forward from `03c2dc5`.
+
+**VERDICT: PASS.** Both blocking findings are fixed. I verified the fixes by rebuilding the
+attacks from scratch rather than re-running the author's, and by adding four attacks that did
+not exist in round 1. Everything in round 1 above this line is left byte-identical as the record;
+only the verdict on line 1 changed.
+
+## R2.0 — integrity of what I am grading
+
+```
+$ git status --porcelain                       # empty
+$ git merge-base --is-ancestor 03c2dc5 HEAD && echo YES
+YES
+$ git log --oneline main..HEAD
+ca570f5 fix(agent-harness-registry#55): address ROAST BLOCK — F1 branch independence, F2 unreported bypasses
+03c2dc5 fix(agent-harness-registry#55): refuse to act outside the fixture tree
+c5023ec fix(agent-harness-registry#55): abort on failed fixtures; report the hook's default-branch limit
+d904774 docs(agent-harness-registry#55): task log with verbatim passing and mutation runs
+a5bee55 docs(agent-harness-registry#55): quick-start step + table row for the branch-guard self-test
+61cbf0f feat(agent-harness-registry#55): executable self-test for the with-git branch-protection hook
+```
+
+Round 1's `roast.md` is committed at 687 lines with `VERDICT: BLOCK` intact on line 1 and my
+distinctive phrasing present (`"never varies the branch independently"`, `"walk straight past"`,
+`"A test whose stated"` — all found). Not edited.
+
+**The author flagged that `settings.json` is no longer byte-identical. I checked what changed.**
+It is the `$comment` only, and the thing under test is untouched:
+
+```
+$ git diff 03c2dc5 ca570f5 -- .../settings.json | grep -c '^[+-]'
+2            # one line out, one line in: the "$comment" field
+$ a=$(git show 03c2dc5:.../settings.json | jq -r '.hooks.PreToolUse[0].hooks[0].command' | sha256sum)
+$ b=$(git show ca570f5:.../settings.json | jq -r '.hooks.PreToolUse[0].hooks[0].command' | sha256sum)
+  03c2dc5: f84b71d1e2e0edb3de6805d5c997a6ada0639176662c79a9d04229fc4b65ce57
+  ca570f5: f84b71d1e2e0edb3de6805d5c997a6ada0639176662c79a9d04229fc4b65ce57
+  HOOK COMMAND UNCHANGED
+$ jq -c '{matcher, timeout, n_groups}' <<< …
+{"matcher":"Bash","timeout":10,"n_groups":1}
+```
+
+The hook command, matcher, timeout, group count and both expected reason strings are unchanged.
+The added sentence is F11's append-don't-prepend guidance. Disclosing this unprompted was the
+right call and the change is in scope.
+
+## R2.1 — baseline at `ca570f5`
+
+```
+  PASS  commit on main — permissionDecision=deny, reason text matches exactly.
+  PASS  commit on master — permissionDecision=deny, reason text matches exactly.
+  PASS  directory named 'looks-like-main' but HEAD is feature-z — hook stayed silent, as intended.
+  PASS  directory named 'looks-like-a-feature' but HEAD is main — permissionDecision=deny, reason text matches exactly.
+  PASS  commit on main, unborn HEAD (no commits yet) — permissionDecision=deny, reason text matches exactly.
+  PASS  commit with no git repository at all — permissionDecision=ask, reason text matches exactly.
+  PASS  commit on feature-x — hook stayed silent, as intended.
+  PASS  git status on main — hook stayed silent, as intended.
+  PASS  chained 'git switch … && git commit' on main (known sharp edge: denied against the OLD branch) — permissionDecision=deny, reason text matches exactly.
+  LIMIT default branch named 'trunk' — commit is ALLOWED, neither denied nor asked
+  LIMIT `git -C <path> commit` on main — ALLOWED: the regex matches only 'git' and 'commit' as adjacent words
+  LIMIT `/usr/bin/git commit` on main — ALLOWED: an absolute path is not the literal word 'git'
+  LIMIT `env git commit` on main — ALLOWED: any prefix command hides the commit from the regex
+  LIMIT `git commit` on the SECOND line of a multi-line command — ALLOWED: the hook reads only the first line
+
+RESULT: PASS — 9/9 checks. The gate was observed firing where this script checks it.
+        5 KNOWN LIMIT(S) listed above: real cases where this gate is silent and protects
+        nothing. Green here does not mean the gate cannot be walked past — read them.
+EXIT=0
+```
+
+## R2.2 — F1 CLEARED. Five cheat hooks built from scratch; four caught, and the control still passes
+
+The author asked me to rebuild the attack rather than trust their rerun, on the grounds that a fix
+written against a described example can be shaped to the example instead of the class. Correct
+concern, so that is what I did — and I went further than the hook I described, because the
+described one was the weakest member of its class.
+
+Every hook below **never asks git what branch it is on.** Each decides from something else.
+
+| # | cheat signal | result |
+|---|---|---|
+| C1 | directory name (`*main*|*master*`→deny, `*not-a-repo*`→ask) — my round-1 N10, rebuilt | **FAIL 3/9, EXIT=1** |
+| C2 | directory name for deny, but `[ -d .git ]` for the ask case — anticipates the fixture rename | **FAIL 2/9, EXIT=1** |
+| C3 | commit count + repo presence; no path, no branch | **FAIL 3/10, EXIT=1** |
+| C4 | `$PWD` depth / scratch-dir shape (`*branch-guard-selftest.*`) | **FAIL 3/10, EXIT=1** |
+| C5 | **CONTROL — legitimate:** reads the branch from `.git/HEAD` via `sed`, not `symbolic-ref` | **PASS 9/9, EXIT=0** |
+
+Verbatim, C1 and C2 — the two that matter, because C2 is the one that *tries* to survive the fix:
+
+```
+C1 — path-keyed cheat (my round-1 N10, rebuilt)
+  FAIL  directory named 'looks-like-main' but HEAD is feature-z — expected NO hook output (allow), got: {… "permissionDecision":"deny" …}
+  FAIL  directory named 'looks-like-a-feature' but HEAD is main — expected deny, but the hook produced NO OUTPUT (rc=0)…
+  FAIL  commit with no git repository at all — expected permissionDecision=ask, got 'deny'. …
+RESULT: FAIL — 3 of 9 checks failed.   EXIT=1
+
+C2 — path-keyed cheat v2: uses [ -d .git ] for the ask case, path name for deny
+  FAIL  directory named 'looks-like-main' but HEAD is feature-z — expected NO hook output (allow), got: {… "permissionDecision":"deny" …}
+  FAIL  directory named 'looks-like-a-feature' but HEAD is main — expected deny, but the hook produced NO OUTPUT (rc=0)…
+RESULT: FAIL — 2 of 9 checks failed.   EXIT=1
+```
+
+C2 routes around the `looks-like-main-but-no-git` rename entirely — and still dies on the two
+contradiction fixtures, in both directions. That is the finding closed at the level of the class,
+not the example.
+
+**C5 is the control that makes the other four mean something, and I want to be explicit about why
+it matters.** A suite that rejected everything unfamiliar would produce the same four reds while
+proving nothing. C5 is a *different implementation* of the *correct behaviour* — it parses
+`refs/heads/<name>` out of `.git/HEAD` instead of calling `git symbolic-ref` — and the suite passes
+it 9/9. So the suite is testing the behaviour, not pattern-matching the incumbent implementation.
+That is the property I could not have asserted in round 1, and it is worth more than the four reds.
+
+**Reasoning that backs the empirical result.** Cases 1 and 3 (`main-with-history`/`main`→deny,
+`looks-like-main`/`feature-z`→allow) are now identical in *every* observable except the branch and
+the directory name: same commit count (1), same command string, same depth, same `.git` presence.
+Cases 4 and 7 mirror it in the other direction. So any hook that reads the path must special-case
+these literal names to survive — which is C7 below, the replay class. There is no general
+path heuristic that works: "starts with main" fails case 4, "ends with main" fails case 1,
+"contains main" fails case 3. I checked each.
+
+## R2.3 — F2 CLEARED, and the four limits independently re-probed on my machine
+
+The author asked me to re-probe rather than accept the limits, since they were asserted from my own
+round-1 output. Re-run against `ca570f5`'s own `settings.json`, in a fresh repo on `main`:
+
+```
+  CONTROL: git commit -m "x"                           -> deny
+  git -C . commit -m "x"                               -> <SILENT/ALLOWED>
+  /usr/bin/git commit -m "x"                           -> <SILENT/ALLOWED>
+  env git commit -m "x"                                -> <SILENT/ALLOWED>
+  multi-line, commit on line 2                         -> <SILENT/ALLOWED>
+  bash: GNU bash, version 5.2.21(1)  git: 2.43.0  jq: jq-1.7
+```
+
+All four reproduce. No red to report. The control still denies, so the probe itself is sound.
+
+Both overclaims are gone. The verdict line now reads *"The gate was observed firing where this
+script checks it"* with the limit count on its own lines, and README step 3 now says "Nothing else
+distinguishes…" and then sends the reader to the `LIMIT` lines, naming what they cover. That is the
+correction I asked for, and the README wording is better than what I suggested.
+
+## R2.4 — F3–F7, F9, F11, F12 verified individually
+
+- **F3** — `mktemp || die` present *and* followed by a belt-and-braces `[ -n ] && [ -d ]` check.
+  Both failure modes now abort honestly instead of aiming fixtures at `/`:
+  ```
+  $ TMPDIR=/nonexistent/zzz  → FATAL: could not create a scratch directory under /nonexistent/zzz — is TMPDIR set to
+                                something that exists and is writable? …   EXIT=2
+  $ TMPDIR=<read-only dir>   → same FATAL, EXIT=2
+  $ ls -d /main-with-history /master-with-history /looks-like-main
+    nothing at filesystem root (good)
+  ```
+  The `cleanup()` guard now carries the comment explaining it is load-bearing. Good.
+- **F4** — both guards now spell the invariant `"$TMPROOT/"`, with a comment saying they are one
+  rule deliberately written twice the same way. Verified by reading the diff.
+- **F5** — `CLAUDE_PROJECT_DIR` is genuinely exported, not just written down. I substituted a hook
+  that appends the value to a file: **14 invocations, `UNSET` in none of them, and the value equals
+  the fixture cwd in all 14.**
+- **F6** — both unsourceable claims now carry `[unverified — …]` **in the shipped script**, naming
+  the third party and stating explicitly that the official reference was checked and does not say
+  it. The timeout claim is upgraded to the § Timeouts quote with the URL and fetch date. This is
+  the right resolution: the log is not shipped; the script is.
+- **F7** — containment promise now scoped to "this script's own code", with the
+  settings.json-is-executable-configuration caveat and the concrete instruction to read the command
+  string before running this against a `settings.json` you did not write.
+- **F9** — the re-run advice now states what re-running does **not** buy, and says plainly that
+  confirming a contract change needs a live Claude Code session and nothing in the file can do it.
+- **F11 / F12** — append-don't-prepend is in `settings.json`'s `$comment` *and* in the `die`
+  message; the `die` message now explains that `"Bash|Write"` is a valid working config the
+  selector deliberately refuses, and says to update the selector rather than loosen it.
+
+## R2.5 — regression check: my round-1 mutations still bite, plus two new ones
+
+The fix added 166 lines to the script. I re-ran my own mutations to confirm discriminating power
+did not regress, and added two that did not exist in round 1.
+
+```
+N2   wrong hookEventName on deny path          RESULT: FAIL — 5 of 9 | EXIT=1 OK-red
+N3   NBSP in deny reason (invisible reword)    RESULT: FAIL — 5 of 9 | EXIT=1 OK-red
+N4   deprecated {decision:block} schema        RESULT: FAIL — 5 of 9 | EXIT=1 OK-red
+N5   permissionDecision deny -> Deny           RESULT: FAIL — 5 of 9 | EXIT=1 OK-red
+N7   hook removed entirely                     FATAL (no Bash matcher) | EXIT=2 OK-red
+N8   broken Bash group PREPENDED               RESULT: FAIL — 6 of 9 | EXIT=1 OK-red
+
+NEW:
+N11  branch check loses 'main', keeps 'master'
+       FAIL  commit on main …
+       FAIL  directory named 'looks-like-a-feature' but HEAD is main …
+       FAIL  commit on main, unborn HEAD (no commits yet) …
+       FAIL  chained 'git switch … && git commit' on main …
+     RESULT: FAIL — 4 of 9 checks failed.   EXIT=1 OK-red
+N12  no-repo case answers deny instead of ask
+     RESULT: FAIL — 1 of 9 checks failed.   EXIT=1 OK-red     (isolates to exactly one case)
+```
+
+`settings.json` verified byte-identical to `GOLD` after every single mutation, and byte-identical
+to `HEAD` at the end.
+
+I did **not** re-run the author's M1–M7 in round 2, for the same reason as round 1. My confidence
+rests on the N- and C-series above.
+
+## R2.6 — NOTE (not blocking, and not actionable): two cheats that still pass, both in the replay class
+
+For completeness, and because "I could not break it" is worth less than "here is exactly what still
+breaks it":
+
+```
+C6 — REPLAY: a call counter in /tmp that plays back the expected answer sequence by invocation
+     number. Reads nothing at all — not the branch, not the path, not even the command.
+     RESULT: PASS — 9/9 checks.  EXIT=0   *** certified ***
+
+C7 — path cheat TUNED to the literal fixture names (looks-like-main → allow,
+     looks-like-a-feature → deny, looks-like-main-but-no-git → ask, …)
+     RESULT: PASS — 9/9 checks.  EXIT=0   *** certified ***
+```
+
+**I am not asking for anything here, and this is not a residual F1.** Both require the attacker to
+have read this specific file: C6 replays its case order, C7 hard-codes its fixture names. That is
+the general property that any test with a fixed set of cases run in a fixed order can be satisfied
+by a lookup table — it is true of every test suite ever written, and defending against it is not
+what a self-test is for. The threat model here is *regression and misconfiguration*, and against
+that the suite is now demonstrably discriminating (R2.2, R2.5).
+
+The distinction that matters, and the reason F1 was a block while this is not: C1–C4 are hooks
+written **without knowledge of the test**, from plausible-but-wrong premises, and before `ca570f5`
+they passed. C6 and C7 are hooks written **from the test**. The first class is a real thing a
+self-test must catch. The second is not reachable by accident.
+
+If anyone ever wants to close even this, randomising the fixture basenames per run
+(`repo-$RANDOM`) would kill C7 but not C6, and it would cost the readable case names that make the
+current output legible. I would not take that trade, and I am recording the option only so the
+decision is on the record rather than unexamined.
+
+## R2.7 — what I did NOT verify in round 2
+
+Round 1's list (§ "What I did NOT verify") still stands in full. Specifically unchanged:
+
+1. **Still no live Claude Code session.** Everything is still driven through a payload the
+   self-test constructs. F9 is now honestly documented in the script rather than fixed, which is
+   the right outcome, but it is documented — not closed.
+2. **Still only git 2.43.0, bash 5.2.21, jq 1.7, one machine, Linux.** The author's disclosure
+   about untested older git stands, and now so does mine about the `mktemp || die` fix: I verified
+   it on this machine only, under two induced failures (nonexistent and read-only `TMPDIR`). I did
+   not test a `TMPDIR` that fails in some third way, and I did not test as root.
+3. **I did not re-verify M1–M7** in either round.
+4. **I did not re-read `log.md` §9–§11 line by line** for round 2. I spot-checked that my F8 and
+   F10 are attributed to me, confirmed the round-2 runs it reports match the ones I reproduced
+   independently, and otherwise judged the code and the behaviour rather than the account of them.
+5. **I did not audit the rest of the template.** Out of scope for #55, unchanged from round 1.
+
+## R2.8 — verdict
+
+**PASS.** Both blocks are cleared at the level of the class rather than the example, and I
+confirmed that by attacking the fix with hooks it was not written against — including one that
+anticipates the fixture rename and one that avoids paths entirely. The control hook (C5) confirms
+the suite still accepts a correct gate implemented differently, which is what keeps the four reds
+meaningful. Every secondary finding from round 1 is taken, and two of them (F6's `[unverified — …]`
+tags, F9's honest re-run advice) landed in the shipped file rather than only in the log, which is
+where they had to be.
+
+One thing worth saying beyond the verdict, because it is the durable lesson in this ticket and the
+author wrote it down before I could: the suite was originally built to confirm the hook works, not
+to discriminate between competing explanations of *why* it appeared to work. Both round-1 blocks,
+and both defects the author found themselves, are instances of that single mistake. The file that
+ships now is the corrected version of it — it varies the thing it claims to measure, and it prints
+what it cannot measure. That is a materially better artifact than the one I was first handed, and
+the CREATE → ROAST → IMPROVE loop is what produced the difference.
+
+No further review required from me. Nothing is blocked on this reviewer.

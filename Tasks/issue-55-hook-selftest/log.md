@@ -888,6 +888,83 @@ EXIT=1
 
 Plus the reviewer's N10 cheat hook, now caught — §9 above.
 
+## 12. ROAST round 2 — PASS
+
+Verdict `PASS` on `ca570f5`, session `roast-55-hook-selftest`. Round-1 body preserved byte-identical
+below the flipped verdict line in `roast.md`; round-2 review appended (964 lines total). The reviewer
+touched nothing but `roast.md` — `git diff -- templates/` against HEAD was empty when I picked it up.
+
+**F1 was cleared at the level of the class, not the example — which is what I asked for and did not
+take for granted.** I had warned that I wrote the fix against the reviewer's *description* of its
+attack, which is exactly when a fix gets shaped to the example. So the reviewer built five cheat
+hooks from scratch, none of which ever asks git what branch it is on:
+
+| cheat | premise | result |
+|---|---|---|
+| C1 | rebuilt N10, decides from `case "$PWD"` | FAIL 3/9 |
+| **C2** | **anticipates the rename: tests `[ -d .git ]` instead of matching the name** | **FAIL 2/9** |
+| C3 | commit count + repo presence; ignores the path entirely | FAIL 3/10 |
+| C4 | `$PWD` depth / scratch-dir shape | FAIL 3/10 |
+| **C5** | **legitimate: reads the branch by `sed`-ing `refs/heads/` out of `.git/HEAD`** | **PASS 9/9** |
+
+C2 matters because it is the fix-aware attack, and it still dies on both contradiction fixtures.
+C5 matters more: a *correct* gate implemented differently from the incumbent still passes, which is
+what makes the four reds mean "this suite tests the behaviour" rather than "this suite pattern-matches
+one implementation". That property is the actual deliverable of this order and I could not have
+asserted it myself — I wrote the fixtures.
+
+The reviewer also checked that no general path heuristic survives: "starts with main" kills case 4,
+"ends with main" kills case 1, "contains main" kills case 3. Cases 1 and 3 are now identical in every
+observable except branch and directory name — same commit count, same command, same depth, same `.git`.
+
+**Two cheats still pass, recorded here because "I could not break it" is worth less than naming what
+still breaks it.** C6 is a replay counter keyed on invocation number that reads *nothing at all*; C7
+hard-codes the literal fixture basenames. The reviewer ruled these are not a residual F1 and asked for
+nothing, on the reasoning that both require having read this specific file — any suite with a fixed
+set of cases in a fixed order is satisfiable by a lookup table, which is true of every test ever
+written. The distinction that made F1 a block: C1–C4 were written *without* knowledge of the test,
+from plausible-but-wrong premises, and they passed before `ca570f5`. C6/C7 are written *from* the
+test and are not reachable by accident. Randomising fixture basenames would kill C7 but not C6, at
+the cost of the readable case names; the reviewer recommends against it and I agree. Recorded so the
+trade is on the record rather than unexamined.
+
+Independently verified in round 2: all four F2 limits re-probed against this repo's own
+`settings.json` (all four reproduce, control still denies); F3 under both induced `TMPDIR` failures,
+with `ls -d /main-with-history …` confirming nothing reached the filesystem root; F5 by substituting
+a hook that logs the variable — **14 invocations, `UNSET` in none, value equal to the fixture cwd in
+all 14**; my `settings.json` disclosure — `$comment`-only, hook-command sha256 identical across
+`03c2dc5 → ca570f5`, matcher/timeout/group-count unchanged. Round-1 mutations N2/N3/N4/N5/N7/N8 all
+still red at the new counts, plus two new ones (N11: branch check loses `main`, keeps `master` →
+FAIL 4/9 hitting exactly the four main cases; N12: no-repo answers `deny` not `ask` → FAIL 1/9).
+
+What the reviewer did **not** verify in round 2 is listed in `roast.md` R2.7 and round 1's own list
+stands in full: still no live Claude Code session, still one machine (git 2.43.0 / bash 5.2.21 /
+jq 1.7 / Linux), still not run as root, and it did not re-verify M1–M7 in either round — those
+results are mine and are reported here as mine.
+
+## 13. Cross-reference: the four F2 bypasses are issue #65
+
+The four command forms this script reports as `LIMIT` lines are tracked as
+`workain/agent-harness-registry#65` — a fix to the *hook*, deliberately out of scope here (§7).
+Two constraints recorded on that issue, because they bind this file:
+
+1. **When the hook is fixed, the corresponding `LIMIT` lines must become `PASS` assertions in the
+   same change**, each shown red against the un-fixed hook first. A `LIMIT` line that outlives its
+   limit is a false statement in the same family as the overclaim it replaced, and an assertion
+   never observed failing is not evidence.
+2. **The acceptance criterion "all forms produce `deny`" is necessary but not sufficient** — passing
+   it by enumeration is a failing fix. The dispatcher session confirmed against the real hook that
+   `command git commit`, `\git commit`, `$GIT commit` and `sudo -u nobody git commit` are all
+   silently allowed too; `$GIT` alone puts the class out of reach of static command matching. #65 is
+   therefore framed as *cover the common shapes and say plainly that this is not a boundary*, not as
+   closing the class — otherwise the fix reproduces, one level up, the same overclaim that produced
+   the issue.
+
+**This cross-reference lives here and not in the shipped script on purpose.** That file is copied
+into other people's projects; a `workain/agent-harness-registry#65` reference in it would leak this
+repo's internals into a student's checkout. The shipped `LIMIT` advice ("or widen the hook to read
+all of stdin") is the right level for that reader.
+
 ## 12. Status
 
 - [x] Script written, executable, network-free, contained
@@ -901,5 +978,6 @@ Plus the reviewer's N10 cheat hook, now caught — §9 above.
 - [x] F1 fixed and verified against the reviewer's own cheat hook
 - [x] F2 fixed: four `LIMIT` lines, both overclaims rewritten
 - [x] F3, F4, F5, F6, F7, F9, F11, F12 taken in the same pass
-- [ ] ROAST round 2 — re-review requested
-- [ ] Push + PR — dispatcher's action
+- [x] ROAST round 2 — **PASS** on `ca570f5`; F1 cleared against 4 fresh cheat hooks + a legitimate control
+- [x] `roast.md` committed verbatim (both rounds), `log.md` §12–§13 record round 2 and the #65 coupling
+- [ ] Push + PR — dispatcher's action (it holds the token; see §8)

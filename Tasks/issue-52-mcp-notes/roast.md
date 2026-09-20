@@ -116,3 +116,25 @@ $ grep -rn "1.365\|1,365\|44.026\|44,026\|44026" templates/base-project-template
 $ ls deep-dives/components/ | grep -i mcp
 access-mcp
 ```
+
+## Addendum — rebase re-verify (after orders #51 and #53 merged to main)
+
+`main` moved to `b1b9b35` (orders #51, #53 merged) before this PR landed. Rebased
+`issue-52-mcp-notes` onto `origin/main`; one conflict, in
+`templates/base-project-template/without-git/README.md` (order #53 and this branch both added a
+row to the same "What's here" table, adjacent lines) — resolved by keeping both rows.
+
+A second, narrow independent re-verify (separate subagent, scoped to the rebase delta only —
+not a full re-review, since the full review above already covers content) confirmed:
+- `b1b9b35` is an ancestor of the rebased HEAD.
+- `design-and-usage.md` / `claude-core-bottom.md` diffs vs `origin/main` are each still exactly
+  one line, no conflict markers.
+- Both READMEs' diffs vs `origin/main` are each still exactly one added row; order #53's
+  `.claude/skills/_example/SKILL.md` row survived the conflict resolution byte-for-byte in both
+  variants (verified via `git show origin/main:<path> | grep` vs. the working-tree file, not
+  just "the diff looks right").
+- Repo-wide search for leftover conflict markers (`<<<<<<<`, `=======`, `>>>>>>>`) — empty.
+- `render_templates.py --check` re-run fresh on the rebased tree → PASS.
+- `git status --short` clean, no mid-rebase leftovers.
+
+**Verdict unchanged: PASS**, now confirmed against the rebased tree, not just the pre-rebase one.

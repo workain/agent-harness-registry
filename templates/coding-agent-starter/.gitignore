@@ -1,0 +1,11 @@
+# Локальное и личное — никогда не должно попасть в общий репозиторий.
+# .claude/settings.local.json особенно: см. CVE-2026-21852 (утечка API-ключа
+# через ANTHROPIC_BASE_URL в settings.json).
+.claude/settings.local.json
+.env
+.env.local
+.DS_Store
+
+# Зависимости и сборка — добавьте своё.
+# node_modules/
+# dist/

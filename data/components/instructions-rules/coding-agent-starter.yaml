@@ -1,0 +1,52 @@
+name: coding-agent-starter
+slug: coding-agent-starter
+homepage: https://github.com/workain/agent-harness-registry/tree/main/templates/coding-agent-starter
+category: instructions-rules
+layer: "Instruction/identity layer (Block A) plus day-0 seeds of the decision-memory and gate blocks — a 16-file project scaffold one rung below base-project-template, not a single convention file"
+what_it_is: >
+  A deliberately small, copy-ready project scaffold for a repository a coding agent will work
+  in. Its organizing claim is subtractive: a CLAUDE.md holding a one-line project identity and
+  exactly ONE gate, with every other section removed rather than shipped as unfilled
+  boilerplate, on the reasoning that instruction text is billed on every turn and a rule written
+  ahead of a real need has nothing to check it. The remaining sections ship as ready-to-paste
+  blocks in `doc/claude-md-sections.md`, to be pulled in when a concrete incident calls for one.
+  Around that: `spec.md` (what "done" means, stated as checkable conditions, written before the
+  first line of code), an entry-less `DECISIONS.md` (format only — the file exists from day one,
+  the content accrues), `doc/adr/` in Michael Nygard / adr-tools form with a template and one
+  real first entry, a `.tasks/active|done/` per-task file carrying a verification timestamp, and
+  `tests/CLAUDE.md` as a worked example of the scaffold's "three addresses" rule (a constraint
+  belongs in a code comment, in a file beside the code it governs, or in the root instruction
+  file as a POINTER — and the root file should get shorter when knowledge is distributed, not
+  longer). The branch-protection hook and its self-test are base-project-template's own files,
+  copied verbatim rather than reimplemented.
+integration: >
+  Copy `templates/coding-agent-starter/` into your project root with `cp -RP` (the `-P` matters:
+  `AGENTS.md` is a symlink to `CLAUDE.md`, and without it you get two files that drift), then
+  `rm -rf .git && git init`. Run `.claude/hooks/selftest-branch-guard.sh` once to confirm the
+  gate is live, fill `spec.md`, replace the placeholder gate in `CLAUDE.md` with the one rule
+  whose violation would actually cost you, and leave `DECISIONS.md` empty. Graduate to
+  `base-project-template` when skills, subagents, MCP or profiles start earning their keep.
+license: >
+  MIT, same as the rest of this repository. A LICENSE file ships at
+  `templates/coding-agent-starter/LICENSE`, scoped to the template's own files.
+license_tag: "MIT"
+open_source: true
+use_cases: "first-time project bootstrap for a coding agent, seminar/teaching handout, a smaller on-ramp for a team that finds base-project-template too much at day 0"
+activity:
+  stars: null
+  last_verified_note: "first-party, authored in this registry 2026-09-23; not an independently-starred public project and has no adoption history to report"
+provenance:
+  - url: https://github.com/workain/agent-harness-registry/tree/main/templates/base-project-template
+    fetched: "2026-09-23"
+    note: >
+      `.claude/settings.json` and `.claude/hooks/selftest-branch-guard.sh` are this repository's
+      own base-project-template `with-git` files, copied byte-for-byte rather than reimplemented,
+      so the one component that is a real mechanical gate cannot diverge between the two
+      templates. Everything else was written fresh for this entry.
+unverified:
+  - "NO research pass. base-project-template's content decisions each trace to one of two documented evidence passes; this template's do not. Its structure was derived from that template plus a seminar's teaching sequence, and should be read as a plausible, internally-consistent starting point rather than an evidence-backed default. Nothing here contradicts that entry's evidence — but nothing independently supports the subtractive 'one gate, everything else deleted' claim either, which is this template's single most load-bearing design decision."
+  - "Verified only mechanically, and only on one machine (Linux, git 2.x, bash): the branch guard self-test reports PASS on 9/9 checks and prints its own 5 known limits; a `cp -RP` + `git init` + self-test run from a clean clone succeeds with the AGENTS.md symlink intact; `scripts/generate.py` exits 0. NOT tested: any other OS or shell, any agent engine other than Claude Code, multi-contributor use, or drift over time."
+  - "Whether an engine auto-loads a subdirectory instruction file (`tests/CLAUDE.md`) on the path of an edit is NOT established here for Claude Code — this registry documents that behavior for Gemini CLI and Cursor only. The template therefore names that file from the root CLAUDE.md as an explicit pointer, which works either way; readers should not take its presence as evidence that auto-discovery happens."
+  - "Written in Russian, unlike the rest of this registry — it was authored for a Russian-language seminar audience. No translated variant exists."
+deep_dive: deep-dives/components/instructions-rules/coding-agent-starter.md
+first_party: true

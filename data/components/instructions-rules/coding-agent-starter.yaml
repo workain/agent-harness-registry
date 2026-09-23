@@ -2,7 +2,7 @@ name: coding-agent-starter
 slug: coding-agent-starter
 homepage: https://github.com/workain/agent-harness-registry/tree/main/templates/coding-agent-starter
 category: instructions-rules
-layer: "Instruction/identity layer (Block A) plus day-0 seeds of the decision-memory and gate blocks — a 16-file project scaffold one rung below base-project-template, not a single convention file"
+layer: "Instruction/identity layer (Block A) plus day-0 seeds of the decision-memory and gate blocks — a 17-file project scaffold one rung below base-project-template, not a single convention file"
 what_it_is: >
   A deliberately small, copy-ready project scaffold for a repository a coding agent will work
   in. Its organizing claim is subtractive: a CLAUDE.md holding a one-line project identity and

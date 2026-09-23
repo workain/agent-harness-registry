@@ -1,6 +1,6 @@
 # coding-agent-starter
 
-A 16-file project scaffold for a repository a coding agent will work in. First-party, MIT,
+A 17-file project scaffold (16 files plus the `AGENTS.md` symlink) for a repository a coding agent will work in. First-party, MIT,
 lives at [`templates/coding-agent-starter/`](../../../templates/coding-agent-starter/).
 
 ## What it is

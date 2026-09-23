@@ -10,11 +10,14 @@
 
 ## Начать
 
-Отдельный репозиторий (`workain/coding-agent-starter`) помечен как template repository —
-кнопка **«Use this template»** на GitHub. Или скопировать каталог руками:
+Шаблон живёт в `templates/coding-agent-starter/` репозитория
+[`workain/agent-harness-registry`](https://github.com/workain/agent-harness-registry) —
+это его единственный дом. Скопировать каталог себе:
 
 ```
-cp -RP coding-agent-starter мой-проект && cd мой-проект   # -P обязателен, см. ниже
+git clone https://github.com/workain/agent-harness-registry.git
+cp -RP agent-harness-registry/templates/coding-agent-starter мой-проект
+cd мой-проект                                  # -P обязателен, см. ниже
 rm -rf .git && git init -b main
 bash .claude/hooks/selftest-branch-guard.sh    # убедиться, что ворота живые
 ```

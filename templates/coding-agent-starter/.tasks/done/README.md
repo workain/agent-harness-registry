@@ -1,1 +1,1 @@
-# Законченные задачи переезжают сюда из ../active/.
+# Finished tasks move here from ../active/.

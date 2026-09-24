@@ -1,32 +1,32 @@
-# <Задача одной строкой>
+# <The task in one line>
 
-- **Заведено:** <YYYY-MM-DDTHH:MM:SSZ>
-- **Сверено:** <YYYY-MM-DDTHH:MM:SSZ>
-- **Issue / PR:** <ссылка или «нет»>
+- **Opened:** <YYYY-MM-DDTHH:MM:SSZ>
+- **Verified:** <YYYY-MM-DDTHH:MM:SSZ>
+- **Issue / PR:** <link, or "none">
 
-## Цель
+## Goal
 
-Что должно стать правдой, когда задача закончится. Не «что я делаю» — что изменится.
+What becomes true when this is finished. Not what you are doing — what changes.
 
-## Как проверю
+## How it will be checked
 
-Команда или наблюдение с однозначным ответом. Заполняется ДО работы: критерий,
-придуманный после результата, всегда сходится с результатом.
+A command or an observation with an unambiguous answer. Written BEFORE the work: a
+criterion invented after the result always agrees with the result.
 
-## Шаги
+## Steps
 
-- [ ] <шаг> — <статус: не начат / в работе / заблокирован кем-чем / сделан>
-- [ ] <шаг> — <статус>
+- [ ] <step> — <status: not started / in progress / blocked by whom or what / done>
+- [ ] <step> — <status>
 
-Статус обязателен у каждого шага. Шаг без статуса читается как сделанный —
-именно так молча застрявшая работа остаётся невидимой.
+Every step carries a status. A step with none reads as done, which is exactly how
+silently stalled work stays invisible.
 
-## Что уже проверено
+## Verified so far
 
-Дословный вывод команд, а не пересказ. «Тесты зелёные» — это утверждение;
-`4 passed (6.2s)` — это факт.
+The literal output of the commands, not a summary of it. "Tests are green" is a claim;
+`4 passed (6.2s)` is a fact.
 
-## Открытые вопросы / блокировки
+## Open questions and blockers
 
-Если ждём кого-то — назвать КОГО. Тогда блокировка читается как блокировка,
-а не как забытая задача.
+If this is waiting on someone, name WHO. Then a blocker reads as a blocker rather than
+as a task nobody picked up.

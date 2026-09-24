@@ -1,58 +1,30 @@
-# doc/adr — архитектурные решения
+# doc/adr — architecture decisions
 
-**Эта папка — сверх дня 0, и записей в ней нет намеренно.** Здесь лежит формат
-(`0000-template.md`) и порог включения — но ни одного решения, потому что шаблон не может
-знать, какие решения вы приняли. Датированная запись со `Status: Accepted` от вашего имени,
-которую приняли не вы, — это правило впрок, против чего возражает `CLAUDE.md` этого же
-шаблона. Готовая первая запись («Записывать архитектурные решения») ждёт в
-`doc/deferred.md`, вместе с поводом.
+One file per decision, in Michael Nygard's format (the one `adr-tools` implements).
+Name them `NNNN-short-title.md`. Numbers run in sequence and are never reused. A new
+ADR starts from `0000-template.md`.
 
-**Порог.** Запись не влезает в три строки `DECISIONS.md` — значит ADR. Пока все ваши решения
-влезают, эту папку можно удалить целиком, ничего не потеряв: `DECISIONS.md` остаётся.
+**The threshold against `DECISIONS.md`.** A three-line "why" goes in `DECISIONS.md`.
+A decision whose consequences outlive the people who made it, and that later work will
+have to reference, goes here. If every decision you have made still fits in three
+lines, you can delete this directory and lose nothing — but delete the two pointers to
+it as well, in `CLAUDE.md` ("Where things live") and at the end of `DECISIONS.md`'s
+format section. A pointer to a directory that is not there costs context in every
+session.
 
-Удаляя её, удалите и всё, что на неё указывает. Не по списку из этого файла — список
-устаревает: полная процедура и разбор того, что найдётся, — в комментарии в конце `CLAUDE.md`.
-Порядок такой, и `grep` идёт ПОСЛЕ правок, а не вместо них:
+**The status changes; the text does not.** A reversed decision is not edited and not
+deleted. It gets `Status: Superseded by ADR-NNNN`, and the new decision is written as
+its own file. The record of what you once believed was right is the value of this
+directory.
 
-```
-$ rm -rf doc/adr
-$ …удалить два указателя (см. ниже) и комментарий под вторым из них…
-$ grep -rn 'doc/adr' . --exclude-dir=.git
-```
+`0001-record-architecture-decisions.md` is the first entry, already written: deciding
+to keep ADRs is itself a decision, and this is the one ADR a template can fill in
+honestly. Put today's date on it when you adopt the scaffold.
 
-Удалить нужно **указатели в файлах, которые агент грузит** — их два, и второй легко пропустить,
-потому что он не в `CLAUDE.md`:
-
-1. в `CLAUDE.md`, в разделе «Где что лежит», строка целиком:
-   `- Решение с последствиями, которые переживут авторов: doc/adr/.`
-2. в `DECISIONS.md`, в разделе «Формат», строка целиком — **не последняя в файле**, ниже неё
-   ещё есть текст:
-   «Три строки — нормальная запись. Страница — уже, скорее всего, ADR: см. `doc/adr/`.»
-   А вместе с ней и комментарий, который стоит сразу под ней и объясняет это удаление.
-   `DECISIONS.md` сам остаётся: он день 0.
-
-Остальные попадания — текст про устройство шаблона (`README.md`, `doc/deferred.md`) и строки
-самих объясняющих комментариев; что с ними делать, разобрано в `CLAUDE.md`. Висячим указателем
-считается только попадание первого вида, и оно стоит контекста в каждой сессии ни за что.
-
-Формат — Nygard / `adr-tools`: один файл на решение, имя `NNNN-краткое-название.md`,
-нумерация сквозная и не переиспользуется. Новый ADR — копия `0000-template.md` со следующим
-номером.
-
-Отличие от `DECISIONS.md`: там короткая строка «почему» по любому решению, здесь —
-решения с последствиями, которые переживут своих авторов и на которые будут ссылаться.
-
-**Статус меняется, текст — нет.** Отменённое решение не редактируется и не удаляется:
-у него ставится `Status: Superseded by ADR-NNNN`, а новое решение пишется отдельным
-файлом. История того, что вы когда-то считали правильным, — и есть ценность этой папки.
-
-**Честно о силе доказательства.** ADR — задокументированная и широко применяемая практика
-**для людей** (Michael Nygard, 2011; эталонный набор команд — `adr-tools`). Контролируемого
-измерения «ADR помогают кодинг-агенту» нет ни одного. Здесь это перенос по здравому смыслу,
-а не вывод из данных.
-
-Все три утверждения выше — год (2011), `adr-tools` как эталонный набор команд и отсутствие
-контролируемого измерения — взяты из обзора источников, сделанного не в этом шаблоне, и здесь
-не перепроверялись: `[не проверено — первоисточники при сборке шаблона не открывались]`.
-Третье из трёх — утверждение об отсутствии, а такое не проверяется чтением одной страницы
-вообще: его можно только не подтвердить.
+**How strong the evidence is, stated plainly.** ADRs are a documented and widely used
+practice *for human teams* (Michael Nygard, 2011; `adr-tools` is the reference command
+set). There is no controlled measurement showing that ADRs improve a coding agent's
+results. Keeping them here is a judgement call carried over from human practice, not a
+conclusion drawn from data. [Unverified — these three statements come from a source
+review done outside this repository and were not re-checked here; the third is a claim
+of absence, which reading one page cannot establish either way.]

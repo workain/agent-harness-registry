@@ -1,4 +1,4 @@
-# NNNN. <Название решения>
+# NNNN. <Title of the decision>
 
 Date: YYYY-MM-DD
 
@@ -10,14 +10,14 @@ Accepted
 
 ## Context
 
-Какая сила действует, какая проблема требует решения. Факты, а не вывод: читатель
-должен суметь не согласиться с решением, согласившись с контекстом.
+The forces at work and the problem that needs a decision. Facts, not the conclusion:
+a reader should be able to accept this section and still disagree with the decision.
 
 ## Decision
 
-Что мы делаем. Действительным залогом: «Мы будем…».
+What we are doing, in the active voice: "We will…".
 
 ## Consequences
 
-Что стало проще и что стало сложнее. Обе половины обязательны — ADR без цены
-решения выглядит как реклама, а не как решение.
+What got easier and what got harder. Both halves are required — an ADR with no cost in
+it reads as advertising rather than as a decision.

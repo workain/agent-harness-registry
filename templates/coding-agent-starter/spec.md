@@ -1,30 +1,31 @@
-# spec
+# Spec
 
-## Что это
+## What this is
 
-<Две-три строки: что за продукт/сервис/библиотека и для кого.>
+<Two or three lines: what the product, service or library does, and for whom.>
 
-## Что значит «готово»
+## Done means
 
-Список ПРОВЕРЯЕМЫХ условий. Каждое — команда или наблюдение, у которого есть
-однозначный ответ «да/нет». Формулировки вида «работает нормально», «выглядит хорошо»,
-«достаточно быстро» сюда не годятся: их нельзя ни выполнить, ни опровергнуть.
+Checkable conditions. Each one is a command or an observation with an unambiguous
+yes/no answer. "Works properly", "looks good", "fast enough" do not belong here —
+they can be neither satisfied nor refuted, so an agent will decide for you whether
+they are met.
 
-1. <условие — и команда, которой оно проверяется>
-2. <условие — и команда, которой оно проверяется>
-3. <условие — и команда, которой оно проверяется>
+1. <condition — and the command that checks it>
+2. <condition — and the command that checks it>
+3. <condition — and the command that checks it>
 
-## Границы
+## Out of scope
 
-Что мы намеренно НЕ делаем. Этот список экономит больше времени, чем список задач:
-он отсекает работу, которую агент иначе придумает себе сам.
+What this project deliberately does NOT do. This list saves more time than the list of
+tasks: it cuts off work an agent would otherwise invent for itself.
 
-- <не делаем — и почему>
-- <не делаем — и почему>
+- <not doing — and why>
+- <not doing — and why>
 
-## Открытые вопросы
+## Open questions
 
-Ведутся здесь, пока не станут решением. Как только вопрос решён — запись переезжает
-в `DECISIONS.md` с датой и причиной, а отсюда удаляется.
+Kept here until they become decisions. Once a question is answered it moves to
+`DECISIONS.md` with the date and the reason, and is deleted from here.
 
-- <вопрос, на который пока нет ответа>
+- <question with no answer yet>

@@ -21,6 +21,13 @@ cd my-project
 git init -b main
 ```
 
+Adding it to a project that already exists is the other common case, and it is a different
+command — note the trailing `/.`, and drop `git init` if the project is already a repository:
+
+```
+cp -RP agent-harness-registry/templates/coding-agent-starter/. my-existing-project/
+```
+
 Then open the agent in that directory and tell it, in one or two sentences, what you
 are building — for example:
 
@@ -76,7 +83,13 @@ wrong one is how an instruction file grows into a junk drawer:
 3. **In the root `CLAUDE.md`** — and as a *pointer*, not as the content itself.
 
 The test: when knowledge gets distributed properly, the root file gets **shorter**, not
-longer. `CLAUDE.md` carries an 800-word ceiling for exactly that reason; it ships at 747.
+longer. `CLAUDE.md` carries a 900-word ceiling for exactly that reason.
+
+The number is measured, not chosen. The file ships at **727 words** once the first-run block is
+deleted, and filling in the nine slots on a real project took it to **754** — so a ceiling of 800
+would have left 46 words on day one, less than one rule's worth, which is a budget that exists on
+paper only. 900 leaves room for roughly four more rules before "what comes out?" has to be
+answered, which is the point at which the question is worth asking.
 
 ## What the gate does and does not stop
 

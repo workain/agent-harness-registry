@@ -114,11 +114,10 @@ being an address.
 
 ## Ceiling
 
-**800 words in this file.** Everything here is loaded on every turn and billed on every
-request. A new rule that breaks the ceiling means something else gets shorter or moves
-to its own address — not that the file grows. Count with `wc -w CLAUDE.md`; as shipped,
-once the first-run block is deleted, this file is 747 words, so the ceiling is a real
-budget with room in it rather than a number already broken on arrival.
+**900 words in this file.** Everything here is loaded on every turn and billed on every
+request. A new rule that breaks the ceiling means something else gets shorter or moves to
+its own address — not that the file grows. Count with `wc -w CLAUDE.md`. Where the number
+comes from, and what it measured, is in `README.md`.
 
 When you delete a directory this file points at, delete the pointer in the same change.
 A pointer to a file that does not exist costs context in every session and buys nothing.

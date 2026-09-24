@@ -57,8 +57,8 @@ themselves. The measure it was failing is a plain one — *can a person copy the
 they are doing, and get a working repository?* A scaffold that hands you a file of thresholds to
 evaluate does not pass that, however well-argued each threshold is.
 
-What survived the reversal: the context-cost argument is real, so the file carries an 800-word
-ceiling and ships at 747 measured words, and the "delete the pointer when you delete the thing"
+What survived the reversal: the context-cost argument is real, so the file carries a 900-word
+ceiling and ships at 727 measured words, and the "delete the pointer when you delete the thing"
 discipline is kept. What did not: `doc/deferred.md` is deleted, and its content now lives in
 `CLAUDE.md` where it is actually read.
 
@@ -177,12 +177,22 @@ producing a second real file that then diverges silently.
 Mechanically verified on one machine (Linux, GNU coreutils 9.4, bash) on 2026-09-24, after the
 English rewrite: copied with `cp -RP` into a clean directory, `git init -b main`, skeleton commit
 — `AGENTS.md` is mode 120000 in the index, and `selftest-branch-guard.sh` reports
-`RESULT: PASS — 9/9 checks` with its five limits printed. `CLAUDE.md`'s shipped body measures 747
-words against its own stated 800-word ceiling; the template contains zero Cyrillic characters.
+`RESULT: PASS — 9/9 checks` with its five limits printed. `CLAUDE.md`'s shipped body measures 727
+words against its own stated 900-word ceiling; the template contains zero Cyrillic characters.
 
 The hook's DENY was observed by invoking its command directly with a `git commit` payload, NOT by
 watching a refusal inside a running Claude Code session. Its non-coverage of a shell commit WAS
 observed directly.
+
+The FIRST RUN block was **dry-run, not independently observed**. Its eight steps were executed
+verbatim against a real project (a small Node package with its own `package.json`, `src/` and
+`tests/`): the build, test and lint commands were detected from `package.json` and each actually
+ran and passed, all nine bracketed slots were filled with zero left, the self-test reported PASS
+9/9, and the skeleton commit plus first branch came out as described. Two defects were found that
+way and fixed — a word ceiling that a normal fill-in would nearly break, and a quick start that
+covered only an empty directory and not an existing project. What it does not establish is the
+thing the design rests on: a fresh session, given only the scaffold and one sentence, choosing to
+read the block and follow it. The dry run was done by the block's own author.
 
 Not verified: any other OS or shell — notably macOS/BSD `cp`, where the `-R` symlink default is
 the thing POSIX declines to specify — any engine other than Claude Code, multi-contributor use,

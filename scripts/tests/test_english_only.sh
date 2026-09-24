@@ -104,6 +104,29 @@ assert_contains "binary file: gate still completed" "$OUT" "English-only (no Cyr
 [ "$RC" -eq 0 ] && pass "binary file: exit 0" || fail "binary file: exit $RC, expected 0"
 rm -rf "$D"
 
+# --- 6b. The gate's own two source files are exempt — and the exemption does not leak ---
+# Without this the gate refuses every commit that edits the gate. With it done carelessly
+# (a scripts/ prefix, or "any file whose name contains 'english'") it would cover files
+# nobody decided to exempt. Both halves are asserted, in one commit, so the second cannot
+# pass by the first simply not being staged.
+D="$(new_repo)"
+mkdir -p "$D/scripts/tests"
+cp "$CHECKS" "$D/scripts/pre-commit-checks.sh"
+cp "$REPO_ROOT/scripts/tests/test_english_only.sh" "$D/scripts/tests/test_english_only.sh"
+git -C "$D" add -A
+OUT="$(run_checks "$D")"; RC=$?
+assert_absent "gate's own sources: not blocked by itself" "$OUT" "Cyrillic text in staged files"
+[ "$RC" -eq 0 ] && pass "gate's own sources: exit 0" || fail "gate's own sources: exit $RC, expected 0"
+# now add a THIRD Cyrillic file next to them, in the same commit
+printf 'Ещё один файл.\n' > "$D/scripts/helper.sh"
+printf 'И в тестах тоже.\n' > "$D/scripts/tests/test_other.sh"
+git -C "$D" add -A
+OUT="$(run_checks "$D")"; RC=$?
+assert_contains "exemption does not leak to a sibling script" "$OUT" "scripts/helper.sh:1:"
+assert_contains "exemption does not leak to a sibling test" "$OUT" "scripts/tests/test_other.sh:1:"
+[ "$RC" -eq 1 ] && pass "exemption does not leak: exit 1" || fail "exemption does not leak: exit $RC, expected 1"
+rm -rf "$D"
+
 # --- 7. THE REAL CASE: the template file as it actually shipped, from this repo's history ---
 # Not a fixture written to be caught — the bytes that were live on main and that this gate
 # exists because of. If this assertion ever goes quiet because the blob is unreachable, it

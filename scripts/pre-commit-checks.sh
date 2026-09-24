@@ -92,6 +92,13 @@ else
     for f in $(git diff --cached --name-only --diff-filter=ACM || true); do
         case "$f" in
             *.png|*.jpg|*.jpeg|*.gif|*.pdf|*.ico|*.woff|*.woff2|*.zip) continue ;;
+            # Exactly two exemptions, by full path, and they are the detector itself and the
+            # suite that proves it fires. Both must contain Cyrillic to do their job — the
+            # character range in the regex below, and the fixtures the test blocks on — so
+            # without this the gate refuses every commit that edits the gate, and the override
+            # becomes the routine way to touch it. Named paths, not a scripts/ prefix: a
+            # directory-wide exemption would silently cover the next script written there.
+            scripts/pre-commit-checks.sh|scripts/tests/test_english_only.sh) continue ;;
         esac
         [ -f "$f" ] || continue
         HIT="$(python3 - "$f" <<'PYEOF'

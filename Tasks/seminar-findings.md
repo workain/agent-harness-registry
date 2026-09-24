@@ -59,13 +59,10 @@ Claude Code 2.1.197, node/npm из образа.
 *(а) Блок на самом слайде содержит 12 строк, не 13.* Посчитано программно, а не на глаз:
 
 ```
-$ python3 -c "
-import re
-t=open('slides/s20-keys-1-2-reshenie-itogovyy-claude-md.md',encoding='utf-8').read()
-b=re.search(r'\`\`\`markdown\n(.*?)\`\`\`',t,re.S).group(1)
-lines=b.split('\n')[:-1]
-print('ВСЕГО СТРОК В БЛОКЕ:',len(lines))"
-ВСЕГО СТРОК В БЛОКЕ: 12
+$ cd library/seminars/sem-04
+$ awk '/^```markdown$/{f=1;next} /^```$/{f=0} f' \
+    slides/s20-keys-1-2-reshenie-itogovyy-claude-md.md | wc -l
+12
 ```
 
 *(б) Настоящий файл в репозитории — 15 строк.* Я собрала итог кейса 1.2 по-настоящему
@@ -469,10 +466,14 @@ $ ls assets/captures/
 `library/seminars/sem-05/assets/captures/`, все 18, ни один не потерян:
 
 ```
-$ while read f; do find library/seminars -name "$f" | head -1; done < missing.txt
-library/seminars/sem-05/assets/captures/03-symbolic-ref-vs-rev-parse-unborn-head.txt
-library/seminars/sem-05/assets/captures/06-hook-deny-main.txt
-… (все 18 — в sem-05)
+$ cd library/seminars/sem-04
+$ grep -ohE '[0-9]{2}-[a-zA-Z0-9._-]+\.(txt|md)' assets/captures/README.md | sort -u \
+  | while read f; do [ -e "assets/captures/$f" ] || find ../.. -name "$f" | head -1; done
+../../seminars/sem-05/assets/captures/03-symbolic-ref-vs-rev-parse-unborn-head.txt
+../../seminars/sem-05/assets/captures/06-hook-deny-main.txt
+../../seminars/sem-05/assets/captures/07-hook-allow-feature-branch.txt
+… всего 18 строк, все указывают в sem-05, ни одна не пуста (проверить числом:
+   … | wc -l  ->  18)
 ```
 
 То есть дефект — только устаревшая опись, а не утрата материалов.

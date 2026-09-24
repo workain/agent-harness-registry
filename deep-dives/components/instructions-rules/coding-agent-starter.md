@@ -16,7 +16,7 @@ project can justify on its first day, and deliberately nothing else.
 | `AGENTS.md` | The same text for engines that look for `AGENTS.md` (symlink, not a copy) |
 | `spec.md` | What counts as "done" — written before the first line of code |
 | `DECISIONS.md` | Why a decision was made, once nobody remembers |
-| `doc/adr/` | The same, for decisions that outlive their authors — the format and the threshold, deliberately with no entries |
+| `doc/adr/` | The same, for decisions that outlive their authors — the format and the inclusion threshold, deliberately with no entries |
 | `.tasks/` | What has been verified in the current task, and what has not |
 | `.gitignore` | What must never travel with the repository |
 | `.claude/settings.json` | The hook: a commit straight to `main` is refused |
@@ -24,9 +24,10 @@ project can justify on its first day, and deliberately nothing else.
 | `doc/deferred.md` | What you will want later — `CLAUDE.md` sections and the `paths:`-scoped rule mechanism, deliberately not yet live |
 
 Two of these are deliberately **not** day 0, and the template says so rather than implying
-otherwise: `doc/adr/` (delete it as a unit if your decisions still fit in three lines of
-`DECISIONS.md`) and the branch-protection hook, which ships pre-wired only because its action,
-cost and frequency are all nameable before the project exists. Your *next* hook does not arrive
+otherwise: `doc/adr/` — which ships as a format and a threshold with nothing switched on, and is
+deletable as a unit if your decisions still fit in three lines of `DECISIONS.md` — and the
+branch-protection hook, which is the one of the two that IS live, and ships pre-wired only because
+its action, cost and frequency are all nameable before the project exists. Your *next* hook does not arrive
 that way — it has to be earned by a named action. Either way, deleting one of these means
 deleting its pointer line in `CLAUDE.md` too; the template says so in that file, because a
 pointer at nothing is the same waste the parked `paths:` rule was moved out to avoid.
@@ -120,10 +121,12 @@ git switch -c <branch-for-the-first-task>
 
 **The order matters, and the obvious order is wrong.** Branching *before* the first commit leaves
 the project with no `main` at all: on an unborn HEAD `git switch -c` renames the unborn branch
-instead of creating a second one, so `git rev-parse --verify main` fails, `.git/refs/heads/` holds
-only the new name, and the branch guard is left protecting a branch that does not exist — the exact
-state its own self-test warns about (`LIMIT … otherwise this gate protects nothing here`).
-Reproduced; the template README prints the commands.
+instead of creating a second one, so `git branch -a` lists nothing, `git rev-parse --verify main`
+fails with `fatal: Needed a single revision`, and `.git/refs/heads/` is **empty** — an unborn
+branch has no ref at all (`ls -A .git/refs/heads/ | wc -l` → `0`, `git for-each-ref | wc -l` → `0`).
+The branch guard is then left protecting a branch that does not exist — the exact state its own
+self-test warns about (`LIMIT … otherwise this gate protects nothing here`). Reproduced; the
+template README prints the commands.
 
 **Who the hook stops.** It is a Claude Code `PreToolUse` hook: it fires on the agent's tool calls.
 A human running `git commit` in a terminal is not stopped at all — `git init` installs no git hook,

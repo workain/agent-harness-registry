@@ -33,15 +33,16 @@ what_it_is: >
 integration: >
   Copy `templates/coding-agent-starter/` into your project root with `cp -RP` (`AGENTS.md` is a
   symlink to `CLAUDE.md`; POSIX leaves `cp -R`'s symlink handling unspecified, so `-P` states the
-  intent), then `rm -rf .git && git init -b main`. Run
-  commit the skeleton on `main` FIRST, then `.claude/hooks/selftest-branch-guard.sh` to confirm
-  the hook is live, and only then `git switch -c <branch>` for the first task. Branching before the
-  first commit leaves no `main` at all — on an unborn HEAD `git switch -c` renames the unborn branch
-  rather than creating a second one, and the branch guard then protects a branch that does not exist
-  (reproduced; the README shows the commands). Fill `spec.md`, replace the placeholder gate in
-  `CLAUDE.md` with the one rule whose violation would actually cost you, and leave `DECISIONS.md`
-  empty. Graduate to `base-project-template` when skills, subagents, MCP or profiles start earning
-  their keep.
+  intent). The copied directory carries no `.git`, so no cleanup step is needed. Then, in this
+  order: `git init -b main`; `git add -A && git commit` to put the skeleton on `main`;
+  `bash .claude/hooks/selftest-branch-guard.sh` to confirm the hook is live; and only then
+  `git switch -c <branch>` for the first task. The order is load-bearing — branching before the
+  first commit leaves no `main` at all, because on an unborn HEAD `git switch -c` renames the
+  unborn branch instead of creating a second one, leaving `.git/refs/heads/` empty and the branch
+  guard protecting a branch that does not exist (reproduced; the README prints the commands).
+  Then fill `spec.md`, replace the placeholder gate in `CLAUDE.md` with the one rule whose
+  violation would actually cost you, and leave `DECISIONS.md` empty. Graduate to
+  `base-project-template` when skills, subagents, MCP or profiles start earning their keep.
 license: >
   MIT, same as the rest of this repository. A LICENSE file ships at
   `templates/coding-agent-starter/LICENSE`, scoped to the template's own files.
@@ -86,6 +87,6 @@ unverified:
   - "The template does NOT ship a `paths:`-scoped rule, and teaches that the rule and its root-file pointer go in together or not at all. The asymmetry that makes both worth having once there IS something to point at is documented, not inferred: per Claude Code's memory documentation (re-fetched 2026-09-24, quoted verbatim in the template README) a path-scoped rule triggers when Claude reads a matching file, but after `/compact` only the project-root CLAUDE.md is re-read from disk, while nested files and path-scoped rules reload only once a matching file is opened again. Established by reading that documentation page directly — NOT by observing either behaviour in a running session, and no reproduction of the compaction behaviour was attempted for this entry."
   - "Written in Russian, unlike the rest of this registry — it was authored for a Russian-language seminar audience. No translated variant exists. Two files inside it are in English and say `gate` where the Russian text says `хук`: `.claude/settings.json` and the self-test, which are held byte-identical with base-project-template on purpose. The template's README names this rather than claiming a vocabulary split it does not have in those two files."
   - "The ADR claims in `doc/adr/README.md` — Michael Nygard 2011 as the practice's origin, `adr-tools` as its reference command set, and that there is no controlled measurement of ADRs helping a coding agent — are carried from a source review performed outside this repository and were NOT re-verified for this entry. They are stated in the template with that caveat attached."
-  - "The branch-protection hook is a Claude Code `PreToolUse` hook, verified to DENY on `main` by invoking its command directly with a `git commit` payload — not by observing a refusal inside a running Claude Code session. Separately verified that it does NOT stop a shell `git commit`: after `git init` no git hook is installed (listing .git/hooks shows only .sample files) and a commit on `main` from a plain shell exits 0. Claude Code own docs additionally state that hooks are held back until workspace trust is accepted; that part was read, not reproduced."
+  - "The branch-protection hook is a Claude Code `PreToolUse` hook, verified to DENY on `main` by invoking its command directly with a `git commit` payload — not by observing a refusal inside a running Claude Code session. Separately verified that it does NOT stop a shell `git commit`: after `git init` no git hook is installed (listing .git/hooks shows only .sample files) and a commit on `main` from a plain shell exits 0. Claude Code's own hooks documentation additionally ties this to workspace trust and qualifies it by session type — a non-interactive session (-p / SDK) never shows the trust dialog and treats the folder as trusted — so the blanket claim that hooks are held back until trust is accepted is NOT made here. That part was read, not reproduced."
 deep_dive: deep-dives/components/instructions-rules/coding-agent-starter.md
 first_party: true

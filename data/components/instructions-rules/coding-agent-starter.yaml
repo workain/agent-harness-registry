@@ -21,10 +21,13 @@ what_it_is: >
   form — the format and the inclusion threshold, with NO entries, for the same reason it ships no
   filled-in rule: copying a template is not a decision to keep ADRs, so a dated `Status: Accepted`
   record in the copier's name would be one more thing asserted ahead of its need. Deleting either
-  of the beyond-day-0 things means deleting what points at it from `CLAUDE.md`, and the unit
-  differs: `.claude/` owns a whole pointer line, `doc/adr/` only the second half of the decisions
-  line whose first half points at `DECISIONS.md` and stays. Both files that a reader deleting one
-  of them would actually be looking at say which. The scaffold's "three
+  of the beyond-day-0 things means deleting what points at it, and the template was restructured so
+  that unit is never ambiguous: `doc/adr/` and `.claude/` each own a whole line in `CLAUDE.md`'s
+  pointer section. `doc/adr/` has one further mention — the closing line of `DECISIONS.md` — and
+  both `CLAUDE.md` and `doc/adr/README.md` name it and give the grep that proves nothing dangles.
+  Earlier revisions of this entry described a half-line unit; three consecutive independent reviews
+  each found that description wrong in a different place, which is why the structure changed rather
+  than the wording. The scaffold's "three
   addresses" rule is taught rather than pre-populated: a constraint belongs in a code comment, in
   a rule file whose declared path glob scopes it, or in the root instruction file as a POINTER —
   and the root file should get shorter when knowledge is distributed, not longer. The
@@ -33,13 +36,16 @@ what_it_is: >
   practice and is shipped pre-wired only because its action, cost and frequency are nameable before
   the project exists. It also states who the hook does and does not stop: it is a Claude Code
   `PreToolUse` hook, so it fires on the agent's tool calls and does nothing about a human typing
-  `git commit` in a terminal — a sixth blind spot on top of the five the self-test prints.
+  `git commit` in a terminal. That, and the not-yet-trusted-workspace case above, are two blind
+  spots on top of the five the self-test prints — and ones it structurally cannot see, since it
+  tests the command rather than whether the command is reached.
 integration: >
   Copy `templates/coding-agent-starter/` into your project root with `cp -RP` (`AGENTS.md` is a
   symlink to `CLAUDE.md`; POSIX leaves `cp -R`'s symlink handling unspecified, so `-P` states the
   intent). The copied directory carries no `.git`, so no cleanup step is needed. Then, in this
   order: `git init -b main`; `git add -A && git commit` to put the skeleton on `main`;
-  `bash .claude/hooks/selftest-branch-guard.sh` to confirm the hook is live; and only then
+  `bash .claude/hooks/selftest-branch-guard.sh` to confirm the CHECK refuses (not that the hook is
+  live in your session — that depends on workspace trust, which the template states); and only then
   `git switch -c <branch>` for the first task. The order is load-bearing — branching before the
   first commit leaves no `main` at all, because on an unborn HEAD `git switch -c` renames the
   unborn branch instead of creating a second one, leaving `.git/refs/heads/` empty and the branch
@@ -89,7 +95,8 @@ provenance:
     fetched: "2026-09-24"
     note: >
       Source for the two limits the shared `$comment` now states instead of claiming a hook is
-      simply live automatically in every fresh clone. Section "Workspace trust", quoted verbatim:
+      simply "live automatically in every fresh clone" — the phrase the same edit removed. Section
+      "Workspace trust", quoted verbatim:
       "Interactive session: Claude Code holds back hooks from every settings file, including your
       own ~/.claude/settings.json, until you accept the workspace trust dialog for the folder, or
       for a parent directory whose trust extends to it";

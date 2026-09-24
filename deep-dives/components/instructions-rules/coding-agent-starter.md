@@ -29,12 +29,13 @@ a unit if your decisions still fit in three lines of `DECISIONS.md` — plus the
 hook and its self-test, which are the two that ARE live, and ship pre-wired only because the
 hook's action, cost and frequency are all nameable before the project exists. Your *next* hook does not arrive
 that way — it has to be earned by a named action. Either way, deleting one of these means
-deleting what points at it from `CLAUDE.md` too — and the unit differs, which is why the
-template spells it out in that file rather than saying "the pointer line": `.claude/` has a
-line of its own, while `doc/adr/` is only the second half of the decisions line, whose first
-half points at `DECISIONS.md` and stays. A pointer at nothing is the same waste the parked
-`paths:` rule was moved out to avoid; deleting a live pointer to a live file is the mirror
-mistake.
+deleting what points at it — and the template was restructured so that unit is never ambiguous:
+each of the two owns a whole line in `CLAUDE.md`'s pointer section. `doc/adr/` has one further
+mention, the closing line of `DECISIONS.md`, and both `CLAUDE.md` and `doc/adr/README.md` name it
+and give the grep that proves nothing is left dangling. A pointer at nothing is the same waste the
+parked `paths:` rule was moved out to avoid; deleting a live pointer to a live file is the mirror
+mistake, and three consecutive reviews caught this file describing the unit wrongly before the
+structure changed to make the question disappear.
 
 ## When to use it
 
@@ -134,8 +135,10 @@ template README prints the commands.
 
 **Who the hook stops.** It is a Claude Code `PreToolUse` hook: it fires on the agent's tool calls.
 A human running `git commit` in a terminal is not stopped at all — `git init` installs no git hook,
-and a shell commit on `main` exits 0 (verified). That is a sixth blind spot on top of the five the
-self-test prints, and the template says so.
+and a shell commit on `main` exits 0 (verified). That, plus the interactive-session workspace-trust
+case, makes two blind spots on top of the five the self-test prints — and two it structurally
+cannot see, because it exercises the command rather than whether the command is ever reached. The
+template says both.
 
 `cp -RP`: `AGENTS.md` is a symlink to `CLAUDE.md` so that one canonical text serves both
 conventions. POSIX.1-2024 leaves it **unspecified** which of `-H`/`-L`/`-P` a `cp -R` defaults to,

@@ -11,8 +11,13 @@ numbers and tables), and
 ## The two-variant split and the commit gate
 
 The `with-git/` variant ships a `.claude/settings.json` `PreToolUse` hook that mechanically blocks
-a direct commit to `main`/`master` — git-tracked, so it's live automatically in every fresh clone
-or worktree, with no manual install step. That design choice is grounded in a specific,
+a direct commit to `main`/`master` — git-tracked, so no per-checkout install step is needed in a
+fresh clone or worktree. Two limits, both from Claude Code's hooks documentation (§ Workspace
+trust, fetched 2026-09-24) rather than inferred, and both stated in the file's own `$comment`: an
+interactive session holds back hooks from every settings file until you accept the workspace-trust
+dialog for the folder, while a `-p`/SDK session never shows the dialog and treats the folder as
+trusted. And in neither case does this reach a human typing `git commit` in a terminal — it is a
+`PreToolUse` hook on the agent's tool calls, and `git init` installs no git hook. That design choice is grounded in a specific,
 reproduced finding from the internal evidence stream: a comparable pre-commit hook requiring a
 manual `cp` into `.git/hooks/` sat uninstalled for a real, measured stretch after a real project's
 bootstrap, while a git-tracked settings file propagated with zero gap (exact figure in

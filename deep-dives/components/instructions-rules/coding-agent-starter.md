@@ -23,14 +23,18 @@ project can justify on its first day, and deliberately nothing else.
 | `.claude/hooks/selftest-branch-guard.sh` | Proof the hook actually fires — and the five cases where it does not |
 | `doc/deferred.md` | What you will want later — `CLAUDE.md` sections and the `paths:`-scoped rule mechanism, deliberately not yet live |
 
-Two of these are deliberately **not** day 0, and the template says so rather than implying
-otherwise: `doc/adr/` — which ships as a format and a threshold with nothing switched on, and is
-deletable as a unit if your decisions still fit in three lines of `DECISIONS.md` — and the
-branch-protection hook, which is the one of the two that IS live, and ships pre-wired only because
-its action, cost and frequency are all nameable before the project exists. Your *next* hook does not arrive
+Three rows are labelled **not** day 0, and the template says so rather than implying otherwise:
+`doc/adr/` — which ships as a format and a threshold with nothing switched on, and is deletable as
+a unit if your decisions still fit in three lines of `DECISIONS.md` — plus the branch-protection
+hook and its self-test, which are the two that ARE live, and ship pre-wired only because the
+hook's action, cost and frequency are all nameable before the project exists. Your *next* hook does not arrive
 that way — it has to be earned by a named action. Either way, deleting one of these means
-deleting its pointer line in `CLAUDE.md` too; the template says so in that file, because a
-pointer at nothing is the same waste the parked `paths:` rule was moved out to avoid.
+deleting what points at it from `CLAUDE.md` too — and the unit differs, which is why the
+template spells it out in that file rather than saying "the pointer line": `.claude/` has a
+line of its own, while `doc/adr/` is only the second half of the decisions line, whose first
+half points at `DECISIONS.md` and stays. A pointer at nothing is the same waste the parked
+`paths:` rule was moved out to avoid; deleting a live pointer to a live file is the mirror
+mistake.
 
 ## When to use it
 

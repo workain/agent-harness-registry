@@ -20,7 +20,11 @@ what_it_is: >
   per-task file carrying a verification timestamp, and `doc/adr/` in Michael Nygard / adr-tools
   form — the format and the inclusion threshold, with NO entries, for the same reason it ships no
   filled-in rule: copying a template is not a decision to keep ADRs, so a dated `Status: Accepted`
-  record in the copier's name would be one more thing asserted ahead of its need. The scaffold's "three
+  record in the copier's name would be one more thing asserted ahead of its need. Deleting either
+  of the beyond-day-0 things means deleting what points at it from `CLAUDE.md`, and the unit
+  differs: `.claude/` owns a whole pointer line, `doc/adr/` only the second half of the decisions
+  line whose first half points at `DECISIONS.md` and stays. Both files that a reader deleting one
+  of them would actually be looking at say which. The scaffold's "three
   addresses" rule is taught rather than pre-populated: a constraint belongs in a code comment, in
   a rule file whose declared path glob scopes it, or in the root instruction file as a POINTER —
   and the root file should get shorter when knowledge is distributed, not longer. The
@@ -87,7 +91,8 @@ provenance:
       Source for the two limits the shared `$comment` now states instead of claiming a hook is
       simply live automatically in every fresh clone. Section "Workspace trust", quoted verbatim:
       "Interactive session: Claude Code holds back hooks from every settings file, including your
-      own ~/.claude/settings.json, until you accept the workspace trust dialog for the folder";
+      own ~/.claude/settings.json, until you accept the workspace trust dialog for the folder, or
+      for a parent directory whose trust extends to it";
       and "-p or SDK session: Claude Code never shows the dialog and treats the folder as
       trusted, so hooks committed in a repository's .claude/settings.json run in a folder you've
       never trusted." Read from the live page; neither behaviour was reproduced in a running

@@ -2,30 +2,40 @@ name: coding-agent-starter
 slug: coding-agent-starter
 homepage: https://github.com/workain/agent-harness-registry/tree/main/templates/coding-agent-starter
 category: instructions-rules
-layer: "Instruction/identity layer (Block A) plus day-0 seeds of the decision-memory and gate blocks — a 17-file project scaffold one rung below base-project-template, not a single convention file"
+layer: "Instruction/identity layer (Block A) plus day-0 seeds of the decision-memory block — a 16-file project scaffold one rung below base-project-template, not a single convention file"
 what_it_is: >
   A deliberately small, copy-ready project scaffold for a repository a coding agent will work
   in. Its organizing claim is subtractive: a CLAUDE.md holding a one-line project identity and
-  exactly ONE gate, with every other section removed rather than shipped as unfilled
+  exactly ONE text gate, with every other section removed rather than shipped as unfilled
   boilerplate, on the reasoning that instruction text is billed on every turn and a rule written
   ahead of a real need has nothing to check it. The remaining sections ship as ready-to-paste
-  blocks in `doc/claude-md-sections.md`, to be pulled in when a concrete incident calls for one.
-  Around that: `spec.md` (what "done" means, stated as checkable conditions, written before the
-  first line of code), an entry-less `DECISIONS.md` (format only — the file exists from day one,
-  the content accrues), `doc/adr/` in Michael Nygard / adr-tools form with a template and one
-  real first entry, a `.tasks/active|done/` per-task file carrying a verification timestamp, and
-  `.claude/rules/tests.md` as a worked example of the scaffold's "three addresses" rule (a constraint
-  belongs in a code comment, in a rule file whose declared path glob scopes it, or in the root instruction
-  file as a POINTER — and the root file should get shorter when knowledge is distributed, not
-  longer). The branch-protection hook and its self-test are base-project-template's own files,
-  copied verbatim rather than reimplemented.
+  blocks in `doc/deferred.md`, to be pulled in when a concrete incident calls for one — and the
+  template applies that rule to itself: it does NOT ship a filled-in `paths:`-scoped rule, because
+  on day 0 there is no file-class convention for one to express, so anything written there would
+  be written ahead of its need. The mechanism ships as a ready block in `doc/deferred.md` instead,
+  with its own inclusion threshold (the convention stopped fitting in the root file AND the path
+  pattern can be named in one expression). Around that: `spec.md` (what "done" means, stated as
+  checkable conditions, written before the first line of code), an entry-less `DECISIONS.md`
+  (format only — the file exists from day one, the content accrues), a `.tasks/active|done/`
+  per-task file carrying a verification timestamp, and `doc/adr/` in Michael Nygard / adr-tools
+  form, labelled on-a-signal rather than day-0 and deletable as a unit. The scaffold's "three
+  addresses" rule is taught rather than pre-populated: a constraint belongs in a code comment, in
+  a rule file whose declared path glob scopes it, or in the root instruction file as a POINTER —
+  and the root file should get shorter when knowledge is distributed, not longer. The
+  branch-protection hook and its self-test are base-project-template's own files, copied verbatim
+  rather than reimplemented; the entry-level README states plainly that this hook is not a day-0
+  practice and is shipped pre-wired only because its action, command and cost are nameable in
+  advance and universally.
 integration: >
-  Copy `templates/coding-agent-starter/` into your project root with `cp -RP` (the `-P` matters:
-  `AGENTS.md` is a symlink to `CLAUDE.md`, and without it you get two files that drift), then
-  `rm -rf .git && git init`. Run `.claude/hooks/selftest-branch-guard.sh` once to confirm the
-  gate is live, fill `spec.md`, replace the placeholder gate in `CLAUDE.md` with the one rule
-  whose violation would actually cost you, and leave `DECISIONS.md` empty. Graduate to
-  `base-project-template` when skills, subagents, MCP or profiles start earning their keep.
+  Copy `templates/coding-agent-starter/` into your project root with `cp -RP` (`AGENTS.md` is a
+  symlink to `CLAUDE.md`; POSIX leaves `cp -R`'s symlink handling unspecified, so `-P` states the
+  intent), then `rm -rf .git && git init -b main`. Run
+  `.claude/hooks/selftest-branch-guard.sh` once to confirm the hook is live, then
+  `git switch -c <branch>` BEFORE your first commit — the shipped hook is live in a fresh clone
+  with no install step and will refuse a commit on `main`, including your very first one. Fill
+  `spec.md`, replace the placeholder gate in `CLAUDE.md` with the one rule whose violation would
+  actually cost you, and leave `DECISIONS.md` empty. Graduate to `base-project-template` when
+  skills, subagents, MCP or profiles start earning their keep.
 license: >
   MIT, same as the rest of this repository. A LICENSE file ships at
   `templates/coding-agent-starter/LICENSE`, scoped to the template's own files.
@@ -43,10 +53,31 @@ provenance:
       own base-project-template `with-git` files, copied byte-for-byte rather than reimplemented,
       so the one component that is a real mechanical gate cannot diverge between the two
       templates. Everything else was written fresh for this entry.
+  - url: https://pubs.opengroup.org/onlinepubs/9799919799/utilities/cp.html
+    fetched: "2026-09-24"
+    note: >
+      POSIX.1-2024 `cp`, DESCRIPTION: "If the -R option was specified: If none of the options
+      -H, -L, nor -P were specified, it is unspecified which of -H, -L, or -P will be used as a
+      default." This is why the template's copy instruction carries `-P` explicitly. An earlier
+      revision of this entry and of the template claimed that omitting `-P` turns the AGENTS.md
+      symlink into a second real file; that claim was WRONG on the one implementation actually
+      tested — GNU coreutils 9.4 preserves the symlink under plain `cp -R` (verified) and only
+      `cp -RL` dereferences it. The corrected wording states the standard's silence rather than a
+      behaviour.
+  - url: https://code.claude.com/docs/en/memory
+    fetched: "2026-09-24"
+    note: >
+      Source of the two quotes the template's "three addresses" section rests on — that
+      path-scoped rules "trigger when Claude reads files matching the pattern, not on every tool
+      use", and that "Project-root CLAUDE.md survives compaction: after /compact, Claude re-reads
+      it from disk and re-injects it into the session. Nested CLAUDE.md files in subdirectories
+      and rules with paths: frontmatter reload as Claude reads files they apply to." Both were
+      re-read from the live page for this revision; see `unverified:` for what that does and does
+      not establish.
 unverified:
   - "NO research pass. base-project-template's content decisions each trace to one of two documented evidence passes; this template's do not. Its structure was derived from that template plus a seminar's teaching sequence, and should be read as a plausible, internally-consistent starting point rather than an evidence-backed default. Nothing here contradicts that entry's evidence — but nothing independently supports the subtractive 'one gate, everything else deleted' claim either, which is this template's single most load-bearing design decision."
-  - "Verified only mechanically, and only on one machine (Linux, git 2.x, bash): the branch guard self-test reports PASS on 9/9 checks and prints its own 5 known limits; a `cp -RP` + `git init` + self-test run from a clean clone succeeds with the AGENTS.md symlink intact; `scripts/generate.py` exits 0. NOT tested: any other OS or shell, any agent engine other than Claude Code, multi-contributor use, or drift over time."
-  - "The template ships BOTH a `paths:`-scoped rule and a root-file pointer to it; the reason is a documented asymmetry, not hedging. Per Claude Code's memory documentation (fetched 2026-09-23): a path-scoped rule triggers when Claude reads a matching file, but after `/compact` only the project-root CLAUDE.md is re-read from disk, while nested files and path-scoped rules reload only once a matching file is opened again. Established by reading that documentation page directly — NOT by observing either behaviour in a running session, and no reproduction of the compaction behaviour was attempted for this entry."
+  - "Verified only mechanically, and only on one machine (Linux, GNU coreutils 9.4, git 2.x, bash), re-run 2026-09-24: the branch guard self-test reports PASS on 9/9 checks and prints its own 5 known limits; the README bootstrap sequence run verbatim from a clean copy — `cp -RP`, `git init -b main`, self-test, `git switch -c`, first commit — succeeds with `AGENTS.md` still mode 120000 in the index; `scripts/generate.py` exits 0. NOT tested: any other OS or shell (notably macOS/BSD `cp`, whose `-R` symlink default POSIX leaves unspecified), any agent engine other than Claude Code, multi-contributor use, or drift over time."
+  - "The template does NOT ship a `paths:`-scoped rule, and teaches that the rule and its root-file pointer go in together or not at all. The asymmetry that makes both worth having once there IS something to point at is documented, not inferred: per Claude Code's memory documentation (re-fetched 2026-09-24, quoted verbatim in the template README) a path-scoped rule triggers when Claude reads a matching file, but after `/compact` only the project-root CLAUDE.md is re-read from disk, while nested files and path-scoped rules reload only once a matching file is opened again. Established by reading that documentation page directly — NOT by observing either behaviour in a running session, and no reproduction of the compaction behaviour was attempted for this entry."
   - "Written in Russian, unlike the rest of this registry — it was authored for a Russian-language seminar audience. No translated variant exists."
 deep_dive: deep-dives/components/instructions-rules/coding-agent-starter.md
 first_party: true

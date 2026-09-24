@@ -29,8 +29,8 @@ integration: >
   `python3 render_templates.py` and commit the result; `--check` mode verifies the two shipped
   variants haven't drifted from their source.
 license: >
-  MIT. Resolved 2026-07-24 (operator decision: "не против раздавать и не вижу смысла
-  ограничивать" — not opposed to giving it away, sees no reason to restrict it, accepting the
+  MIT. Resolved 2026-07-24 (operator decision, translated from the Russian original: "not
+  opposed to giving it away, and I see no reason to restrict it" — accepting the
   manager's MIT recommendation). A `LICENSE` file ships at
   `templates/base-project-template/LICENSE`, scoped to the template's own files.
 license_tag: "MIT"

@@ -40,18 +40,18 @@ Independent session, no prior context on the work; ran everything below myself i
 - Fetched both cited sources at the pinned commit `7f224dc0` directly
   (`raw.githubusercontent.com/tellina-study/AI-usage-lessons/7f224dc058c171e05f81bb8d8def865e69ace5c2/.../07-skills.md`
   and `.../10-template-work-order.md`) and read the actual text, not a paraphrase:
-  - `07-skills.md` §4.1 does say "12 из 13" course skills lack frontmatter (only `pre-user-gate`
-    has it) and does cite the "100+ установленных" figure and the "Helps with documents" /
+  - `07-skills.md` §4.1 does say "12 of 13" course skills lack frontmatter (only `pre-user-gate`
+    has it) and does cite the "100+ installed" figure and the "Helps with documents" /
     "Processes data" vague-description anti-pattern — matches the log's claim.
   - `07-skills.md` §4.3 does cite `awesome-claude-code-toolkit`'s self-reported counts found to
-    diverge from a real file-level recount by "3–4 раза" (3-4x), contrasted with
-    `karanb192/awesome-claude-skills`'s "50+ проверенных" — matches the log's claim.
-  - `10-template-work-order.md` "Наряд 3" does specify: subject matter tied to
+    diverge from a real file-level recount by "3-4x", contrasted with
+    `karanb192/awesome-claude-skills`'s "50+ verified" — matches the log's claim.
+  - `10-template-work-order.md` "Work order 3" does specify: subject matter tied to
     `Tasks/README.md`'s own discipline (not an invented domain), frontmatter with
-    `name`/`description` written as "поисковый запрос будущего себя" + explicit "когда
-    использовать", one concrete-command step, a footnote on `description` being the only
+    `name`/`description` written as "the search query your future self will type" + an explicit
+    "when to use it", one concrete-command step, a footnote on `description` being the only
     model-visible field, narrow scope, one line in `skills/README.md`, edits to both `README.md`
-    "What's here" tables, and the explicit "один образец на слот, не мини-библиотека" bound —
+    "What's here" tables, and the explicit "one sample per slot, not a mini-library" bound —
     matches what was built.
 - Re-verified the incident account: `git rev-parse main origin/main` from the shared checkout
   both resolve to `7b7c678` (identical, not diverged); `git worktree list` shows the shared dir
@@ -63,7 +63,7 @@ Independent session, no prior context on the work; ran everything below myself i
 
 None blocking.
 
-One non-blocking nit: the work order's "Наряд 3" footnote spec includes a specific,
+One non-blocking nit: the work order's "Work order 3" footnote spec includes a specific,
 actionable instruction — "verify with `/skills` after writing, don't assume it fires just
 because you wrote it" — in addition to explaining model-visibility. The delivered footnote
 ("Footnote: why `description` is written this way") covers the *why* (name/description-only
@@ -71,8 +71,8 @@ preload, vague descriptions reachable only via explicit `/slash`) thoroughly but
 specific "go check with `/skills`" verification instruction. This isn't in the acceptance
 criteria I was asked to check mechanically and doesn't affect any of them (frontmatter validity,
 search-query-style description, concrete command, narrow scope, single example, render
-parity all hold regardless) — flagging it only because the work order's "Что сделать" text for
-Наряд 3 calls it out by name as part of item (3). Optional follow-up, not a reason to block.
+parity all hold regardless) — flagging it only because the work order's "what to do" text for
+Work order 3 calls it out by name as part of item (3). Optional follow-up, not a reason to block.
 
 Addressed in commit 221d6ab — see re-verify below.
 
@@ -93,9 +93,10 @@ Coordinator added the exact required footnote opening line to
   +`description` is the only thing the model sees when choosing among installed skills — verify
   +after writing via `/skills`, don't assume it fires just because you wrote it.
   ```
-- Matches the Наряд 3 footnote spec verbatim in substance: "description — единственное, что
-  видит модель при выборе среди установленных скиллов; проверьте после написания через
-  `/skills`, не полагайтесь на то, что скилл сработает, потому что вы его написали" — the
+- Matches the Work order 3 footnote spec verbatim in substance (translated from the Russian
+  original): "`description` is the only thing the model sees when choosing among installed
+  skills; verify it after writing via `/skills`, do not rely on the skill firing just because
+  you wrote it" — the
   delivered line is a faithful rendering (same claim, same imperative to check via `/skills`,
   same "don't assume/rely on it firing just because you wrote it" close).
 - Re-ran `python3 templates/base-project-template/render_templates.py --check` myself →

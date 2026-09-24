@@ -6,7 +6,7 @@ Order 2 of the seminar-driven gap audit of `templates/base-project-template`. Fu
 https://github.com/workain/agent-harness-registry/issues/52
 
 Sources read in full before starting (public, pinned commit `7f224dc05`):
-- `10-template-work-order.md` — intro sections + § "Наряд 2" (the task's own spec, verbatim).
+- `10-template-work-order.md` — intro sections + § "Work order 2" (the task's own spec, verbatim).
 - `05-mcp.md` — incidents table, token-cost table, lethal-trifecta framing.
 
 ## Environment note — shared checkout collision (not part of the task, but affected how work was done)
@@ -28,7 +28,7 @@ need a token; noting this as a blocker to resolve before that step.
 
 ## What was done
 
-1. **`common/.claude/mcp-notes.md`** — new file, 5 points, matching the issue's own "Что сделать"
+1. **`common/.claude/mcp-notes.md`** — new file, 5 points, matching the issue's own "What to do"
    list almost verbatim (it already specified the 5 points): don't reach for MCP before checking
    whether Bash + an existing CLI (`gh`/`psql`/`aws`) suffices; `.mcp.json` at project scope,
    reviewed as code; keep the connected set minimal (context tokens + attack surface per server);
@@ -36,7 +36,7 @@ need a token; noting this as a blocker to resolve before that step.
    split across sessions instead); HTTP transport → OAuth only, never a pasted long-lived token.
    Opens with a one-line pointer to this registry's own `deep-dives/components/access-mcp/`
    catalog instead of re-explaining MCP — this is the "link outward, don't write a tutorial"
-   guard the work order itself calls for (§ "Риск переусложнения").
+   guard the work order itself calls for (§ "Risk of over-complication").
 2. **Growth ladder** — exactly one row added to
    `deep-dives/components/instructions-rules/base-project-template/design-and-usage.md`:
    axis "Access to external systems", trigger "An ordinary command is no longer enough", action

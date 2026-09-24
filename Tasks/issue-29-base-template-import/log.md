@@ -74,8 +74,8 @@ link everywhere it appears, since it publishes around this PR's merge, not befor
 
 ## License decision applied (2026-07-24)
 
-Operator resolved the flagged license gap: **MIT**, explicitly ("не против раздавать и не вижу
-смысла ограничивать" — not opposed to giving it away, sees no reason to restrict it; accepted the
+Operator resolved the flagged license gap: **MIT**, explicitly (translated from the Russian
+original: "not opposed to giving it away, and I see no reason to restrict it"; accepted the
 manager's MIT recommendation). Applied:
 
 - Added `templates/base-project-template/LICENSE` (standard MIT text, copyright holder

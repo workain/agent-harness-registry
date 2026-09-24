@@ -3,7 +3,7 @@
 ## 2026-09-20
 
 - Read source material:
-  - `10-template-work-order.md` @ 7f224dc0, "Наряд 3": P0, problem = `common/.claude/skills/
+  - `10-template-work-order.md` @ 7f224dc0, "Work order 3": P0, problem = `common/.claude/skills/
     README.md` states the principle but has no frontmatter sample. Deliverable: `_example/
     SKILL.md` containing (1) frontmatter with `name`/`description` in search-query style,
     (2) a concrete command, (3) a footnote on model visibility, (4) a narrow scope. Overcomplexity
@@ -14,7 +14,7 @@
     via explicit `/slash`, never on request-intent. §4.3: skill-library size correlates with
     selection failure — cites `awesome-claude-code-toolkit` (self-reported counts found to be
     3-4x actual on file-level recount) vs. `karanb192/awesome-claude-skills`'s deliberate
-    "50+ verified" curation. Confirms the one-sample bound in Наряд 3.
+    "50+ verified" curation. Confirms the one-sample bound in Work order 3.
   - `common/.claude/environment/_example.md` — sibling file for shape/tone: HTML comment marking
     it a worked example of the *format*, not literal content; deleted once a real module exists.
   - `common/Tasks/README.md` — subject-matter source: task folders (`Tasks/<date>_<slug>/`),
@@ -32,7 +32,7 @@
   section (bookkeeping only, not code/review), and a "Footnote" section explaining the
   model-visibility constraint (only `name`/`description` preload; the rest loads on demand).
   Leading HTML comment matches `environment/_example.md`'s tone/shape and additionally states the
-  one-sample-per-slot bound explicitly (Наряд 3's "Риск переусложнения").
+  one-sample-per-slot bound explicitly (Work order 3's "risk of over-complication").
 - Validated frontmatter YAML mechanically with `python3` + `PyYAML` (`yaml.safe_load` on the
   extracted `---`...`---` block) — parses to a dict with both `name` and `description` present.
   See command + output below.
@@ -91,7 +91,7 @@ Sequence of events:
    branch), `git branch -f main origin/main` (reset local `main` back to match remote — verified
    `git rev-parse main origin/main` identical, `7b7c678`, both before and after), then checked
    out `issue-53-skill-example` in the shared dir.
-4. Two sibling sessions (`для семинара`, `ahr51-security-paragraph`) independently flagged the
+4. Two sibling sessions (`for-the-seminar`, `ahr51-security-paragraph`) independently flagged the
    same shared-checkout hazard mid-turn and had parked a safety-net branch (`rescue-53-commit`,
    same commit `5bf3d3e`) pointing at my commit. Cross-checked: identical SHA, so no divergence.
 5. Moved permanently off the shared dir: detached its HEAD (`git checkout --detach origin/main`)
@@ -106,7 +106,7 @@ Sequence of events:
 
 All further work for this task happens only in `/home/harness/harness-projects/1/ahr-sem04-wt53`.
 
-**What actually happened, one account (reconciled with dispatcher "для семинара" after an initial
+**What actually happened, one account (reconciled with dispatcher "for-the-seminar" after an initial
 disagreement — see below):** the local `main` *ref* did move to my commit — evidenced first-hand
 by `git commit`'s own summary line, `[main 5bf3d3e] feat(...)`, and the `git branch -vv` run
 immediately after, `* main 5bf3d3e [origin/main: ahead 1] ...`. I caught this from that same
@@ -130,9 +130,9 @@ same `wt53` worktree and wrote `Tasks/2026-09-20_issue-53-skill-example/roast.md
 `render_templates.py --check`, diff scope, single-example check, both cited sources re-fetched and
 quoted at the pinned commit) rather than trusting this log. One non-blocking nit: the delivered
 footnote covered *why* `description`-only visibility matters but omitted the work order's own
-specific instruction — I re-fetched "Наряд 3" verbatim to confirm the exact required footnote text:
-*"проверьте после написания через `/skills`, не полагайтесь на то, что скилл сработает, потому что
-вы его написали"* (verify after writing via `/skills`, don't assume it fires just because you wrote
+specific instruction — I re-fetched "Work order 3" verbatim to confirm the exact required footnote text:
+*"verify it after writing via `/skills`; do not rely on the skill firing just because you wrote
+it"* (translated from the Russian original; verify after writing via `/skills`, don't assume it fires just because you wrote
 it) — and it wasn't in my first draft.
 
 Fixed: added that exact instruction as the footnote's opening line in

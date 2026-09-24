@@ -33,7 +33,7 @@ blob match: 3808eecbd36d7eb783d884cf9ca9f18adc914e5f == 3808eecbd36d7eb783d884cf
 
 ## 1. Acceptance criterion — checked item by item
 
-I fetched the order myself (`curl -sL .../10-template-work-order.md`, § "Наряд 5", lines 371–414) and
+I fetched the order myself (`curl -sL .../10-template-work-order.md`, § "Work order 5", lines 371–414) and
 issue #55's correction comment (`curl -s https://api.github.com/repos/workain/agent-harness-registry/issues/55/comments`,
 comment `5749883791`) rather than taking either at second hand.
 
@@ -199,7 +199,7 @@ literally: `bash .claude/hooks/selftest-branch-guard.sh`. Old steps 3/4/5 became
 complete and correct, and there are no stale cross-references:
 
 ```
-$ grep -rniE 'step [0-9]|шаг [0-9]|quick start step' with-git/ without-git/ common/ fragments/
+$ grep -rniE 'step [0-9]|quick start step' with-git/ without-git/ common/ fragments/   # (the original run also matched the Russian word for "step")
 (none)
 ```
 

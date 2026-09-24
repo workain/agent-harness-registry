@@ -5,6 +5,14 @@ Guides Claude Code when working in the **`workain/agent-harness-registry`** repo
 **LANGUAGE (BINDING):** operator-facing conversation follows the operator's language preference
 (Russian); all technical artifacts (code, docs, commits, issues, subagent prompts) are in English.
 
+Mechanically enforced since this line acquired a gate: `scripts/pre-commit-checks.sh` check 3
+blocks a commit that stages Cyrillic text. It was prose alone for long enough that an entire
+template — `templates/coding-agent-starter/`, fifteen files — shipped in Russian under it and
+stayed on `main` for a day. Override with `AHR_ALLOW_NON_ENGLISH=1` plus
+`AHR_NON_ENGLISH_REASON='...'` when a verbatim non-English quote genuinely is the artifact; the
+reason is echoed, never silent. Demonstrated firing in both directions, including against the
+real bytes that shipped, by `scripts/tests/test_english_only.sh` (19 assertions).
+
 ---
 
 ## 1. What this repo is

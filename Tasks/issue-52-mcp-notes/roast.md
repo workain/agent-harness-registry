@@ -5,7 +5,7 @@
 ## What was checked
 
 - Fetched issue #52 body from GitHub API (live, unauthenticated, public repo) and the work
-  order's "Наряд 2" section (pinned commit `7f224dc05`) to confirm the actual spec/acceptance
+  order's "Work order 2" section (pinned commit `7f224dc05`) to confirm the actual spec/acceptance
   criteria independently of the log's paraphrase.
 - `git log --oneline -3` / `git show --stat HEAD` — confirmed the exact file set touched.
 - Read `templates/base-project-template/common/.claude/mcp-notes.md` in full, counted points.
@@ -29,7 +29,7 @@ Detail:
   restated token-cost tables. It opens with a one-line pointer to `deep-dives/components/
   access-mcp/` instead of re-explaining MCP inline, which is a real directory (not a dangling
   forward-reference) and matches the work order's own "link outward, don't write a tutorial"
-  guard (§ "Риск переусложнения").
+  guard (§ "Risk of over-complication").
 - Byte-identical across `common/`, `with-git/`, `without-git/` (`diff` empty both ways).
 - Growth ladder gained exactly one row (axis "Access to external systems", trigger "An ordinary
   command is no longer enough") — substance matches the issue's requested axis/trigger, not a

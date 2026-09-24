@@ -31,7 +31,7 @@ neighboring rows, no other line changed.
 `environment/`) — correct per the issue: this is discipline for an already-built-in runtime
 feature, not substrate knowledge. `wc -l` = 35 lines; bullet count via
 `grep -c '^- \*\*'` = **5**, matching the "≤5 bullet points" and the 5-point structure the
-work-order spec (`10-template-work-order.md`, "Наряд 6") itself lists verbatim: (1) one
+work-order spec (`10-template-work-order.md`, "Work order 6") itself lists verbatim: (1) one
 entry = one fact, (2) `MEMORY.md` = index not log, ≤200 lines/25KB, (3) don't write what's
 derivable, (4) don't trust untrusted-sourced entries as instructions, (5) growth-ladder
 trigger = explaining the same thing twice. All five present, in that order, no sixth added.
@@ -43,7 +43,7 @@ a what-changed log. `memory-notes.md`'s own opening paragraph names both by role
 disclaims being a substitute for either; its five bullets are all auto-memory *hygiene*
 (entry granularity, index-vs-log, derivability, trust boundary, growth trigger) — none
 duplicate "log why a decision was made" or "the promoted permanent subset." No overlap found.
-This also matches the spec's own explicit "риск переусложнения" warning for this exact work
+This also matches the spec's own explicit "risk of over-complication" warning for this exact work
 order (don't let this become a third file with overlapping responsibility) — the author
 addressed it head-on rather than ignoring it.
 
@@ -55,17 +55,17 @@ existing "Persistent memory" bullet, not a new top-level section.
 ## Provenance — fetched both pinned sources myself, checked every load-bearing claim
 
 Fetched via raw.githubusercontent.com at commit `7f224dc058c171e05f81bb8d8def865e69ace5c2`:
-- `library/seminars/_research/coding-agent/10-template-work-order.md` (562 lines, § "Наряд 6"
+- `library/seminars/_research/coding-agent/10-template-work-order.md` (562 lines, § "Work order 6"
   at line 418)
 - `library/seminars/_research/coding-agent/02-memory.md` (229 lines)
 
 **The headline figure — verified EXACT.** `memory-notes.md` claims "46.0% with memory enabled
 vs. 57.6% with it disabled, same benchmark, CrewAI issue #5800." Source `02-memory.md` line
-194 (§5 table): *"CrewAI Memory vs no-memory baseline (issue #5800, независимый прогон
-LongMemEval) | Память включена дала 46.0%, память выключена — 57.6% на том же бенчмарке —
-включение памяти сделало систему хуже"* — and again, consistently, at line 210 and in the
-work-order spec itself (line ~444: "CrewAI Memory на LongMemEval с памятью показал 46,0%, без
-памяти — 57,6%"). Numbers, issue number, and "same benchmark, memory made it worse" framing
+194 (§5 table): (translated from the Russian original) *"CrewAI Memory vs no-memory baseline (issue #5800, an
+independent LongMemEval run) | memory on gave 46.0%, memory off gave 57.6% on the same benchmark —
+turning memory on made the system worse"* — and again, consistently, at line 210 and in the
+work-order spec itself (line ~444, translated: "CrewAI Memory on LongMemEval scored 46.0% with
+memory and 57.6% without"). Numbers, issue number, and "same benchmark, memory made it worse" framing
 all match exactly. No rounding, no inversion, no misattribution.
 
 **SpAIware.** Claimed: "SpAIware (ChatGPT macOS, Sept 2024) got attacker-controlled page
@@ -76,8 +76,8 @@ exfiltration. Matches — memory-notes.md's phrasing is a fair compression, not 
 
 **EchoLeak.** Claimed: "EchoLeak (CVE-2025-32711, CVSS 9.3) reached the same class of flaw in
 production Microsoft 365 Copilot." Source line 106: "EchoLeak (CVE-2025-32711, CVSS 9.3) —
-фильтр-обходящая инъекция в production-системе Microsoft 365 Copilot ... показывает, что
-аналогичный класс уязвимостей достигает крупных коммерческих продуктов." CVE number and CVSS
+a filter-bypassing injection in the production Microsoft 365 Copilot system ... shows that a
+comparable class of vulnerability reaches large commercial products." (translated) CVE number and CVSS
 score both exact.
 
 **The ~200-line/25KB ceiling + the Anthropic quote.** Claimed: "Keep it at or under ~200
@@ -87,8 +87,8 @@ exactly this claim and the work-order spec (line ~437) quotes the identical sent
 same ≤200-line target and the same 200-line/25KB `MEMORY.md` figure. Exact quote match, not
 paraphrased-then-misattributed.
 
-**Placement rule and scope-creep warning.** The spec's own "Что сделать" and "Риск
-переусложнения" sections (lines ~429–450) state the file belongs in `common/.claude/` (not
+**Placement rule and scope-creep warning.** The spec's own "What to do" and "Risk of
+over-complication" sections (lines ~429–450) state the file belongs in `common/.claude/` (not
 `environment/`) and explicitly warn against exactly the LESSONS.md/DECISIONS.md overlap this
 review checked above — the delivered work matches both instructions precisely, including the
 5-point content list in the same order the spec gives it.

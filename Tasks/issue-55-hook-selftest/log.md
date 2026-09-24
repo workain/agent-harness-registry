@@ -8,23 +8,25 @@
 
 ## 1. What the order asks for
 
-Work order § "Наряд 5", fetched verbatim from
+Work order § "Work order 5", fetched verbatim from
 `https://raw.githubusercontent.com/tellina-study/AI-usage-lessons/7f224dc058c171e05f81bb8d8def865e69ace5c2/library/seminars/_research/coding-agent/10-template-work-order.md`
 (fetched 2026-09-20, 562 lines, § at lines 371–414).
 
-Acceptance criterion, quoted: *«Скрипт существует, исполняемый, без сетевых зависимостей; при
-запуске против свежего `/tmp`-клона выдаёт: `deny` с точным текстом из `settings.json` при
-коммите на `main`, `ask` при unborn HEAD; шаг в Quick start `with-git/README.md` явно называет
-команду запуска.»*
+Acceptance criterion, quoted (translated from the Russian original): *"The script exists, is
+executable, has no network dependencies; run against a fresh `/tmp` clone it produces `deny` with
+the exact text from `settings.json` on a commit to `main`, and `ask` on an unborn HEAD; a step in
+the Quick start of `with-git/README.md` names the command to run explicitly."*
 
 Rationale source, same commit, `03-hooks-permissions.md` §5 (fetched 2026-09-20, 273 lines).
 The two failure modes it documents, quoted:
 
-- *«Один невалидный matcher в `settings.json` отключает все хуки в файле целиком, без единой
-  ошибки в интерфейсе»* — attributed there to Alex Dunlop, "Claude Code Hook Not Firing", 2026,
+- *"A single invalid matcher in `settings.json` disables every hook in the file, with no error
+  shown anywhere in the interface"* (translated) — attributed there to Alex Dunlop, "Claude Code
+  Hook Not Firing", 2026,
   a decision tree built from `anthropics/claude-code` issues.
-- *«хук `PreToolUse`, который не уложился в таймаут, не блокирует — он просто отваливается, и
-  вызов инструмента идёт по обычному пути разрешений, как если бы хука не было вовсе»*.
+- *"a `PreToolUse` hook that exceeds its timeout does not block — it simply drops out, and the
+  tool call proceeds down the normal permission path as if the hook were not there at all"*
+  (translated).
 - The line the whole order exists for: *«when a gate doesn't fire, nothing happens, which is
   exactly what a passing gate looks like»*.
 
@@ -486,9 +488,9 @@ with `git branch --show-current` immediately before `git add`.
 
 ## 7. Scope held
 
-The order's own over-engineering caveat: *«Самотест должен остаться скриптом воспроизводимости
-для одного существующего хука, а не разрасться в общий фреймворк тестирования гипотетических
-будущих хуков.»* Honoured — the script hard-codes the one hook's matcher, its two decisions and
+The order's own over-engineering caveat, translated: *"The self-test must stay a reproducibility
+script for the one hook that exists, not grow into a general framework for testing hypothetical
+future hooks."* Honoured — the script hard-codes the one hook's matcher, its two decisions and
 their two texts. There is no registry, no plugin surface, no per-hook config, and no second hook.
 Issue #58's worked example (subtask 8.3) extends it when a second hook actually exists; that
 session has read this implementation and mapped the one place the matcher extraction needs

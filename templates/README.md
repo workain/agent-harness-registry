@@ -5,8 +5,8 @@ Copy one into your own repository; neither is a dependency you install.
 
 | Template | Size | Start here if |
 |---|---|---|
-| [`coding-agent-starter/`](coding-agent-starter/) | 15 files (14 + the `AGENTS.md` symlink) | You are setting up a project for the first time and want the smallest thing that is still honest: one text gate, a spec, an empty decision log, a per-task file, and a branch-protection hook that ships with its own self-test. `doc/adr/` ships as a format with no entries, and the hook is labelled beyond-day-0 — both with their thresholds stated. Written in Russian. |
-| [`base-project-template/`](base-project-template/) | two rendered variants (`with-git/`, `without-git/`) from a shared source | You already know which pieces you need and want the full scaffold: skills, subagents, MCP notes, profiles, knowledge/, LESSONS.md, a PR template, and a `render_templates.py --check` drift gate. Catalogued in [GUIDE.md](../GUIDE.md) with its evidence base. Written in English. |
+| [`coding-agent-starter/`](coding-agent-starter/) | 16 files (15 + the `AGENTS.md` symlink) | You are setting up a project for the first time and want something already filled in: copy the directory, tell the agent in one sentence what you are building, get a working repository. `CLAUDE.md` opens with a first-run block addressed to the agent, and ships with the gates, the workflow and the etiquette written — four decisions left to you, not a questionnaire. |
+| [`base-project-template/`](base-project-template/) | two rendered variants (`with-git/`, `without-git/`) from a shared source | You already know which pieces you need and want the full scaffold: skills, subagents, MCP notes, profiles, knowledge/, LESSONS.md, a PR template, and a `render_templates.py --check` drift gate. Catalogued in [GUIDE.md](../GUIDE.md) with its evidence base. Placeholder-driven: you fill it in yourself. |
 
 `coding-agent-starter` is the on-ramp; `base-project-template` is where a project graduates to.
 Where they overlap they share files rather than reimplementing them: the branch-protection hook

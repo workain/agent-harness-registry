@@ -1,220 +1,126 @@
-# Шаблон простого репозитория для кодинг-агента
+# coding-agent-starter
 
-Заготовка проекта, в котором работает кодинг-агент (Claude Code и совместимые).
-Пятнадцать файлов (четырнадцать плюс симлинк `AGENTS.md`), ни одного лишнего. Каждая позиция в
-таблице ниже — один вопрос, который иначе агент решит за вас сам; две позиции из двенадцати —
-папки (`.tasks/`, `doc/adr/`), остальные файлы.
+A copy-ready skeleton for a repository a coding agent will work in (Claude Code and
+compatible engines). Sixteen files, nothing optional-looking left unfilled.
 
-Это **простой** шаблон — стартовый. Есть и полный, со скиллами, субагентами, MCP,
-профилями и рендерером вариантов: `templates/base-project-template/` в
-`workain/agent-harness-registry`. Начинать лучше отсюда.
+It is **prefilled**, not a questionnaire. The gates, the workflow and the file formats
+are already written and already in force. What is left blank is four decisions only you can
+make — what the project is, which commands build and test it, how branches are named, and the
+one gate specific to your project — and the agent fills them in on the first run from one
+sentence you give it.
 
-## Начать
+The larger template, with skills, subagents, MCP notes, profiles and a variant renderer,
+is `templates/base-project-template/` in this same repository. Start here.
 
-Шаблон живёт в `templates/coding-agent-starter/` репозитория
-[`workain/agent-harness-registry`](https://github.com/workain/agent-harness-registry) —
-это его единственный дом. Скопировать каталог себе:
+## Quick start
 
 ```
 git clone https://github.com/workain/agent-harness-registry.git
-cp -RP agent-harness-registry/templates/coding-agent-starter мой-проект
-cd мой-проект
+cp -RP agent-harness-registry/templates/coding-agent-starter my-project
+cd my-project
 git init -b main
-git add -A && git commit -m "Скелет проекта из coding-agent-starter"
-bash .claude/hooks/selftest-branch-guard.sh    # проверить, что проверка отказывает
-git switch -c <ветка-под-первую-задачу>        # дальше работа идёт в ветках
 ```
 
-**Почему первый коммит — на `main`, а ветка после него.** Потому что ветка ДО первого
-коммита не оставляет вам `main` вовсе: на неродившемся `HEAD` команда `git switch -c` не
-создаёт вторую ветку, а переименовывает эту. Проверено:
+Adding it to a project that already exists is the other common case, and it is a different
+command — note the trailing `/.`, and drop `git init` if the project is already a repository:
 
 ```
-$ git init -b main && git switch -c init-repo && git branch -a
-Initialized empty Git repository in <ваш-проект>/.git/
-Switched to a new branch 'init-repo'
-                                    # ← пусто: ни одной ветки ещё не существует
-$ git rev-parse --verify main
-fatal: Needed a single revision
-$ ls -A .git/refs/heads/ | wc -l
-0                                   # ← у неродившейся ветки нет ссылки вообще
+cp -RP agent-harness-registry/templates/coding-agent-starter/. my-existing-project/
 ```
 
-После этого хук защиты `main` охраняет ветку, которой нет, — ровно то состояние, про
-которое его собственный самотест печатает `LIMIT … otherwise this gate protects nothing
-here`. Скелет на `main` первым коммитом, дальше — ветки.
+Then open the agent in that directory and tell it, in one or two sentences, what you
+are building — for example:
 
-> **Кого этот хук отклоняет, а кого нет — важнее, чем кажется.** Это `PreToolUse`-хук
-> Claude Code: он срабатывает на вызовах инструментов агента. Человека, набравшего
-> `git commit` в терминале, он не останавливает вовсе — git-хук при этом не устанавливается
-> (`ls .git/hooks | grep -v '\.sample$'` после `git init` пусто, и коммит на `main` из
-> обычной оболочки проходит с кодом 0; проверено). Дисциплину в терминале держит человек, а не
-> этот файл.
->
-> **И это не одно слепое пятно вдобавок к пяти напечатанным, а два.** Второе — ниже, про доверие
-> к папке: пока диалог доверия не принят, в интерактивной сессии хук не работает ни для кого,
-> включая агента. Самотест печатает пять случаев, где хук молчит, потому что проверяет команду;
-> эти два — про то, доходит ли до команды дело вообще, и их самотест увидеть не может.
->
-> И ровно поэтому самотест в «Начать» подписан «проверить, что проверка отказывает», а не
-> «хук живой»: он запускает команду хука напрямую и показывает, что она даёт `deny`. Живой ли
-> хук в вашей сессии — вопрос другой. Документация Claude Code
-> (`code.claude.com/docs/en/hooks`, § Workspace trust, снято 2026-09-24) говорит дословно: в
-> интерактивной сессии хуки из любых файлов настроек не работают, «until you accept the
-> workspace trust dialog for the folder, **or for a parent directory whose trust extends to
-> it**»; в `-p`/SDK-сессии диалога нет и папка считается доверенной.
->
-> Вторая половина оговорки — про родительский каталог — **на эту загрузку не действует**, и
-> это стоит знать, потому что выглядит она обнадёживающе. Что значит «trust extends to it»,
-> определено на связанной странице (`code.claude.com/docs/en/permissions`, § Workspace trust,
-> снято 2026-09-24), и там дословно: доверие покрывает подкаталоги «apart from a git repository
-> **nested inside it**, such as a clone», а «the parent-folder column doesn't apply inside a
-> nested repository: in an interactive session Claude Code shows the trust dialog for it».
-> Третья строка «Начать» — `git init -b main`: она и делает ваш проект вложенным репозиторием.
-> Значит в интерактивной сессии диалог доверия вам покажут, сколько бы родительских каталогов
-> вы ни доверяли до этого, и до него хук не работает.
+> This is a CLI tool in Python that converts our invoice CSVs into the bank's XML
+> format. Done means it handles the three real sample files in `samples/` without
+> manual edits. Read CLAUDE.md and do the first-run steps.
 
-`AGENTS.md` — **симлинк** на `CLAUDE.md`, не копия: один канонический текст читают и
-Claude Code, и движки, которые ищут `AGENTS.md`.
+The first-run block at the top of `CLAUDE.md` is addressed to the agent. Working
+through it fills in the project identity, `spec.md`, the build and test commands (by
+detecting and actually running them), the first decision-log entry, and the date on
+ADR-0001; then it runs the branch-guard self-test, deletes what you are not using,
+deletes itself, and commits. After that you have a working repository.
 
-> **Про `-P`, честно.** POSIX.1-2024 (`cp`, раздел DESCRIPTION, снято 2026-09-24) говорит:
-> «If the -R option was specified: If none of the options `-H`, `-L`, nor `-P` were specified,
-> it is **unspecified** which of `-H`, `-L`, or `-P` will be used as a default». То есть
-> поведение `cp -R` на симлинке стандартом не задано и зависит от реализации. На GNU coreutils
-> 9.4 симлинк сохраняется и без `-P` (проверено: `cp -R` → `AGENTS.md -> CLAUDE.md`, тип
-> `symbolic link`), так что `-P` здесь — не спасение от поломки, а отказ выяснять это на своей
-> машине. Гарантированно ломает симлинк `-L`: `cp -RL` даёт `type=regular file`, то есть вторую
-> настоящую копию, которая начнёт тихо расходиться с первой.
+Two things worth knowing before the first commit:
 
-Дальше — три файла, по порядку, до первой строки кода:
+- **The skeleton commit goes on `main`, and the branch comes after it.** Branching
+  first leaves you with no `main` at all: on an unborn `HEAD`, `git switch -c` renames
+  the unborn branch rather than creating a second one, `.git/refs/heads/` stays empty,
+  and the branch guard then protects a branch that does not exist.
+- **`AGENTS.md` is a symlink to `CLAUDE.md`,** not a copy, so one canonical text is read
+  both by Claude Code and by engines that look for `AGENTS.md`. Copy with `cp -RP`:
+  POSIX.1-2024 leaves `cp -R`'s symlink handling unspecified when none of `-H`/`-L`/`-P`
+  is given, so `-P` states the intent. (GNU coreutils 9.4 happens to preserve it either
+  way — verified; `cp -RL` reliably turns it into a second real file that then diverges
+  in silence.)
 
-1. `spec.md` — что делаем и что значит «готово».
-2. `CLAUDE.md` — строка идентичности и **один** гейт.
-3. `DECISIONS.md` — не трогать. Он заведён пустым намеренно.
+## What you get
 
-## Что внутри
-
-Колонка «Когда» принимает ровно два значения.
-
-**День 0** — дешёвая гигиена: цена сегодня одна строка, цена отсутствия обнаруживается
-задним числом.
-
-**Сверх дня 0** — то, чего шаблон не может решить за вас. Таких строк три, но решений — два,
-потому что `.claude/settings.json` и самотест не выбираются по отдельности: хук без самотеста
-— непроверенный хук, поэтому они приезжают и уезжают вместе, а запустить самотест надо сразу,
-на дне 0. Второе решение — `doc/adr/`: папка пуста и ждёт первого решения, которое не уложится
-в три строки `DECISIONS.md`.
-
-Если названного действия или сигнала у вас нет — удалите; `.claude/` целиком, `doc/adr/`
-целиком. **И то, что на них указывает**, иначе получится указатель без документа — строка
-контекста в каждой сессии ни за что. Где именно эти указатели лежат и какой командой
-убедиться, что не осталось ни одного, написано в `CLAUDE.md` и в `doc/adr/README.md`.
-
-| Файл | Отвечает на вопрос | Когда |
+| File | Answers | Prefilled? |
 |---|---|---|
-| `CLAUDE.md` | Что агенту нельзя делать самому и куда смотреть за остальным | день 0 |
-| `AGENTS.md` | То же самое для движков, которые ищут `AGENTS.md` (симлинк, не копия) | день 0 |
-| `spec.md` | Что считается «готово» — до того, как написан код | день 0 |
-| `DECISIONS.md` | Почему было принято решение, которого уже не помнит никто | день 0 |
-| `.tasks/` | Что уже проверено в текущей задаче и что осталось | день 0 |
-| `.gitignore` | Что не должно уехать в общий репозиторий | день 0 |
-| `README.md` | Этот файл: зачем шаблон так устроен. В своём проекте — замените целиком | день 0 |
-| `LICENSE` | MIT на файлы шаблона. В своём проекте — замените своей | день 0 |
-| `doc/deferred.md` | Заготовки: разделы `CLAUDE.md` и правило с шаблоном путей. Ничего не включает — ждёт повода | день 0 |
-| `doc/adr/` | Почему — для решений, которые переживут своих авторов. Формат и порог включения; ни одной записи | сверх дня 0 |
-| `.claude/settings.json` | Хук: коммит в `main` из сессии агента отклоняется | сверх дня 0 |
-| `.claude/hooks/selftest-branch-guard.sh` | Доказательство, что хук правда срабатывает, и пять случаев, где он молчит | сверх дня 0 |
+| `CLAUDE.md` | What the agent may not do alone, how work runs, where everything is | Yes, except the identity line and the build/test commands |
+| `AGENTS.md` | The same, for engines that look for that name (symlink) | Yes |
+| `spec.md` | What counts as "done", written before the code | Structure only — the conditions are yours |
+| `DECISIONS.md` | Why a decision was made, once nobody remembers | Format plus a first worked entry |
+| `doc/adr/` | Decisions whose consequences outlive their authors | Format plus ADR-0001, already written |
+| `.tasks/` | What is verified in the current task and what is left | Yes |
+| `.claude/settings.json` | Denies the agent a commit to `main`/`master` | Yes, live |
+| `.claude/hooks/selftest-branch-guard.sh` | Proves that gate refuses, and prints its own limits | Yes, runnable |
+| `.claude/rules/tests.md` | Conventions that apply only to test files | Example rules — replace with yours |
+| `.gitignore` | What must not reach a shared repository | Yes |
 
-## Три принципа, на которых он держится
+Everything you delete, delete its pointer in `CLAUDE.md` too. A pointer to a file that
+is not there is billed on every turn and buys nothing.
 
-### 1. День 0: один гейт, остальное пусто
+## The three addresses
 
-`CLAUDE.md` в этом шаблоне почти пуст, и это не недоделка. Всё, что в нём написано,
-грузится каждый ход и облагает налогом каждый запрос. Правило, написанное впрок,
-нечем проверить — и оно тихо разлагается, пока кто-нибудь не обнаружит, что агент
-его давно игнорирует, а файл всё ещё утверждает обратное.
+Knowledge about a project lives at exactly one of three addresses, and picking the
+wrong one is how an instruction file grows into a junk drawer:
 
-Поэтому день 0 — это идентичность проекта и **один** гейт: то правило, цена нарушения
-которого для вас реальна. Остальные разделы заведены заготовками в `doc/deferred.md`
-и вносятся тогда, когда появился конкретный повод.
+1. **In a comment in the code** — a constraint that is only true at that one spot.
+2. **In a path-scoped rule file** — `.claude/rules/*.md` with a `paths:` glob, loaded
+   only when a matching file is read. `tests.md` ships as a worked example.
+3. **In the root `CLAUDE.md`** — and as a *pointer*, not as the content itself.
 
-**Гейт и хук — не одно и то же.** Гейт — строка в `CLAUDE.md`: просьба, которую агент
-читает и может учесть. Хук — проверка в `.claude/settings.json`: она выполняется и
-отказывает. Первое — день 0. Второе — см. принцип 3.
+The test: when knowledge gets distributed properly, the root file gets **shorter**, not
+longer. `CLAUDE.md` carries a 900-word ceiling for exactly that reason.
 
-Оговорка, чтобы вы не спотыкались об это сами: **два файла в этом шаблоне называют
-механизм словом «gate»** — `.claude/settings.json` и `selftest-branch-guard.sh`, включая
-строку, которую самотест печатает (`RESULT: PASS — 9/9 checks. The gate was observed
-firing…`). Они по-английски и держатся байт-в-байт одинаковыми с `base-project-template`,
-чтобы единственный механический слой в реестре не разъехался на две версии. Различение
-гейта и хука держится в этих русских текстах; те два файла называют один и тот же механизм
-и «hook», и «gate», не различая их.
+The number is measured, not chosen. The file ships at **727 words** once the first-run block is
+deleted, and filling in the nine slots on a real project took it to **754** — so a ceiling of 800
+would have left 46 words on day one, less than one rule's worth, which is a budget that exists on
+paper only. 900 leaves room for roughly four more rules before "what comes out?" has to be
+answered, which is the point at which the question is worth asking.
 
-### 2. Правило трёх адресов
+## What the gate does and does not stop
 
-У знания о проекте есть три места, и корневой `CLAUDE.md` — только одно из них.
-Класть всё в него — самая частая и самая дорогая ошибка: файл разрастается,
-его начинают читать по диагонали, и правило перестаёт работать ровно тогда,
-когда правил становится много.
+`.claude/settings.json` holds a Claude Code `PreToolUse` hook that denies a `git commit`
+on `main`/`master`. Run `bash .claude/hooks/selftest-branch-guard.sh` to see it refuse —
+that self-test checks the hook's *command*, and prints the five cases it knows it cannot
+catch. Two further blind spots are outside what it can test at all:
 
-| Адрес | Что туда | Почему именно туда |
-|---|---|---|
-| **Комментарий в коде** | Неочевидное ограничение конкретной строки | Читается ровно тем, кто правит эту строку, и не может от неё отстать |
-| **Файл-правило с glob'ом** (`.claude/rules/*.md`, поле `paths:`) | Правило, действующее на один набор путей | Подгружается, только когда агент открыл файл под glob |
-| **Корневой `CLAUDE.md`** | Общепроектное — и **указатели** на первые два | Указатель стоит одну строку, содержание — каждый запрос |
+- **It does not stop a human typing `git commit` in a terminal.** It fires on the
+  agent's tool calls. `git init` installs no git hook (verified: a shell commit on
+  `main` exits 0). Discipline in the terminal is kept by the person, not by this file.
+- **In an interactive session it does nothing until the folder is trusted.** Claude
+  Code's hooks documentation (`code.claude.com/docs/en/hooks`, § Workspace trust,
+  fetched 2026-09-24) states that hooks from every settings file are held back "until
+  you accept the workspace trust dialog for the folder, or for a parent directory whose
+  trust extends to it" — and the parent-directory half does not help here, because
+  `git init` makes your project a nested repository, for which the dialog is shown
+  regardless (`code.claude.com/docs/en/permissions`, § Workspace trust, same date). In a
+  `-p`/SDK session there is no dialog and the folder counts as trusted, so the hook runs
+  immediately.
 
-Корневой файл после разноса должен стать **короче**, а не длиннее. Если он вырос —
-разноса не было, было копирование.
+This is why the quick start says the self-test proves *the check refuses*, not that the
+hook is live in your session. Those are different claims.
 
-**Готового правила с glob'ом шаблон не везёт — и это часть принципа, а не пробел.** На день 0
-у проекта ещё нет конвенции, которую такое правило могло бы выражать: всё, что в него
-написали бы сейчас, написано впрок. Порог включения: конвенция класса файлов (а) перестала
-помещаться в корневой `CLAUDE.md` и (б) называется одним выражением-шаблоном путей. Пока
-помещается в две строки — две строки в корневом файле дешевле нового механизма. Готовый
-файл целиком, с фронтматтером и строкой-указателем, ждёт в `doc/deferred.md`.
+## Graduating
 
-Первый адрес шаблон не показывает по той же причине: в нём нет кода, рядом с которым можно
-было бы поставить настоящий комментарий. Это единственный из трёх адресов, у которого
-доставка следует из механизма — правишь функцию, значит прочитал файл, — и единственный, у
-которого никогда не бывает «рано».
+Move to `templates/base-project-template/` when skills, subagents, MCP servers or
+role profiles start earning their keep. The branch-protection hook and its self-test are
+byte-for-byte the same file in both templates, so the one real mechanical gate in this
+repository cannot drift into two versions.
 
-> **Почему указатель нужен, хотя glob работает сам.** Документация Claude Code
-> (`code.claude.com/docs/en/memory`, снято 2026-09-24) говорит две вещи. Первая: правило
-> с `paths:` подгружается само — «Path-scoped rules trigger when Claude reads files
-> matching the pattern, not on every tool use». Вторая, и ради неё всё: **«Project-root
-> CLAUDE.md survives compaction: after `/compact`, Claude re-reads it from disk and
-> re-injects it into the session. Nested CLAUDE.md files in subdirectories and rules with
-> `paths:` frontmatter reload as Claude reads files they apply to.»** То есть после
-> компактификации корневой файл возвращается сам, а правило с glob'ом — только когда агент
-> снова откроет подходящий файл. Указатель в корневом `CLAUDE.md` стоит одну строку и
-> переживает `/compact`; glob экономит контекст, пока тесты не тронуты. Нужны оба, и каждый
-> за своё — но оба вместе и не раньше, чем появится что-то, на что указывать.
+## License
 
-### 3. Правило без проверки — это совет
-
-Хук в `.claude/settings.json` идёт вместе с `selftest-branch-guard.sh`, который
-запускает его на десятке сценариев и печатает результат. Он же печатает **пять
-случаев, где хук молчит** — `git -C`, `/usr/bin/git`, `env git`, вторая строка
-многострочной команды, ветка по умолчанию не `main`/`master`.
-
-Это сделано намеренно. Хук, про который не сказано, где он не работает, опаснее
-отсутствующего: на него полагаются. Запускайте самотест после каждой правки
-`settings.json` и после обновления агента.
-
-**Хук — не день-0-практика, и шаблон это не скрывает.** Порог для механизма проходит там,
-где вы можете назвать три вещи: действие, цену его нарушения и частоту. Пока они не названы,
-механизм ставить рано — он платный на каждом вызове и проверяет совпадение с шаблоном, а не
-смысл.
-
-Этот один хук лежит в шаблоне заранее потому, что все три названы заранее и не зависят от
-вашего проекта: действие — коммит прямо в общую ветку; цена — правка, попавшая туда без
-обзора, и её потом не отделить от остальных; частота — каждая сессия, в которой кто-то
-забыл создать ветку. Ваш **следующий** хук так не появится: его придётся заслужить своим
-названным действием. Если и этого действия у вас нет — удалите `.claude/` целиком **и
-строку-указатель на него из `CLAUDE.md`**; гейт текстом остаётся на месте.
-
-## Чего здесь нет
-
-Скиллов, субагентов, MCP, CI, профилей. Не потому что это неважно —
-потому что на день 0 неважно. Когда понадобится: `base-project-template`
-в том же `agent-harness-registry` (ссылка выше).
+MIT — see `LICENSE`, which covers this template's own files.

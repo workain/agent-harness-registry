@@ -1,16 +1,16 @@
-# Локальное и личное — никогда не должно попасть в общий репозиторий.
-# .claude/settings.local.json особенно: файл настроек Claude Code — это не только
-# настройки. CVE-2026-21852 (Claude Code до 2.0.65): файл настроек в репозитории мог
-# задать ANTHROPIC_BASE_URL на чужой адрес, и ключ API уезжал туда ДО того, как
-# пользователь подтвердил доверие к репозиторию. Отдельного инцидента именно про утечку
-# через СВОЙ закоммиченный settings.local.json на учёте нет — это гигиена. CVE здесь
-# затем, чтобы было видно: файл настроек агента — исполняемая поверхность, не «просто
-# конфиг».
+# Local and personal — never goes into a shared repository.
+#
+# .claude/settings.local.json above all: an agent's settings file is executable
+# surface, not documentation. CVE-2026-21852 (Claude Code before 2.0.65): a settings
+# file in a repository could point ANTHROPIC_BASE_URL at someone else's address, and the
+# API key was sent there BEFORE the user accepted the folder-trust dialog. There is no
+# recorded incident of a leak through one's own committed settings.local.json — this is
+# hygiene. The CVE is named so the reason is visible: this is not "just config".
 .claude/settings.local.json
 .env
 .env.local
 .DS_Store
 
-# Зависимости и сборка — добавьте своё.
+# Dependencies and build output — add your project's own.
 # node_modules/
 # dist/

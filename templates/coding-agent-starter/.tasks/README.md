@@ -1,15 +1,13 @@
-# .tasks — один файл на задачу
+# .tasks — one file per task
 
-Пока задача идёт, её файл лежит в `active/`. Закончилась — переезжает в `done/`.
-Имя: `YYYY-MM-DD-краткое-описание.md`.
+A task's file lives in `active/` while the work is running and moves to `done/` when it
+finishes. Name it `YYYY-MM-DD-short-description.md`. Start from `_template.md`.
 
-Зачем: у сессии кодинг-агента нет памяти между запусками, а у человека — между днями.
-Файл задачи — единственное место, где написано, что уже проверено и что осталось,
-в момент, когда это ещё известно.
+Why: an agent session has no memory between runs, and people have none between weeks.
+The task file is the only place that records what has already been verified and what is
+left, written at the moment it is still known.
 
-Новый файл — копия `_template.md`.
-
-**Строка «Сверено».** Ставится в начале и в конце сессии — датой, которую печатает
-`date -u +%Y-%m-%dT%H:%M:%SZ`, а не по памяти. Смысл в том, что запись без неё
-неотличима от записи, которую забыли обновить: файл задачи, который никто не сверял,
-уверенно врёт о состоянии работы.
+**The `Verified:` line.** Set it at the start and at the end of every session, from the
+date `date -u +%Y-%m-%dT%H:%M:%SZ` prints, never from memory. A file without it is
+indistinguishable from one that was forgotten: a task file nobody re-checked states the
+state of the work confidently and wrongly.

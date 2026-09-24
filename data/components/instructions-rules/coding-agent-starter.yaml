@@ -2,29 +2,58 @@ name: coding-agent-starter
 slug: coding-agent-starter
 homepage: https://github.com/workain/agent-harness-registry/tree/main/templates/coding-agent-starter
 category: instructions-rules
-layer: "Instruction/identity layer (Block A) plus day-0 seeds of the decision-memory and gate blocks — a 17-file project scaffold one rung below base-project-template, not a single convention file"
+layer: "Instruction/identity layer (Block A) plus day-0 seeds of the decision-memory block — a 15-file project scaffold one rung below base-project-template, not a single convention file"
 what_it_is: >
   A deliberately small, copy-ready project scaffold for a repository a coding agent will work
   in. Its organizing claim is subtractive: a CLAUDE.md holding a one-line project identity and
-  exactly ONE gate, with every other section removed rather than shipped as unfilled
+  exactly ONE text gate, with every other section removed rather than shipped as unfilled
   boilerplate, on the reasoning that instruction text is billed on every turn and a rule written
   ahead of a real need has nothing to check it. The remaining sections ship as ready-to-paste
-  blocks in `doc/claude-md-sections.md`, to be pulled in when a concrete incident calls for one.
-  Around that: `spec.md` (what "done" means, stated as checkable conditions, written before the
-  first line of code), an entry-less `DECISIONS.md` (format only — the file exists from day one,
-  the content accrues), `doc/adr/` in Michael Nygard / adr-tools form with a template and one
-  real first entry, a `.tasks/active|done/` per-task file carrying a verification timestamp, and
-  `.claude/rules/tests.md` as a worked example of the scaffold's "three addresses" rule (a constraint
-  belongs in a code comment, in a rule file whose declared path glob scopes it, or in the root instruction
-  file as a POINTER — and the root file should get shorter when knowledge is distributed, not
-  longer). The branch-protection hook and its self-test are base-project-template's own files,
-  copied verbatim rather than reimplemented.
+  blocks in `doc/deferred.md`, to be pulled in when a concrete incident calls for one — and the
+  template applies that rule to itself: it does NOT ship a filled-in `paths:`-scoped rule, because
+  on day 0 there is no file-class convention for one to express, so anything written there would
+  be written ahead of its need. The mechanism ships as a ready block in `doc/deferred.md` instead,
+  with its own inclusion threshold (the convention stopped fitting in the root file AND the path
+  pattern can be named in one expression). Around that: `spec.md` (what "done" means, stated as
+  checkable conditions, written before the first line of code), an entry-less `DECISIONS.md`
+  (format only — the file exists from day one, the content accrues), a `.tasks/active|done/`
+  per-task file carrying a verification timestamp, and `doc/adr/` in Michael Nygard / adr-tools
+  form — the format and the inclusion threshold, with NO entries, for the same reason it ships no
+  filled-in rule: copying a template is not a decision to keep ADRs, so a dated `Status: Accepted`
+  record in the copier's name would be one more thing asserted ahead of its need. Deleting either
+  of the beyond-day-0 things means deleting what points at it, and the template stopped trying to
+  enumerate where that is. `doc/adr/` and `.claude/` each own a whole item in `CLAUDE.md`'s pointer
+  section, and the check is one tree-wide grep whose hits `CLAUDE.md` sorts into three kinds:
+  pointers in files the agent loads (delete — the only kind that must not remain), lines of the
+  comments explaining this very deletion (delete last), and prose about the template's own design in
+  `README.md`/`doc/deferred.md`, which the copier replaces wholesale anyway. Five consecutive
+  independent reviews each found an earlier, place-enumerating version of this instruction wrong in
+  a different spot — the list of places is what kept going stale, so the instruction stopped being
+  a list. The scaffold's "three
+  addresses" rule is taught rather than pre-populated: a constraint belongs in a code comment, in
+  a rule file whose declared path glob scopes it, or in the root instruction file as a POINTER —
+  and the root file should get shorter when knowledge is distributed, not longer. The
+  branch-protection hook and its self-test are base-project-template's own files, copied verbatim
+  rather than reimplemented; the entry-level README states plainly that this hook is not a day-0
+  practice and is shipped pre-wired only because its action, cost and frequency are nameable before
+  the project exists. It also states who the hook does and does not stop: it is a Claude Code
+  `PreToolUse` hook, so it fires on the agent's tool calls and does nothing about a human typing
+  `git commit` in a terminal. That, and the not-yet-trusted-workspace case above, are two blind
+  spots on top of the five the self-test prints — and ones it structurally cannot see, since it
+  tests the command rather than whether the command is reached.
 integration: >
-  Copy `templates/coding-agent-starter/` into your project root with `cp -RP` (the `-P` matters:
-  `AGENTS.md` is a symlink to `CLAUDE.md`, and without it you get two files that drift), then
-  `rm -rf .git && git init`. Run `.claude/hooks/selftest-branch-guard.sh` once to confirm the
-  gate is live, fill `spec.md`, replace the placeholder gate in `CLAUDE.md` with the one rule
-  whose violation would actually cost you, and leave `DECISIONS.md` empty. Graduate to
+  Copy `templates/coding-agent-starter/` into your project root with `cp -RP` (`AGENTS.md` is a
+  symlink to `CLAUDE.md`; POSIX leaves `cp -R`'s symlink handling unspecified, so `-P` states the
+  intent). The copied directory carries no `.git`, so no cleanup step is needed. Then, in this
+  order: `git init -b main`; `git add -A && git commit` to put the skeleton on `main`;
+  `bash .claude/hooks/selftest-branch-guard.sh` to confirm the CHECK refuses (not that the hook is
+  live in your session — that depends on workspace trust, which the template states); and only then
+  `git switch -c <branch>` for the first task. The order is load-bearing — branching before the
+  first commit leaves no `main` at all, because on an unborn HEAD `git switch -c` renames the
+  unborn branch instead of creating a second one, leaving `.git/refs/heads/` empty and the branch
+  guard protecting a branch that does not exist (reproduced; the README prints the commands).
+  Then fill `spec.md`, replace the placeholder gate in `CLAUDE.md` with the one rule whose
+  violation would actually cost you, and leave `DECISIONS.md` empty. Graduate to
   `base-project-template` when skills, subagents, MCP or profiles start earning their keep.
 license: >
   MIT, same as the rest of this repository. A LICENSE file ships at
@@ -43,10 +72,46 @@ provenance:
       own base-project-template `with-git` files, copied byte-for-byte rather than reimplemented,
       so the one component that is a real mechanical gate cannot diverge between the two
       templates. Everything else was written fresh for this entry.
+  - url: https://pubs.opengroup.org/onlinepubs/9799919799/utilities/cp.html
+    fetched: "2026-09-24"
+    note: >
+      POSIX.1-2024 `cp`, DESCRIPTION: "If the -R option was specified: If none of the options
+      -H, -L, nor -P were specified, it is unspecified which of -H, -L, or -P will be used as a
+      default." This is why the template's copy instruction carries `-P` explicitly. An earlier
+      revision of this entry and of the template claimed that omitting `-P` turns the AGENTS.md
+      symlink into a second real file; that claim was WRONG on the one implementation actually
+      tested — GNU coreutils 9.4 preserves the symlink under plain `cp -R` (verified) and only
+      `cp -RL` dereferences it. The corrected wording states the standard's silence rather than a
+      behaviour.
+  - url: https://code.claude.com/docs/en/memory
+    fetched: "2026-09-24"
+    note: >
+      Source of the two quotes the template's "three addresses" section rests on — that
+      path-scoped rules "trigger when Claude reads files matching the pattern, not on every tool
+      use", and that "Project-root CLAUDE.md survives compaction: after /compact, Claude re-reads
+      it from disk and re-injects it into the session. Nested CLAUDE.md files in subdirectories
+      and rules with paths: frontmatter reload as Claude reads files they apply to." Both were
+      re-read from the live page for this revision; see `unverified:` for what that does and does
+      not establish.
+  - url: https://code.claude.com/docs/en/hooks
+    fetched: "2026-09-24"
+    note: >
+      Source for the two limits the shared `$comment` now states instead of claiming a hook is
+      simply "live automatically in every fresh clone" — the phrase the same edit removed. Section
+      "Workspace trust", quoted verbatim:
+      "Interactive session: Claude Code holds back hooks from every settings file, including your
+      own ~/.claude/settings.json, until you accept the workspace trust dialog for the folder, or
+      for a parent directory whose trust extends to it";
+      and "-p or SDK session: Claude Code never shows the dialog and treats the folder as
+      trusted, so hooks committed in a repository's .claude/settings.json run in a folder you've
+      never trusted." Read from the live page; neither behaviour was reproduced in a running
+      session.
 unverified:
   - "NO research pass. base-project-template's content decisions each trace to one of two documented evidence passes; this template's do not. Its structure was derived from that template plus a seminar's teaching sequence, and should be read as a plausible, internally-consistent starting point rather than an evidence-backed default. Nothing here contradicts that entry's evidence — but nothing independently supports the subtractive 'one gate, everything else deleted' claim either, which is this template's single most load-bearing design decision."
-  - "Verified only mechanically, and only on one machine (Linux, git 2.x, bash): the branch guard self-test reports PASS on 9/9 checks and prints its own 5 known limits; a `cp -RP` + `git init` + self-test run from a clean clone succeeds with the AGENTS.md symlink intact; `scripts/generate.py` exits 0. NOT tested: any other OS or shell, any agent engine other than Claude Code, multi-contributor use, or drift over time."
-  - "The template ships BOTH a `paths:`-scoped rule and a root-file pointer to it; the reason is a documented asymmetry, not hedging. Per Claude Code's memory documentation (fetched 2026-09-23): a path-scoped rule triggers when Claude reads a matching file, but after `/compact` only the project-root CLAUDE.md is re-read from disk, while nested files and path-scoped rules reload only once a matching file is opened again. Established by reading that documentation page directly — NOT by observing either behaviour in a running session, and no reproduction of the compaction behaviour was attempted for this entry."
-  - "Written in Russian, unlike the rest of this registry — it was authored for a Russian-language seminar audience. No translated variant exists."
+  - "Verified only mechanically, and only on one machine (Linux, GNU coreutils 9.4, git 2.x, bash), re-run 2026-09-24: the branch guard self-test reports PASS on 9/9 checks and prints its own 5 known limits; the README bootstrap sequence run verbatim from a clean copy — `cp -RP`, `git init -b main`, self-test, `git switch -c`, first commit — succeeds with `AGENTS.md` still mode 120000 in the index; `scripts/generate.py` exits 0. NOT tested: any other OS or shell (notably macOS/BSD `cp`, whose `-R` symlink default POSIX leaves unspecified), any agent engine other than Claude Code, multi-contributor use, or drift over time."
+  - "The template does NOT ship a `paths:`-scoped rule, and teaches that the rule and its root-file pointer go in together or not at all. The asymmetry that makes both worth having once there IS something to point at is documented, not inferred: per Claude Code's memory documentation (re-fetched 2026-09-24, quoted verbatim in the template README) a path-scoped rule triggers when Claude reads a matching file, but after `/compact` only the project-root CLAUDE.md is re-read from disk, while nested files and path-scoped rules reload only once a matching file is opened again. Established by reading that documentation page directly — NOT by observing either behaviour in a running session, and no reproduction of the compaction behaviour was attempted for this entry."
+  - "Written in Russian, unlike the rest of this registry — it was authored for a Russian-language seminar audience. No translated variant exists. Two files inside it are in English and say `gate` where the Russian text says `хук`: `.claude/settings.json` and the self-test, which are held byte-identical with base-project-template on purpose. The template's README names this rather than claiming a vocabulary split it does not have in those two files."
+  - "The ADR claims in `doc/adr/README.md` — Michael Nygard 2011 as the practice's origin, `adr-tools` as its reference command set, and that there is no controlled measurement of ADRs helping a coding agent — are carried from a source review performed outside this repository and were NOT re-verified for this entry. They are stated in the template with that caveat attached."
+  - "The branch-protection hook is a Claude Code `PreToolUse` hook, verified to DENY on `main` by invoking its command directly with a `git commit` payload — not by observing a refusal inside a running Claude Code session. Separately verified that it does NOT stop a shell `git commit`: after `git init` no git hook is installed (listing .git/hooks shows only .sample files) and a commit on `main` from a plain shell exits 0. Claude Code's own hooks documentation additionally ties this to workspace trust and qualifies it by session type — a non-interactive session (-p / SDK) never shows the trust dialog and treats the folder as trusted — so the blanket claim that hooks are held back until trust is accepted is NOT made here. That part was read, not reproduced."
 deep_dive: deep-dives/components/instructions-rules/coding-agent-starter.md
 first_party: true

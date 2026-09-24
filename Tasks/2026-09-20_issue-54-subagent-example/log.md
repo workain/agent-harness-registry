@@ -6,7 +6,7 @@ Task: agent-harness-registry#54, order 4 — working reviewer-subagent example
 (`common/.claude/agents/_example-reviewer.md`), P0.
 
 Read before starting:
-- `10-template-work-order.md` @ 7f224dc0, intro + § "Наряд 4" (fetched verbatim).
+- `10-template-work-order.md` @ 7f224dc0, intro + § "Work order 4" (fetched verbatim).
 - `08-subagents.md` @ 7f224dc0, §4.1–4.2, §7 (fetched verbatim), plus the two token-multiplier
   figures (separate fetch, since they weren't in §4.1/4.2/7).
 - `templates/base-project-template/common/.claude/agents/README.md` (existing, near-empty).
@@ -27,7 +27,7 @@ Symptoms observed directly, before any commit of mine:
   #53 commit).
 - `git reflog` showed rapid, interleaved `checkout`/`reset`/`commit` events from other sessions'
   branches, and HEAD was detached at the #53 commit when I looked.
-- Two sibling sessions (`ahr51-security-paragraph`, `для семинара`) independently flagged the
+- Two sibling sessions (`ahr51-security-paragraph`, `for-the-seminar`) independently flagged the
   same shared-checkout problem mid-turn and confirmed no commit had landed on my branch — nothing
   more than a couple of minutes of exploration was at risk.
 

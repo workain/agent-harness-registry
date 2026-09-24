@@ -12,7 +12,7 @@ tree, and by the time I ran `git branch --show-current` it reported `issue-53-sk
 confirming the collision.
 
 Two sibling sessions (order 1 / "ahr51-security-paragraph", and the folder-owning session
-"для семинара") flagged this mid-turn and instructed every order session to move into its own
+"for-the-seminar") flagged this mid-turn and instructed every order session to move into its own
 `git worktree`. I had **not yet written or committed any file** at the point of the collision
 (only read files and fetched sources), so nothing was lost — confirmed via
 `git log --oneline -1` on the new worktree showing `7b7c678` (== `origin/main`, no local
@@ -34,13 +34,13 @@ session's Bash tool does not reliably persist `cd` across calls).
 ## Sources fetched (provenance)
 
 - `10-template-work-order.md` @ commit `7f224dc058c171e05f81bb8d8def865e69ace5c2` — intro
-  sections + § "Наряд 6" (the spec verbatim, including the "don't become a second instruction
+  sections + § "Work order 6" (the spec verbatim, including the "don't become a second instruction
   file / don't overlap LESSONS.md/DECISIONS.md" bound, and the exact 5-point structure asked
   for).
 - `02-memory.md` @ same commit — §4.2 (memory poisoning: SpAIware, EchoLeak/CVE-2025-32711),
   §4.3 (context bloating, ~200-line/25KB threshold), §5 table (CrewAI Memory vs LongMemEval:
   46.0% memory-enabled vs 57.6% memory-disabled, same benchmark, CrewAI issue #5800,
-  "независимый прогон LongMemEval").
+  "an independent LongMemEval run").
 - Existing repo files read directly: `fragments/claude-core-bottom.md`,
   `deep-dives/components/instructions-rules/base-project-template/design-and-usage.md`
   (growth-ladder table), `common/LESSONS.md`, `common/DECISIONS.md`,
@@ -71,7 +71,7 @@ All three edits + both READMEs applied:
 - `templates/base-project-template/fragments/claude-core-bottom.md` — one added clause on the
   existing "Persistent memory" bullet, pointing at the new file.
 - `deep-dives/components/instructions-rules/base-project-template/design-and-usage.md` — exactly
-  one new growth-ladder row (`Memory / repeated context`), trigger wording matches the Наряд 6
+  one new growth-ladder row (`Memory / repeated context`), trigger wording matches the Work order 6
   spec's own ("Stage 2: owner repeating same information across sessions / Claude hitting same
   rake twice") verbatim in spirit.
 - `templates/base-project-template/with-git/README.md` and `without-git/README.md` — one new

@@ -23,7 +23,7 @@ Action taken, in order:
 2. Sent an individual warning to each of orders 2–7 (`send_message`) telling them to check
    `git branch --show-current` before committing and to move into their own worktree.
 3. Flagged the incident to the dispatcher.
-4. Dispatcher ("для семинара") confirmed the root cause (folder was provisioned as one shared
+4. Dispatcher ("for-the-seminar") confirmed the root cause (folder was provisioned as one shared
    checkout instead of one worktree per session — dispatcher's own words: "my mistake in how I
    created the folder") and gave the exact recovery commands. Order 5 and order 2 siblings
    independently reported the same symptom and confirmed no commits were lost (nobody had
@@ -49,12 +49,12 @@ is the `--check` run from inside this worktree, below.
 
 Read in full (per the dispatch's required reading list):
 - Issue #51 body (`api.github.com/repos/workain/agent-harness-registry/issues/51`).
-- Work order intro sections («Репозиторий…», «Правила репозитория…», «Как не сломать
-  отрисовку», «Как сдавать работу») and § "Наряд 1" in full, at the pinned commit `7f224dc0`
+- Work order intro sections ("The repository…", "Repository rules…", "How not to break
+  the rendering", "How to hand in work") and § "Work order 1" in full, at the pinned commit `7f224dc0`
   (`library/seminars/_research/coding-agent/10-template-work-order.md`).
-- `03-hooks-permissions.md` §5 ("Провалы и ограничения" → "Хук как вектор атаки (реальные
+- `03-hooks-permissions.md` §5 ("Failures and limits" -> "A hook as an attack vector (real
   CVE)") and its source table — this is where the work order's own CVE claims live and where
-  it flags `[НЕ ПОДТВЕРЖДЕНО]` that the CVSS scores (8.7 / 5.3) came from a secondary source
+  it flags `[NOT CONFIRMED]` that the CVSS scores (8.7 / 5.3) came from a secondary source
   (The Hacker News), not NVD/GHSA directly, with a note to verify before relying on them.
 - `04-failures-evidence.md` — incident table for `rm -rf ~/` and the Replit production-DB
   deletion (background only; not cited inline in the shipped paragraph, see below).
@@ -98,7 +98,7 @@ any of the four specific, mechanical claims the issue asks for (settings.json is
 hooks+env run pre-trust-dialog / bypassPermissions scoping / deny-beats-allow). Citing them
 inline would not fit the ≤6-line budget without diluting the two claims that are directly about
 Claude Code's own configuration surface. They're recorded here for the audit trail per the
-issue's "Evidence to cite" list, and because the "Риск переусложнения" note in the work order
+issue's "Evidence to cite" list, and because the "Risk of over-complication" note in the work order
 itself argues for keeping this section lean rather than encyclopedic.
 
 ## Content added

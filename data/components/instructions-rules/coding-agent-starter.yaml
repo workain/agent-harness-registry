@@ -2,7 +2,7 @@ name: coding-agent-starter
 slug: coding-agent-starter
 homepage: https://github.com/workain/agent-harness-registry/tree/main/templates/coding-agent-starter
 category: instructions-rules
-layer: "Instruction/identity layer (Block A) plus day-0 seeds of the decision-memory block — a 16-file project scaffold one rung below base-project-template, not a single convention file"
+layer: "Instruction/identity layer (Block A) plus day-0 seeds of the decision-memory block — a 15-file project scaffold one rung below base-project-template, not a single convention file"
 what_it_is: >
   A deliberately small, copy-ready project scaffold for a repository a coding agent will work
   in. Its organizing claim is subtractive: a CLAUDE.md holding a one-line project identity and
@@ -18,24 +18,30 @@ what_it_is: >
   checkable conditions, written before the first line of code), an entry-less `DECISIONS.md`
   (format only — the file exists from day one, the content accrues), a `.tasks/active|done/`
   per-task file carrying a verification timestamp, and `doc/adr/` in Michael Nygard / adr-tools
-  form, labelled on-a-signal rather than day-0 and deletable as a unit. The scaffold's "three
+  form — the format and the inclusion threshold, with NO entries, for the same reason it ships no
+  filled-in rule: copying a template is not a decision to keep ADRs, so a dated `Status: Accepted`
+  record in the copier's name would be one more thing asserted ahead of its need. The scaffold's "three
   addresses" rule is taught rather than pre-populated: a constraint belongs in a code comment, in
   a rule file whose declared path glob scopes it, or in the root instruction file as a POINTER —
   and the root file should get shorter when knowledge is distributed, not longer. The
   branch-protection hook and its self-test are base-project-template's own files, copied verbatim
   rather than reimplemented; the entry-level README states plainly that this hook is not a day-0
-  practice and is shipped pre-wired only because its action, command and cost are nameable in
-  advance and universally.
+  practice and is shipped pre-wired only because its action, cost and frequency are nameable before
+  the project exists. It also states who the hook does and does not stop: it is a Claude Code
+  `PreToolUse` hook, so it fires on the agent's tool calls and does nothing about a human typing
+  `git commit` in a terminal — a sixth blind spot on top of the five the self-test prints.
 integration: >
   Copy `templates/coding-agent-starter/` into your project root with `cp -RP` (`AGENTS.md` is a
   symlink to `CLAUDE.md`; POSIX leaves `cp -R`'s symlink handling unspecified, so `-P` states the
   intent), then `rm -rf .git && git init -b main`. Run
-  `.claude/hooks/selftest-branch-guard.sh` once to confirm the hook is live, then
-  `git switch -c <branch>` BEFORE your first commit — the shipped hook is live in a fresh clone
-  with no install step and will refuse a commit on `main`, including your very first one. Fill
-  `spec.md`, replace the placeholder gate in `CLAUDE.md` with the one rule whose violation would
-  actually cost you, and leave `DECISIONS.md` empty. Graduate to `base-project-template` when
-  skills, subagents, MCP or profiles start earning their keep.
+  commit the skeleton on `main` FIRST, then `.claude/hooks/selftest-branch-guard.sh` to confirm
+  the hook is live, and only then `git switch -c <branch>` for the first task. Branching before the
+  first commit leaves no `main` at all — on an unborn HEAD `git switch -c` renames the unborn branch
+  rather than creating a second one, and the branch guard then protects a branch that does not exist
+  (reproduced; the README shows the commands). Fill `spec.md`, replace the placeholder gate in
+  `CLAUDE.md` with the one rule whose violation would actually cost you, and leave `DECISIONS.md`
+  empty. Graduate to `base-project-template` when skills, subagents, MCP or profiles start earning
+  their keep.
 license: >
   MIT, same as the rest of this repository. A LICENSE file ships at
   `templates/coding-agent-starter/LICENSE`, scoped to the template's own files.
@@ -78,6 +84,8 @@ unverified:
   - "NO research pass. base-project-template's content decisions each trace to one of two documented evidence passes; this template's do not. Its structure was derived from that template plus a seminar's teaching sequence, and should be read as a plausible, internally-consistent starting point rather than an evidence-backed default. Nothing here contradicts that entry's evidence — but nothing independently supports the subtractive 'one gate, everything else deleted' claim either, which is this template's single most load-bearing design decision."
   - "Verified only mechanically, and only on one machine (Linux, GNU coreutils 9.4, git 2.x, bash), re-run 2026-09-24: the branch guard self-test reports PASS on 9/9 checks and prints its own 5 known limits; the README bootstrap sequence run verbatim from a clean copy — `cp -RP`, `git init -b main`, self-test, `git switch -c`, first commit — succeeds with `AGENTS.md` still mode 120000 in the index; `scripts/generate.py` exits 0. NOT tested: any other OS or shell (notably macOS/BSD `cp`, whose `-R` symlink default POSIX leaves unspecified), any agent engine other than Claude Code, multi-contributor use, or drift over time."
   - "The template does NOT ship a `paths:`-scoped rule, and teaches that the rule and its root-file pointer go in together or not at all. The asymmetry that makes both worth having once there IS something to point at is documented, not inferred: per Claude Code's memory documentation (re-fetched 2026-09-24, quoted verbatim in the template README) a path-scoped rule triggers when Claude reads a matching file, but after `/compact` only the project-root CLAUDE.md is re-read from disk, while nested files and path-scoped rules reload only once a matching file is opened again. Established by reading that documentation page directly — NOT by observing either behaviour in a running session, and no reproduction of the compaction behaviour was attempted for this entry."
-  - "Written in Russian, unlike the rest of this registry — it was authored for a Russian-language seminar audience. No translated variant exists."
+  - "Written in Russian, unlike the rest of this registry — it was authored for a Russian-language seminar audience. No translated variant exists. Two files inside it are in English and say `gate` where the Russian text says `хук`: `.claude/settings.json` and the self-test, which are held byte-identical with base-project-template on purpose. The template's README names this rather than claiming a vocabulary split it does not have in those two files."
+  - "The ADR claims in `doc/adr/README.md` — Michael Nygard 2011 as the practice's origin, `adr-tools` as its reference command set, and that there is no controlled measurement of ADRs helping a coding agent — are carried from a source review performed outside this repository and were NOT re-verified for this entry. They are stated in the template with that caveat attached."
+  - "The branch-protection hook is a Claude Code `PreToolUse` hook, verified to DENY on `main` by invoking its command directly with a `git commit` payload — not by observing a refusal inside a running Claude Code session. Separately verified that it does NOT stop a shell `git commit`: after `git init` no git hook is installed (listing .git/hooks shows only .sample files) and a commit on `main` from a plain shell exits 0. Claude Code own docs additionally state that hooks are held back until workspace trust is accepted; that part was read, not reproduced."
 deep_dive: deep-dives/components/instructions-rules/coding-agent-starter.md
 first_party: true

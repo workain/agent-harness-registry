@@ -1,6 +1,6 @@
 # coding-agent-starter
 
-A 16-file project scaffold (15 files plus the `AGENTS.md` symlink) for a repository a coding agent will work in. First-party, MIT,
+A 15-file project scaffold (14 files plus the `AGENTS.md` symlink) for a repository a coding agent will work in. First-party, MIT,
 lives at [`templates/coding-agent-starter/`](../../../templates/coding-agent-starter/).
 
 ## What it is
@@ -16,7 +16,7 @@ project can justify on its first day, and deliberately nothing else.
 | `AGENTS.md` | The same text for engines that look for `AGENTS.md` (symlink, not a copy) |
 | `spec.md` | What counts as "done" — written before the first line of code |
 | `DECISIONS.md` | Why a decision was made, once nobody remembers |
-| `doc/adr/` | The same, for decisions that outlive their authors — labelled on-a-signal, not day 0 |
+| `doc/adr/` | The same, for decisions that outlive their authors — the format and the threshold, deliberately with no entries |
 | `.tasks/` | What has been verified in the current task, and what has not |
 | `.gitignore` | What must never travel with the repository |
 | `.claude/settings.json` | The hook: a commit straight to `main` is refused |
@@ -25,9 +25,11 @@ project can justify on its first day, and deliberately nothing else.
 
 Two of these are deliberately **not** day 0, and the template says so rather than implying
 otherwise: `doc/adr/` (delete it as a unit if your decisions still fit in three lines of
-`DECISIONS.md`) and the branch-protection hook, which ships pre-wired only because its action
-(`git commit` on `main`), its command and its cost are nameable in advance and universally. Your
-*next* hook does not arrive that way — it has to be earned by a named action.
+`DECISIONS.md`) and the branch-protection hook, which ships pre-wired only because its action,
+cost and frequency are all nameable before the project exists. Your *next* hook does not arrive
+that way — it has to be earned by a named action. Either way, deleting one of these means
+deleting its pointer line in `CLAUDE.md` too; the template says so in that file, because a
+pointer at nothing is the same waste the parked `paths:` rule was moved out to avoid.
 
 ## When to use it
 
@@ -48,8 +50,12 @@ real need has nothing to check it and decays quietly until someone notices the a
 ignoring it while the file still claims otherwise.
 
 The template keeps *gate* (a line of text the agent may honour) and *hook* (a check that executes
-and refuses) as two different words throughout, because collapsing them is exactly how a reader
-comes to believe that a sentence in a file enforces something.
+and refuses) as two different words in its own Russian prose, because collapsing them is exactly
+how a reader comes to believe that a sentence in a file enforces something. Two files inside the
+template do not follow that split and cannot: `.claude/settings.json` and the self-test are English
+and are held byte-identical with `base-project-template`, and both say "gate" for the mechanism —
+including the line the self-test prints. The template's README names this rather than claiming a
+split it does not have everywhere.
 
 This is the template's most load-bearing claim and **it has no independent evidence behind it.**
 It is consistent with base-project-template's own evidence base (see
@@ -106,15 +112,23 @@ worse than none, because people rely on it. Re-run the self-test after every edi
 git clone https://github.com/workain/agent-harness-registry.git
 cp -RP agent-harness-registry/templates/coding-agent-starter my-project
 cd my-project
-rm -rf .git && git init -b main
-bash .claude/hooks/selftest-branch-guard.sh
-git switch -c init-repo
+git init -b main
 git add -A && git commit -m "Project skeleton from coding-agent-starter"
+bash .claude/hooks/selftest-branch-guard.sh
+git switch -c <branch-for-the-first-task>
 ```
 
-The `git switch` is load-bearing, not tidiness: the hook is git-tracked, so it is live in a fresh
-clone with no install step, and it will refuse a commit on `main` — including the very first one.
-Better to read that here than in a refusal.
+**The order matters, and the obvious order is wrong.** Branching *before* the first commit leaves
+the project with no `main` at all: on an unborn HEAD `git switch -c` renames the unborn branch
+instead of creating a second one, so `git rev-parse --verify main` fails, `.git/refs/heads/` holds
+only the new name, and the branch guard is left protecting a branch that does not exist — the exact
+state its own self-test warns about (`LIMIT … otherwise this gate protects nothing here`).
+Reproduced; the template README prints the commands.
+
+**Who the hook stops.** It is a Claude Code `PreToolUse` hook: it fires on the agent's tool calls.
+A human running `git commit` in a terminal is not stopped at all — `git init` installs no git hook,
+and a shell commit on `main` exits 0 (verified). That is a sixth blind spot on top of the five the
+self-test prints, and the template says so.
 
 `cp -RP`: `AGENTS.md` is a symlink to `CLAUDE.md` so that one canonical text serves both
 conventions. POSIX.1-2024 leaves it **unspecified** which of `-H`/`-L`/`-P` a `cp -R` defaults to,
@@ -139,7 +153,12 @@ whose violation would genuinely cost you something; leave `DECISIONS.md` empty.
 - **Treating the self-test's green as coverage.** It reports `PASS — 9/9` on the shapes it
   checks and names five it does not. A server-side branch-protection rule is the only thing that
   closes that class.
-- **Copying with `-L` (or `cp -a --dereference`).** That is what actually breaks the symlink; see above.
+- **Copying with `-L` (or `cp -a --dereference`).** That is what actually breaks the symlink; see
+  above. Note that the seminar this template was built alongside states the `cp -R`-without-`-P`
+  failure as happening on macOS specifically; that claim is not verified here (no Mac was
+  available) and is false on GNU coreutils 9.4, which is the only implementation tested.
+- **Branching before the first commit.** See "Getting started" — it silently leaves you without
+  a `main` branch and a gate guarding nothing.
 
 ## Compared to
 
@@ -152,9 +171,15 @@ whose violation would genuinely cost you something; leave `DECISIONS.md` empty.
 ## Verification status
 
 Mechanically verified on one machine (Linux, GNU coreutils 9.4, bash) on 2026-09-24: the
-self-test reports `RESULT: PASS — 9/9 checks` both before and after this revision's edit to
-`settings.json`; the README bootstrap sequence run verbatim from a clean copy succeeds, with
-`AGENTS.md` still mode 120000 in the index after the first commit; `scripts/generate.py` exits 0.
+self-test reports `RESULT: PASS — 9/9 checks` both before and after this revision's edits to
+`settings.json`; the README bootstrap sequence run verbatim from a clean copy succeeds, ending with
+both `main` and the task branch existing and `AGENTS.md` still mode 120000 in the index;
+`scripts/generate.py` exits 0; `render_templates.py --check` reports PASS; `cmp` reports the two
+shared files byte-identical between the templates.
+
+The hook's DENY was observed by invoking its command directly with a `git commit` payload, NOT by
+watching a refusal inside a running Claude Code session. Its non-coverage of a shell commit WAS
+observed directly.
 
 Not verified: any other OS or shell — notably macOS/BSD `cp`, where the `-R` symlink default is
 the thing POSIX declines to specify — any engine other than Claude Code, multi-contributor use,

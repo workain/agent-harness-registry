@@ -37,9 +37,15 @@ are building — for example:
 
 The first-run block at the top of `CLAUDE.md` is addressed to the agent. Working
 through it fills in the project identity, `spec.md`, the build and test commands (by
-detecting and actually running them), the first decision-log entry, and the date on
-ADR-0001; then it runs the branch-guard self-test, deletes what you are not using,
-deletes itself, and commits. After that you have a working repository.
+detecting and actually running them), and the first decision-log entry; decides whether
+`doc/adr/` is being kept; **replaces this `README.md` and `LICENSE` with your project's
+own**; runs the branch-guard self-test; deletes what you are not using along with the
+pointers to it; deletes itself; and commits. After that you have a working repository.
+
+**This file and `LICENSE` are the scaffold's, not your project's.** This README describes
+the template, and `LICENSE` is the template's MIT licence carrying **workain's copyright
+line** — which is not yours, and must not end up at the root of your repository unnoticed.
+Step 8 of the first-run block replaces both; check that it did.
 
 Two things worth knowing before the first commit:
 
@@ -68,6 +74,7 @@ Two things worth knowing before the first commit:
 | `.claude/hooks/selftest-branch-guard.sh` | Proves that gate refuses, and prints its own limits | Yes, runnable |
 | `.claude/rules/tests.md` | Conventions that apply only to test files | Example rules — replace with yours |
 | `.gitignore` | What must not reach a shared repository | Yes |
+| `README.md`, `LICENSE` | Nothing about your project — they are the **scaffold's** own | No: step 8 replaces them |
 
 Everything you delete, delete its pointer in `CLAUDE.md` too. A pointer to a file that
 is not there is billed on every turn and buys nothing.

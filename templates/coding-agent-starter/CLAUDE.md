@@ -3,7 +3,7 @@ FIRST RUN — for the agent, not for the human. Delete this block when done.
 
 The person who copied this scaffold will tell you in a sentence or two what this
 project is. That sentence is your only input. Turn it into a working repository by
-doing all of the following, in order, in one session:
+doing all nine of the following, in order, in one session:
 
  1. Replace `<PROJECT>` in the heading and the identity line below it. One line.
     What this is, and what "done" means for it. Not a description of the code.
@@ -22,11 +22,21 @@ doing all of the following, in order, in one session:
     read as content and costs context on every turn. Whatever you delete, delete the
     lines in "Where things live" that point at it.
  7. Fill the `Context` of the worked entry already in `DECISIONS.md` with what this
-    project is and why it exists, and put today's date on it and on
-    `doc/adr/0001-record-architecture-decisions.md`. Both ship undated on purpose: a
-    dated `Status: Accepted` record in your name that you did not make is a lie the
-    scaffold would be telling on your behalf.
- 8. Delete this block. Commit the result on `main` (the gate allows it — `main` has no
+    project is and why it exists, and put today's date on it. It ships undated on
+    purpose: a dated record in your name that you did not make is a lie the scaffold
+    would be telling on your behalf. Then decide about `doc/adr/` and do ONE of these,
+    not both and not neither:
+      - keeping it: date `doc/adr/0001-record-architecture-decisions.md` the same way;
+      - not keeping it (every decision still fits in three lines of `DECISIONS.md`):
+        `rm -rf doc/adr`, and delete the two pointers to it, per step 6.
+ 8. **Replace `README.md` and `LICENSE` — they are the scaffold's, not this project's.**
+    The shipped `README.md` describes the scaffold; left in place, the first thing anyone
+    reads about this project is a different project. Write a short one for THIS project:
+    what it is, how to run it, how to run its tests. `LICENSE` is the scaffold's MIT
+    licence and carries **someone else's copyright line** — replace it with this
+    project's licence, or delete the file until that is decided. An unnoticed copyright
+    line at a repository root is worse than an absent one.
+ 9. Delete this block. Commit the result on `main` (the gate allows it — `main` has no
     history yet and this is the skeleton commit), then `git switch -c <branch>` for
     the first real task.
 

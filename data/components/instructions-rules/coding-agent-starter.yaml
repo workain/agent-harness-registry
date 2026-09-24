@@ -21,13 +21,15 @@ what_it_is: >
   form — the format and the inclusion threshold, with NO entries, for the same reason it ships no
   filled-in rule: copying a template is not a decision to keep ADRs, so a dated `Status: Accepted`
   record in the copier's name would be one more thing asserted ahead of its need. Deleting either
-  of the beyond-day-0 things means deleting what points at it, and the template was restructured so
-  that unit is never ambiguous: `doc/adr/` and `.claude/` each own a whole line in `CLAUDE.md`'s
-  pointer section. `doc/adr/` has one further mention — the closing line of `DECISIONS.md` — and
-  both `CLAUDE.md` and `doc/adr/README.md` name it and give the grep that proves nothing dangles.
-  Earlier revisions of this entry described a half-line unit; three consecutive independent reviews
-  each found that description wrong in a different place, which is why the structure changed rather
-  than the wording. The scaffold's "three
+  of the beyond-day-0 things means deleting what points at it, and the template stopped trying to
+  enumerate where that is. `doc/adr/` and `.claude/` each own a whole item in `CLAUDE.md`'s pointer
+  section, and the check is one tree-wide grep whose hits `CLAUDE.md` sorts into three kinds:
+  pointers in files the agent loads (delete — the only kind that must not remain), lines of the
+  comments explaining this very deletion (delete last), and prose about the template's own design in
+  `README.md`/`doc/deferred.md`, which the copier replaces wholesale anyway. Five consecutive
+  independent reviews each found an earlier, place-enumerating version of this instruction wrong in
+  a different spot — the list of places is what kept going stale, so the instruction stopped being
+  a list. The scaffold's "three
   addresses" rule is taught rather than pre-populated: a constraint belongs in a code comment, in
   a rule file whose declared path glob scopes it, or in the root instruction file as a POINTER —
   and the root file should get shorter when knowledge is distributed, not longer. The

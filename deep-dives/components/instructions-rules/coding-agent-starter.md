@@ -1,6 +1,7 @@
 # coding-agent-starter
 
-A 15-file project scaffold (14 files plus the `AGENTS.md` symlink) for a repository a coding agent will work in. First-party, MIT,
+A 15-file project scaffold (14 files plus the `AGENTS.md` symlink) for a repository a coding
+agent will work in. First-party, MIT,
 lives at [`templates/coding-agent-starter/`](../../../templates/coding-agent-starter/).
 
 ## What it is
@@ -27,15 +28,18 @@ Three rows are labelled **not** day 0, and the template says so rather than impl
 `doc/adr/` — which ships as a format and a threshold with nothing switched on, and is deletable as
 a unit if your decisions still fit in three lines of `DECISIONS.md` — plus the branch-protection
 hook and its self-test, which are the two that ARE live, and ship pre-wired only because the
-hook's action, cost and frequency are all nameable before the project exists. Your *next* hook does not arrive
+hook's action, cost and frequency are all nameable before the project exists. Your *next* hook
+does not arrive
 that way — it has to be earned by a named action. Either way, deleting one of these means
-deleting what points at it — and the template was restructured so that unit is never ambiguous:
-each of the two owns a whole line in `CLAUDE.md`'s pointer section. `doc/adr/` has one further
-mention, the closing line of `DECISIONS.md`, and both `CLAUDE.md` and `doc/adr/README.md` name it
-and give the grep that proves nothing is left dangling. A pointer at nothing is the same waste the
-parked `paths:` rule was moved out to avoid; deleting a live pointer to a live file is the mirror
-mistake, and three consecutive reviews caught this file describing the unit wrongly before the
-structure changed to make the question disappear.
+deleting what points at it — and the template no longer tries to list where that is. Each of the
+two owns a whole item in `CLAUDE.md`'s pointer section, and the check is one tree-wide grep whose
+hits `CLAUDE.md` sorts into three kinds: pointers in files the agent loads (delete), lines of the
+comments explaining the deletion (delete last), and prose about the template's own design in
+`README.md`/`doc/deferred.md`, which you replace wholesale anyway. A pointer at nothing is the same
+waste the parked `paths:` rule was moved out to avoid; deleting a live pointer to a live file is the
+mirror mistake. Five consecutive independent reviews each caught an earlier, place-enumerating
+version of this instruction wrong somewhere different — which is the reason it stopped being a list
+of places.
 
 ## When to use it
 

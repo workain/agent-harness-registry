@@ -30,9 +30,11 @@ rather than writing plausible ones into the file.
 | `.claude/settings.json` | The hook: a commit straight to `main` is refused |
 | `.claude/hooks/selftest-branch-guard.sh` | Proof the hook actually fires — and the five cases where it does not |
 
-Four placeholders are left for a human or for the first-run agent to fill: the project identity
-line, the build/test commands, the branch-naming convention, and the one project-specific gate.
-Everything else ships written.
+Nine bracketed slots are left in the shipped body, and they are four decisions: the project
+identity (heading plus the line under it), the build/test commands (five slots), the branch-naming
+convention, and the one project-specific gate. Count them with
+`grep -o '<[A-Za-z][^>]*>' CLAUDE.md` after the first-run block is deleted. Everything else ships
+written.
 
 Two things ship deliberately **undated**: the first `DECISIONS.md` entry and
 `doc/adr/0001-record-architecture-decisions.md`. Keeping ADRs is a real decision, and the

@@ -4,9 +4,10 @@ A copy-ready skeleton for a repository a coding agent will work in (Claude Code 
 compatible engines). Sixteen files, nothing optional-looking left unfilled.
 
 It is **prefilled**, not a questionnaire. The gates, the workflow and the file formats
-are already written and already in force; what only you can know — what the project is,
-and which commands build and test it — is filled in by the agent on the first run, from
-one sentence you give it.
+are already written and already in force. What is left blank is four decisions only you can
+make — what the project is, which commands build and test it, how branches are named, and the
+one gate specific to your project — and the agent fills them in on the first run from one
+sentence you give it.
 
 The larger template, with skills, subagents, MCP notes, profiles and a variant renderer,
 is `templates/base-project-template/` in this same repository. Start here.

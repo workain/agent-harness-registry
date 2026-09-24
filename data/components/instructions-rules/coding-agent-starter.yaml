@@ -11,9 +11,10 @@ what_it_is: >
   steps — fill the identity line and `spec.md`, detect AND RUN the project's real build/test
   commands rather than writing plausible ones, date the two undated decision records, run the
   branch-guard self-test, delete whatever is unused along with the pointers to it, delete the
-  block itself, commit the skeleton on `main`, and branch. Four placeholders are left for a
-  human: the identity line, the build/test commands, the branch-naming convention, and one
-  project-specific gate. Everything else ships written: five gates that hold in any repository
+  block itself, commit the skeleton on `main`, and branch. Nine bracketed slots are left in the
+  shipped body and they are four decisions: the project identity (heading plus the line under it),
+  the build/test commands (five slots), the branch-naming convention, and one project-specific
+  gate. Everything else ships written: five gates that hold in any repository
   (no commit to main, no rewriting published history, no destructive or production command
   taken unilaterally, no committed secret, and no claim that something works without the
   output that shows it), a seven-step workflow, repository etiquette, a pointer section, and an

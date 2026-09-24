@@ -15,7 +15,7 @@ what_it_is: >
   the content accrues), `doc/adr/` in Michael Nygard / adr-tools form with a template and one
   real first entry, a `.tasks/active|done/` per-task file carrying a verification timestamp, and
   `.claude/rules/tests.md` as a worked example of the scaffold's "three addresses" rule (a constraint
-  belongs in a code comment, in a file beside the code it governs, or in the root instruction
+  belongs in a code comment, in a rule file whose declared path glob scopes it, or in the root instruction
   file as a POINTER — and the root file should get shorter when knowledge is distributed, not
   longer). The branch-protection hook and its self-test are base-project-template's own files,
   copied verbatim rather than reimplemented.

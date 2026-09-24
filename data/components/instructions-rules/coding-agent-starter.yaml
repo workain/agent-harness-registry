@@ -14,8 +14,8 @@ what_it_is: >
   first line of code), an entry-less `DECISIONS.md` (format only — the file exists from day one,
   the content accrues), `doc/adr/` in Michael Nygard / adr-tools form with a template and one
   real first entry, a `.tasks/active|done/` per-task file carrying a verification timestamp, and
-  `tests/CLAUDE.md` as a worked example of the scaffold's "three addresses" rule (a constraint
-  belongs in a code comment, in a file beside the code it governs, or in the root instruction
+  `.claude/rules/tests.md` as a worked example of the scaffold's "three addresses" rule (a constraint
+  belongs in a code comment, in a rule file whose declared path glob scopes it, or in the root instruction
   file as a POINTER — and the root file should get shorter when knowledge is distributed, not
   longer). The branch-protection hook and its self-test are base-project-template's own files,
   copied verbatim rather than reimplemented.
@@ -46,7 +46,7 @@ provenance:
 unverified:
   - "NO research pass. base-project-template's content decisions each trace to one of two documented evidence passes; this template's do not. Its structure was derived from that template plus a seminar's teaching sequence, and should be read as a plausible, internally-consistent starting point rather than an evidence-backed default. Nothing here contradicts that entry's evidence — but nothing independently supports the subtractive 'one gate, everything else deleted' claim either, which is this template's single most load-bearing design decision."
   - "Verified only mechanically, and only on one machine (Linux, git 2.x, bash): the branch guard self-test reports PASS on 9/9 checks and prints its own 5 known limits; a `cp -RP` + `git init` + self-test run from a clean clone succeeds with the AGENTS.md symlink intact; `scripts/generate.py` exits 0. NOT tested: any other OS or shell, any agent engine other than Claude Code, multi-contributor use, or drift over time."
-  - "Whether an engine auto-loads a subdirectory instruction file (`tests/CLAUDE.md`) on the path of an edit is NOT established here for Claude Code — this registry documents that behavior for Gemini CLI and Cursor only. The template therefore names that file from the root CLAUDE.md as an explicit pointer, which works either way; readers should not take its presence as evidence that auto-discovery happens."
+  - "The template ships BOTH a `paths:`-scoped rule and a root-file pointer to it; the reason is a documented asymmetry, not hedging. Per Claude Code's memory documentation (fetched 2026-09-23): a path-scoped rule triggers when Claude reads a matching file, but after `/compact` only the project-root CLAUDE.md is re-read from disk, while nested files and path-scoped rules reload only once a matching file is opened again. Established by reading that documentation page directly — NOT by observing either behaviour in a running session, and no reproduction of the compaction behaviour was attempted for this entry."
   - "Written in Russian, unlike the rest of this registry — it was authored for a Russian-language seminar audience. No translated variant exists."
 deep_dive: deep-dives/components/instructions-rules/coding-agent-starter.md
 first_party: true

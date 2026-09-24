@@ -20,7 +20,7 @@ project can justify on its first day, and deliberately nothing else.
 | `.tasks/` | What has been verified in the current task, and what has not |
 | `.claude/settings.json` | The gate: a commit straight to `main` is refused |
 | `.claude/hooks/selftest-branch-guard.sh` | Proof the gate actually fires |
-| `tests/CLAUDE.md` | Rules that apply only to tests |
+| `.claude/rules/tests.md` | Rules that apply only to tests, loaded by glob |
 | `doc/claude-md-sections.md` | The sections you will want later — deliberately not yet in `CLAUDE.md` |
 
 ## When to use it
@@ -53,17 +53,24 @@ file is only one of them:
 | Address | What goes there | Why there |
 |---|---|---|
 | A comment in the code | A non-obvious constraint on a specific line | Read by exactly whoever edits that line; cannot fall out of date with it |
-| A file beside the code (`tests/CLAUDE.md`) | A rule governing one directory | Not loaded by anyone who never enters that directory |
+| A `paths:`-scoped rule file (`.claude/rules/tests.md`) | A rule governing one set of paths | Loads only once Claude opens a file matching the glob |
 | The root `CLAUDE.md` | Project-wide rules — and **pointers** to the first two | A pointer costs one line; the content costs every request |
 
 The test of whether distribution actually happened: the root file gets **shorter**. If it grew,
 the content was copied, not moved.
 
-**Honest limit:** whether an engine auto-loads `tests/CLAUDE.md` when editing inside `tests/`
-is established in this registry for [Gemini CLI](gemini-md.md) and [Cursor](cursor-rules.md),
-and **is not established here for Claude Code.** The template therefore has the root file name
-that path explicitly, so the rule is reachable regardless — and says so in its own README rather
-than letting a reader infer auto-discovery from the file's presence.
+**Why it ships both the rule and a pointer to it.** Not hedging — a documented asymmetry.
+Claude Code's memory documentation (fetched 2026-09-23) states that a `paths:`-scoped rule
+"trigger[s] when Claude reads files matching the pattern", and separately that "Project-root
+CLAUDE.md survives compaction: after `/compact`, Claude re-reads it from disk and re-injects it
+into the session. Nested CLAUDE.md files in subdirectories and rules with `paths:` frontmatter
+reload as Claude reads files they apply to."
+
+So the glob buys context (the rule costs nothing in a session that never touches tests) and the
+root pointer buys durability (one line that comes back after every compaction, whether or not a
+matching file has been opened since). Each does something the other cannot, which is why the
+template ships both rather than picking one. Read from the documentation, not reproduced in a
+live session — see the entry's `unverified:` list.
 
 **3. A rule without a check is advice.** The branch-protection hook ships with
 `selftest-branch-guard.sh`, which exercises it across nine scenarios and prints the result —

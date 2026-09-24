@@ -850,18 +850,55 @@ Usage: claude mcp add [options] <name> <commandOrUrl> [args...]
 синтаксис CLI меняется, и «пример, который не запускается» — это ровно тот класс ошибки,
 против которого наряд и написан.
 
-## 4.8 [ПЕРЕНЕСЕНО] «scoring-таблицу не заполняет ни один бандл»
+## 4.8 [ПРОВЕРЕНО] «scoring-таблицу не заполняет ни один бандл» — таблица есть у всех восьми; в README сказано другое
 
 **Место.** `-part2.md`, строка 100.
 
 **Дословно.** «scoring-таблица против трёх свойств бандла (sustained / engine-agnostic /
-progressively-disclosed), которую README требует и которую сегодня не заполняет ни один
-бандл каталога».
+progressively-disclosed), которую README требует и которую сегодня **не заполняет ни один
+бандл каталога**».
 
-**Статус.** Формулировка на месте дословно — это я проверила. Само утверждение («ни один
-бандл не заполняет») я НЕ проверяла: для этого нужно обойти все 8 бандлов реестра, а проход
-по Семинару 5 задан поверхностным. Беру из отчёта предыдущей ревью как есть, статус не
-повышаю.
+**Чем опровергается.** Таблица заполнена у всех восьми бандлов реестра, и у каждого есть
+посчитанный итог:
+
+```
+$ for f in deep-dives/bundles/*.md; do echo "--- $(basename $f)";
+    grep -oE "\*\*Score:[^*]*" "$f" | head -1; done
+--- agent-harness-kit.md
+**Score: 1 of 3 confidently (engine-agnostic), arguably 1.5-2 of 3 …
+--- ai-coding-project-boilerplate.md
+**Score: 1 of 3 by design (sustained), 2 of 3 counting an inherited property.
+--- claude-code-plugins.md
+**Score: 1 of 3 confidently (sustained), …
+--- claude-flow.md
+**Score: 1 of 3 confidently (sustained), …
+--- gpt-store-custom-gpts.md
+**Score: 1 of 3 confidently (sustained), 1 unresolved.
+--- gtm-starter-kit.md
+**Score: 0 of 3 by design, 1 of 3 counting an inherited property.
+--- vibeready.md
+**Score: 2 of 3 claimed (engine-agnostic + progressively-disclosed), …
+--- wshobson-agent-teams.md
+**Score: 2 of 3 confidently (inherited-sustained + progressively-disclosed), …
+```
+
+Откуда взялась ошибка — видно в самом README реестра, строки 202–203:
+
+> «including a scoring table against the three properties (sustained / engine-agnostic /
+> progressively-disclosed) **no bundle here yet combines**.»
+
+README говорит не «таблицу никто не заполняет», а «трёх свойств разом никто пока **не
+собирает**» — и это верно: максимум 2 из 3. Наряд прочитал «no bundle combines» как «no
+bundle fills in». Ошибка не в числе, а в чтении источника: тот же класс, что 4.5.
+
+**Поправка к статусу.** Предыдущая ревью-сессия писала «формулировка на месте дословно»
+и на этом останавливалась. Формулировка действительно на месте — но утверждение ложно, и это
+проверяется одной командой выше. Статус повышен с «не проверено» до «проверено», а
+характеристика ошибки изменилась: это не «устаревшая цифра», а неверный пересказ требования.
+
+**Готовый текст замены.** «scoring-таблица против трёх свойств бандла (sustained /
+engine-agnostic / progressively-disclosed), которую README требует от каждого бандла и три
+свойства которой не собирает разом ни один бандл каталога (максимум — 2 из 3)».
 
 ## 4.9 [ПЕРЕНЕСЕНО] Документ правок называет себя «Eight factual corrections», а в тексте сбивается на другой счёт
 

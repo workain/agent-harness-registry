@@ -14,10 +14,14 @@ set -uo pipefail
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 CHECKS="$REPO_ROOT/scripts/pre-commit-checks.sh"
-PASS=0; FAIL=0
+PASS=0; FAIL=0; SKIP=0
 
 pass() { printf '  PASS  %s\n' "$1"; PASS=$((PASS + 1)); }
 fail() { printf '  FAIL  %s\n' "$1"; FAIL=$((FAIL + 1)); }
+# A skip is printed, counted and explained. It is never silent: an assertion that quietly
+# stops running is indistinguishable from one that passes, which is the failure this whole
+# suite exists to argue against.
+skip() { printf '  SKIP  %s\n' "$1"; SKIP=$((SKIP + 1)); }
 
 # assert_contains <label> <haystack> <needle>  -- and note that an EMPTY haystack fails,
 # rather than vacuously passing the way an assert-NOT-contains would.
@@ -140,10 +144,22 @@ if git -C "$REPO_ROOT" cat-file -e "$REAL_BLOB" 2>/dev/null; then
     assert_contains "real shipped template (a73a330): blocked" "$OUT" "Cyrillic text in staged files"
     [ "$RC" -eq 1 ] && pass "real shipped template: exit 1" || fail "real shipped template: exit $RC, expected 1"
     rm -rf "$D"
+elif [ "$(git -C "$REPO_ROOT" rev-parse --is-shallow-repository 2>/dev/null)" = "true" ]; then
+    # A shallow clone genuinely does not have the history this assertion reads. That is a
+    # property of the checkout, not a defect in the gate — so it skips rather than failing,
+    # but loudly and with the fix named. `git clone --depth 1` is what CI does by default,
+    # and a suite that is red on every default CI checkout gets ignored within a week.
+    skip "real shipped template: shallow clone has no history for $REAL_BLOB — run 'git fetch --unshallow' to include this assertion"
 else
-    fail "real shipped template: blob $REAL_BLOB unreachable — this assertion did not run"
+    # Full history present and the blob is still gone: history was rewritten, or the SHA is
+    # wrong. Either way somebody needs to look, so this stays a failure.
+    fail "real shipped template: blob $REAL_BLOB unreachable in a repository that HAS full history — rewritten, or the SHA is wrong"
 fi
 
 echo
-echo "  $PASS passed, $FAIL failed"
+if [ "$SKIP" -gt 0 ]; then
+    echo "  $PASS passed, $FAIL failed, $SKIP skipped (see SKIP lines above — those assertions did NOT run)"
+else
+    echo "  $PASS passed, $FAIL failed"
+fi
 [ "$FAIL" -eq 0 ] || exit 1

@@ -81,6 +81,17 @@ provenance:
       and rules with paths: frontmatter reload as Claude reads files they apply to." Both were
       re-read from the live page for this revision; see `unverified:` for what that does and does
       not establish.
+  - url: https://code.claude.com/docs/en/hooks
+    fetched: "2026-09-24"
+    note: >
+      Source for the two limits the shared `$comment` now states instead of claiming a hook is
+      simply live automatically in every fresh clone. Section "Workspace trust", quoted verbatim:
+      "Interactive session: Claude Code holds back hooks from every settings file, including your
+      own ~/.claude/settings.json, until you accept the workspace trust dialog for the folder";
+      and "-p or SDK session: Claude Code never shows the dialog and treats the folder as
+      trusted, so hooks committed in a repository's .claude/settings.json run in a folder you've
+      never trusted." Read from the live page; neither behaviour was reproduced in a running
+      session.
 unverified:
   - "NO research pass. base-project-template's content decisions each trace to one of two documented evidence passes; this template's do not. Its structure was derived from that template plus a seminar's teaching sequence, and should be read as a plausible, internally-consistent starting point rather than an evidence-backed default. Nothing here contradicts that entry's evidence — but nothing independently supports the subtractive 'one gate, everything else deleted' claim either, which is this template's single most load-bearing design decision."
   - "Verified only mechanically, and only on one machine (Linux, GNU coreutils 9.4, git 2.x, bash), re-run 2026-09-24: the branch guard self-test reports PASS on 9/9 checks and prints its own 5 known limits; the README bootstrap sequence run verbatim from a clean copy — `cp -RP`, `git init -b main`, self-test, `git switch -c`, first commit — succeeds with `AGENTS.md` still mode 120000 in the index; `scripts/generate.py` exits 0. NOT tested: any other OS or shell (notably macOS/BSD `cp`, whose `-R` symlink default POSIX leaves unspecified), any agent engine other than Claude Code, multi-contributor use, or drift over time."

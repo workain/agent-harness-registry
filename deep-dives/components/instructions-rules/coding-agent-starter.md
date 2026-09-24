@@ -184,15 +184,38 @@ The hook's DENY was observed by invoking its command directly with a `git commit
 watching a refusal inside a running Claude Code session. Its non-coverage of a shell commit WAS
 observed directly.
 
-The FIRST RUN block was **dry-run, not independently observed**. Its eight steps were executed
-verbatim against a real project (a small Node package with its own `package.json`, `src/` and
-`tests/`): the build, test and lint commands were detected from `package.json` and each actually
-ran and passed, all nine bracketed slots were filled with zero left, the self-test reported PASS
-9/9, and the skeleton commit plus first branch came out as described. Two defects were found that
-way and fixed — a word ceiling that a normal fill-in would nearly break, and a quick start that
-covered only an empty directory and not an existing project. What it does not establish is the
-thing the design rests on: a fresh session, given only the scaffold and one sentence, choosing to
-read the block and follow it. The dry run was done by the block's own author.
+The FIRST RUN block has been tested **twice**, the second time by a session that was not told it
+existed.
+
+The first was a dry run by the block's author against a real Node project: the build, test and lint
+commands were detected from `package.json` and each ran and passed, all bracketed slots were
+filled, the self-test reported PASS 9/9. It found two defects — a word ceiling a normal fill-in
+would nearly break, and a quick start covering only an empty directory — and it could not settle
+the thing the design rests on, because the person running it knew what the block was for.
+
+The second was that thing. A fresh session was given the scaffold, two real sample files, and one
+sentence from the project's owner, with **no mention that the directory contained instructions**
+and an explicit ban on investigating where the scaffold came from. It read `CLAUDE.md`, found the
+block on its own, and worked all of it: identity, `spec.md` with three checkable conditions,
+build/test commands it actually ran, an added project-specific gate, the self-test (PASS 9/9), the
+dated decision entry, the skeleton commit on `main`, and a branch for the real work. It then built
+the CLI, and deliberately broke its own malformed-row check to watch two tests go red before
+reverting.
+
+It also found three defects the author's dry run had not, all fixed:
+
+- **The steps never said to replace `README.md`.** The shipped one is the scaffold's own document,
+  so the first thing a reader of the new project met was a description of a different project. The
+  session rewrote it anyway and reported the omission as a gap in the scaffold rather than a
+  judgement call — correctly.
+- **`LICENSE` carries someone else's copyright line** and lands at the copied project's root. The
+  trial session did not catch this one; verifying its report did. An unnoticed copyright line at a
+  repository root is worse than an absent one.
+- **Step 7 and `doc/adr/README.md` gave opposite instructions on day 0** — date ADR-0001, versus
+  delete the directory if your decisions still fit in three lines. The step is now an explicit
+  either/or.
+
+What remains untested: one trial, one engine, one model, one project shape.
 
 Not verified: any other OS or shell — notably macOS/BSD `cp`, where the `-R` symlink default is
 the thing POSIX declines to specify — any engine other than Claude Code, multi-contributor use,

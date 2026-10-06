@@ -1,0 +1,21 @@
+name: Easypanel MCP
+slug: mcp-easypanel
+category: access-mcp
+homepage: https://easypanel.io/docs/mcp
+license: "Proprietary Easypanel software; free and paid plans"
+license_tag: Proprietary
+open_source: false
+use_cases: "inspect and manage self-hosted Easypanel projects and services"
+what_it_is: >
+  Easypanel's documented built-in remote MCP server, using Streamable HTTP
+  and a selected Easypanel user's API key and permissions.
+provenance:
+  - url: https://easypanel.io/docs/mcp
+    fetched: "2026-10-06"
+    note: "Official documentation: built-in remote MCP, transport, user API-key authentication, four tools, permissions and client limitations."
+  - url: https://easypanel.io/pricing
+    fetched: "2026-10-06"
+    note: "Official pricing: free and paid plans; Free supports up to three projects and unlimited services/deployments."
+unverified:
+  - "Not live-tested or benchmarked by this contribution; no client-specific compatibility claim."
+deep_dive: deep-dives/components/access-mcp/mcp-easypanel.md

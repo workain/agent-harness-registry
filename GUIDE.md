@@ -8,7 +8,7 @@ Every claim is cited (see each entry's References) or marked `[unverified]`. Eac
 
 ## Overview — map of this registry
 
-**103 atomic components** across 4 categories (plus **8 instruction-file conventions** catalogued as background in the Bundles section — 111 component entries total), **8 assembled bundles**, **11 agent engines/runtimes**, **9 eval-frameworks**, **11 benchmarks**, **2 research studies**.
+**104 atomic components** across 4 categories (plus **8 instruction-file conventions** catalogued as background in the Bundles section — 112 component entries total), **8 assembled bundles**, **11 agent engines/runtimes**, **9 eval-frameworks**, **11 benchmarks**, **2 research studies**.
 
 **Components** are single-purpose atoms (a memory layer, a skill, an MCP server) composed one at a time. **Bundles** are pre-assembled multi-component kits. The market today is overwhelmingly atomic — Agent Skills alone spans 47,150 skills across 42 engines — though real demand for bundles exists too (see `workain/harness-eval`'s `docs/DEMAND-vs-ANTI-SIGNALS-equipment-bundles.md`). Each bundle's write-up scores it against three properties none yet fully combine: **sustained**, **engine-agnostic**, **progressively-disclosed**.
 
@@ -18,7 +18,7 @@ Every claim is cited (see each entry's References) or marked `[unverified]`. Eac
 - **Memory** (11, 9 tested) — see below
 - **Skills / tools** (26, catalogued only, not yet tested) — see below
 - **Subagents** (32, catalogued only, not yet tested) — see below
-- **Access placement / MCP** (34, catalogued only, not yet tested) — see below
+- **Access placement / MCP** (35, catalogued only, not yet tested) — see below
 
 ---
 
@@ -120,6 +120,7 @@ Single-purpose units composed onto an engine. Name links to the tool itself; wri
 | [Cloudflare MCP Server](https://github.com/cloudflare/mcp-server-cloudflare) | Catalogued | Apache-2.0 | 3.9k | managing Cloudflare Workers/DNS/security/performance via na… | [write-up](deep-dives/components/access-mcp/mcp-cloudflare.md) |
 | [Context7 (Upstash)](https://github.com/upstash/context7) | Catalogued | MIT | 58.6k | injecting up-to-date, version-specific library documentatio… | [write-up](deep-dives/components/access-mcp/mcp-context7.md) |
 | [Docker MCP Gateway](https://github.com/docker/mcp-gateway) | Catalogued | MIT | 1.5k | centrally managing/launching many MCP servers at once, secr… | [write-up](deep-dives/components/access-mcp/mcp-docker-gateway.md) |
+| [Easypanel MCP](https://easypanel.io/docs/mcp) | Catalogued | Proprietary | — | inspect and manage self-hosted Easypanel projects and servi… | [write-up](deep-dives/components/access-mcp/mcp-easypanel.md) |
 | [Elasticsearch MCP Server](https://github.com/elastic/mcp-server-elasticsearch) | Catalogued | Apache-2.0 | 682 | querying/managing Elasticsearch data from an agent | [write-up](deep-dives/components/access-mcp/mcp-elasticsearch.md) |
 | [Figma MCP (official)](https://mcp.figma.com) | Catalogued | Proprietary | — | official Figma design-context access for coding agents | [write-up](deep-dives/components/access-mcp/mcp-figma-official.md) |
 | [Figma-Context-MCP (community)](https://github.com/GLips/Figma-Context-MCP) | Catalogued | MIT | 15.3k | pulling Figma design context into a coding agent for implem… | [write-up](deep-dives/components/access-mcp/mcp-figma-community.md) |
